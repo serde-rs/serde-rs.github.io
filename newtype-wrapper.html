@@ -1,0 +1,408 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>De/Serialize for other crate · Serde</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.0">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="attr-skip-serializing.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    Examples
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="attr-default.html">
+            
+                <a href="attr-default.html">
+            
+                    
+                    Default value for a field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="attr-bound.html">
+            
+                <a href="attr-bound.html">
+            
+                    
+                    Handwritten generic type bounds
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="deserialize-map.html">
+            
+                <a href="deserialize-map.html">
+            
+                    
+                    Deserialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="serialize-map.html">
+            
+                <a href="serialize-map.html">
+            
+                    
+                    Serialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="stream-array.html">
+            
+                <a href="stream-array.html">
+            
+                    
+                    Array of values without buffering
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="enum-str.html">
+            
+                <a href="enum-str.html">
+            
+                    
+                    Serialize enum as string
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7" data-path="attr-rename.html">
+            
+                <a href="attr-rename.html">
+            
+                    
+                    Serialize fields as camelCase
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.8" data-path="attr-skip-serializing.html">
+            
+                <a href="attr-skip-serializing.html">
+            
+                    
+                    Skip serializing field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.9" data-path="newtype-wrapper.html">
+            
+                <a href="newtype-wrapper.html">
+            
+                    
+                    De/Serialize for other crate
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >De/Serialize for other crate</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="implement-deserialize-for-type-in-a-different-crate">Implement De/Serialize for type in a different crate</h1><p>Rust&apos;s
+<a href="https://doc.rust-lang.org/book/traits.html#rules-for-implementing-traits" target="_blank">coherence rule</a>
+requires that either the trait or the type for which you are implementing the
+trait must be defined in the same crate as the impl, so it
+is not possible to implement Serialize and Deserialize for a type in a different
+crate directly. The
+<a href="https://doc.rust-lang.org/book/structs.html#tuple-structs" target="_blank">newtype pattern</a>
+and
+<a href="https://doc.rust-lang.org/book/deref-coercions.html" target="_blank">Deref coercion</a>
+provide a way to implement Serialize and Deserialize for a type that behaves the
+same way as the one you wanted.</p><pre><code class="lang-rust"><span class="hljs-keyword">use</span> serde::{Serialize, Serializer, Deserialize, Deserializer};
+<span class="hljs-keyword">use</span> std::ops::Deref;
+
+<span class="hljs-comment">// Pretend this module is from some other crate.</span>
+<span class="hljs-keyword">mod</span> not_my_crate {
+    <span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Data</span></span> { <span class="hljs-comment">/* ... */</span> }
+}
+
+<span class="hljs-comment">// This single-element tuple struct is called a newtype struct.</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Data</span></span>(not_my_crate::Data);
+
+<span class="hljs-keyword">impl</span> Serialize <span class="hljs-keyword">for</span> Data {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: &amp;<span class="hljs-keyword">mut</span> S) -&gt; <span class="hljs-built_in">Result</span>&lt;(), S::Error&gt;
+        <span class="hljs-keyword">where</span> S: Serializer
+    {
+        <span class="hljs-comment">// Any implementation of Serialize.</span>
+    }
+}
+
+<span class="hljs-keyword">impl</span> Deserialize <span class="hljs-keyword">for</span> Data {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
+        <span class="hljs-keyword">where</span> D: Deserializer
+    {
+        <span class="hljs-comment">// Any implementation of Deserialize.</span>
+    }
+}
+
+<span class="hljs-comment">// Enable `Deref` coercion.</span>
+<span class="hljs-keyword">impl</span> Deref <span class="hljs-keyword">for</span> Data {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Target</span></span> = not_my_crate::Data;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deref</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; &amp;Self::Target {
+        &amp;<span class="hljs-keyword">self</span>.<span class="hljs-number">0</span>
+    }
+}
+
+<span class="hljs-comment">// Now `Data` can be used in ways that require it to implement</span>
+<span class="hljs-comment">// Serialize and Deserialize.</span>
+<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Outer</span></span> {
+    id: <span class="hljs-keyword">u64</span>,
+    name: <span class="hljs-built_in">String</span>,
+    data: Data,
+}</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="attr-skip-serializing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Skip serializing field">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"De/Serialize for other crate","level":"1.2.9","depth":2,"previous":{"title":"Skip serializing field","level":"1.2.8","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"newtype-wrapper.md","mtime":"2016-08-15T05:46:46.808Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-15T05:49:35.305Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

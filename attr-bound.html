@@ -1,0 +1,442 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>Handwritten generic type bounds · Serde</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.0">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="deserialize-map.html" />
+    
+    
+    <link rel="prev" href="attr-default.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    Examples
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="attr-default.html">
+            
+                <a href="attr-default.html">
+            
+                    
+                    Default value for a field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.2" data-path="attr-bound.html">
+            
+                <a href="attr-bound.html">
+            
+                    
+                    Handwritten generic type bounds
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="deserialize-map.html">
+            
+                <a href="deserialize-map.html">
+            
+                    
+                    Deserialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="serialize-map.html">
+            
+                <a href="serialize-map.html">
+            
+                    
+                    Serialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="stream-array.html">
+            
+                <a href="stream-array.html">
+            
+                    
+                    Array of values without buffering
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="enum-str.html">
+            
+                <a href="enum-str.html">
+            
+                    
+                    Serialize enum as string
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7" data-path="attr-rename.html">
+            
+                <a href="attr-rename.html">
+            
+                    
+                    Serialize fields as camelCase
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.8" data-path="attr-skip-serializing.html">
+            
+                <a href="attr-skip-serializing.html">
+            
+                    
+                    Skip serializing field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9" data-path="newtype-wrapper.html">
+            
+                <a href="newtype-wrapper.html">
+            
+                    
+                    De/Serialize for other crate
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Handwritten generic type bounds</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="handwritten-generic-type-bounds">Handwritten generic type bounds</h1><p>When deriving <code>Serialize</code> and <code>Deserialize</code> implementations for structs with
+generic type parameters, most of the time Serde is able to infer the correct
+trait bounds without help from the programmer. It uses several heuristics to
+guess the right bound, but most importantly it puts a bound of <code>T: Serialize</code> on
+every type parameter <code>T</code> that is part of a serialized field and a bound of <code>T:
+Deserialize</code> on every type parameter <code>T</code> that is part of a deserialized field.
+As with most heuristics, this is not always right and Serde provides an escape
+hatch to replace the automatically generated bound by one written by the
+programmer.</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
+<span class="hljs-meta">#![plugin(serde_macros)]</span>
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, Deserializer};
+
+<span class="hljs-keyword">use</span> std::fmt::Display;
+<span class="hljs-keyword">use</span> std::str::FromStr;
+
+<span class="hljs-meta">#[derive(Deserialize, Debug)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Outer</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, S, T: <span class="hljs-symbol">&apos;a</span> + ?<span class="hljs-built_in">Sized</span>&gt; {
+    <span class="hljs-comment">// When deriving the Deserialize impl, Serde would want to generate a bound</span>
+    <span class="hljs-comment">// `S: Deserialize` on the type of this field. But we are going to use the</span>
+    <span class="hljs-comment">// type&apos;s `FromStr` impl instead of its `Deserialize` impl by going through</span>
+    <span class="hljs-comment">// `deserialize_from_str`, so we override the automatically generated bound</span>
+    <span class="hljs-comment">// by the one required for `deserialize_from_str`.</span>
+    <span class="hljs-meta">#[serde(deserialize_with = <span class="hljs-meta-string">&quot;deserialize_from_str&quot;</span>)]</span>
+    <span class="hljs-meta">#[serde(bound(deserialize = <span class="hljs-meta-string">&quot;S: FromStr, S::Err: Display&quot;</span>))]</span>
+    s: S,
+
+    <span class="hljs-comment">// Here Serde would want to generate a bound `T: Deserialize`. That is a</span>
+    <span class="hljs-comment">// stricter condition than is necessary. In fact, the `main` function below</span>
+    <span class="hljs-comment">// uses T=str which does not implement Deserialize. We override the</span>
+    <span class="hljs-comment">// automatically generated bound by a looser one.</span>
+    <span class="hljs-meta">#[serde(bound(deserialize = <span class="hljs-meta-string">&quot;Ptr&lt;&apos;a, T&gt;: Deserialize&quot;</span>))]</span>
+    ptr: Ptr&lt;<span class="hljs-symbol">&apos;a</span>, T&gt;,
+}
+
+<span class="hljs-comment">/// Deserialize a type `S` by deserializing a string, then using the `FromStr`</span>
+<span class="hljs-comment">/// impl of `S` to create the result. The generic type `S` is not required to</span>
+<span class="hljs-comment">/// implement `Deserialize`.</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_from_str</span></span>&lt;S, D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;S, D::Error&gt;
+    <span class="hljs-keyword">where</span> S: FromStr,
+          S::<span class="hljs-literal">Err</span>: Display,
+          D: Deserializer
+{
+    <span class="hljs-keyword">let</span> s: <span class="hljs-built_in">String</span> = <span class="hljs-built_in">try!</span>(Deserialize::deserialize(deserializer));
+    S::from_str(&amp;s).map_err(|e| de::Error::custom(e.to_string()))
+}
+
+<span class="hljs-comment">/// A pointer to `T` which may or may not own the data. When deserializing we</span>
+<span class="hljs-comment">/// always want to produce owned data.</span>
+<span class="hljs-meta">#[derive(Debug)]</span>
+<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Ptr</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, T: <span class="hljs-symbol">&apos;a</span> + ?<span class="hljs-built_in">Sized</span>&gt; {
+    Ref(&amp;<span class="hljs-symbol">&apos;a</span> T),
+    Owned(<span class="hljs-built_in">Box</span>&lt;T&gt;),
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;a</span>, T: <span class="hljs-symbol">&apos;a</span> + ?<span class="hljs-built_in">Sized</span>&gt; Deserialize <span class="hljs-keyword">for</span> Ptr&lt;<span class="hljs-symbol">&apos;a</span>, T&gt;
+    <span class="hljs-keyword">where</span> <span class="hljs-built_in">Box</span>&lt;T&gt;: Deserialize
+{
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
+        <span class="hljs-keyword">where</span> D: Deserializer
+    {
+        <span class="hljs-keyword">let</span> box_t = <span class="hljs-built_in">try!</span>(Deserialize::deserialize(deserializer));
+        <span class="hljs-literal">Ok</span>(Ptr::Owned(box_t))
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> j = r#<span class="hljs-string">&quot;
+        {
+          &quot;</span>s<span class="hljs-string">&quot;: &quot;</span><span class="hljs-number">1234567890</span><span class="hljs-string">&quot;,
+          &quot;</span>pt<span class="hljs-string">r&quot;: &quot;</span>owned<span class="hljs-string">&quot;
+        }
+    &quot;</span>#;
+
+    <span class="hljs-keyword">let</span> result: Outer&lt;<span class="hljs-keyword">u64</span>, <span class="hljs-keyword">str</span>&gt; = serde_json::from_str(j).unwrap();
+
+    <span class="hljs-comment">// result = Outer { s: 1234567890, ptr: Owned(&quot;owned&quot;) }</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;result = {:?}&quot;</span>, result);
+}</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="attr-default.html" class="navigation navigation-prev " aria-label="Previous page: Default value for a field">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="deserialize-map.html" class="navigation navigation-next " aria-label="Next page: Deserialize for custom map type">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Handwritten generic type bounds","level":"1.2.2","depth":2,"next":{"title":"Deserialize for custom map type","level":"1.2.3","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"previous":{"title":"Default value for a field","level":"1.2.1","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"attr-bound.md","mtime":"2016-08-15T05:36:48.718Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-15T05:49:35.305Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
