@@ -1,4 +1,5 @@
 {
     "root": "src",
+    "title": "Serde",
     "plugins": []
 }
