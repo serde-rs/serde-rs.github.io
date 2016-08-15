@@ -9,9 +9,9 @@ extern crate serde_json;
 
 #[derive(Serialize)]
 struct Person {
-    #[serde(rename="firstName")]
+    #[serde(rename = "firstName")]
     first_name: String,
-    #[serde(rename="lastName")]
+    #[serde(rename = "lastName")]
     last_name: String,
 }
 

@@ -19,7 +19,7 @@ struct Resource {
     hash: String,
 
     // Use a method to decide whether the field should be skipped.
-    #[serde(skip_serializing_if="Map::is_empty")]
+    #[serde(skip_serializing_if = "Map::is_empty")]
     metadata: Map<String, String>,
 }
 

@@ -11,7 +11,7 @@ extern crate serde_json;
 struct Request {
     // Use the result of a function as the default if "resource" is
     // not included in the input.
-    #[serde(default="default_resource")]
+    #[serde(default = "default_resource")]
     resource: String,
 
     // Use the type's implementation of std::default::Default if
@@ -21,7 +21,7 @@ struct Request {
 
     // Use a method from the type as the default if "priority" is not
     // included in the input. This may also be a trait method.
-    #[serde(default="Priority::lowest")]
+    #[serde(default = "Priority::lowest")]
     priority: Priority,
 }
 
