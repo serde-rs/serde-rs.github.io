@@ -1,1 +1,290 @@
-<meta http-equiv=refresh content=0;url="https://github.com/serde-rs/serde">
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>Introduction · GitBook</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.0">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter active" data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Introduction</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p><span style="float:right"><a href="https://github.com/serde-rs/serde" target="_blank"><img alt="github" src="img/github.svg"></a> <a href="http://docs.serde.rs/serde/" target="_blank"><img alt="rustdoc" src="img/rustdoc.svg"></a> <a href="https://crates.io/crates/serde" target="_blank"><img alt="Latest Version" src="https://img.shields.io/crates/v/serde.svg?style=social"></a></span></p><h1 id="serde">Serde</h1><p>Serde is a framework for <strong><em>ser</em></strong>ializing and <strong><em>de</em></strong>serializing Rust data
+structures efficiently and generically.</p><p>The Serde ecosystem consists of data structures that know how to serialize and
+deserialize themselves along with data formats that know how to serialize and
+deserialize other things. Serde provides the layer by which these two groups
+interact with each other, allowing any supported data structure to be serialized
+and deserialized using any supported data format.</p><h3 id="design">Design</h3><p>Where many other languages rely on runtime reflection for serializing data,
+Serde is instead built on Rust&apos;s powerful trait system. A data structure that
+knows how to serialize and deserialize itself is one that implements Serde&apos;s
+<code>Serialize</code> and <code>Deserialize</code> traits (or uses the Serde compiler plugin to
+automatically derive implementations at compile time). This avoids any overhead
+of reflection or runtime type information. In fact, in many situations the
+interaction between data structure and data format can be completely optimized
+away by the Rust compiler, leaving Serde serialization to perform roughly the
+same speed as a handwritten serializer for the specific selection of data
+structure and data format.</p><h3 id="data-formats">Data formats</h3><p>The following is a partial list of data formats that have been implemented for
+Serde by the community.</p><ul><li><a href="https://github.com/serde-rs/json" target="_blank">JSON</a>, the ubiquitous JavaScript Object
+Notation used by many HTTP APIs.
+</li>
+<li><a href="https://github.com/TyOverby/bincode" target="_blank">Bincode</a>, a compact binary format used
+for IPC within the Servo rendering engine.
+</li>
+<li><a href="https://github.com/pyfisch/cbor" target="_blank">CBOR</a>, a Concise Binary Object
+Representation designed for small message size without the need for version
+negotiation.
+</li>
+<li><a href="https://github.com/dtolnay/serde-yaml" target="_blank">YAML</a>, a popular human-friendly
+configuration language that ain&apos;t markup language.
+</li>
+<li><a href="https://github.com/3Hren/msgpack-rust" target="_blank">MessagePack</a>, an efficient binary
+format that resembles a compact JSON.
+</li>
+<li><a href="https://github.com/birkenfeld/serde-pickle" target="_blank">Pickle</a>, a format common in the
+Python world.
+</li>
+<li><a href="https://github.com/laktak/hjson-rust" target="_blank">Hjson</a>, a variant of JSON designed to
+be readable and writable by humans.
+</li>
+<li><a href="https://github.com/serde-rs/xml" target="_blank">XML</a>, the flexible machine-friendly W3C
+standard. <em>(deserialization only)</em>
+</li>
+<li><a href="https://github.com/softprops/envy" target="_blank">Envy</a>, a way to deserialize environment
+variables into Rust structs. <em>(deserialization only)</em>
+</li></ul>
+<h3 id="data-structures">Data structures</h3><p>Out of the box, Serde is able to serialize and deserialize common Rust data
+types in any of the above formats. For example <code>String</code>, <code>&amp;str</code>, <code>usize</code>,
+<code>Vec&lt;T&gt;</code>, <code>HashMap&lt;K,V&gt;</code> are all supported. In addition, Serde provides a
+compiler plugin to <code>#[derive]</code> serialization implementations for structs in your
+own program. Using the compiler plugin goes like this:</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
+<span class="hljs-meta">#![plugin(serde_macros)]</span>
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+
+<span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
+    x: <span class="hljs-keyword">i32</span>,
+    y: <span class="hljs-keyword">i32</span>,
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> point = Point { x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span> };
+
+    <span class="hljs-comment">// Convert the Point to a JSON string.</span>
+    <span class="hljs-keyword">let</span> serialized = serde_json::to_string(&amp;point).unwrap();
+
+    <span class="hljs-comment">// Prints serialized = {&quot;x&quot;:1,&quot;y&quot;:2}</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;serialized = {}&quot;</span>, serialized);
+
+    <span class="hljs-comment">// Convert the JSON string back to a Point.</span>
+    <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
+
+    <span class="hljs-comment">// Prints deserialized = Point { x: 1, y: 2 }</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
+}</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2016-08-15T04:50:26.541Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-15T04:50:31.902Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
