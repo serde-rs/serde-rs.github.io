@@ -32,6 +32,8 @@ macro_rules! enum_number {
                     fn visit_u64<E>(&mut self, value: u64) -> Result<$name, E>
                         where E: ::serde::de::Error,
                     {
+                        // Rust does not come with a simple way of converting a
+                        // number to an enum, so use a big `match`.
                         match value {
                             $( $value => Ok($name::$variant), )*
                             _ => Err(E::invalid_value(
@@ -62,7 +64,6 @@ fn main() {
     // Prints [0,1,2,3]
     println!("{}", serde_json::to_string(&nums).unwrap());
 
-    let input = r#" 2 "#;
-    assert_eq!(Two, serde_json::from_str(input).unwrap());
+    assert_eq!(Two, serde_json::from_str("2").unwrap());
 }
 ```
