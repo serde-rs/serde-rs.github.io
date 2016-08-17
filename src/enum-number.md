@@ -1,0 +1,68 @@
+# Serialize enum as number
+
+```rust
+extern crate serde;
+extern crate serde_json;
+
+macro_rules! enum_number {
+    ($name:ident { $($variant:ident = $value:expr, )* }) => {
+        #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+        pub enum $name {
+            $($variant = $value,)*
+        }
+
+        impl ::serde::Serialize for $name {
+            fn serialize<S>(&self, serializer: &mut S) -> Result<(), S::Error>
+                where S: ::serde::Serializer,
+            {
+                // Serialize the enum as a u64.
+                serializer.serialize_u64(*self as u64)
+            }
+        }
+
+        impl ::serde::Deserialize for $name {
+            fn deserialize<D>(deserializer: &mut D) -> Result<Self, D::Error>
+                where D: ::serde::Deserializer,
+            {
+                struct Visitor;
+
+                impl ::serde::de::Visitor for Visitor {
+                    type Value = $name;
+
+                    fn visit_u64<E>(&mut self, value: u64) -> Result<$name, E>
+                        where E: ::serde::de::Error,
+                    {
+                        match value {
+                            $( $value => Ok($name::$variant), )*
+                            _ => Err(E::invalid_value(
+                                &format!("unknown {} value: {}",
+                                stringify!($name), value))),
+                        }
+                    }
+                }
+
+                // Deserialize the enum from a u64.
+                deserializer.deserialize_u64(Visitor)
+            }
+        }
+    }
+}
+
+enum_number!(SmallNumber {
+    Zero = 0,
+    One = 1,
+    Two = 2,
+    Three = 3,
+});
+
+fn main() {
+    use SmallNumber::*;
+    let nums = vec![Zero, One, Two, Three];
+
+    // Prints [0,1,2,3]
+    println!("{}", serde_json::to_string(&nums).unwrap());
+
+    let input = r#" 2 "#;
+    assert_eq!(Two, serde_json::from_str(input).unwrap());
+}
+```
