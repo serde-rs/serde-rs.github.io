@@ -30,3 +30,4 @@
   * [Serialize fields as camelCase](attr-rename.md)
   * [Skip serializing field](attr-skip-serializing.md)
   * [De/Serialize for other crate](newtype-wrapper.md)
+* [Troubleshooting](troubleshooting.md)
