@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>Default value for a field · Serde</title>
+        <title>On stable compiler · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -53,10 +53,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="attr-bound.html" />
+    <link rel="next" href="codegen-nightly.html" />
     
     
-    <link rel="prev" href="examples.md" />
+    <link rel="prev" href="codegen.html" />
     
 
     </head>
@@ -108,7 +108,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.2.1" data-path="codegen-stable.html">
+        <li class="chapter active" data-level="1.2.1" data-path="codegen-stable.html">
             
                 <a href="codegen-stable.html">
             
@@ -166,7 +166,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.3.1" data-path="attr-default.html">
+        <li class="chapter " data-level="1.3.1" data-path="attr-default.html">
             
                 <a href="attr-default.html">
             
@@ -310,7 +310,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Default value for a field</a>
+        <a href="." >On stable compiler</a>
     </h1>
 </div>
 
@@ -322,70 +322,72 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="default-value-for-a-field">Default value for a field</h1><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
-<span class="hljs-meta">#![plugin(serde_macros)]</span>
-
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+                                <h1 id="codegen-targetting-stable-compiler">Codegen targetting stable compiler</h1><p>The current stable Rust release does not support compiler plugins so Serde
+codegen needs to be done through a <a href="http://doc.crates.io/build-script.html" target="_blank">Cargo build
+script</a> along with a code generation
+framework called <a href="https://github.com/serde-rs/syntex" target="_blank">Syntex</a> to generate
+<code>Serialize</code> and <code>Deserialize</code> implementations. This relatively inconvenient
+approach will no longer be necessary as Rust&apos;s compiler plugin support matures
+in the future.</p><p><strong>Advantages of this approach</strong>: supports stable (released) Rust compiler
+versions because it does not depend on features that can only be enabled in the
+nightly compiler; also works with nightly.</p><p><strong>Disadvantages of this approach</strong>: one-time setup cost of using a build script;
+keeping all Serde types in their own <code>serde_types.rs</code> file is annoying; the
+large Syntex dependency increases compilation time; rustc will show certain
+types of compiler errors pointing into the nasty generated code rather than to
+where the error really is.</p><p>To start with, here is the <code>Cargo.toml</code> that informs Cargo about the build
+script:</p><pre><code class="lang-toml"><span class="hljs-section">[package]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;my-crate&quot;</span>
+<span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
+<span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;Me &lt;user@rust-lang.org&gt;&quot;</span>]
+<span class="hljs-attr">build</span> = <span class="hljs-string">&quot;build.rs&quot;</span>
+<span class="hljs-section">
+[build-dependencies]</span>
+<span class="hljs-attr">serde_codegen</span> = <span class="hljs-string">&quot;0.8&quot;</span>
+<span class="hljs-section">
+[dependencies]</span>
+<span class="hljs-attr">serde</span> = <span class="hljs-string">&quot;0.8&quot;</span>
+<span class="hljs-attr">serde_json</span> = <span class="hljs-string">&quot;0.8&quot;</span>  # just for the example, not required in general</code></pre>
+<p>Next create a file <code>src/serde_types.in.rs</code> to hold all the types for which we
+need code generation. No other files should contain <code>#[derive(Serialize,
+Deserialize)]</code>. Notice the &quot;.in.rs&quot; extension - this is not going to be used
+like a normal module.</p><pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
+    x: <span class="hljs-keyword">i32</span>,
+    y: <span class="hljs-keyword">i32</span>,
+}</code></pre>
+<p>Here is the main code of the program in <code>src/main.rs</code>. The only unusual line
+here is the <code>include!</code> line; everything else is just the rest of your crate as
+usual.</p><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 
-<span class="hljs-meta">#[derive(Deserialize, Debug)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Request</span></span> {
-    <span class="hljs-comment">// Use the result of a function as the default if &quot;resource&quot; is</span>
-    <span class="hljs-comment">// not included in the input.</span>
-    <span class="hljs-meta">#[serde(default = <span class="hljs-meta-string">&quot;default_resource&quot;</span>)]</span>
-    resource: <span class="hljs-built_in">String</span>,
-
-    <span class="hljs-comment">// Use the type&apos;s implementation of std::default::Default if</span>
-    <span class="hljs-comment">// &quot;timeout&quot; is not included in the input.</span>
-    <span class="hljs-meta">#[serde(default)]</span>
-    timeout: Timeout,
-
-    <span class="hljs-comment">// Use a method from the type as the default if &quot;priority&quot; is not</span>
-    <span class="hljs-comment">// included in the input. This may also be a trait method.</span>
-    <span class="hljs-meta">#[serde(default = <span class="hljs-meta-string">&quot;Priority::lowest&quot;</span>)]</span>
-    priority: Priority,
-}
-
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">default_resource</span></span>() -&gt; <span class="hljs-built_in">String</span> {
-    <span class="hljs-string">&quot;/&quot;</span>.to_string()
-}
-
-<span class="hljs-comment">/// Timeout in seconds.</span>
-<span class="hljs-meta">#[derive(Deserialize, Debug)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Timeout</span></span>(<span class="hljs-keyword">u32</span>);
-<span class="hljs-keyword">impl</span> <span class="hljs-built_in">Default</span> <span class="hljs-keyword">for</span> Timeout {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">default</span></span>() -&gt; <span class="hljs-keyword">Self</span> {
-        Timeout(<span class="hljs-number">30</span>)
-    }
-}
-
-<span class="hljs-meta">#[derive(Deserialize, Debug)]</span>
-<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Priority</span></span> { ExtraHigh, High, Normal, Low, ExtraLow }
-<span class="hljs-keyword">impl</span> Priority {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">lowest</span></span>() -&gt; <span class="hljs-keyword">Self</span> { Priority::ExtraLow }
-}
+include!(<span class="hljs-built_in">concat!</span>(<span class="hljs-built_in">env!</span>(<span class="hljs-string">&quot;OUT_DIR&quot;</span>), <span class="hljs-string">&quot;/serde_types.rs&quot;</span>));
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> json = r#<span class="hljs-string">&quot;
-        [
-          {
-            &quot;</span>resource<span class="hljs-string">&quot;: &quot;</span>/users<span class="hljs-string">&quot;
-          },
-          {
-            &quot;</span>timeout<span class="hljs-string">&quot;: 5,
-            &quot;</span>priority<span class="hljs-string">&quot;: &quot;</span>High<span class="hljs-string">&quot;
-          }
-        ]
-    &quot;</span>#;
+    <span class="hljs-keyword">let</span> point = Point { x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span> };
 
-    <span class="hljs-keyword">let</span> requests: <span class="hljs-built_in">Vec</span>&lt;Request&gt; = serde_json::from_str(json).unwrap();
+    <span class="hljs-keyword">let</span> serialized = serde_json::to_string(&amp;point).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;serialized = {}&quot;</span>, serialized);
 
-    <span class="hljs-comment">// The first request has resource=&quot;/users&quot;, timeout=30, priority=ExtraLow</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, requests[<span class="hljs-number">0</span>]);
-
-    <span class="hljs-comment">// The second request has resource=&quot;/&quot;, timeout=5, priority=High</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, requests[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
 }</code></pre>
+<p>The last step is to drive the code generation using <code>build.rs</code>. This file goes
+in the same directory as <code>Cargo.toml</code>.</p><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_codegen;
+
+<span class="hljs-keyword">use</span> std::env;
+<span class="hljs-keyword">use</span> std::path::Path;
+
+<span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> out_dir = env::var_os(<span class="hljs-string">&quot;OUT_DIR&quot;</span>).unwrap();
+
+    <span class="hljs-keyword">let</span> src = Path::new(<span class="hljs-string">&quot;src/serde_types.in.rs&quot;</span>);
+    <span class="hljs-keyword">let</span> dst = Path::new(&amp;out_dir).join(<span class="hljs-string">&quot;serde_types.rs&quot;</span>);
+
+    serde_codegen::expand(&amp;src, &amp;dst).unwrap();
+}</code></pre>
+<p>When run, the output is:</p><pre><code>$ cargo run
+serialized = {&quot;x&quot;:1,&quot;y&quot;:2}
+deserialized = Point { x: 1, y: 2 }</code></pre>
 
                                 
                                 </section>
@@ -397,12 +399,12 @@
 
             
                 
-                <a href="examples.md" class="navigation navigation-prev " aria-label="Previous page: Examples">
+                <a href="codegen.html" class="navigation navigation-prev " aria-label="Previous page: Setting up codegen">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="attr-bound.html" class="navigation navigation-next " aria-label="Next page: Handwritten generic type bounds">
+                <a href="codegen-nightly.html" class="navigation navigation-next " aria-label="Next page: On nightly compiler">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -413,7 +415,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Default value for a field","level":"1.3.1","depth":2,"next":{"title":"Handwritten generic type bounds","level":"1.3.2","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"previous":{"title":"Examples","level":"1.3","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Default value for a field","level":"1.3.1","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.3.2","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.3.3","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Serialize for custom map type","level":"1.3.4","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.3.5","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as string","level":"1.3.6","depth":2,"path":"enum-str.md","ref":"enum-str.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.3.7","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.3.8","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"De/Serialize for other crate","level":"1.3.9","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"attr-default.md","mtime":"2016-08-15T06:41:30.204Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-17T16:25:50.448Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"On stable compiler","level":"1.2.1","depth":2,"next":{"title":"On nightly compiler","level":"1.2.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},"previous":{"title":"Setting up codegen","level":"1.2","depth":1,"path":"codegen.md","ref":"codegen.md","articles":[{"title":"On stable compiler","level":"1.2.1","depth":2,"path":"codegen-stable.md","ref":"codegen-stable.md","articles":[]},{"title":"On nightly compiler","level":"1.2.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},{"title":"Supporting both","level":"1.2.3","depth":2,"path":"codegen-hybrid.md","ref":"codegen-hybrid.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"codegen-stable.md","mtime":"2016-08-17T16:18:09.618Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-17T16:25:50.448Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
