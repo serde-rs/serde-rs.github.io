@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>Array of values without buffering · Serde</title>
+        <title>Troubleshooting · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -53,10 +53,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="enum-str.html" />
     
-    
-    <link rel="prev" href="serialize-map.html" />
+    <link rel="prev" href="newtype-wrapper.html" />
     
 
     </head>
@@ -276,7 +274,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.5" data-path="stream-array.html">
+        <li class="chapter " data-level="1.4.5" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -359,7 +357,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="troubleshooting.html">
+        <li class="chapter active" data-level="1.5" data-path="troubleshooting.html">
             
                 <a href="troubleshooting.html">
             
@@ -394,7 +392,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Array of values without buffering</a>
+        <a href="." >Troubleshooting</a>
     </h1>
 </div>
 
@@ -406,100 +404,15 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="process-an-array-of-values-without-buffering-into-a-vec">Process an array of values without buffering into a Vec</h1><p>Suppose we have an array of integers and we want to figure out the maximum value
-without holding the whole array in memory all at once. This approach can be
-adapted to handle a variety of other situations in which data needs to be
-processed while being deserialized instead of after.</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(custom_derive, plugin)]</span>
-<span class="hljs-meta">#![plugin(serde_macros)]</span>
-
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
-<span class="hljs-keyword">use</span> serde::{de, Deserialize, Deserializer};
-
-<span class="hljs-keyword">use</span> std::cmp;
-<span class="hljs-keyword">use</span> std::marker::PhantomData;
-
-<span class="hljs-meta">#[derive(Deserialize)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Outer</span></span> {
-    id: <span class="hljs-built_in">String</span>,
-
-    <span class="hljs-comment">// Deserialize this field by computing the maximum value of a sequence</span>
-    <span class="hljs-comment">// (JSON array) of values.</span>
-    <span class="hljs-meta">#[serde(deserialize_with = <span class="hljs-meta-string">&quot;deserialize_max&quot;</span>)]</span>
-    <span class="hljs-comment">// Despite the struct field being named `max_value`, it is going to come</span>
-    <span class="hljs-comment">// from a JSON field called `values`.</span>
-    <span class="hljs-meta">#[serde(rename(deserialize = <span class="hljs-meta-string">&quot;values&quot;</span>))]</span>
-    max_value: <span class="hljs-keyword">u64</span>,
-}
-
-<span class="hljs-comment">/// Deserialize the maximum of a sequence of values. The entire sequence</span>
-<span class="hljs-comment">/// is not buffered into memory as it would be if we deserialize to Vec&lt;T&gt;</span>
-<span class="hljs-comment">/// and then compute the maximum later.</span>
-<span class="hljs-comment">///</span>
-<span class="hljs-comment">/// This function is generic over T which can be any type that implements</span>
-<span class="hljs-comment">/// Ord. Above, it is used with T=u64.</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_max</span></span>&lt;T, D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;T, D::Error&gt;
-    <span class="hljs-keyword">where</span> T: Deserialize + <span class="hljs-built_in">Ord</span>,
-          D: Deserializer
-{
-    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MaxVisitor</span></span>&lt;T&gt;(PhantomData&lt;T&gt;);
-
-    <span class="hljs-keyword">impl</span>&lt;T&gt; de::Visitor <span class="hljs-keyword">for</span> MaxVisitor&lt;T&gt;
-        <span class="hljs-keyword">where</span> T: Deserialize + <span class="hljs-built_in">Ord</span>
-    {
-        <span class="hljs-comment">/// Return type of this visitor. This visitor computes the max of a</span>
-        <span class="hljs-comment">/// sequence of values of type T, so the type of the maximum is T.</span>
-        <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
-
-        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;T, V::Error&gt;
-            <span class="hljs-keyword">where</span> V: de::SeqVisitor
-        {
-            <span class="hljs-comment">// Start with max equal to the first value in the seq.</span>
-            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = <span class="hljs-keyword">match</span> <span class="hljs-built_in">try!</span>(visitor.visit()) {
-                <span class="hljs-literal">Some</span>(value) =&gt; value,
-                <span class="hljs-literal">None</span> =&gt; {
-                    <span class="hljs-comment">// Cannot take the maximum of an empty seq.</span>
-                    <span class="hljs-keyword">let</span> msg = <span class="hljs-string">&quot;no values in seq when looking for maximum&quot;</span>;
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::custom(msg));
-                }
-            };
-
-            <span class="hljs-comment">// Update the max while there are additional values.</span>
-            <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(value) = <span class="hljs-built_in">try!</span>(visitor.visit()) {
-                max = cmp::max(max, value);
-            }
-
-            <span class="hljs-built_in">try!</span>(visitor.end());
-            <span class="hljs-literal">Ok</span>(max)
-        }
-    }
-
-    <span class="hljs-comment">// Create the visitor and ask the deserializer to drive it. The</span>
-    <span class="hljs-comment">// deserializer will call visitor.visit_seq if a seq is present in</span>
-    <span class="hljs-comment">// the input data.</span>
-    <span class="hljs-keyword">let</span> visitor = MaxVisitor(PhantomData);
-    deserializer.deserialize_seq(visitor)
-}
-
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> j = r#<span class="hljs-string">&quot;
-        {
-          &quot;</span>id<span class="hljs-string">&quot;: &quot;</span>demo-deserialize-max<span class="hljs-string">&quot;,
-          &quot;</span>values<span class="hljs-string">&quot;: [
-            256,
-            100,
-            384,
-            314,
-            271
-          ]
-        }
-    &quot;</span>#;
-
-    <span class="hljs-keyword">let</span> out: Outer = serde_json::from_str(j).unwrap();
-
-    <span class="hljs-comment">// Prints &quot;max value: 384&quot;</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;max value: {}&quot;</span>, out.max_value);
-}</code></pre>
+                                <h1 id="troubleshooting">Troubleshooting</h1><h3 id="stack-overflow">Stack overflow</h3><p>If you are using a <a href="codegen-stable.html">build script</a>, the
+<code>serde_codegen::expand</code> call can use a lot of stack space. You may see output
+like this when building your crate:</p><pre><code>--- stderr
+thread &apos;&lt;main&gt;&apos; has overflowed its stack
+fatal runtime error: stack overflow</code></pre>
+<p>It may help to increase the stack size available to the build script, especially
+if the failure is platform-dependent (the build works on Linux and Windows but
+not OS X). Try using a 16 MB stack by setting the following environment variable
+before invoking <code>cargo build</code>:</p><pre><code>RUST_MIN_STACK=16777216</code></pre>
 
                                 
                                 </section>
@@ -511,14 +424,10 @@ processed while being deserialized instead of after.</p><pre><code class="lang-r
 
             
                 
-                <a href="serialize-map.html" class="navigation navigation-prev " aria-label="Previous page: Serialize for custom map type">
+                <a href="newtype-wrapper.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: De/Serialize for other crate">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="enum-str.html" class="navigation navigation-next " aria-label="Next page: Serialize enum as string">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -527,7 +436,7 @@ processed while being deserialized instead of after.</p><pre><code class="lang-r
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.4.5","depth":2,"next":{"title":"Serialize enum as string","level":"1.4.6","depth":2,"path":"enum-str.md","ref":"enum-str.md","articles":[]},"previous":{"title":"Serialize for custom map type","level":"1.4.4","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2016-08-15T05:41:37.261Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-17T21:17:48.880Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Troubleshooting","level":"1.5","depth":1,"previous":{"title":"De/Serialize for other crate","level":"1.4.10","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"troubleshooting.md","mtime":"2016-08-17T21:17:10.487Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-17T21:17:48.880Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
