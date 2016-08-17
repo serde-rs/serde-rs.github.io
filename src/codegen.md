@@ -8,8 +8,8 @@ Codegen is based on Rust's `#[derive]` mechanism, just like what you would use
 to automatically derive implementations of the built-in `Clone`, `Copy`, or
 `Debug` traits. It is able to generate implementations for most structs
 including ones with elaborate generic types or trait bounds. On rare occasions,
-for an especially convoluted type you may need to implement Deserialize
-manually.
+for an especially convoluted type you may need to [implement the traits
+manually](custom-serialization.md).
 
 There are two different ways of setting up the plugin depending on whether your
 crate will be used with stable released versions of Rust or with unstable
