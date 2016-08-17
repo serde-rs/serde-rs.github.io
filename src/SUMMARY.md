@@ -1,7 +1,22 @@
 # Summary
 
 * [Overview](README.md)
-* Examples
+* [Setting up codegen](codegen.md)
+  * [On stable compiler](codegen-stable.md)
+  * [On nightly compiler](codegen-nightly.md)
+  * [Supporting both](codegen-hybrid.md)
+[//]: # * [Attributes](attributes.md)
+[//]: # * [Custom serialization](custom-serialization.md)
+  [//]: # * [Implementing Serialize](impl-serialize.md)
+  [//]: # * [Implementing Deserialize](impl-deserialize.md)
+    [//]: # * [for a primitive type](deserialize-primitive.md)
+    [//]: # * [for a sequence](deserialize-seq.md)
+    [//]: # * [for a map](deserialize-map.md)
+    [//]: # * [for a struct](deserialize-struct.md)
+[//]: # * [Writing a data format](data-format.md)
+  [//]: # * [Implementing Serializer](impl-serializer.md)
+  [//]: # * [Implementing Deserializer](impl-deserializer.md)
+* [Examples](examples.md)
   * [Default value for a field](attr-default.md)
   * [Handwritten generic type bounds](attr-bound.md)
   * [Deserialize for custom map type](deserialize-map.md)
