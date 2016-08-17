@@ -5,7 +5,7 @@
   * [On stable compiler](codegen-stable.md)
   * [On nightly compiler](codegen-nightly.md)
   * [Supporting both](codegen-hybrid.md)
-[//]: # * [Attributes](attributes.md)
+* [Attributes](attributes.md)
 [//]: # * [Custom serialization](custom-serialization.md)
   [//]: # * [Implementing Serialize](impl-serialize.md)
   [//]: # * [Implementing Deserialize](impl-deserialize.md)
