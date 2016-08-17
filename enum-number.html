@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>Skip serializing field · Serde</title>
+        <title>Serialize enum as number · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -53,10 +53,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="newtype-wrapper.html" />
+    <link rel="next" href="attr-rename.html" />
     
     
-    <link rel="prev" href="attr-rename.html" />
+    <link rel="prev" href="enum-str.html" />
     
 
     </head>
@@ -257,7 +257,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.7" data-path="enum-number.html">
+        <li class="chapter active" data-level="1.4.7" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -283,7 +283,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.9" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.4.9" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -336,7 +336,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Skip serializing field</a>
+        <a href="." >Serialize enum as number</a>
     </h1>
 </div>
 
@@ -348,63 +348,69 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="skip-serializing-field">Skip serializing field</h1><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
-<span class="hljs-meta">#![plugin(serde_macros)]</span>
-
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+                                <h1 id="serialize-enum-as-number">Serialize enum as number</h1><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 
-<span class="hljs-keyword">use</span> std::collections::BTreeMap <span class="hljs-keyword">as</span> Map;
+<span class="hljs-built_in">macro_rules!</span> enum_number {
+    ($name:ident { $($variant:ident = $value:expr, )* }) =&gt; {
+        <span class="hljs-meta">#[derive(Clone, Copy, Debug, Eq, PartialEq)]</span>
+        <span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> $<span class="hljs-title">name</span></span> {
+            $($variant = $value,)*
+        }
 
-<span class="hljs-meta">#[derive(Serialize)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Resource</span></span> {
-    <span class="hljs-comment">// Always serialized.</span>
-    name: <span class="hljs-built_in">String</span>,
+        <span class="hljs-keyword">impl</span> ::serde::Serialize <span class="hljs-keyword">for</span> $name {
+            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: &amp;<span class="hljs-keyword">mut</span> S) -&gt; <span class="hljs-built_in">Result</span>&lt;(), S::Error&gt;
+                <span class="hljs-keyword">where</span> S: ::serde::Serializer,
+            {
+                <span class="hljs-comment">// Serialize the enum as a u64.</span>
+                serializer.serialize_u64(*<span class="hljs-keyword">self</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">u64</span>)
+            }
+        }
 
-    <span class="hljs-comment">// Never serialized.</span>
-    <span class="hljs-meta">#[serde(skip_serializing)]</span>
-    hash: <span class="hljs-built_in">String</span>,
+        <span class="hljs-keyword">impl</span> ::serde::Deserialize <span class="hljs-keyword">for</span> $name {
+            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
+                <span class="hljs-keyword">where</span> D: ::serde::Deserializer,
+            {
+                <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Visitor</span></span>;
 
-    <span class="hljs-comment">// Use a method to decide whether the field should be skipped.</span>
-    <span class="hljs-meta">#[serde(skip_serializing_if = <span class="hljs-meta-string">&quot;Map::is_empty&quot;</span>)]</span>
-    metadata: Map&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">String</span>&gt;,
+                <span class="hljs-keyword">impl</span> ::serde::de::Visitor <span class="hljs-keyword">for</span> Visitor {
+                    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = $name;
+
+                    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_u64</span></span>&lt;E&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">u64</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;$name, E&gt;
+                        <span class="hljs-keyword">where</span> E: ::serde::de::Error,
+                    {
+                        <span class="hljs-keyword">match</span> value {
+                            $( $value =&gt; <span class="hljs-literal">Ok</span>($name::$variant), )*
+                            _ =&gt; <span class="hljs-literal">Err</span>(E::invalid_value(
+                                &amp;<span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;unknown {} value: {}&quot;</span>,
+                                <span class="hljs-built_in">stringify!</span>($name), value))),
+                        }
+                    }
+                }
+
+                <span class="hljs-comment">// Deserialize the enum from a u64.</span>
+                deserializer.deserialize_u64(Visitor)
+            }
+        }
+    }
 }
 
+enum_number!(SmallNumber {
+    Zero = <span class="hljs-number">0</span>,
+    One = <span class="hljs-number">1</span>,
+    Two = <span class="hljs-number">2</span>,
+    Three = <span class="hljs-number">3</span>,
+});
+
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> resources = <span class="hljs-built_in">vec!</span>[
-        Resource {
-            name: <span class="hljs-string">&quot;Stack Overflow&quot;</span>.to_string(),
-            hash: <span class="hljs-string">&quot;b6469c3f31653d281bbbfa6f94d60fea130abe38&quot;</span>.to_string(),
-            metadata: Map::new(),
-        },
-        Resource {
-            name: <span class="hljs-string">&quot;GitHub&quot;</span>.to_string(),
-            hash: <span class="hljs-string">&quot;5cb7a0c47e53854cd00e1a968de5abce1c124601&quot;</span>.to_string(),
-            metadata: {
-                <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> metadata = Map::new();
-                metadata.insert(<span class="hljs-string">&quot;headquarters&quot;</span>.to_string(),
-                                <span class="hljs-string">&quot;San Francisco&quot;</span>.to_string());
-                metadata
-            },
-        },
-    ];
+    <span class="hljs-keyword">use</span> SmallNumber::*;
+    <span class="hljs-keyword">let</span> nums = <span class="hljs-built_in">vec!</span>[Zero, One, Two, Three];
 
-    <span class="hljs-keyword">let</span> json = serde_json::to_string_pretty(&amp;resources).unwrap();
+    <span class="hljs-comment">// Prints [0,1,2,3]</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, serde_json::to_string(&amp;nums).unwrap());
 
-    <span class="hljs-comment">// Prints:</span>
-    <span class="hljs-comment">//</span>
-    <span class="hljs-comment">//    [</span>
-    <span class="hljs-comment">//      {</span>
-    <span class="hljs-comment">//        &quot;name&quot;: &quot;Stack Overflow&quot;</span>
-    <span class="hljs-comment">//      },</span>
-    <span class="hljs-comment">//      {</span>
-    <span class="hljs-comment">//        &quot;name&quot;: &quot;GitHub&quot;,</span>
-    <span class="hljs-comment">//        &quot;metadata&quot;: {</span>
-    <span class="hljs-comment">//          &quot;headquarters&quot;: &quot;San Francisco&quot;</span>
-    <span class="hljs-comment">//        }</span>
-    <span class="hljs-comment">//      }</span>
-    <span class="hljs-comment">//    ]</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, json);
+    <span class="hljs-keyword">let</span> input = <span class="hljs-string">r#&quot; 2 &quot;#</span>;
+    <span class="hljs-built_in">assert_eq!</span>(Two, serde_json::from_str(input).unwrap());
 }</code></pre>
 
                                 
@@ -417,12 +423,12 @@
 
             
                 
-                <a href="attr-rename.html" class="navigation navigation-prev " aria-label="Previous page: Serialize fields as camelCase">
+                <a href="enum-str.html" class="navigation navigation-prev " aria-label="Previous page: Serialize enum as string">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="newtype-wrapper.html" class="navigation navigation-next " aria-label="Next page: De/Serialize for other crate">
+                <a href="attr-rename.html" class="navigation navigation-next " aria-label="Next page: Serialize fields as camelCase">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -433,7 +439,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Skip serializing field","level":"1.4.9","depth":2,"next":{"title":"De/Serialize for other crate","level":"1.4.10","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},"previous":{"title":"Serialize fields as camelCase","level":"1.4.8","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"attr-skip-serializing.md","mtime":"2016-08-15T06:41:08.972Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-17T17:57:13.662Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Serialize enum as number","level":"1.4.7","depth":2,"next":{"title":"Serialize fields as camelCase","level":"1.4.8","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},"previous":{"title":"Serialize enum as string","level":"1.4.6","depth":2,"path":"enum-str.md","ref":"enum-str.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"enum-number.md","mtime":"2016-08-17T17:56:21.200Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-17T17:57:13.662Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
