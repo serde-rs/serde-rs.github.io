@@ -48,6 +48,9 @@ Serde by the community.
   standard. *(deserialization only)*
 - [Envy](https://github.com/softprops/envy), a way to deserialize environment
   variables into Rust structs. *(deserialization only)*
+- [Redis](https://github.com/OneSignal/serde-redis), Deserialize values from
+  Redis when using [redis-rs](https://crates.io/crates/redis).
+  *(deserialization only)*
 
 ### Data structures
 
