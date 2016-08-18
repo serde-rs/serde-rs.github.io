@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>Serialize fields as camelCase · Serde</title>
+        <title>Examples · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -53,10 +53,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="attr-skip-serializing.html" />
+    <link rel="next" href="attr-default.html" />
     
     
-    <link rel="prev" href="enum-number.html" />
+    <link rel="prev" href="impl-deserialize.html" />
     
 
     </head>
@@ -255,7 +255,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="examples.html">
+        <li class="chapter active" data-level="1.5" data-path="examples.html">
             
                 <a href="examples.html">
             
@@ -360,7 +360,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.8" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.5.8" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -452,7 +452,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Serialize fields as camelCase</a>
+        <a href="." >Examples</a>
     </h1>
 </div>
 
@@ -464,37 +464,24 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="serialize-fields-as-camelcase">Serialize fields as camelCase</h1><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
-<span class="hljs-meta">#![plugin(serde_macros)]</span>
-
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
-
-<span class="hljs-meta">#[derive(Serialize)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span></span> {
-    <span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;firstName&quot;</span>)]</span>
-    first_name: <span class="hljs-built_in">String</span>,
-    <span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;lastName&quot;</span>)]</span>
-    last_name: <span class="hljs-built_in">String</span>,
-}
-
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> person = Person {
-        first_name: <span class="hljs-string">&quot;Joel&quot;</span>.to_string(),
-        last_name: <span class="hljs-string">&quot;Spolsky&quot;</span>.to_string(),
-    };
-
-    <span class="hljs-keyword">let</span> json = serde_json::to_string_pretty(&amp;person).unwrap();
-
-    <span class="hljs-comment">// Prints:</span>
-    <span class="hljs-comment">//</span>
-    <span class="hljs-comment">//    {</span>
-    <span class="hljs-comment">//      &quot;firstName&quot;: &quot;Joel&quot;,</span>
-    <span class="hljs-comment">//      &quot;lastName&quot;: &quot;Spolsky&quot;</span>
-    <span class="hljs-comment">//    }</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, json);
-}</code></pre>
-
+                                <h1 id="examples">Examples</h1><p><strong><a href="attr-default.html">Default value for a field</a></strong>: Some examples of the
+<code>#[serde(default)]</code> attribute.</p><p><strong><a href="attr-bound.html">Handwritten generic type bounds</a></strong>: Some unusual scenarios in
+which Serde codegen infers the wrong generic type bounds. The impl bounds can be
+replaced with handwritten ones using the <code>#[serde(bound)]</code> attribute.</p><p><strong><a href="deserialize-map.html">Deserialize for custom map type</a></strong>: Detailed explanation
+of each step involved in deserializing a map.</p><p><strong><a href="serialize-map.html">Serialize for custom map type</a></strong>: Other complex types
+(sequences, structs, tuple structs) are very similar to this as well.</p><p><strong><a href="stream-array.html">Array of values without buffering</a></strong>: Deserialize the
+maximum value of an array of integers without holding the whole array in memory
+at once. This approach can be adapted to handle a variety of other situations in
+which data needs to be processed while being deserialized instead of after.</p><p><strong><a href="enum-str.html">Serialize enum as string</a></strong>: A macro to impl <code>Serialize</code> and
+<code>Deserialize</code> for a C-like enum in a way that represents it as a string across
+all data formats.</p><p><strong><a href="enum-number.html">Serialize enum as number</a></strong>: A macro to impl <code>Serialize</code> and
+<code>Deserialize</code> for a C-like enum in a way that represents it as a <code>u64</code> across
+all data formats.</p><p><strong><a href="attr-rename.html">Serialize fields as camelCase</a></strong>: One common application of
+the <code>#[serde(rename)]</code> attribute.</p><p><strong><a href="attr-skip-serializing.html">Skip serializing field</a></strong>: Some examples of the
+<code>#[serde(skip_serializing)]</code> and <code>#[serde(skip_serializing_if)]</code> attributes.</p><p><strong><a href="newtype-wrapper.html">De/Serialize for other crate</a></strong>: Implementing <code>Serialize</code>
+and <code>Deserialize</code> for a type in a different crate by wrapping it in a newtype
+wrapper.</p><p><strong><a href="deserialize-struct.html">Manually deserialize struct</a></strong>: The long form of the
+<code>Deserialize</code> impl generated by codegen for a simple struct.</p>
                                 
                                 </section>
                             
@@ -505,12 +492,12 @@
 
             
                 
-                <a href="enum-number.html" class="navigation navigation-prev " aria-label="Previous page: Serialize enum as number">
+                <a href="impl-deserialize.html" class="navigation navigation-prev " aria-label="Previous page: Implementing Deserialize">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="attr-skip-serializing.html" class="navigation navigation-next " aria-label="Next page: Skip serializing field">
+                <a href="attr-default.html" class="navigation navigation-next " aria-label="Next page: Default value for a field">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -521,7 +508,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Serialize fields as camelCase","level":"1.5.8","depth":2,"next":{"title":"Skip serializing field","level":"1.5.9","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"previous":{"title":"Serialize enum as number","level":"1.5.7","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"attr-rename.md","mtime":"2016-08-15T06:41:17.080Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-18T04:08:36.292Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.5","depth":1,"next":{"title":"Default value for a field","level":"1.5.1","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"previous":{"title":"Implementing Deserialize","level":"1.4.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"examples.md","mtime":"2016-08-18T04:07:53.600Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-18T04:08:36.292Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
