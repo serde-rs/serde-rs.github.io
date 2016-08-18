@@ -481,9 +481,9 @@
 provides reasonable default serialization behavior for structs and enums and it
 can be customized to some extent using <a href="attributes.html">attributes</a>. For unusual
 needs, Serde allows full customization of the serialization behavior by manually
-implementing <a href="http://docs.serde.rs/serde/ser/trait.Serialize.html" target="_blank"><code>Serialize</code></a>
-and <a href="http://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> traits
-for your type.</p><p>The traits each have a single method:</p><pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Serialize</span></span> {
+implementing <a href="https://docs.serde.rs/serde/ser/trait.Serialize.html" target="_blank"><code>Serialize</code></a>
+and <a href="https://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a>
+traits for your type.</p><p>The traits each have a single method:</p><pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Serialize</span></span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: &amp;<span class="hljs-keyword">mut</span> S) -&gt; <span class="hljs-built_in">Result</span>&lt;(), S::Error&gt;
         <span class="hljs-keyword">where</span> S: Serializer;
 }
@@ -493,8 +493,8 @@ for your type.</p><p>The traits each have a single method:</p><pre><code class="
         <span class="hljs-keyword">where</span> D: Deserializer;
 }</code></pre>
 <p>These methods are generic over the serialization format, represented by the
-<a href="http://docs.serde.rs/serde/ser/trait.Serializer.html" target="_blank"><code>Serializer</code></a> and
-<a href="http://docs.serde.rs/serde/de/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> traits.
+<a href="https://docs.serde.rs/serde/ser/trait.Serializer.html" target="_blank"><code>Serializer</code></a> and
+<a href="https://docs.serde.rs/serde/de/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> traits.
 For example there is one Serializer type for JSON and a different one for
 Bincode.</p><ul><li><a href="impl-serialize.html">Implementing <code>Serialize</code></a>
 </li>
@@ -527,7 +527,7 @@ Bincode.</p><ul><li><a href="impl-serialize.html">Implementing <code>Serialize</
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Custom serialization","level":"1.4","depth":1,"next":{"title":"Implementing Serialize","level":"1.4.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"previous":{"title":"Field attributes","level":"1.3.3","depth":2,"anchor":"#field-attributes","path":"attributes.md","ref":"attributes.md#field-attributes","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"custom-serialization.md","mtime":"2016-08-17T21:38:09.126Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-18T19:51:50.043Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Custom serialization","level":"1.4","depth":1,"next":{"title":"Implementing Serialize","level":"1.4.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"previous":{"title":"Field attributes","level":"1.3.3","depth":2,"anchor":"#field-attributes","path":"attributes.md","ref":"attributes.md#field-attributes","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"custom-serialization.md","mtime":"2016-08-18T21:12:54.917Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-18T21:13:59.549Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
