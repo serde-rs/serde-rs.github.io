@@ -1,6 +1,6 @@
 # Implementing Deserialize
 
-The [`Deserialize`](http://docs.serde.rs/serde/de/trait.Deserialize.html) trait
+The [`Deserialize`](https://docs.serde.rs/serde/de/trait.Deserialize.html) trait
 looks like this:
 
 ```rust
@@ -11,9 +11,9 @@ pub trait Deserialize: Sized {
 ```
 
 This method's job is to provide the
-[`Deserializer`](http://docs.serde.rs/serde/de/trait.Deserializer.html) with a
-[`Visitor`](http://docs.serde.rs/serde/de/trait.Visitor.html) that can be driven
-by the Deserializer to construct an instance of your type.
+[`Deserializer`](https://docs.serde.rs/serde/de/trait.Deserializer.html) with a
+[`Visitor`](https://docs.serde.rs/serde/de/trait.Visitor.html) that can be
+driven by the Deserializer to construct an instance of your type.
 
 In most cases Serde's [codegen](codegen.md) is able to generate an appropriate
 implementation of `Deserialize` for structs and enums defined in your crate.
@@ -50,7 +50,7 @@ ruling out Bincode and many others.
 
 ## The Visitor trait
 
-A [`Visitor`](http://docs.serde.rs/serde/de/trait.Visitor.html) is instantiated
+A [`Visitor`](https://docs.serde.rs/serde/de/trait.Visitor.html) is instantiated
 by a `Deserialize` impl and passed to a `Deserializer`. The `Deserializer` then
 calls a method on the `Visitor` in order to construct the desired type.
 
@@ -99,7 +99,7 @@ impl de::Visitor for I32Visitor {
 
 The `Visitor` trait has lots more methods that are not implemented for
 `I32Visitor`. Leaving them unimplemented means a [type
-error](http://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type) is
+error](https://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type) is
 returned if they get called. For example `I32Visitor` does not implement
 `Visitor::visit_map`, so trying to deserialize an i32 when the input contains a
 map is a type error.

@@ -1,6 +1,6 @@
 # Implementing Serialize
 
-The [`Serialize`](http://docs.serde.rs/serde/ser/trait.Serialize.html) trait
+The [`Serialize`](https://docs.serde.rs/serde/ser/trait.Serialize.html) trait
 looks like this:
 
 ```rust
@@ -12,7 +12,7 @@ pub trait Serialize {
 
 This method's job is to take your type (`&self`) and turn it into a series of
 method calls on the given
-[`Serializer`](http://docs.serde.rs/serde/ser/trait.Serializer.html).
+[`Serializer`](https://docs.serde.rs/serde/ser/trait.Serializer.html).
 
 In most cases Serde's [codegen](codegen.md) is able to generate an appropriate
 implementation of `Serialize` for structs and enums defined in your crate.
@@ -138,9 +138,9 @@ more compactly. Currently Serde does not use `serialize_bytes` in the
 `Serialize` impl for `&[u8]` or `Vec<u8>` but once
 [specialization](https://github.com/rust-lang/rust/issues/31844) lands in stable
 Rust we will begin using it. For now the
-[`Bytes`](http://docs.serde.rs/serde/bytes/struct.Bytes.html) and
-[`ByteBuf`](docs.serde.rs/serde/bytes/struct.ByteBuf.html) wrappers can be used
-to wrap `&[u8]` and `Vec<u8>` respectively to call `serialize_bytes`.
+[`Bytes`](https://docs.serde.rs/serde/bytes/struct.Bytes.html) and
+[`ByteBuf`](https://docs.serde.rs/serde/bytes/struct.ByteBuf.html) wrappers can
+be used to wrap `&[u8]` and `Vec<u8>` respectively to call `serialize_bytes`.
 
 Finally, `serialize_some` and `serialize_none` correspond to `Option::Some` and
 `Option::None`. Users tend to have different expectations around the `Option`
