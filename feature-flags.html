@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>Deserialize for custom map type · Serde</title>
+        <title>Feature flags · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -53,10 +53,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="serialize-map.html" />
+    <link rel="next" href="troubleshooting.html" />
     
     
-    <link rel="prev" href="attr-bound.html" />
+    <link rel="prev" href="deserialize-struct.html" />
     
 
     </head>
@@ -295,7 +295,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.3" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.5.3" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -417,7 +417,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="feature-flags.html">
+        <li class="chapter active" data-level="1.6" data-path="feature-flags.html">
             
                 <a href="feature-flags.html">
             
@@ -465,7 +465,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Deserialize for custom map type</a>
+        <a href="." >Feature flags</a>
     </h1>
 </div>
 
@@ -477,82 +477,17 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="implement-deserialize-for-a-custom-map-type">Implement Deserialize for a custom map type</h1><pre><code class="lang-rust"><span class="hljs-comment">// A Visitor is a type that holds methods that a Deserializer can drive</span>
-<span class="hljs-comment">// depending on what is contained in the input data.</span>
-<span class="hljs-comment">//</span>
-<span class="hljs-comment">// In the case of a map we need generic type parameters K and V to be</span>
-<span class="hljs-comment">// able to set the output type correctly, but don&apos;t require any state.</span>
-<span class="hljs-comment">// This is an example of a &quot;zero sized type&quot; in Rust. The PhantomData</span>
-<span class="hljs-comment">// keeps the compiler from complaining about unused generic type</span>
-<span class="hljs-comment">// parameters.</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MyMapVisitor</span></span>&lt;K, V&gt; {
-    marker: PhantomData&lt;MyMap&lt;K, V&gt;&gt;
-}
-
-<span class="hljs-keyword">impl</span>&lt;K, V&gt; MyMapVisitor&lt;K, V&gt; {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new</span></span>() -&gt; <span class="hljs-keyword">Self</span> {
-        MyMapVisitor {
-            marker: PhantomData
-        }
-    }
-}
-
-<span class="hljs-comment">// This is the trait that Deserializers are going to be driving. There</span>
-<span class="hljs-comment">// is one method for each type of data that our type knows how to</span>
-<span class="hljs-comment">// deserialize from. There are many other methods that are not</span>
-<span class="hljs-comment">// implemented here, for example deserializing from integers or strings.</span>
-<span class="hljs-comment">// By default those methods will return an error, which makes sense</span>
-<span class="hljs-comment">// because we cannot deserialize a MyMap from an integer or string.</span>
-<span class="hljs-keyword">impl</span>&lt;K, V&gt; de::Visitor <span class="hljs-keyword">for</span> MyMapVisitor&lt;K, V&gt;
-    <span class="hljs-keyword">where</span> K: Deserialize,
-          V: Deserialize
-{
-    <span class="hljs-comment">// The type that our Visitor is going to produce.</span>
-    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = MyMap&lt;K, V&gt;;
-
-    <span class="hljs-comment">// Deserialize MyMap from an abstract &quot;map&quot; provided by the</span>
-    <span class="hljs-comment">// Deserializer. The MapVisitor input is a callback provided by</span>
-    <span class="hljs-comment">// the Deserializer to let us see each entry in the map.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;M&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: M) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, M::Error&gt;
-        <span class="hljs-keyword">where</span> M: de::MapVisitor
-    {
-        <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> values = MyMap::with_capacity(visitor.size_hint().<span class="hljs-number">0</span>);
-
-        <span class="hljs-comment">// While there are entries remaining in the input, add them</span>
-        <span class="hljs-comment">// into our map.</span>
-        <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>((key, value)) = <span class="hljs-built_in">try!</span>(visitor.visit()) {
-            values.insert(key, value);
-        }
-
-        <span class="hljs-built_in">try!</span>(visitor.end());
-        <span class="hljs-literal">Ok</span>(values)
-    }
-
-    <span class="hljs-comment">// As a convenience, provide a way to deserialize MyMap from</span>
-    <span class="hljs-comment">// the abstract &quot;unit&quot; type. This corresponds to `null` in JSON.</span>
-    <span class="hljs-comment">// If your JSON contains `null` for a field that is supposed to</span>
-    <span class="hljs-comment">// be a MyMap, we interpret that as an empty map.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_unit</span></span>&lt;E&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, E&gt;
-        <span class="hljs-keyword">where</span> E: de::Error
-    {
-        <span class="hljs-literal">Ok</span>(MyMap::new())
-    }
-}
-
-<span class="hljs-comment">// This is the trait that informs Serde how to deserialize MyMap.</span>
-<span class="hljs-keyword">impl</span>&lt;K, V&gt; Deserialize <span class="hljs-keyword">for</span> MyMap&lt;K, V&gt;
-    <span class="hljs-keyword">where</span> K: Deserialize,
-          V: Deserialize
-{
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer
-    {
-        <span class="hljs-comment">// Instantiate our Visitor and ask the Deserializer to drive</span>
-        <span class="hljs-comment">// it over the input data, resulting in an instance of MyMap.</span>
-        deserializer.deserialize_map(MyMapVisitor::new())
-    }
-}</code></pre>
-
+                                <h1 id="feature-flags">Feature flags</h1><h3 id="using-in-nostd-crates">Using in <code>no_std</code> crates</h3><p>The core <code>serde</code> package defines a number of <a href="http://doc.crates.io/manifest.html#the-features-section" target="_blank">Cargo
+features</a> to enable
+usage in a variety of freestanding environments. Enable any or none of the
+following features, and use <code>default-features = false</code> in your <code>Cargo.toml</code>:</p><ul><li><code>alloc</code> (implies <code>nightly</code>)
+</li>
+<li><code>collections</code> (implies <code>alloc</code> and <code>nightly</code>)
+</li>
+<li><code>std</code> (default)
+</li></ul>
+<p>If you only use <code>default-features = false</code>, you will receive a stock <code>no_std</code>
+Serde with no support for any of the collection types.</p>
                                 
                                 </section>
                             
@@ -563,12 +498,12 @@
 
             
                 
-                <a href="attr-bound.html" class="navigation navigation-prev " aria-label="Previous page: Handwritten generic type bounds">
+                <a href="deserialize-struct.html" class="navigation navigation-prev " aria-label="Previous page: Manually deserialize struct">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="serialize-map.html" class="navigation navigation-next " aria-label="Next page: Serialize for custom map type">
+                <a href="troubleshooting.html" class="navigation navigation-next " aria-label="Next page: Troubleshooting">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -579,7 +514,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.5.3","depth":2,"next":{"title":"Serialize for custom map type","level":"1.5.4","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.5.2","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2016-08-15T05:39:59.076Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-18T05:01:02.525Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Feature flags","level":"1.6","depth":1,"next":{"title":"Troubleshooting","level":"1.7","depth":1,"path":"troubleshooting.md","ref":"troubleshooting.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.5.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"feature-flags.md","mtime":"2016-08-18T05:00:14.235Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-18T05:01:02.525Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
