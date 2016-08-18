@@ -40,6 +40,8 @@ Serde by the community.
   configuration language that ain't markup language.
 - [MessagePack](https://github.com/3Hren/msgpack-rust), an efficient binary
   format that resembles a compact JSON.
+- [TOML](https://github.com/alexcrichton/toml-rs), a minimal configuration
+  format used by [Cargo](http://doc.crates.io/manifest.html).
 - [Pickle](https://github.com/birkenfeld/serde-pickle), a format common in the
   Python world.
 - [Hjson](https://github.com/laktak/hjson-rust), a variant of JSON designed to
@@ -48,7 +50,7 @@ Serde by the community.
   standard. *(deserialization only)*
 - [Envy](https://github.com/softprops/envy), a way to deserialize environment
   variables into Rust structs. *(deserialization only)*
-- [Redis](https://github.com/OneSignal/serde-redis), Deserialize values from
+- [Redis](https://github.com/OneSignal/serde-redis), deserialize values from
   Redis when using [redis-rs](https://crates.io/crates/redis).
   *(deserialization only)*
 
