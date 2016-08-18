@@ -18,7 +18,7 @@ Serde is instead built on Rust's powerful trait system. A data structure that
 knows how to serialize and deserialize itself is one that implements Serde's
 `Serialize` and `Deserialize` traits (or uses the Serde compiler plugin to
 automatically derive implementations at compile time). This avoids any overhead
-of reflection or runtime type information. In fact, in many situations the
+of reflection or runtime type information. In fact in many situations the
 interaction between data structure and data format can be completely optimized
 away by the Rust compiler, leaving Serde serialization to perform roughly the
 same speed as a handwritten serializer for the specific selection of data
