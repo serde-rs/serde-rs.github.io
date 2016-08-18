@@ -78,18 +78,13 @@ fn main() {
 
     use std::env;
     use std::path::Path;
-    use std::thread;
 
-    fn expand() {
-        let out_dir = env::var_os("OUT_DIR").unwrap();
+    let out_dir = env::var_os("OUT_DIR").unwrap();
 
-        let src = Path::new("src/serde_types.in.rs");
-        let dst = Path::new(&out_dir).join("serde_types.rs");
+    let src = Path::new("src/serde_types.in.rs");
+    let dst = Path::new(&out_dir).join("serde_types.rs");
 
-        serde_codegen::expand(&src, &dst).unwrap();
-    }
-
-    thread::spawn(expand).join().unwrap();
+    serde_codegen::expand(&src, &dst).unwrap();
 }
 
 #[cfg(not(feature = "serde_codegen"))]

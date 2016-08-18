@@ -78,13 +78,8 @@ extern crate serde_codegen;
 
 use std::env;
 use std::path::Path;
-use std::thread;
 
 fn main() {
-    thread::spawn(expand).join().unwrap();
-}
-
-fn expand() {
     let out_dir = env::var_os("OUT_DIR").unwrap();
 
     let src = Path::new("src/serde_types.in.rs");
