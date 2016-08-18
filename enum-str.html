@@ -210,7 +210,52 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="examples.md">
+        <li class="chapter " data-level="1.4" data-path="custom-serialization.html">
+            
+                <a href="custom-serialization.html">
+            
+                    
+                    Custom serialization
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="impl-serialize.html">
+            
+                <a href="impl-serialize.html">
+            
+                    
+                    Implementing Serialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="impl-deserialize.html">
+            
+                <a href="impl-deserialize.html">
+            
+                    
+                    Implementing Deserialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="examples.md">
             
                 <span>
             
@@ -224,7 +269,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="attr-default.html">
+        <li class="chapter " data-level="1.5.1" data-path="attr-default.html">
             
                 <a href="attr-default.html">
             
@@ -237,7 +282,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="attr-bound.html">
+        <li class="chapter " data-level="1.5.2" data-path="attr-bound.html">
             
                 <a href="attr-bound.html">
             
@@ -250,7 +295,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.5.3" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -263,7 +308,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.4" data-path="serialize-map.html">
+        <li class="chapter " data-level="1.5.4" data-path="serialize-map.html">
             
                 <a href="serialize-map.html">
             
@@ -276,7 +321,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.5" data-path="stream-array.html">
+        <li class="chapter " data-level="1.5.5" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -289,7 +334,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.6" data-path="enum-str.html">
+        <li class="chapter active" data-level="1.5.6" data-path="enum-str.html">
             
                 <a href="enum-str.html">
             
@@ -302,7 +347,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.7" data-path="enum-number.html">
+        <li class="chapter " data-level="1.5.7" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -315,7 +360,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.8" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.5.8" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -328,7 +373,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.9" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.5.9" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -341,7 +386,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.10" data-path="newtype-wrapper.html">
+        <li class="chapter " data-level="1.5.10" data-path="newtype-wrapper.html">
             
                 <a href="newtype-wrapper.html">
             
@@ -354,12 +399,25 @@
             
         </li>
     
+        <li class="chapter " data-level="1.5.11" data-path="deserialize-struct.html">
+            
+                <a href="deserialize-struct.html">
+            
+                    
+                    Manually deserialize struct
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="troubleshooting.html">
+        <li class="chapter " data-level="1.6" data-path="troubleshooting.html">
             
                 <a href="troubleshooting.html">
             
@@ -500,7 +558,7 @@ enum_str!(LanguageCode {
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Serialize enum as string","level":"1.4.6","depth":2,"next":{"title":"Serialize enum as number","level":"1.4.7","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"previous":{"title":"Array of values without buffering","level":"1.4.5","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"enum-str.md","mtime":"2016-08-15T05:42:25.761Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-17T21:17:48.880Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Serialize enum as string","level":"1.5.6","depth":2,"next":{"title":"Serialize enum as number","level":"1.5.7","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"previous":{"title":"Array of values without buffering","level":"1.5.5","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"enum-str.md","mtime":"2016-08-15T05:42:25.761Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-18T03:46:07.585Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
