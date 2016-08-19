@@ -14,9 +14,9 @@ fatal runtime error: stack overflow
 
 It may help to increase the stack size available to the build script, especially
 if the failure is platform-dependent (the build works on Linux and Windows but
-not OS X). Try using a 16 MB stack by setting the following environment variable
-before invoking `cargo build`:
+not macOS). Serde codegen uses a 16 MB stack by default but it is configurable
+by the `RUST_MIN_STACK` environment variable. A larger value may be necessary.
 
 ```
-RUST_MIN_STACK=16777216
+RUST_MIN_STACK=33554432
 ```
