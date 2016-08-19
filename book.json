@@ -1,5 +1,10 @@
 {
     "root": "src",
     "title": "Serde",
-    "plugins": []
+    "plugins": ["ga"],
+    "pluginsConfig": {
+        "ga": {
+            "token": "UA-82804814-1"
+        }
+    }
 }
