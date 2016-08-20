@@ -17,6 +17,10 @@
     
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-codeblock-filename/block.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -29,6 +33,8 @@
     
 
     
+        
+        <link rel="stylesheet" href="styles/website.css">
         
     
         
@@ -482,7 +488,7 @@ approach</a> both come with significant downsides. This hybrid
 approach is similar to the stable approach but enables active development to
 happen on nightly in order to receive more useful error messages.</p><p>Here is the <code>Cargo.toml</code> that depends on <code>serde_codegen</code> by default but exposes
 a <a href="http://doc.crates.io/manifest.html#the-features-section" target="_blank">feature</a> to depend
-on <code>serde_macros</code> instead.</p><pre><code class="lang-toml"><span class="hljs-section">[package]</span>
+on <code>serde_macros</code> instead.</p><div><p class="code-filename">Cargo.toml</p></div><pre><code class="lang-toml"><span class="hljs-section">[package]</span>
 <span class="hljs-attr">name</span> = <span class="hljs-string">&quot;testing&quot;</span>
 <span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
 <span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;David Tolnay &lt;dtolnay@gmail.com&gt;&quot;</span>]
@@ -501,12 +507,12 @@ on <code>serde_macros</code> instead.</p><pre><code class="lang-toml"><span clas
 <span class="hljs-attr">serde_macros</span> = { version = <span class="hljs-string">&quot;0.8&quot;</span>, optional = <span class="hljs-literal">true</span> }</code></pre>
 <p>The <code>src/serde_types.in.rs</code> is the same as in the <a href="codegen-stable.html">stable
 approach</a>. This file is the input to the build script and no
-other files should contain <code>#[derive(Serialize, Deserialize)]</code>.</p><pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
+other files should contain <code>#[derive(Serialize, Deserialize)]</code>.</p><div><p class="code-filename">src/serde_types.in.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
     x: <span class="hljs-keyword">i32</span>,
     y: <span class="hljs-keyword">i32</span>,
 }</code></pre>
-<p>Here is the main code of the program in <code>src/main.rs</code>.</p><pre><code class="lang-rust"><span class="hljs-meta">#![cfg_attr(feature = <span class="hljs-meta-string">&quot;serde_macros&quot;</span>, feature(plugin, custom_derive))]</span>
+<p>Here is the main code of the program in <code>src/main.rs</code>.</p><div><p class="code-filename">src/main.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#![cfg_attr(feature = <span class="hljs-meta-string">&quot;serde_macros&quot;</span>, feature(plugin, custom_derive))]</span>
 <span class="hljs-meta">#![cfg_attr(feature = <span class="hljs-meta-string">&quot;serde_macros&quot;</span>, plugin(serde_macros))]</span>
 
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
@@ -529,7 +535,7 @@ include!(<span class="hljs-built_in">concat!</span>(<span class="hljs-built_in">
 }</code></pre>
 <p>And here is <code>build.rs</code> which drives the code generation if necessary and
 otherwise does nothing, falling back to nightly&apos;s support for compiler plugins.
-This file goes in the same directory as <code>Cargo.toml</code>.</p><pre><code class="lang-rust"><span class="hljs-meta">#[cfg(feature = <span class="hljs-meta-string">&quot;serde_codegen&quot;</span>)]</span>
+This file goes in the same directory as <code>Cargo.toml</code>.</p><div><p class="code-filename">build.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#[cfg(feature = <span class="hljs-meta-string">&quot;serde_codegen&quot;</span>)]</span>
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
     <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_codegen;
 
@@ -578,7 +584,7 @@ recommend doing most of your development that way.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Supporting both","level":"1.2.3","depth":2,"next":{"title":"Attributes","level":"1.3","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.3.1","depth":2,"anchor":"#container-attributes","path":"attributes.md","ref":"attributes.md#container-attributes","articles":[]},{"title":"Variant attributes","level":"1.3.2","depth":2,"anchor":"#variant-attributes","path":"attributes.md","ref":"attributes.md#variant-attributes","articles":[]},{"title":"Field attributes","level":"1.3.3","depth":2,"anchor":"#field-attributes","path":"attributes.md","ref":"attributes.md#field-attributes","articles":[]}]},"previous":{"title":"On nightly compiler","level":"1.2.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"codegen-hybrid.md","mtime":"2016-08-18T19:50:59.634Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-20T18:02:31.968Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Supporting both","level":"1.2.3","depth":2,"next":{"title":"Attributes","level":"1.3","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.3.1","depth":2,"anchor":"#container-attributes","path":"attributes.md","ref":"attributes.md#container-attributes","articles":[]},{"title":"Variant attributes","level":"1.3.2","depth":2,"anchor":"#variant-attributes","path":"attributes.md","ref":"attributes.md#variant-attributes","articles":[]},{"title":"Field attributes","level":"1.3.3","depth":2,"anchor":"#field-attributes","path":"attributes.md","ref":"attributes.md#field-attributes","articles":[]}]},"previous":{"title":"On nightly compiler","level":"1.2.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"codegen-hybrid.md","mtime":"2016-08-20T19:21:30.603Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-20T19:28:14.437Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

@@ -17,6 +17,10 @@
     
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-codeblock-filename/block.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -29,6 +33,8 @@
     
 
     
+        
+        <link rel="stylesheet" href="styles/website.css">
         
     
         
@@ -484,7 +490,7 @@ use <code>serde_macros</code> which has a much simpler interface. This is a prev
 the future will look like once compiler plugins are stabilized.</p><p><strong>Advantages of this approach</strong>: trivial to set up - basically just two
 <code>#![...]</code> lines; none of the disadvantages of the <a href="codegen-stable.html">stable
 approach</a>.</p><p><strong>Disadvantages of this approach</strong>: depends on unstable Rust features so it only
-works if you are building with a nightly compiler.</p><p>Here is the <code>Cargo.toml</code>:</p><pre><code class="lang-toml"><span class="hljs-section">[package]</span>
+works if you are building with a nightly compiler.</p><p>Here is the <code>Cargo.toml</code>:</p><div><p class="code-filename">Cargo.toml</p></div><pre><code class="lang-toml"><span class="hljs-section">[package]</span>
 <span class="hljs-attr">name</span> = <span class="hljs-string">&quot;my_crate&quot;</span>
 <span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
 <span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;Me &lt;user@rust-lang.org&gt;&quot;</span>]
@@ -494,7 +500,7 @@ works if you are building with a nightly compiler.</p><p>Here is the <code>Cargo
 <span class="hljs-attr">serde_json</span> = <span class="hljs-string">&quot;0.8&quot;</span>  # just for the example, not required in general
 <span class="hljs-attr">serde_macros</span> = <span class="hljs-string">&quot;0.8&quot;</span></code></pre>
 <p>Note that it does not need a build script. Now the <code>src/main.rs</code> which enables
-the plugin feature and registers the <code>serde_macros</code> plugin:</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
+the plugin feature and registers the <code>serde_macros</code> plugin:</p><div><p class="code-filename">src/main.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
 <span class="hljs-meta">#![plugin(serde_macros)]</span>
 
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
@@ -544,7 +550,7 @@ deserialized = Point { x: 1, y: 2 }</code></pre>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"On nightly compiler","level":"1.2.2","depth":2,"next":{"title":"Supporting both","level":"1.2.3","depth":2,"path":"codegen-hybrid.md","ref":"codegen-hybrid.md","articles":[]},"previous":{"title":"On stable compiler","level":"1.2.1","depth":2,"path":"codegen-stable.md","ref":"codegen-stable.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"codegen-nightly.md","mtime":"2016-08-17T16:18:28.243Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-20T18:02:31.968Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"On nightly compiler","level":"1.2.2","depth":2,"next":{"title":"Supporting both","level":"1.2.3","depth":2,"path":"codegen-hybrid.md","ref":"codegen-hybrid.md","articles":[]},"previous":{"title":"On stable compiler","level":"1.2.1","depth":2,"path":"codegen-stable.md","ref":"codegen-stable.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","gitbook":"*"},"file":{"path":"codegen-nightly.md","mtime":"2016-08-20T19:22:10.491Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-20T19:28:14.437Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
