@@ -26,10 +26,10 @@ Cargo [feature](http://doc.crates.io/manifest.html#the-features-section) to
 switch to the real plugin when running with nightly.
 
 One downside of the Syntex (stable) approach is that errors and warnings emitted
-by `rustc` will point into the nasty generated code and they can be difficult to
-trace back to the true source of the problem. We recommend setting up the hybrid
-approach but doing your primary development and debugging using a nightly
-compiler.
+by `rustc` can sometimes point into the nasty generated code and those can be
+difficult to trace back to the true source of the problem. We recommend setting
+up the hybrid approach but doing your primary development and debugging using a
+nightly compiler.
 
 * [Codegen targetting stable compiler](codegen-stable.md)
 * [Codegen targetting nightly compiler](codegen-nightly.md)
