@@ -547,7 +547,7 @@ like primitives.</p><pre><code class="lang-rust"><span class="hljs-comment">// A
 <span class="hljs-comment">// A newtype struct. Use serialize_newtype_struct.</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Inches</span></span>(<span class="hljs-keyword">u64</span>);
 
-<span class="hljs-comment">// A unit struct. Use serialize_unit.</span>
+<span class="hljs-comment">// A unit struct. Use serialize_unit_struct.</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Instance</span></span>;</code></pre>
 <h2 id="serializing-an-enum">Serializing an enum</h2><p>Serializing enum variants is very similar to serializing structs.</p><pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
     <span class="hljs-comment">// Use three-step process:</span>
@@ -568,7 +568,7 @@ like primitives.</p><pre><code class="lang-rust"><span class="hljs-comment">// A
     <span class="hljs-comment">// Use serialize_unit_variant.</span>
     Instance,
 }</code></pre>
-<h2 id="other-special-cases">Other special cases</h2><p>There are two more special cases that are part of the Serializer trait.</p><p>There is a method <code>serialize_bytes</code> which serializes a <code>&amp;[u8]</code>. Some formats
+<h2 id="other-special-cases">Other special cases</h2><p>There are three more special cases that are part of the Serializer trait.</p><p>There is a method <code>serialize_bytes</code> which serializes a <code>&amp;[u8]</code>. Some formats
 treat bytes like any other seq, but some formats are able to serialize bytes
 more compactly. Currently Serde does not use <code>serialize_bytes</code> in the
 <code>Serialize</code> impl for <code>&amp;[u8]</code> or <code>Vec&lt;u8&gt;</code> but once
@@ -576,7 +576,14 @@ more compactly. Currently Serde does not use <code>serialize_bytes</code> in the
 Rust we will begin using it. For now the
 <a href="https://docs.serde.rs/serde/bytes/struct.Bytes.html" target="_blank"><code>Bytes</code></a> and
 <a href="https://docs.serde.rs/serde/bytes/struct.ByteBuf.html" target="_blank"><code>ByteBuf</code></a> wrappers can
-be used to wrap <code>&amp;[u8]</code> and <code>Vec&lt;u8&gt;</code> respectively to call <code>serialize_bytes</code>.</p><p>Finally, <code>serialize_some</code> and <code>serialize_none</code> correspond to <code>Option::Some</code> and
+be used to wrap <code>&amp;[u8]</code> and <code>Vec&lt;u8&gt;</code> respectively to call <code>serialize_bytes</code>.</p><p>There is <code>serialize_seq_fixed_size</code> which is like <code>serialize_seq</code> but for
+sequences where the length does not need to be serialized because it will be
+known at deserialization time. The usual example is
+<a href="https://doc.rust-lang.org/book/primitive-types.html#arrays" target="_blank">arrays</a>. In
+non-self-describing formats a <code>Vec&lt;T&gt;</code> needs to be serialized with its length in
+order to be able to deserialize a <code>Vec&lt;T&gt;</code> back out. But a <code>[T; 16]</code> can be
+serialized using <code>serialize_seq_fixed_size</code> because the length will be known at
+deserialization time without looking at the serialized bytes.</p><p>Finally, <code>serialize_some</code> and <code>serialize_none</code> correspond to <code>Option::Some</code> and
 <code>Option::None</code>. Users tend to have different expectations around the <code>Option</code>
 enum compared to other enums. Serde JSON will serialize <code>Option::None</code> as <code>null</code>
 and <code>Option::Some</code> as just the contained value.</p>
@@ -606,7 +613,7 @@ and <code>Option::Some</code> as just the contained value.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing Serialize","level":"1.4.1","depth":2,"next":{"title":"Implementing Deserialize","level":"1.4.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"previous":{"title":"Custom serialization","level":"1.4","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.4.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.4.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serialize.md","mtime":"2016-08-20T17:46:01.411Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-20T20:06:52.341Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing Serialize","level":"1.4.1","depth":2,"next":{"title":"Implementing Deserialize","level":"1.4.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"previous":{"title":"Custom serialization","level":"1.4","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.4.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.4.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serialize.md","mtime":"2016-08-20T20:31:45.174Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-20T20:33:25.727Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
