@@ -1,7 +1,7 @@
 {
     "root": "src",
     "title": "Serde",
-    "plugins": ["ga"],
+    "plugins": ["-search", "-sharing", "ga"],
     "pluginsConfig": {
         "ga": {
             "token": "UA-82804814-1"
