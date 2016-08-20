@@ -21,7 +21,7 @@ where the error really is.
 To start with, here is the `Cargo.toml` that informs Cargo about the build
 script:
 
-```toml
+```toml:Cargo.toml
 [package]
 name = "my-crate"
 version = "0.1.0"
@@ -41,7 +41,7 @@ need code generation. No other files should contain `#[derive(Serialize,
 Deserialize)]`. Notice the ".in.rs" extension - this is not going to be used
 like a normal module.
 
-```rust
+```rust:src/serde_types.in.rs
 #[derive(Serialize, Deserialize, Debug)]
 struct Point {
     x: i32,
@@ -53,7 +53,7 @@ Here is the main code of the program in `src/main.rs`. The only unusual line
 here is the `include!` line; everything else is just the rest of your crate as
 usual.
 
-```rust
+```rust:src/main.rs
 extern crate serde;
 extern crate serde_json;
 
@@ -73,7 +73,7 @@ fn main() {
 The last step is to drive the code generation using `build.rs`. This file goes
 in the same directory as `Cargo.toml`.
 
-```rust
+```rust:build.rs
 extern crate serde_codegen;
 
 use std::env;

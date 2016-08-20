@@ -9,7 +9,7 @@ Here is the `Cargo.toml` that depends on `serde_codegen` by default but exposes
 a [feature](http://doc.crates.io/manifest.html#the-features-section) to depend
 on `serde_macros` instead.
 
-```toml
+```toml:Cargo.toml
 [package]
 name = "testing"
 version = "0.1.0"
@@ -33,7 +33,7 @@ The `src/serde_types.in.rs` is the same as in the [stable
 approach](codegen-stable.md). This file is the input to the build script and no
 other files should contain `#[derive(Serialize, Deserialize)]`.
 
-```rust
+```rust:src/serde_types.in.rs
 #[derive(Serialize, Deserialize, Debug)]
 struct Point {
     x: i32,
@@ -43,7 +43,7 @@ struct Point {
 
 Here is the main code of the program in `src/main.rs`.
 
-```rust
+```rust:src/main.rs
 #![cfg_attr(feature = "serde_macros", feature(plugin, custom_derive))]
 #![cfg_attr(feature = "serde_macros", plugin(serde_macros))]
 
@@ -71,7 +71,7 @@ And here is `build.rs` which drives the code generation if necessary and
 otherwise does nothing, falling back to nightly's support for compiler plugins.
 This file goes in the same directory as `Cargo.toml`.
 
-```rust
+```rust:build.rs
 #[cfg(feature = "serde_codegen")]
 fn main() {
     extern crate serde_codegen;

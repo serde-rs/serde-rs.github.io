@@ -1,7 +1,7 @@
 {
     "root": "src",
     "title": "Serde",
-    "plugins": ["-search", "-sharing", "ga"],
+    "plugins": ["-search", "-sharing", "codeblock-filename", "ga"],
     "pluginsConfig": {
         "ga": {
             "token": "UA-82804814-1"

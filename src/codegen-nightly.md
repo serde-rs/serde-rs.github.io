@@ -15,7 +15,7 @@ works if you are building with a nightly compiler.
 
 Here is the `Cargo.toml`:
 
-```toml
+```toml:Cargo.toml
 [package]
 name = "my_crate"
 version = "0.1.0"
@@ -30,7 +30,7 @@ serde_macros = "0.8"
 Note that it does not need a build script. Now the `src/main.rs` which enables
 the plugin feature and registers the `serde_macros` plugin:
 
-```rust
+```rust:src/main.rs
 #![feature(plugin, custom_derive)]
 #![plugin(serde_macros)]
 
