@@ -46,6 +46,8 @@ Serde by the community.
   Python world.
 - [Hjson](https://github.com/laktak/hjson-rust), a variant of JSON designed to
   be readable and writable by humans.
+- [BSON](https://github.com/zonyitoo/bson-rs), the data storage and network
+  transfer format used by MongoDB.
 - [XML](https://github.com/serde-rs/xml), the flexible machine-friendly W3C
   standard. *(deserialization only)*
 - [Envy](https://github.com/softprops/envy), a way to deserialize environment
