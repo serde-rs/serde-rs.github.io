@@ -130,7 +130,7 @@ enum E {
 
 ## Other special cases
 
-There are two more special cases that are part of the Serializer trait.
+There are three more special cases that are part of the Serializer trait.
 
 There is a method `serialize_bytes` which serializes a `&[u8]`. Some formats
 treat bytes like any other seq, but some formats are able to serialize bytes
@@ -141,6 +141,15 @@ Rust we will begin using it. For now the
 [`Bytes`](https://docs.serde.rs/serde/bytes/struct.Bytes.html) and
 [`ByteBuf`](https://docs.serde.rs/serde/bytes/struct.ByteBuf.html) wrappers can
 be used to wrap `&[u8]` and `Vec<u8>` respectively to call `serialize_bytes`.
+
+There is `serialize_seq_fixed_size` which is like `serialize_seq` but for
+sequences where the length does not need to be serialized because it will be
+known at deserialization time. The usual example is
+[arrays](https://doc.rust-lang.org/book/primitive-types.html#arrays). In
+non-self-describing formats a `Vec<T>` needs to be serialized with its length in
+order to be able to deserialize a `Vec<T>` back out. But a `[T; 16]` can be
+serialized using `serialize_seq_fixed_size` because the length will be known at
+deserialization time without looking at the serialized bytes.
 
 Finally, `serialize_some` and `serialize_none` correspond to `Option::Some` and
 `Option::None`. Users tend to have different expectations around the `Option`
