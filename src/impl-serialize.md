@@ -96,7 +96,7 @@ struct Point2D(f64, f64);
 // A newtype struct. Use serialize_newtype_struct.
 struct Inches(u64);
 
-// A unit struct. Use serialize_unit.
+// A unit struct. Use serialize_unit_struct.
 struct Instance;
 ```
 
