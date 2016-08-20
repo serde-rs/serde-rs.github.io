@@ -39,7 +39,7 @@ types](https://doc.rust-lang.org/book/primitive-types.html) so you are not
 responsible for implementing them yourself, but `serialize_i32` and similar
 methods may be useful if you have a type that needs to be represented as a
 primitive in its serialized form. For example you could [serialize a C-like enum
-as a primitive number](http://localhost:4000/enum-number.html).
+as a primitive number](https://serde.rs/enum-number.html).
 
 ## Serializing a sequence or map
 
