@@ -112,7 +112,7 @@ on it.
 
 - ##### `#[serde(skip_deserializing)]`
 
-  Always use `Default::default()` or the function given by `path = "..."`
+  Always use `Default::default()` or the function given by `default = "..."`
   instead of ever deserializing this value.
 
 - ##### `#[serde(skip_serializing_if = "path")]`
