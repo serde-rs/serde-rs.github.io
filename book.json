@@ -1,6 +1,7 @@
 {
     "root": "src",
     "title": "Serde",
+    "language": "en",
     "plugins": ["-search", "-sharing", "codeblock-filename", "ga"],
     "pluginsConfig": {
         "ga": {
