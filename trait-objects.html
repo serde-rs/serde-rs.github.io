@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Custom serialization · Serde</title>
+        <title>Trait objects · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="impl-serialize.html" />
+    <link rel="next" href="transcode.html" />
     
     
-    <link rel="prev" href="attributes.html" />
+    <link rel="prev" href="deserialize-struct.html" />
     
 
     </head>
@@ -216,7 +216,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4" data-path="custom-serialization.html">
+        <li class="chapter " data-level="1.4" data-path="custom-serialization.html">
             
                 <a href="custom-serialization.html">
             
@@ -418,7 +418,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.12" data-path="trait-objects.html">
+        <li class="chapter active" data-level="1.5.12" data-path="trait-objects.html">
             
                 <a href="trait-objects.html">
             
@@ -497,7 +497,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Custom serialization</a>
+        <a href="." >Trait objects</a>
     </h1>
 </div>
 
@@ -509,29 +509,44 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="custom-serialization">Custom serialization</h1><p>Serde <a href="codegen.html">code generation</a> through <code>#[derive(Serialize, Deserialize)]</code>
-provides reasonable default serialization behavior for structs and enums and it
-can be customized to some extent using <a href="attributes.html">attributes</a>. For unusual
-needs, Serde allows full customization of the serialization behavior by manually
-implementing <a href="https://docs.serde.rs/serde/ser/trait.Serialize.html" target="_blank"><code>Serialize</code></a>
-and <a href="https://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a>
-traits for your type.</p><p>The traits each have a single method:</p><pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Serialize</span></span> {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: &amp;<span class="hljs-keyword">mut</span> S) -&gt; <span class="hljs-built_in">Result</span>&lt;(), S::Error&gt;
-        <span class="hljs-keyword">where</span> S: Serializer;
-}
+                                <h1 id="using-serde-trait-objects">Using Serde trait objects</h1><p>The usual Serde <code>Serialize</code> and <code>Serializer</code> traits cannot be used as <a href="https://doc.rust-lang.org/book/trait-objects.html" target="_blank">trait
+objects</a> like <code>&amp;Serialize</code> or
+boxed trait objects like <code>Box&lt;Serialize&gt;</code> because of Rust&apos;s <a href="http://huonw.github.io/blog/2015/01/object-safety/" target="_blank">&quot;object safety&quot;
+rules</a>. In particular, both
+traits contain generic methods which cannot be made into a trait object.</p><p>The <a href="https://github.com/dtolnay/erased-serde" target="_blank"><code>erased-serde</code></a> crate provides
+versions of the <code>Serialize</code> and <code>Serializer</code> traits that are object-safe and can
+be used as <code>&amp;Serialize</code>/<code>&amp;Serializer</code> and <code>Box&lt;Serialize&gt;</code>/<code>Box&lt;Serializer&gt;</code>.</p><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> erased_serde;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_cbor;
 
-<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Deserialize</span></span>: <span class="hljs-built_in">Sized</span> {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer;
+<span class="hljs-keyword">use</span> std::collections::BTreeMap <span class="hljs-keyword">as</span> Map;
+<span class="hljs-keyword">use</span> std::io::stdout;
+
+<span class="hljs-keyword">use</span> erased_serde::{Serialize, Serializer};
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-comment">// The values in this map are boxed trait objects. Ordinarily this would not</span>
+    <span class="hljs-comment">// be possible with serde::Serializer because of object safety, but type</span>
+    <span class="hljs-comment">// erasure makes it possible with erased_serde::Serializer.</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> formats: Map&lt;&amp;<span class="hljs-keyword">str</span>, <span class="hljs-built_in">Box</span>&lt;Serializer&gt;&gt; = Map::new();
+    formats.insert(<span class="hljs-string">&quot;json&quot;</span>, <span class="hljs-built_in">Box</span>::new(serde_json::ser::Serializer::new(stdout())));
+    formats.insert(<span class="hljs-string">&quot;yaml&quot;</span>, <span class="hljs-built_in">Box</span>::new(serde_cbor::ser::Serializer::new(stdout())));
+
+    <span class="hljs-comment">// These are boxed trait objects as well. Same thing here - type erasure</span>
+    <span class="hljs-comment">// makes this possible.</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> values: Map&lt;&amp;<span class="hljs-keyword">str</span>, <span class="hljs-built_in">Box</span>&lt;Serialize&gt;&gt; = Map::new();
+    values.insert(<span class="hljs-string">&quot;vec&quot;</span>, <span class="hljs-built_in">Box</span>::new(<span class="hljs-built_in">vec!</span>[<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>]));
+    values.insert(<span class="hljs-string">&quot;int&quot;</span>, <span class="hljs-built_in">Box</span>::new(<span class="hljs-number">65536</span>));
+
+    <span class="hljs-comment">// Pick a Serializer out of the formats map, making sure it is mutable.</span>
+    <span class="hljs-keyword">let</span> format = &amp;<span class="hljs-keyword">mut</span> **formats.get_mut(<span class="hljs-string">&quot;json&quot;</span>).unwrap();
+
+    <span class="hljs-comment">// Pick a Serialize out of the values map.</span>
+    <span class="hljs-keyword">let</span> value = values.get(<span class="hljs-string">&quot;vec&quot;</span>).unwrap();
+
+    <span class="hljs-comment">// This line prints `[&quot;a&quot;,&quot;b&quot;]` to stdout.</span>
+    value.erased_serialize(format).unwrap();
 }</code></pre>
-<p>These methods are generic over the serialization format, represented by the
-<a href="https://docs.serde.rs/serde/ser/trait.Serializer.html" target="_blank"><code>Serializer</code></a> and
-<a href="https://docs.serde.rs/serde/de/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> traits.
-For example there is one Serializer type for JSON and a different one for
-Bincode.</p><ul><li><a href="impl-serialize.html">Implementing <code>Serialize</code></a>
-</li>
-<li><a href="impl-deserialize.html">Implementing <code>Deserialize</code></a>
-</li></ul>
 
                                 
                                 </section>
@@ -543,12 +558,12 @@ Bincode.</p><ul><li><a href="impl-serialize.html">Implementing <code>Serialize</
 
             
                 
-                <a href="attributes.html#field-attributes" class="navigation navigation-prev " aria-label="Previous page: Field attributes">
+                <a href="deserialize-struct.html" class="navigation navigation-prev " aria-label="Previous page: Manually deserialize struct">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="impl-serialize.html" class="navigation navigation-next " aria-label="Next page: Implementing Serialize">
+                <a href="transcode.html" class="navigation navigation-next " aria-label="Next page: Transcode into another format">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -559,7 +574,7 @@ Bincode.</p><ul><li><a href="impl-serialize.html">Implementing <code>Serialize</
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Custom serialization","level":"1.4","depth":1,"next":{"title":"Implementing Serialize","level":"1.4.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"previous":{"title":"Field attributes","level":"1.3.3","depth":2,"anchor":"#field-attributes","path":"attributes.md","ref":"attributes.md#field-attributes","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"custom-serialization.md","mtime":"2016-08-18T21:12:54.917Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T02:48:27.303Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Trait objects","level":"1.5.12","depth":2,"next":{"title":"Transcode into another format","level":"1.5.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.5.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"trait-objects.md","mtime":"2016-08-22T02:44:43.552Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T02:48:27.303Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
