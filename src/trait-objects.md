@@ -26,7 +26,7 @@ fn main() {
     // erasure makes it possible with erased_serde::Serializer.
     let mut formats: Map<&str, Box<Serializer>> = Map::new();
     formats.insert("json", Box::new(serde_json::ser::Serializer::new(stdout())));
-    formats.insert("yaml", Box::new(serde_cbor::ser::Serializer::new(stdout())));
+    formats.insert("cbor", Box::new(serde_cbor::ser::Serializer::new(stdout())));
 
     // These are boxed trait objects as well. Same thing here - type erasure
     // makes this possible.
