@@ -76,6 +76,10 @@ structs](https://doc.rust-lang.org/book/structs.html#tuple-structs) and [unit
 structs](https://doc.rust-lang.org/book/structs.html#unit-like-structs) are more
 like primitives.
 
+Data formats are encouraged to treat newtype structs as insignificant wrappers
+around the inner value, serializing just the inner value. See for example
+[JSON's treatment of newtype structs](json.md).
+
 ```rust
 // An ordinary struct. Use three-step process:
 //   1. serialize_struct

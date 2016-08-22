@@ -17,6 +17,7 @@
   [//]: # * [Implementing Serializer](impl-serializer.md)
   [//]: # * [Implementing Deserializer](impl-deserializer.md)
 * [Examples](examples.md)
+  * [Structs and enums in JSON](json.md)
   * [Default value for a field](attr-default.md)
   * [Handwritten generic type bounds](attr-bound.md)
   * [Deserialize for custom map type](deserialize-map.md)
