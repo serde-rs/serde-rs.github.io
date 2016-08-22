@@ -12,6 +12,7 @@
 * [Custom serialization](custom-serialization.md)
   * [Implementing Serialize](impl-serialize.md)
   * [Implementing Deserialize](impl-deserialize.md)
+  * [Unit testing](unit-testing.md)
 [//]: # * [Writing a data format](data-format.md)
   [//]: # * [Implementing Serializer](impl-serializer.md)
   [//]: # * [Implementing Deserializer](impl-deserializer.md)
