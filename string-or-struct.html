@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Supporting both · Serde</title>
+        <title>Either string or struct · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="attributes.html" />
+    <link rel="next" href="feature-flags.html" />
     
     
-    <link rel="prev" href="codegen-nightly.html" />
+    <link rel="prev" href="transcode.html" />
     
 
     </head>
@@ -140,7 +140,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2.3" data-path="codegen-hybrid.html">
+        <li class="chapter " data-level="1.2.3" data-path="codegen-hybrid.html">
             
                 <a href="codegen-hybrid.html">
             
@@ -470,7 +470,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.15" data-path="string-or-struct.html">
+        <li class="chapter active" data-level="1.5.15" data-path="string-or-struct.html">
             
                 <a href="string-or-struct.html">
             
@@ -549,7 +549,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Supporting both</a>
+        <a href="." >Either string or struct</a>
     </h1>
 </div>
 
@@ -561,81 +561,117 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="hybrid-codegen-approach">Hybrid codegen approach</h1><p>The <a href="codegen-stable.html">stable approach</a> and the <a href="codegen-nightly.html">nightly
-approach</a> both come with significant downsides. This hybrid
-approach is similar to the stable approach but enables active development to
-happen on nightly in order to receive more useful error messages.</p><p>Here is the <code>Cargo.toml</code> that depends on <code>serde_codegen</code> by default but exposes
-a <a href="http://doc.crates.io/manifest.html#the-features-section" target="_blank">feature</a> to depend
-on <code>serde_macros</code> instead.</p><div><p class="code-filename">Cargo.toml</p></div><pre><code class="lang-toml"><span class="hljs-section">[package]</span>
-<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;testing&quot;</span>
-<span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
-<span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;David Tolnay &lt;dtolnay@gmail.com&gt;&quot;</span>]
-<span class="hljs-attr">build</span> = <span class="hljs-string">&quot;build.rs&quot;</span>
-<span class="hljs-section">
-[features]</span>
-<span class="hljs-attr">default</span> = [<span class="hljs-string">&quot;serde_codegen&quot;</span>]
-<span class="hljs-attr">unstable</span> = [<span class="hljs-string">&quot;serde_macros&quot;</span>]
-<span class="hljs-section">
-[build-dependencies]</span>
-<span class="hljs-attr">serde_codegen</span> = { version = <span class="hljs-string">&quot;0.8&quot;</span>, optional = <span class="hljs-literal">true</span> }
-<span class="hljs-section">
-[dependencies]</span>
-<span class="hljs-attr">serde</span> = <span class="hljs-string">&quot;0.8&quot;</span>
-<span class="hljs-attr">serde_json</span> = <span class="hljs-string">&quot;0.8&quot;</span>  # just for the example, not required in general
-<span class="hljs-attr">serde_macros</span> = { version = <span class="hljs-string">&quot;0.8&quot;</span>, optional = <span class="hljs-literal">true</span> }</code></pre>
-<p>The <code>src/serde_types.in.rs</code> is the same as in the <a href="codegen-stable.html">stable
-approach</a>. This file is the input to the build script and no
-other files should contain <code>#[derive(Serialize, Deserialize)]</code>.</p><div><p class="code-filename">src/serde_types.in.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
-    x: <span class="hljs-keyword">i32</span>,
-    y: <span class="hljs-keyword">i32</span>,
-}</code></pre>
-<p>Here is the main code of the program in <code>src/main.rs</code>.</p><div><p class="code-filename">src/main.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#![cfg_attr(feature = <span class="hljs-meta-string">&quot;serde_macros&quot;</span>, feature(plugin, custom_derive))]</span>
-<span class="hljs-meta">#![cfg_attr(feature = <span class="hljs-meta-string">&quot;serde_macros&quot;</span>, plugin(serde_macros))]</span>
+                                <h1 id="deserialize-either-a-string-or-a-struct">Deserialize either a string or a struct</h1><p>The <a href="https://docs.docker.com/compose/compose-file/#/build" target="_blank"><code>docker-compose.yml</code></a>
+configuration file has a &quot;build&quot; key which can be either a string or a struct.</p><pre><code class="lang-yaml"><span class="hljs-attr">build:</span> ./dir
+
+<span class="hljs-comment"># --- or ---</span>
+
+<span class="hljs-attr">build:</span>
+<span class="hljs-attr">  context:</span> ./dir
+<span class="hljs-attr">  dockerfile:</span> Dockerfile-alternate
+<span class="hljs-attr">  args:</span>
+<span class="hljs-attr">    buildno:</span> <span class="hljs-number">1</span></code></pre>
+<p>The configuration file uses the same pattern in other places as well, typically
+where a previously existing string field has been expanded to handle more
+complex data.</p><p>We can use Rust&apos;s
+<a href="https://doc.rust-lang.org/std/str/trait.FromStr.html" target="_blank"><code>FromStr</code></a> trait and
+Serde&apos;s <code>deserialize_with</code> attribute to handle this pattern in a general way.</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
+<span class="hljs-meta">#![plugin(serde_macros)]</span>
 
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_yaml;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> void;
 
-<span class="hljs-meta">#[cfg(feature = <span class="hljs-meta-string">&quot;serde_macros&quot;</span>)]</span>
-include!(<span class="hljs-string">&quot;serde_types.in.rs&quot;</span>);
+<span class="hljs-keyword">use</span> std::collections::BTreeMap <span class="hljs-keyword">as</span> Map;
+<span class="hljs-keyword">use</span> std::marker::PhantomData;
+<span class="hljs-keyword">use</span> std::str::FromStr;
 
-<span class="hljs-meta">#[cfg(feature = <span class="hljs-meta-string">&quot;serde_codegen&quot;</span>)]</span>
-include!(<span class="hljs-built_in">concat!</span>(<span class="hljs-built_in">env!</span>(<span class="hljs-string">&quot;OUT_DIR&quot;</span>), <span class="hljs-string">&quot;/serde_types.rs&quot;</span>));
+<span class="hljs-keyword">use</span> serde::{de, Deserialize, Deserializer};
+<span class="hljs-keyword">use</span> void::Void;
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> point = Point { x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span> };
+    <span class="hljs-keyword">let</span> build_string = <span class="hljs-string">&quot;
+        build: ./dir
+    &quot;</span>;
+    <span class="hljs-keyword">let</span> service: Service = serde_yaml::from_str(build_string).unwrap();
 
-    <span class="hljs-keyword">let</span> serialized = serde_json::to_string(&amp;point).unwrap();
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;serialized = {}&quot;</span>, serialized);
+    <span class="hljs-comment">// context=&quot;./dir&quot;</span>
+    <span class="hljs-comment">// dockerfile=None</span>
+    <span class="hljs-comment">// args={}</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, service);
 
-    <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
-}</code></pre>
-<p>And here is <code>build.rs</code> which drives the code generation if necessary and
-otherwise does nothing, falling back to nightly&apos;s support for compiler plugins.
-This file goes in the same directory as <code>Cargo.toml</code>.</p><div><p class="code-filename">build.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#[cfg(feature = <span class="hljs-meta-string">&quot;serde_codegen&quot;</span>)]</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_codegen;
+    <span class="hljs-keyword">let</span> build_struct = <span class="hljs-string">&quot;
+        build:
+          context: ./dir
+          dockerfile: Dockerfile-alternate
+          args:
+            buildno: &apos;1&apos;
+    &quot;</span>;
+    <span class="hljs-keyword">let</span> service: Service = serde_yaml::from_str(build_struct).unwrap();
 
-    <span class="hljs-keyword">use</span> std::env;
-    <span class="hljs-keyword">use</span> std::path::Path;
-
-    <span class="hljs-keyword">let</span> out_dir = env::var_os(<span class="hljs-string">&quot;OUT_DIR&quot;</span>).unwrap();
-
-    <span class="hljs-keyword">let</span> src = Path::new(<span class="hljs-string">&quot;src/serde_types.in.rs&quot;</span>);
-    <span class="hljs-keyword">let</span> dst = Path::new(&amp;out_dir).join(<span class="hljs-string">&quot;serde_types.rs&quot;</span>);
-
-    serde_codegen::expand(&amp;src, &amp;dst).unwrap();
+    <span class="hljs-comment">// context=&quot;./dir&quot;</span>
+    <span class="hljs-comment">// dockerfile=Some(&quot;Dockerfile-alternate&quot;)</span>
+    <span class="hljs-comment">// args={&quot;buildno&quot;: &quot;1&quot;}</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, service);
 }
 
-<span class="hljs-meta">#[cfg(not(feature = <span class="hljs-meta-string">&quot;serde_codegen&quot;</span>))]</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-comment">// do nothing</span>
+<span class="hljs-meta">#[derive(Debug, Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Service</span></span> {
+    <span class="hljs-meta">#[serde(deserialize_with = <span class="hljs-meta-string">&quot;string_or_struct&quot;</span>)]</span>
+    build: Build,
+}
+
+<span class="hljs-meta">#[derive(Debug, Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Build</span></span> {
+    context: <span class="hljs-built_in">String</span>,
+    dockerfile: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">String</span>&gt;,
+    <span class="hljs-meta">#[serde(default)]</span>
+    args: Map&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">String</span>&gt;,
+}
+
+<span class="hljs-keyword">impl</span> FromStr <span class="hljs-keyword">for</span> Build {
+    <span class="hljs-comment">// This implementation of `from_str` can never fail, so use the impossible</span>
+    <span class="hljs-comment">// `Void` type as the error type.</span>
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Err</span></span> = Void;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">from_str</span></span>(s: &amp;<span class="hljs-keyword">str</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, Self::<span class="hljs-literal">Err</span>&gt; {
+        <span class="hljs-literal">Ok</span>(Build {
+            context: s.to_string(),
+            dockerfile: <span class="hljs-literal">None</span>,
+            args: Map::new(),
+        })
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">string_or_struct</span></span>&lt;T, D&gt;(d: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;T, D::Error&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize + FromStr&lt;<span class="hljs-literal">Err</span> = Void&gt;,
+          D: Deserializer
+{
+    <span class="hljs-comment">// This is a Visitor that forwards string types to T&apos;s FromStr impl and</span>
+    <span class="hljs-comment">// forwards map types to T&apos;s Deserialize impl.</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StringOrStruct</span></span>&lt;T&gt;(PhantomData&lt;T&gt;);
+
+    <span class="hljs-keyword">impl</span>&lt;T&gt; de::Visitor <span class="hljs-keyword">for</span> StringOrStruct&lt;T&gt;
+        <span class="hljs-keyword">where</span> T: Deserialize + FromStr&lt;<span class="hljs-literal">Err</span> = Void&gt;
+    {
+        <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
+
+        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_str</span></span>&lt;E&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: &amp;<span class="hljs-keyword">str</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;T, E&gt;
+            <span class="hljs-keyword">where</span> E: de::Error
+        {
+            <span class="hljs-literal">Ok</span>(FromStr::from_str(value).unwrap())
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;M&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, visitor: M) -&gt; <span class="hljs-built_in">Result</span>&lt;T, M::Error&gt;
+            <span class="hljs-keyword">where</span> M: de::MapVisitor
+        {
+            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> mvd = de::value::MapVisitorDeserializer::new(visitor);
+            Deserialize::deserialize(&amp;<span class="hljs-keyword">mut</span> mvd)
+        }
+    }
+
+    d.deserialize(StringOrStruct(PhantomData))
 }</code></pre>
-<p>To build with stable Rust:</p><pre><code>$ cargo build</code></pre>
-<p>To build with nightly Rust:</p><pre><code>$ cargo build --no-default-features --features unstable</code></pre>
-<p>The nightly compiler will generally produce better error messages so we
-recommend doing most of your development that way.</p>
+
                                 
                                 </section>
                             
@@ -646,12 +682,12 @@ recommend doing most of your development that way.</p>
 
             
                 
-                <a href="codegen-nightly.html" class="navigation navigation-prev " aria-label="Previous page: On nightly compiler">
+                <a href="transcode.html" class="navigation navigation-prev " aria-label="Previous page: Transcode into another format">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="attributes.html" class="navigation navigation-next " aria-label="Next page: Attributes">
+                <a href="feature-flags.html" class="navigation navigation-next " aria-label="Next page: Feature flags">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -662,7 +698,7 @@ recommend doing most of your development that way.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Supporting both","level":"1.2.3","depth":2,"next":{"title":"Attributes","level":"1.3","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.3.1","depth":2,"anchor":"#container-attributes","path":"attributes.md","ref":"attributes.md#container-attributes","articles":[]},{"title":"Variant attributes","level":"1.3.2","depth":2,"anchor":"#variant-attributes","path":"attributes.md","ref":"attributes.md#variant-attributes","articles":[]},{"title":"Field attributes","level":"1.3.3","depth":2,"anchor":"#field-attributes","path":"attributes.md","ref":"attributes.md#field-attributes","articles":[]}]},"previous":{"title":"On nightly compiler","level":"1.2.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"codegen-hybrid.md","mtime":"2016-08-20T19:21:30.603Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T22:34:30.581Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Either string or struct","level":"1.5.15","depth":2,"next":{"title":"Feature flags","level":"1.6","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"previous":{"title":"Transcode into another format","level":"1.5.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"string-or-struct.md","mtime":"2016-08-22T22:32:50.702Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T22:34:30.581Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
