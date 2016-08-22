@@ -17,7 +17,7 @@ nightly versions. The approach intended for the nightly compiler takes advantage
 of Rust's experimental support for compiler plugins which can only be enabled on
 nightly: `#![feature(plugin)]`. The approach intended for the stable compiler
 instead uses a code generation library called
-[Syntex](https://github.com/serde-rs/syntex) and a [Cargo build
+[Syntex](technical-details.md#syntex) and a [Cargo build
 script](http://doc.crates.io/build-script.html) to write out the generated code
 to a file and include it into your crate.
 

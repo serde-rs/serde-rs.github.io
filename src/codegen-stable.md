@@ -3,10 +3,9 @@
 The current stable Rust release does not support compiler plugins so Serde
 codegen needs to be done through a [Cargo build
 script](http://doc.crates.io/build-script.html) along with a code generation
-framework called [Syntex](https://github.com/serde-rs/syntex) to generate
-`Serialize` and `Deserialize` implementations. This relatively inconvenient
-approach will no longer be necessary as Rust's compiler plugin support matures
-in the future.
+framework called [Syntex](technical-details.md#syntex) to generate `Serialize`
+and `Deserialize` implementations. This relatively inconvenient approach will no
+longer be necessary as Rust's compiler plugin support matures in the future.
 
 **Advantages of this approach**: supports stable (released) Rust compiler
 versions because it does not depend on features that can only be enabled in the

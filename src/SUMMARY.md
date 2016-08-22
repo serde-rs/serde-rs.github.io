@@ -32,3 +32,4 @@
   * [Transcode into another format](transcode.md)
 * [Feature flags](feature-flags.md)
 * [Troubleshooting](troubleshooting.md)
+* [Technical details](technical-details.md)
