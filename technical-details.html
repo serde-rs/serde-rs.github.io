@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Transcode into another format · Serde</title>
+        <title>Technical details · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -59,10 +59,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="feature-flags.html" />
     
-    
-    <link rel="prev" href="trait-objects.html" />
+    <link rel="prev" href="troubleshooting.html" />
     
 
     </head>
@@ -444,7 +442,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.13" data-path="transcode.html">
+        <li class="chapter " data-level="1.5.13" data-path="transcode.html">
             
                 <a href="transcode.html">
             
@@ -488,7 +486,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.8" data-path="technical-details.html">
+        <li class="chapter active" data-level="1.8" data-path="technical-details.html">
             
                 <a href="technical-details.html">
             
@@ -523,7 +521,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Transcode into another format</a>
+        <a href="." >Technical details</a>
     </h1>
 </div>
 
@@ -535,45 +533,32 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="transcode-one-format-into-another">Transcode one format into another</h1><p>The <a href="https://github.com/sfackler/serde-transcode" target="_blank"><code>serde-transcode</code></a> crate
-provides functionality to &quot;transcode&quot; from an arbitrary Serde <code>Deserializer</code> to
-an arbitrary Serde <code>Serializer</code> without needing to collect the entire input into
-an intermediate form in memory. This provides a fully general way to convert any
-self-describing Serde data format into any other Serde data format in a
-memory-efficient streaming way.</p><p>For example you could transcode a stream of JSON data into a stream of CBOR
-data, or transcode unformatted JSON into its pretty-printed form.</p><p>This example implements the equivalent of Go&apos;s
-<a href="https://golang.org/pkg/encoding/json/#Compact" target="_blank"><code>json.Compact</code></a> function which
-removes insignificant whitespace from a JSON string in a streaming way.</p><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_transcode;
-
-<span class="hljs-keyword">use</span> serde::Serialize;
-<span class="hljs-keyword">use</span> serde_transcode::Transcoder;
-
-<span class="hljs-keyword">use</span> std::io;
-
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-comment">// A JSON input with plenty of whitespace.</span>
-    <span class="hljs-keyword">let</span> input = r#<span class="hljs-string">&quot;
-        {
-            &quot;</span>a boolean<span class="hljs-string">&quot;: true,
-            &quot;</span>an array<span class="hljs-string">&quot;: [3, 2, 1]
-        }
-        &quot;</span>#;
-
-    <span class="hljs-comment">// Iterator over the bytes of the input JSON.</span>
-    <span class="hljs-keyword">let</span> iter = input.bytes().map(<span class="hljs-literal">Ok</span>);
-
-    <span class="hljs-comment">// A JSON deserializer. You can use any Serde Deserializer here.</span>
-    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> deserializer = serde_json::Deserializer::new(iter);
-
-    <span class="hljs-comment">// A compacted JSON serializer. You can use any Serde Serializer here.</span>
-    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> serializer = serde_json::Serializer::new(io::stdout());
-
-    <span class="hljs-comment">// Prints `{&quot;a boolean&quot;:true,&quot;an array&quot;:[3,2,1]}` to stdout.</span>
-    <span class="hljs-comment">// This line works with any self-describing Deserializer and any Serializer.</span>
-    Transcoder::new(&amp;<span class="hljs-keyword">mut</span> deserializer).serialize(&amp;<span class="hljs-keyword">mut</span> serializer).unwrap();
-}</code></pre>
+                                <h1 id="technical-details">Technical details</h1><h3 id="syntex">Syntex</h3><p>Serde&apos;s <a href="https://serde.rs/codegen-stable.html" target="_blank">stable code generation</a> is built
+on a library called <a href="https://github.com/serde-rs/syntex" target="_blank">Syntex</a>. Syntex is a
+registry of expansion operations along with the Rust compiler infrastructure to
+apply those expansions to a piece of source code. This involves parsing Rust
+source code, applying the expansions, and writing the expanded Rust code out to
+a file as part of a Cargo <a href="http://doc.crates.io/build-script.html" target="_blank">build
+script</a>.</p><p>The Rust compiler uses a private library called
+<a href="https://github.com/rust-lang/rust/tree/master/src/libsyntax" target="_blank"><code>libsyntax</code></a> to
+parse source code during ordinary compilation. There is a way to hook into
+libsyntax from a crate but only when using a nightly compiler:
+<code>#![feature(rustc_private)]</code>. Syntex therefore copies the entire libsyntax
+library into a crate called
+<a href="https://crates.io/crates/syntex_syntax" target="_blank"><code>syntex_syntax</code></a>, backporting the
+nightly compiler&apos;s parser so it can be used on older stable compilers. This copy
+of libsyntax accounts for the slow compilation associated with Syntex, typically
+around 60 seconds when building from scratch.</p><p>Syntex expansion has two main limitations:</p><ul><li>Certain types of compiler errors will be reported as occuring within the nasty
+generated code rather than the original source code, even if the problem is
+present in the original.
+</li>
+<li>Syntex is not able to expand macros it is responsible for inside of macros it
+is not responsible for (including built-in macros like <code>vec![]</code> and
+<code>println!()</code>). This does not apply to Serde which uses Syntex to expand
+<code>#[derive]</code> attributes only, but other Syntex-based
+<a href="https://doc.rust-lang.org/book/compiler-plugins.html#syntax-extensions" target="_blank">procedural macro</a>
+libraries may run into this.
+</li></ul>
 
                                 
                                 </section>
@@ -585,14 +570,10 @@ removes insignificant whitespace from a JSON string in a streaming way.</p><pre>
 
             
                 
-                <a href="trait-objects.html" class="navigation navigation-prev " aria-label="Previous page: Trait objects">
+                <a href="troubleshooting.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Troubleshooting">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="feature-flags.html" class="navigation navigation-next " aria-label="Next page: Feature flags">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -601,7 +582,7 @@ removes insignificant whitespace from a JSON string in a streaming way.</p><pre>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Transcode into another format","level":"1.5.13","depth":2,"next":{"title":"Feature flags","level":"1.6","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"previous":{"title":"Trait objects","level":"1.5.12","depth":2,"path":"trait-objects.md","ref":"trait-objects.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"transcode.md","mtime":"2016-08-22T02:12:23.767Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T03:57:42.758Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Technical details","level":"1.8","depth":1,"previous":{"title":"Troubleshooting","level":"1.7","depth":1,"path":"troubleshooting.md","ref":"troubleshooting.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"technical-details.md","mtime":"2016-08-22T03:54:57.721Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T03:57:42.758Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
