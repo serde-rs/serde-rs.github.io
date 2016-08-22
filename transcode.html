@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Troubleshooting · Serde</title>
+        <title>Transcode into another format · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -59,8 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="feature-flags.html" />
     
-    <link rel="prev" href="feature-flags.html" />
+    
+    <link rel="prev" href="deserialize-struct.html" />
     
 
     </head>
@@ -416,7 +418,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.12" data-path="transcode.html">
+        <li class="chapter active" data-level="1.5.12" data-path="transcode.html">
             
                 <a href="transcode.html">
             
@@ -447,7 +449,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.7" data-path="troubleshooting.html">
+        <li class="chapter " data-level="1.7" data-path="troubleshooting.html">
             
                 <a href="troubleshooting.html">
             
@@ -482,7 +484,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Troubleshooting</a>
+        <a href="." >Transcode into another format</a>
     </h1>
 </div>
 
@@ -494,15 +496,45 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="troubleshooting">Troubleshooting</h1><h3 id="stack-overflow">Stack overflow</h3><p>If you are using a <a href="codegen-stable.html">build script</a>, the
-<code>serde_codegen::expand</code> call can use a lot of stack space. You may see output
-like this when building your crate:</p><pre><code>--- stderr
-thread &apos;&lt;main&gt;&apos; has overflowed its stack
-fatal runtime error: stack overflow</code></pre>
-<p>It may help to increase the stack size available to the build script, especially
-if the failure is platform-dependent (the build works on Linux and Windows but
-not macOS). Serde codegen uses a 16 MB stack by default but it is configurable
-by the <code>RUST_MIN_STACK</code> environment variable. A larger value may be necessary.</p><pre><code>RUST_MIN_STACK=33554432</code></pre>
+                                <h1 id="transcode-one-format-into-another">Transcode one format into another</h1><p>The <a href="https://github.com/sfackler/serde-transcode" target="_blank"><code>serde-transcode</code></a> crate
+provides functionality to &quot;transcode&quot; from an arbitrary Serde <code>Deserializer</code> to
+an arbitrary Serde <code>Serializer</code> without needing to collect the entire input into
+an intermediate form in memory. This provides a fully general way to convert any
+self-describing Serde data format into any other Serde data format in a
+memory-efficient streaming way.</p><p>For example you could transcode a stream of JSON data into a stream of CBOR
+data, or transcode unformatted JSON into its pretty-printed form.</p><p>This example implements the equivalent of Go&apos;s
+<a href="https://golang.org/pkg/encoding/json/#Compact" target="_blank"><code>json.Compact</code></a> function which
+removes insignificant whitespace from a JSON string in a streaming way.</p><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_transcode;
+
+<span class="hljs-keyword">use</span> serde::Serialize;
+<span class="hljs-keyword">use</span> serde_transcode::Transcoder;
+
+<span class="hljs-keyword">use</span> std::io;
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-comment">// A JSON input with plenty of whitespace.</span>
+    <span class="hljs-keyword">let</span> input = r#<span class="hljs-string">&quot;
+        {
+            &quot;</span>a boolean<span class="hljs-string">&quot;: true,
+            &quot;</span>an array<span class="hljs-string">&quot;: [3, 2, 1]
+        }
+        &quot;</span>#;
+
+    <span class="hljs-comment">// Iterator over the bytes of the input JSON.</span>
+    <span class="hljs-keyword">let</span> iter = input.bytes().map(<span class="hljs-literal">Ok</span>);
+
+    <span class="hljs-comment">// A JSON deserializer. You can use any Serde Deserializer here.</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> deserializer = serde_json::Deserializer::new(iter);
+
+    <span class="hljs-comment">// A compacted JSON serializer. You can use any Serde Serializer here.</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> serializer = serde_json::Serializer::new(io::stdout());
+
+    <span class="hljs-comment">// Prints `{&quot;a boolean&quot;:true,&quot;an array&quot;:[3,2,1]}` to stdout.</span>
+    <span class="hljs-comment">// This line works with any self-describing Deserialize and any Serializer.</span>
+    Transcoder::new(&amp;<span class="hljs-keyword">mut</span> deserializer).serialize(&amp;<span class="hljs-keyword">mut</span> serializer).unwrap();
+}</code></pre>
 
                                 
                                 </section>
@@ -514,10 +546,14 @@ by the <code>RUST_MIN_STACK</code> environment variable. A larger value may be n
 
             
                 
-                <a href="feature-flags.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Feature flags">
+                <a href="deserialize-struct.html" class="navigation navigation-prev " aria-label="Previous page: Manually deserialize struct">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="feature-flags.html" class="navigation navigation-next " aria-label="Next page: Feature flags">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -526,7 +562,7 @@ by the <code>RUST_MIN_STACK</code> environment variable. A larger value may be n
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Troubleshooting","level":"1.7","depth":1,"previous":{"title":"Feature flags","level":"1.6","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"troubleshooting.md","mtime":"2016-08-19T20:14:58.645Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T02:01:53.085Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Transcode into another format","level":"1.5.12","depth":2,"next":{"title":"Feature flags","level":"1.6","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.5.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"transcode.md","mtime":"2016-08-22T01:57:45.495Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T02:01:53.085Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
