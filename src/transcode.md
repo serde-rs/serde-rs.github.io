@@ -43,7 +43,7 @@ fn main() {
     let mut serializer = serde_json::Serializer::new(io::stdout());
 
     // Prints `{"a boolean":true,"an array":[3,2,1]}` to stdout.
-    // This line works with any self-describing Deserialize and any Serializer.
+    // This line works with any self-describing Deserializer and any Serializer.
     Transcoder::new(&mut deserializer).serialize(&mut serializer).unwrap();
 }
 ```
