@@ -27,6 +27,7 @@
   * [Skip serializing field](attr-skip-serializing.md)
   * [De/Serialize for other crate](newtype-wrapper.md)
   * [Manually deserialize struct](deserialize-struct.md)
+  * [Trait objects](trait-objects.md)
   * [Transcode into another format](transcode.md)
 * [Feature flags](feature-flags.md)
 * [Troubleshooting](troubleshooting.md)
