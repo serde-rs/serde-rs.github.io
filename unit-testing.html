@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Deserialize for custom map type · Serde</title>
+        <title>Unit testing · Serde</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="serialize-map.html" />
+    <link rel="next" href="examples.html" />
     
     
-    <link rel="prev" href="attr-bound.html" />
+    <link rel="prev" href="impl-deserialize.html" />
     
 
     </head>
@@ -256,7 +256,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="unit-testing.html">
+        <li class="chapter active" data-level="1.4.3" data-path="unit-testing.html">
             
                 <a href="unit-testing.html">
             
@@ -314,7 +314,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.3" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.5.3" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -510,7 +510,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Deserialize for custom map type</a>
+        <a href="." >Unit testing</a>
     </h1>
 </div>
 
@@ -522,80 +522,56 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="implement-deserialize-for-a-custom-map-type">Implement Deserialize for a custom map type</h1><pre><code class="lang-rust"><span class="hljs-comment">// A Visitor is a type that holds methods that a Deserializer can drive</span>
-<span class="hljs-comment">// depending on what is contained in the input data.</span>
-<span class="hljs-comment">//</span>
-<span class="hljs-comment">// In the case of a map we need generic type parameters K and V to be</span>
-<span class="hljs-comment">// able to set the output type correctly, but don&apos;t require any state.</span>
-<span class="hljs-comment">// This is an example of a &quot;zero sized type&quot; in Rust. The PhantomData</span>
-<span class="hljs-comment">// keeps the compiler from complaining about unused generic type</span>
-<span class="hljs-comment">// parameters.</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MyMapVisitor</span></span>&lt;K, V&gt; {
-    marker: PhantomData&lt;MyMap&lt;K, V&gt;&gt;
+                                <h1 id="unit-testing">Unit testing</h1><p>The <a href="https://docs.serde.rs/serde_test/" target="_blank"><code>serde_test</code></a> crate provides a
+convenient concise way to write unit tests for implementations of <code>Serialize</code>
+and <code>Deserialize</code>.</p><p>The <code>Serialize</code> impl for a value can be characterized by the sequence of
+<a href="https://docs.serde.rs/serde/ser/trait.Serializer.html" target="_blank"><code>Serializer</code></a> calls that
+are made in the course of serializing the value, so <code>serde_test</code> provides a
+<a href="https://docs.serde.rs/serde_test/enum.Token.html" target="_blank"><code>Token</code></a> abstraction which
+corresponds roughly to <code>Serializer</code> method calls. It provides an
+<code>assert_ser_tokens</code> funtion to test that a value serializes into a particular
+sequence of method calls, an <code>assert_de_tokens</code> function to test that a value
+can be deserialized from a particular sequence of method calls, and an
+<code>assert_tokens</code> function to test both directions. It also provides functions to
+test expected failure conditions.</p><p>Here is an example from the
+<a href="https://github.com/contain-rs/linked-hash-map" target="_blank"><code>linked-hash-map</code></a> crate.</p><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> linked_hash_map;
+<span class="hljs-keyword">use</span> linked_hash_map::LinkedHashMap;
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_test;
+<span class="hljs-keyword">use</span> serde_test::{Token, assert_tokens};
+
+<span class="hljs-meta">#[test]</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">test_ser_de_empty</span></span>() {
+    <span class="hljs-keyword">let</span> map = LinkedHashMap::&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">u32</span>&gt;::new();
+
+    assert_tokens(&amp;map, &amp;[
+        Token::MapStart(<span class="hljs-literal">Some</span>(<span class="hljs-number">0</span>)),
+        Token::MapEnd,
+    ]);
 }
 
-<span class="hljs-keyword">impl</span>&lt;K, V&gt; MyMapVisitor&lt;K, V&gt; {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new</span></span>() -&gt; <span class="hljs-keyword">Self</span> {
-        MyMapVisitor {
-            marker: PhantomData
-        }
-    }
-}
+<span class="hljs-meta">#[test]</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">test_ser_de</span></span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> map = LinkedHashMap::new();
+    map.insert(<span class="hljs-string">&apos;b&apos;</span>, <span class="hljs-number">20</span>);
+    map.insert(<span class="hljs-string">&apos;a&apos;</span>, <span class="hljs-number">10</span>);
+    map.insert(<span class="hljs-string">&apos;c&apos;</span>, <span class="hljs-number">30</span>);
 
-<span class="hljs-comment">// This is the trait that Deserializers are going to be driving. There</span>
-<span class="hljs-comment">// is one method for each type of data that our type knows how to</span>
-<span class="hljs-comment">// deserialize from. There are many other methods that are not</span>
-<span class="hljs-comment">// implemented here, for example deserializing from integers or strings.</span>
-<span class="hljs-comment">// By default those methods will return an error, which makes sense</span>
-<span class="hljs-comment">// because we cannot deserialize a MyMap from an integer or string.</span>
-<span class="hljs-keyword">impl</span>&lt;K, V&gt; de::Visitor <span class="hljs-keyword">for</span> MyMapVisitor&lt;K, V&gt;
-    <span class="hljs-keyword">where</span> K: Deserialize,
-          V: Deserialize
-{
-    <span class="hljs-comment">// The type that our Visitor is going to produce.</span>
-    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = MyMap&lt;K, V&gt;;
+    assert_tokens(&amp;map, &amp;[
+        Token::MapStart(<span class="hljs-literal">Some</span>(<span class="hljs-number">3</span>)),
+            Token::MapSep,
+            Token::Char(<span class="hljs-string">&apos;b&apos;</span>),
+            Token::I32(<span class="hljs-number">20</span>),
 
-    <span class="hljs-comment">// Deserialize MyMap from an abstract &quot;map&quot; provided by the</span>
-    <span class="hljs-comment">// Deserializer. The MapVisitor input is a callback provided by</span>
-    <span class="hljs-comment">// the Deserializer to let us see each entry in the map.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;M&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: M) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, M::Error&gt;
-        <span class="hljs-keyword">where</span> M: de::MapVisitor
-    {
-        <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> values = MyMap::with_capacity(visitor.size_hint().<span class="hljs-number">0</span>);
+            Token::MapSep,
+            Token::Char(<span class="hljs-string">&apos;a&apos;</span>),
+            Token::I32(<span class="hljs-number">10</span>),
 
-        <span class="hljs-comment">// While there are entries remaining in the input, add them</span>
-        <span class="hljs-comment">// into our map.</span>
-        <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>((key, value)) = <span class="hljs-built_in">try!</span>(visitor.visit()) {
-            values.insert(key, value);
-        }
-
-        <span class="hljs-built_in">try!</span>(visitor.end());
-        <span class="hljs-literal">Ok</span>(values)
-    }
-
-    <span class="hljs-comment">// As a convenience, provide a way to deserialize MyMap from</span>
-    <span class="hljs-comment">// the abstract &quot;unit&quot; type. This corresponds to `null` in JSON.</span>
-    <span class="hljs-comment">// If your JSON contains `null` for a field that is supposed to</span>
-    <span class="hljs-comment">// be a MyMap, we interpret that as an empty map.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_unit</span></span>&lt;E&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, E&gt;
-        <span class="hljs-keyword">where</span> E: de::Error
-    {
-        <span class="hljs-literal">Ok</span>(MyMap::new())
-    }
-}
-
-<span class="hljs-comment">// This is the trait that informs Serde how to deserialize MyMap.</span>
-<span class="hljs-keyword">impl</span>&lt;K, V&gt; Deserialize <span class="hljs-keyword">for</span> MyMap&lt;K, V&gt;
-    <span class="hljs-keyword">where</span> K: Deserialize,
-          V: Deserialize
-{
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer
-    {
-        <span class="hljs-comment">// Instantiate our Visitor and ask the Deserializer to drive</span>
-        <span class="hljs-comment">// it over the input data, resulting in an instance of MyMap.</span>
-        deserializer.deserialize_map(MyMapVisitor::new())
-    }
+            Token::MapSep,
+            Token::Char(<span class="hljs-string">&apos;c&apos;</span>),
+            Token::I32(<span class="hljs-number">30</span>),
+        Token::MapEnd,
+    ]);
 }</code></pre>
 
                                 
@@ -608,12 +584,12 @@
 
             
                 
-                <a href="attr-bound.html" class="navigation navigation-prev " aria-label="Previous page: Handwritten generic type bounds">
+                <a href="impl-deserialize.html" class="navigation navigation-prev " aria-label="Previous page: Implementing Deserialize">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="serialize-map.html" class="navigation navigation-next " aria-label="Next page: Serialize for custom map type">
+                <a href="examples.html" class="navigation navigation-next " aria-label="Next page: Examples">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -624,7 +600,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.5.3","depth":2,"next":{"title":"Serialize for custom map type","level":"1.5.4","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.5.2","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2016-08-15T05:39:59.076Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T03:15:18.700Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Unit testing","level":"1.4.3","depth":2,"next":{"title":"Examples","level":"1.5","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Default value for a field","level":"1.5.1","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.5.2","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.5.3","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Serialize for custom map type","level":"1.5.4","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.5.5","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as string","level":"1.5.6","depth":2,"path":"enum-str.md","ref":"enum-str.md","articles":[]},{"title":"Serialize enum as number","level":"1.5.7","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.5.8","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.5.9","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"De/Serialize for other crate","level":"1.5.10","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},{"title":"Manually deserialize struct","level":"1.5.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Trait objects","level":"1.5.12","depth":2,"path":"trait-objects.md","ref":"trait-objects.md","articles":[]},{"title":"Transcode into another format","level":"1.5.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]}]},"previous":{"title":"Implementing Deserialize","level":"1.4.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"unit-testing.md","mtime":"2016-08-22T03:11:42.600Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-22T03:15:18.700Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
