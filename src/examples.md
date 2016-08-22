@@ -51,3 +51,7 @@ type-erased Serde traits that can be used as `&Serialize`/`&Serializer` or
 **[Transcode one format into another](transcode.md)**: Use the
 [serde-transcode](https://github.com/sfackler/serde-transcode) crate to stream
 input in one format to output in another format efficiently.
+
+**[Deserialize either a string or a struct](string-or-struct.md)**: The
+[`docker-compose.yml`](https://docs.docker.com/compose/compose-file/#/build)
+configuration file has a "build" key which can be either a string or a struct.

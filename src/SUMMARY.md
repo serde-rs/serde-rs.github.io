@@ -31,6 +31,7 @@
   * [Manually deserialize struct](deserialize-struct.md)
   * [Trait objects](trait-objects.md)
   * [Transcode into another format](transcode.md)
+  * [Either string or struct](string-or-struct.md)
 * [Feature flags](feature-flags.md)
 * [Troubleshooting](troubleshooting.md)
 * [Technical details](technical-details.md)
