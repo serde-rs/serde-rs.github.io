@@ -17,7 +17,7 @@ Here is the `Cargo.toml`:
 
 ```toml:Cargo.toml
 [package]
-name = "my_crate"
+name = "my-crate"
 version = "0.1.0"
 authors = ["Me <user@rust-lang.org>"]
 

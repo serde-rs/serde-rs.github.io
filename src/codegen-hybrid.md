@@ -11,9 +11,9 @@ on `serde_macros` instead.
 
 ```toml:Cargo.toml
 [package]
-name = "testing"
+name = "my-crate"
 version = "0.1.0"
-authors = ["David Tolnay <dtolnay@gmail.com>"]
+authors = ["Me <user@rust-lang.org>"]
 build = "build.rs"
 
 [features]
