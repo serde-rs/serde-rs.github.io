@@ -1,6 +1,7 @@
 # Summary
 
 * [Overview](README.md)
+* [Help](help.md)
 * [Setting up codegen](codegen.md)
     * [On stable compiler](codegen-stable.md)
     * [On nightly compiler](codegen-nightly.md)
