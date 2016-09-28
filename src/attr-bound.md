@@ -11,8 +11,10 @@ hatch to replace the automatically generated bound by one written by the
 programmer.
 
 ```rust
-#![feature(plugin, custom_derive)]
-#![plugin(serde_macros)]
+#![feature(rustc_macro)]
+
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_json;

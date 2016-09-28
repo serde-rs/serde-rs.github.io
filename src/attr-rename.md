@@ -1,8 +1,10 @@
 # Serialize fields as camelCase
 
 ```rust
-#![feature(plugin, custom_derive)]
-#![plugin(serde_macros)]
+#![feature(rustc_macro)]
+
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_json;

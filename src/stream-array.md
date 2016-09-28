@@ -6,8 +6,10 @@ adapted to handle a variety of other situations in which data needs to be
 processed while being deserialized instead of after.
 
 ```rust
-#![feature(custom_derive, plugin)]
-#![plugin(serde_macros)]
+#![feature(rustc_macro)]
+
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_json;

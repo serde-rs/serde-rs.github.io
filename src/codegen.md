@@ -1,8 +1,8 @@
 # Setting up codegen
 
-Serde provides a Rust compiler plugin to generate implementations of the
-`Serialize` and `Deserialize` traits for structs defined in your crate, allowing
-them to be used conveniently with all of Serde's data formats.
+Serde provides code generation to generate implementations of the `Serialize`
+and `Deserialize` traits for structs defined in your crate, allowing them to be
+used conveniently with all of Serde's data formats.
 
 Codegen is based on Rust's `#[derive]` mechanism, just like what you would use
 to automatically derive implementations of the built-in `Clone`, `Copy`, or
@@ -11,19 +11,19 @@ including ones with elaborate generic types or trait bounds. On rare occasions,
 for an especially convoluted type you may need to [implement the traits
 manually](custom-serialization.md).
 
-There are two different ways of setting up the plugin depending on whether your
-crate will be used with stable released versions of Rust or with unstable
+There are two different ways of setting up code generation depending on whether
+your crate will be used with stable released versions of Rust or with unstable
 nightly versions. The approach intended for the nightly compiler takes advantage
-of Rust's experimental support for compiler plugins which can only be enabled on
-nightly: `#![feature(plugin)]`. The approach intended for the stable compiler
-instead uses a code generation library called
+of Rust's experimental support for "Macros 1.1" plugins which can only be
+enabled on nightly: `#![feature(rustc_macro)]`. The approach intended for the
+stable compiler instead uses a code generation library called
 [Syntex](technical-details.md#syntex) and a [Cargo build
 script](http://doc.crates.io/build-script.html) to write out the generated code
 to a file and include it into your crate.
 
 There is also a third hybrid approach which uses Syntex by default but uses a
 Cargo [feature](http://doc.crates.io/manifest.html#the-features-section) to
-switch to the real plugin when running with nightly.
+switch to Macros 1.1 when running with nightly.
 
 One downside of the Syntex (stable) approach is that errors and warnings emitted
 by `rustc` can sometimes point into the nasty generated code and those can be

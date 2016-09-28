@@ -7,7 +7,7 @@ happen on nightly in order to receive more useful error messages.
 
 Here is the `Cargo.toml` that depends on `serde_codegen` by default but exposes
 a [feature](http://doc.crates.io/manifest.html#the-features-section) to depend
-on `serde_macros` instead.
+on `serde_derive` instead.
 
 ```toml:Cargo.toml
 [package]
@@ -18,15 +18,15 @@ build = "build.rs"
 
 [features]
 default = ["serde_codegen"]
-unstable = ["serde_macros"]
+unstable = ["serde_derive"]
 
 [build-dependencies]
 serde_codegen = { version = "0.8", optional = true }
 
 [dependencies]
 serde = "0.8"
+serde_derive = { version = "0.8", optional = true }
 serde_json = "0.8"  # just for the example, not required in general
-serde_macros = { version = "0.8", optional = true }
 ```
 
 The `src/serde_types.in.rs` is the same as in the [stable
@@ -44,13 +44,16 @@ struct Point {
 Here is the main code of the program in `src/main.rs`.
 
 ```rust:src/main.rs
-#![cfg_attr(feature = "serde_macros", feature(plugin, custom_derive))]
-#![cfg_attr(feature = "serde_macros", plugin(serde_macros))]
+#![cfg_attr(feature = "serde_derive", feature(rustc_macro))]
+
+#[cfg(feature = "serde_derive")]
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_json;
 
-#[cfg(feature = "serde_macros")]
+#[cfg(feature = "serde_derive")]
 include!("serde_types.in.rs");
 
 #[cfg(feature = "serde_codegen")]
@@ -68,8 +71,8 @@ fn main() {
 ```
 
 And here is `build.rs` which drives the code generation if necessary and
-otherwise does nothing, falling back to nightly's support for compiler plugins.
-This file goes in the same directory as `Cargo.toml`.
+otherwise does nothing, falling back to nightly's support for Macros 1.1. This
+file goes in the same directory as `Cargo.toml`.
 
 ```rust:build.rs
 #[cfg(feature = "serde_codegen")]

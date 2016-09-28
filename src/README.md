@@ -16,7 +16,7 @@ and deserialized using any supported data format.
 Where many other languages rely on runtime reflection for serializing data,
 Serde is instead built on Rust's powerful trait system. A data structure that
 knows how to serialize and deserialize itself is one that implements Serde's
-`Serialize` and `Deserialize` traits (or uses the Serde compiler plugin to
+`Serialize` and `Deserialize` traits (or uses Serde's code generation to
 automatically derive implementations at compile time). This avoids any overhead
 of reflection or runtime type information. In fact in many situations the
 interaction between data structure and data format can be completely optimized
@@ -60,13 +60,15 @@ Serde by the community.
 
 Out of the box, Serde is able to serialize and deserialize common Rust data
 types in any of the above formats. For example `String`, `&str`, `usize`,
-`Vec<T>`, `HashMap<K,V>` are all supported. In addition, Serde provides a
-compiler plugin to `#[derive]` serialization implementations for structs in your
-own program. Using the compiler plugin goes like this:
+`Vec<T>`, `HashMap<K,V>` are all supported. In addition, Serde provides code
+generation to `#[derive]` serialization implementations for structs in your own
+program. Using the code generation goes like this:
 
 ```rust
-#![feature(plugin, custom_derive)]
-#![plugin(serde_macros)]
+#![feature(rustc_macro)]
+
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde_json;
 

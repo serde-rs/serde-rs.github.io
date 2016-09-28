@@ -1,17 +1,19 @@
 # Codegen targetting nightly compiler
 
 The [codegen setup for a stable compiler](codegen-stable.md) is more complicated
-than it needs to be due to compiler plugins being unstable in the current
-version of Rust. However if you are using a nightly compiler anyway, you can
-use `serde_macros` which has a much simpler interface. This is a preview of what
-the future will look like once compiler plugins are stabilized.
+than it needs to be due to custom derives being unstable in the current version
+of Rust. However if you are using a nightly compiler anyway, you can use
+`serde_derive` which has a much simpler interface. This is a preview of what
+the future will look like once custom derives are stabilized.
 
-**Advantages of this approach**: trivial to set up - basically just two
-`#![...]` lines; none of the disadvantages of the [stable
+**Advantages of this approach**: trivial to set up - just a `#![feature(...)]`
+line and an extern crate; none of the disadvantages of the [stable
 approach](codegen-stable.md).
 
-**Disadvantages of this approach**: depends on unstable Rust features so it only
-works if you are building with a nightly compiler.
+**Disadvantages of this approach**: depends on an unstable Rust feature so it
+only works if you are building with a nightly compiler; stabilization of the
+feature is tracked in
+[rust-lang/rust#35900](https://github.com/rust-lang/rust/issues/35900).
 
 Here is the `Cargo.toml`:
 
@@ -23,16 +25,18 @@ authors = ["Me <user@rust-lang.org>"]
 
 [dependencies]
 serde = "0.8"
+serde_derive = "0.8"
 serde_json = "0.8"  # just for the example, not required in general
-serde_macros = "0.8"
 ```
 
 Note that it does not need a build script. Now the `src/main.rs` which enables
-the plugin feature and registers the `serde_macros` plugin:
+the unstable `rustc_macro` feature and sets up Serde's custom derive:
 
 ```rust:src/main.rs
-#![feature(plugin, custom_derive)]
-#![plugin(serde_macros)]
+#![feature(rustc_macro)]
+
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde_json;
 

@@ -24,8 +24,10 @@ We can use Rust's
 Serde's `deserialize_with` attribute to handle this pattern in a general way.
 
 ```rust
-#![feature(plugin, custom_derive)]
-#![plugin(serde_macros)]
+#![feature(rustc_macro)]
+
+#[macro_use]
+extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_yaml;

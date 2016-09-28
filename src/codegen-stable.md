@@ -12,7 +12,7 @@ versions because it does not depend on features that can only be enabled in the
 nightly compiler; also works with nightly.
 
 **Disadvantages of this approach**: one-time setup cost of using a build script;
-keeping all Serde types in their own `serde_types.rs` file is annoying; the
+keeping all Serde types in their own `serde_types.in.rs` file is annoying; the
 large Syntex dependency increases compilation time; rustc will show certain
 types of compiler errors pointing into the nasty generated code rather than to
 where the error really is.
