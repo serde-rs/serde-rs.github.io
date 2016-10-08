@@ -1,7 +1,7 @@
 # Serialize fields as camelCase
 
 ```rust
-#![feature(rustc_macro)]
+#![feature(proc_macro)]
 
 #[macro_use]
 extern crate serde_derive;

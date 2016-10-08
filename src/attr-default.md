@@ -1,7 +1,7 @@
 # Default value for a field
 
 ```rust
-#![feature(rustc_macro)]
+#![feature(proc_macro)]
 
 #[macro_use]
 extern crate serde_derive;

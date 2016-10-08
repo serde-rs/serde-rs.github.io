@@ -6,7 +6,7 @@ adapted to handle a variety of other situations in which data needs to be
 processed while being deserialized instead of after.
 
 ```rust
-#![feature(rustc_macro)]
+#![feature(proc_macro)]
 
 #[macro_use]
 extern crate serde_derive;
