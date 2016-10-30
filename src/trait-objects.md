@@ -10,6 +10,9 @@ The [`erased-serde`](https://github.com/dtolnay/erased-serde) crate provides
 versions of the `Serialize` and `Serializer` traits that are object-safe and can
 be used as `&Serialize`/`&Serializer` and `Box<Serialize>`/`Box<Serializer>`.
 
+The traits in `erased-serde` can be used seamlessly with any existing Serde
+`Serialize` type and any existing Serde `Serializer` format.
+
 ```rust
 extern crate erased_serde;
 extern crate serde_json;
