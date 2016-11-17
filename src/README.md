@@ -48,6 +48,8 @@ Serde by the community.
   be readable and writable by humans.
 - [BSON](https://github.com/zonyitoo/bson-rs), the data storage and network
   transfer format used by MongoDB.
+- [Url](https://github.com/nox/serde_urlencoded), the x-www-form-urlencoded
+  format.
 - [XML](https://github.com/serde-rs/xml), the flexible machine-friendly W3C
   standard. *(deserialization only)*
 - [Envy](https://github.com/softprops/envy), a way to deserialize environment
