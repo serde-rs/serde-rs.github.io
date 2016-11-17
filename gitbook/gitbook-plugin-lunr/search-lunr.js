@@ -50,10 +50,10 @@ require([
     };
 
     // Set gitbook research
-    /*gitbook.events.bind('start', function(e, config) {
+    gitbook.events.bind('start', function(e, config) {
         var engine = gitbook.search.getEngine();
         if (!engine) {
             gitbook.search.setEngine(LunrSearchEngine, config);
         }
-    });*/
+    });
 });

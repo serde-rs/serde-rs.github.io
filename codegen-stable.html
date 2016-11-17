@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>On stable compiler · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>On stable compiler · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,19 +574,25 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="codegen-targetting-stable-compiler">Codegen targetting stable compiler</h1><p>The current stable Rust release does not support compiler plugins so Serde
+                                <h1 id="codegen-targetting-stable-compiler">Codegen targetting stable compiler</h1>
+<p>The current stable Rust release does not support compiler plugins so Serde
 codegen needs to be done through a <a href="http://doc.crates.io/build-script.html" target="_blank">Cargo build
 script</a> along with a code generation
 framework called <a href="technical-details.html#syntex">Syntex</a> to generate <code>Serialize</code>
 and <code>Deserialize</code> implementations. This relatively inconvenient approach will no
-longer be necessary as Rust&apos;s compiler plugin support matures in the future.</p><p><strong>Advantages of this approach</strong>: supports stable (released) Rust compiler
+longer be necessary as Rust&apos;s compiler plugin support matures in the future.</p>
+<p><strong>Advantages of this approach</strong>: supports stable (released) Rust compiler
 versions because it does not depend on features that can only be enabled in the
-nightly compiler; also works with nightly.</p><p><strong>Disadvantages of this approach</strong>: one-time setup cost of using a build script;
+nightly compiler; also works with nightly.</p>
+<p><strong>Disadvantages of this approach</strong>: one-time setup cost of using a build script;
 keeping all Serde types in their own <code>serde_types.in.rs</code> file is annoying; the
 large Syntex dependency increases compilation time; rustc will show certain
 types of compiler errors pointing into the nasty generated code rather than to
-where the error really is.</p><p>To start with, here is the <code>Cargo.toml</code> that informs Cargo about the build
-script:</p><div><p class="code-filename">Cargo.toml</p></div><pre><code class="lang-toml"><span class="hljs-section">[package]</span>
+where the error really is.</p>
+<p>To start with, here is the <code>Cargo.toml</code> that informs Cargo about the build
+script:</p>
+<p>!FILENAME Cargo.toml</p>
+<pre><code class="lang-toml"><span class="hljs-section">[package]</span>
 <span class="hljs-attr">name</span> = <span class="hljs-string">&quot;my-crate&quot;</span>
 <span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
 <span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;Me &lt;user@rust-lang.org&gt;&quot;</span>]
@@ -597,18 +603,24 @@ script:</p><div><p class="code-filename">Cargo.toml</p></div><pre><code class="l
 <span class="hljs-section">
 [dependencies]</span>
 <span class="hljs-attr">serde</span> = <span class="hljs-string">&quot;0.8&quot;</span>
-<span class="hljs-attr">serde_json</span> = <span class="hljs-string">&quot;0.8&quot;</span>  # just for the example, not required in general</code></pre>
+<span class="hljs-attr">serde_json</span> = <span class="hljs-string">&quot;0.8&quot;</span>  # just for the example, not required in general
+</code></pre>
 <p>Next create a file <code>src/serde_types.in.rs</code> to hold all the types for which we
 need code generation. No other files should contain <code>#[derive(Serialize,
 Deserialize)]</code>. Notice the &quot;.in.rs&quot; extension - this is not going to be used
-like a normal module.</p><div><p class="code-filename">src/serde_types.in.rs</p></div><pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
+like a normal module.</p>
+<p>!FILENAME src/serde_types.in.rs</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
     x: <span class="hljs-keyword">i32</span>,
     y: <span class="hljs-keyword">i32</span>,
-}</code></pre>
+}
+</code></pre>
 <p>Here is the main code of the program in <code>src/main.rs</code>. The only unusual line
 here is the <code>include!</code> line; everything else is just the rest of your crate as
-usual.</p><div><p class="code-filename">src/main.rs</p></div><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+usual.</p>
+<p>!FILENAME src/main.rs</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 
 include!(<span class="hljs-built_in">concat!</span>(<span class="hljs-built_in">env!</span>(<span class="hljs-string">&quot;OUT_DIR&quot;</span>), <span class="hljs-string">&quot;/serde_types.rs&quot;</span>));
@@ -621,9 +633,12 @@ include!(<span class="hljs-built_in">concat!</span>(<span class="hljs-built_in">
 
     <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
     <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
-}</code></pre>
+}
+</code></pre>
 <p>The last step is to drive the code generation using <code>build.rs</code>. This file goes
-in the same directory as <code>Cargo.toml</code>.</p><div><p class="code-filename">build.rs</p></div><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_codegen;
+in the same directory as <code>Cargo.toml</code>.</p>
+<p>!FILENAME build.rs</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_codegen;
 
 <span class="hljs-keyword">use</span> std::env;
 <span class="hljs-keyword">use</span> std::path::Path;
@@ -635,11 +650,13 @@ in the same directory as <code>Cargo.toml</code>.</p><div><p class="code-filenam
     <span class="hljs-keyword">let</span> dst = Path::new(&amp;out_dir).join(<span class="hljs-string">&quot;serde_types.rs&quot;</span>);
 
     serde_codegen::expand(&amp;src, &amp;dst).unwrap();
-}</code></pre>
-<p>When run, the output is:</p><pre><code>$ cargo run
+}
+</code></pre>
+<p>When run, the output is:</p>
+<pre><code>$ cargo run
 serialized = {&quot;x&quot;:1,&quot;y&quot;:2}
-deserialized = Point { x: 1, y: 2 }</code></pre>
-
+deserialized = Point { x: 1, y: 2 }
+</code></pre>
                                 
                                 </section>
                             
@@ -666,7 +683,7 @@ deserialized = Point { x: 1, y: 2 }</code></pre>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"On stable compiler","level":"1.3.1","depth":2,"next":{"title":"On nightly compiler","level":"1.3.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},"previous":{"title":"Setting up codegen","level":"1.3","depth":1,"path":"codegen.md","ref":"codegen.md","articles":[{"title":"On stable compiler","level":"1.3.1","depth":2,"path":"codegen-stable.md","ref":"codegen-stable.md","articles":[]},{"title":"On nightly compiler","level":"1.3.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},{"title":"Supporting both","level":"1.3.3","depth":2,"path":"codegen-hybrid.md","ref":"codegen-hybrid.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"codegen-stable.md","mtime":"2016-09-28T17:32:10.714Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"On stable compiler","level":"1.3.1","depth":2,"next":{"title":"On nightly compiler","level":"1.3.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},"previous":{"title":"Setting up codegen","level":"1.3","depth":1,"path":"codegen.md","ref":"codegen.md","articles":[{"title":"On stable compiler","level":"1.3.1","depth":2,"path":"codegen-stable.md","ref":"codegen-stable.md","articles":[]},{"title":"On nightly compiler","level":"1.3.2","depth":2,"path":"codegen-nightly.md","ref":"codegen-nightly.md","articles":[]},{"title":"Supporting both","level":"1.3.3","depth":2,"path":"codegen-hybrid.md","ref":"codegen-hybrid.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"codegen-stable.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

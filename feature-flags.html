@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Feature flags · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Feature flags · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,17 +574,20 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="feature-flags">Feature flags</h1><h3 id="using-in-nostd-crates">Using in <code>no_std</code> crates</h3><p>The core <code>serde</code> package defines a number of <a href="http://doc.crates.io/manifest.html#the-features-section" target="_blank">Cargo
+                                <h1 id="feature-flags">Feature flags</h1>
+<h3 id="using-in-nostd-crates">Using in <code>no_std</code> crates</h3>
+<p>The core <code>serde</code> package defines a number of <a href="http://doc.crates.io/manifest.html#the-features-section" target="_blank">Cargo
 features</a> to enable
 usage in a variety of freestanding environments. Enable any or none of the
-following features, and use <code>default-features = false</code> in your <code>Cargo.toml</code>:</p><ul><li><code>alloc</code> (implies <code>nightly</code>)
-</li>
-<li><code>collections</code> (implies <code>alloc</code> and <code>nightly</code>)
-</li>
-<li><code>std</code> (default)
-</li></ul>
+following features, and use <code>default-features = false</code> in your <code>Cargo.toml</code>:</p>
+<ul>
+<li><code>alloc</code> (implies <code>nightly</code>)</li>
+<li><code>collections</code> (implies <code>alloc</code> and <code>nightly</code>)</li>
+<li><code>std</code> (default)</li>
+</ul>
 <p>If you only use <code>default-features = false</code>, you will receive a stock <code>no_std</code>
 Serde with no support for any of the collection types.</p>
+
                                 
                                 </section>
                             
@@ -611,7 +614,7 @@ Serde with no support for any of the collection types.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Feature flags","level":"1.7","depth":1,"next":{"title":"Troubleshooting","level":"1.8","depth":1,"path":"troubleshooting.md","ref":"troubleshooting.md","articles":[]},"previous":{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"feature-flags.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Feature flags","level":"1.7","depth":1,"next":{"title":"Troubleshooting","level":"1.8","depth":1,"path":"troubleshooting.md","ref":"troubleshooting.md","articles":[]},"previous":{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"feature-flags.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

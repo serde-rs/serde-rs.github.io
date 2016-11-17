@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Deserialize for custom map type · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Deserialize for custom map type · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,7 +574,8 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="implement-deserialize-for-a-custom-map-type">Implement Deserialize for a custom map type</h1><pre><code class="lang-rust"><span class="hljs-comment">// A Visitor is a type that holds methods that a Deserializer can drive</span>
+                                <h1 id="implement-deserialize-for-a-custom-map-type">Implement Deserialize for a custom map type</h1>
+<pre><code class="lang-rust"><span class="hljs-comment">// A Visitor is a type that holds methods that a Deserializer can drive</span>
 <span class="hljs-comment">// depending on what is contained in the input data.</span>
 <span class="hljs-comment">//</span>
 <span class="hljs-comment">// In the case of a map we need generic type parameters K and V to be</span>
@@ -648,7 +649,8 @@
         <span class="hljs-comment">// it over the input data, resulting in an instance of MyMap.</span>
         deserializer.deserialize_map(MyMapVisitor::new())
     }
-}</code></pre>
+}
+</code></pre>
 
                                 
                                 </section>
@@ -676,7 +678,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"next":{"title":"Serialize for custom map type","level":"1.6.5","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2016-08-28T21:36:42.227Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"next":{"title":"Serialize for custom map type","level":"1.6.5","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

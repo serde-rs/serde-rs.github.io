@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Troubleshooting · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Troubleshooting · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,16 +574,20 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="troubleshooting">Troubleshooting</h1><h3 id="stack-overflow">Stack overflow</h3><p>If you are using a <a href="codegen-stable.html">build script</a>, the
+                                <h1 id="troubleshooting">Troubleshooting</h1>
+<h3 id="stack-overflow">Stack overflow</h3>
+<p>If you are using a <a href="codegen-stable.html">build script</a>, the
 <code>serde_codegen::expand</code> call can use a lot of stack space. You may see output
-like this when building your crate:</p><pre><code>--- stderr
+like this when building your crate:</p>
+<pre><code>--- stderr
 thread &apos;&lt;main&gt;&apos; has overflowed its stack
-fatal runtime error: stack overflow</code></pre>
-<p>It may help to increase the stack size available to the build script, especially
+fatal runtime error: stack overflow
+</code></pre><p>It may help to increase the stack size available to the build script, especially
 if the failure is platform-dependent (the build works on Linux and Windows but
 not macOS). Serde codegen uses a 16 MB stack by default but it is configurable
-by the <code>RUST_MIN_STACK</code> environment variable. A larger value may be necessary.</p><pre><code>RUST_MIN_STACK=33554432</code></pre>
-
+by the <code>RUST_MIN_STACK</code> environment variable. A larger value may be necessary.</p>
+<pre><code>RUST_MIN_STACK=33554432
+</code></pre>
                                 
                                 </section>
                             
@@ -610,7 +614,7 @@ by the <code>RUST_MIN_STACK</code> environment variable. A larger value may be n
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Troubleshooting","level":"1.8","depth":1,"next":{"title":"Technical details","level":"1.9","depth":1,"path":"technical-details.md","ref":"technical-details.md","articles":[]},"previous":{"title":"Feature flags","level":"1.7","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"troubleshooting.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Troubleshooting","level":"1.8","depth":1,"next":{"title":"Technical details","level":"1.9","depth":1,"path":"technical-details.md","ref":"technical-details.md","articles":[]},"previous":{"title":"Feature flags","level":"1.7","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"troubleshooting.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

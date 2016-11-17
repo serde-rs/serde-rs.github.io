@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Technical details · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Technical details · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -572,13 +572,16 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="technical-details">Technical details</h1><h3 id="syntex">Syntex</h3><p>Serde&apos;s <a href="https://serde.rs/codegen-stable.html" target="_blank">stable code generation</a> is built
+                                <h1 id="technical-details">Technical details</h1>
+<h3 id="syntex">Syntex</h3>
+<p>Serde&apos;s <a href="https://serde.rs/codegen-stable.html" target="_blank">stable code generation</a> is built
 on a library called <a href="https://github.com/serde-rs/syntex" target="_blank">Syntex</a>. Syntex is a
 registry of expansion operations along with the Rust compiler infrastructure to
 apply those expansions to a piece of source code. This involves parsing Rust
 source code, applying the expansions, and writing the expanded Rust code out to
 a file as part of a Cargo <a href="http://doc.crates.io/build-script.html" target="_blank">build
-script</a>.</p><p>The Rust compiler uses a private library called
+script</a>.</p>
+<p>The Rust compiler uses a private library called
 <a href="https://github.com/rust-lang/rust/tree/master/src/libsyntax" target="_blank"><code>libsyntax</code></a> to
 parse source code during ordinary compilation. There is a way to hook into
 libsyntax from a crate but only when using a nightly compiler:
@@ -587,17 +590,19 @@ library into a crate called
 <a href="https://crates.io/crates/syntex_syntax" target="_blank"><code>syntex_syntax</code></a>, backporting the
 nightly compiler&apos;s parser so it can be used on older stable compilers. This copy
 of libsyntax accounts for the slow compilation associated with Syntex, typically
-around 60 seconds when building from scratch.</p><p>Syntex expansion has two main limitations:</p><ul><li>Certain types of compiler errors will be reported as occuring within the nasty
+around 60 seconds when building from scratch.</p>
+<p>Syntex expansion has two main limitations:</p>
+<ul>
+<li>Certain types of compiler errors will be reported as occuring within the nasty
 generated code rather than the original source code, even if the problem is
-present in the original.
-</li>
+present in the original.</li>
 <li>Syntex is not able to expand macros it is responsible for inside of macros it
 is not responsible for (including built-in macros like <code>vec![]</code> and
 <code>println!()</code>). This does not apply to Serde which uses Syntex to expand
 <code>#[derive]</code> attributes only, but other Syntex-based
 <a href="https://doc.rust-lang.org/book/compiler-plugins.html#syntax-extensions" target="_blank">procedural macro</a>
-libraries may run into this.
-</li></ul>
+libraries may run into this.</li>
+</ul>
 
                                 
                                 </section>
@@ -621,7 +626,7 @@ libraries may run into this.
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Technical details","level":"1.9","depth":1,"previous":{"title":"Troubleshooting","level":"1.8","depth":1,"path":"troubleshooting.md","ref":"troubleshooting.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"technical-details.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Technical details","level":"1.9","depth":1,"previous":{"title":"Troubleshooting","level":"1.8","depth":1,"path":"troubleshooting.md","ref":"troubleshooting.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"technical-details.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

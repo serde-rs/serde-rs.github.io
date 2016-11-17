@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Handwritten generic type bounds · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Handwritten generic type bounds · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,7 +574,8 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="handwritten-generic-type-bounds">Handwritten generic type bounds</h1><p>When deriving <code>Serialize</code> and <code>Deserialize</code> implementations for structs with
+                                <h1 id="handwritten-generic-type-bounds">Handwritten generic type bounds</h1>
+<p>When deriving <code>Serialize</code> and <code>Deserialize</code> implementations for structs with
 generic type parameters, most of the time Serde is able to infer the correct
 trait bounds without help from the programmer. It uses several heuristics to
 guess the right bound, but most importantly it puts a bound of <code>T: Serialize</code> on
@@ -582,7 +583,8 @@ every type parameter <code>T</code> that is part of a serialized field and a bou
 Deserialize</code> on every type parameter <code>T</code> that is part of a deserialized field.
 As with most heuristics, this is not always right and Serde provides an escape
 hatch to replace the automatically generated bound by one written by the
-programmer.</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(proc_macro)]</span>
+programmer.</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#![feature(proc_macro)]</span>
 
 <span class="hljs-meta">#[macro_use]</span>
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
@@ -656,7 +658,8 @@ programmer.</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(p
 
     <span class="hljs-comment">// result = Outer { s: 1234567890, ptr: Owned(&quot;owned&quot;) }</span>
     <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;result = {:?}&quot;</span>, result);
-}</code></pre>
+}
+</code></pre>
 
                                 
                                 </section>
@@ -684,7 +687,7 @@ programmer.</p><pre><code class="lang-rust"><span class="hljs-meta">#![feature(p
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"next":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"previous":{"title":"Default value for a field","level":"1.6.2","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-bound.md","mtime":"2016-10-08T23:47:01.079Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"next":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"previous":{"title":"Default value for a field","level":"1.6.2","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-bound.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

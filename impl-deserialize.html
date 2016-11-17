@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Implementing Deserialize · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Implementing Deserialize · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,21 +574,28 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="implementing-deserialize">Implementing Deserialize</h1><p>The <a href="https://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> trait
-looks like this:</p><pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Deserialize</span></span>: <span class="hljs-built_in">Sized</span> {
+                                <h1 id="implementing-deserialize">Implementing Deserialize</h1>
+<p>The <a href="https://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> trait
+looks like this:</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Deserialize</span></span>: <span class="hljs-built_in">Sized</span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
         <span class="hljs-keyword">where</span> D: Deserializer;
-}</code></pre>
+}
+</code></pre>
 <p>This method&apos;s job is to provide the
 <a href="https://docs.serde.rs/serde/de/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> with a
 <a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> that can be
-driven by the Deserializer to construct an instance of your type.</p><p>In most cases Serde&apos;s <a href="codegen.html">codegen</a> is able to generate an appropriate
+driven by the Deserializer to construct an instance of your type.</p>
+<p>In most cases Serde&apos;s <a href="codegen.html">codegen</a> is able to generate an appropriate
 implementation of <code>Deserialize</code> for structs and enums defined in your crate.
 Should you need to customize the deserialization behavior for a type in a way
 that codegen does not support, you can implement <code>Deserialize</code> yourself.
 Implementing <code>Deserialize</code> for a type tends to be more complicated than
-implementing <code>Serialize</code>.</p><p>The <code>Deserializer</code> trait supports two entry point styles which enables different
-kinds of deserialization.</p><ol><li><p>The <code>deserialize</code> method. Self-describing data formats like JSON are able to
+implementing <code>Serialize</code>.</p>
+<p>The <code>Deserializer</code> trait supports two entry point styles which enables different
+kinds of deserialization.</p>
+<ol>
+<li><p>The <code>deserialize</code> method. Self-describing data formats like JSON are able to
 look at the serialized data and tell what it represents. For example the JSON
 deserializer may see an opening curly brace (<code>{</code>) and know that it is seeing
 a map. If the data format supports <code>Deserializer::deserialize</code>, it will drive
@@ -596,21 +603,28 @@ the Visitor using whatever type it sees in the input. JSON uses this approach
 when deserializing <code>serde_json::Value</code> which is an enum that can represent
 any JSON document. Without knowing what is in a JSON document, we can
 deserialize it to <code>serde_json::Value</code> by going through
-<code>Deserializer::deserialize</code>.</p></li>
+<code>Deserializer::deserialize</code>.</p>
+</li>
 <li><p>The various <code>deserialize_*</code> methods. Non-self-describing formats like Bincode
 need to be told what is in the input in order to deserialize it. The
 <code>deserialize_*</code> methods are hints to the deserializer for how to interpret
 the next piece of input. Non-self-describing formats are not able to
 deserialize something like <code>serde_json::Value</code> which relies on
-<code>Deserializer::deserialize</code>.</p></li></ol>
+<code>Deserializer::deserialize</code>.</p>
+</li>
+</ol>
 <p>When implementing <code>Deserialize</code>, you should avoid relying on
 <code>Deserializer::deserialize</code> unless you need to be told by the Deserializer what
 type is in the input. Know that relying on <code>Deserializer::deserialize</code> means
 your data type will be able to deserialize from self-describing formats only,
-ruling out Bincode and many others.</p><h2 id="the-visitor-trait">The Visitor trait</h2><p>A <a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> is instantiated
+ruling out Bincode and many others.</p>
+<h2 id="the-visitor-trait">The Visitor trait</h2>
+<p>A <a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> is instantiated
 by a <code>Deserialize</code> impl and passed to a <code>Deserializer</code>. The <code>Deserializer</code> then
-calls a method on the <code>Visitor</code> in order to construct the desired type.</p><p>Here is a <code>Visitor</code> that is able to deserialize a primitive <code>i32</code> from a variety
-of types.</p><pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">I32Visitor</span></span>;
+calls a method on the <code>Visitor</code> in order to construct the desired type.</p>
+<p>Here is a <code>Visitor</code> that is able to deserialize a primitive <code>i32</code> from a variety
+of types.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">I32Visitor</span></span>;
 
 <span class="hljs-keyword">impl</span> de::Visitor <span class="hljs-keyword">for</span> I32Visitor {
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = <span class="hljs-keyword">i32</span>;
@@ -646,29 +660,36 @@ of types.</p><pre><code class="lang-rust"><span class="hljs-class"><span class="
     <span class="hljs-comment">//   - visit_u16</span>
     <span class="hljs-comment">//   - visit_u32</span>
     <span class="hljs-comment">//   - visit_u64</span>
-}</code></pre>
+}
+</code></pre>
 <p>The <code>Visitor</code> trait has lots more methods that are not implemented for
 <code>I32Visitor</code>. Leaving them unimplemented means a <a href="https://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type" target="_blank">type
 error</a> is
 returned if they get called. For example <code>I32Visitor</code> does not implement
 <code>Visitor::visit_map</code>, so trying to deserialize an i32 when the input contains a
-map is a type error.</p><h2 id="driving-a-visitor">Driving a Visitor</h2><p>Deserialize a value by passing a <code>Visitor</code> to the given <code>Deserializer</code>. The
+map is a type error.</p>
+<h2 id="driving-a-visitor">Driving a Visitor</h2>
+<p>Deserialize a value by passing a <code>Visitor</code> to the given <code>Deserializer</code>. The
 <code>Deserializer</code> will call one of the <code>Visitor</code> methods depending on the input
-data, which is known as &quot;driving&quot; the <code>Visitor</code>.</p><pre><code class="lang-rust"><span class="hljs-keyword">impl</span> Deserialize <span class="hljs-keyword">for</span> <span class="hljs-keyword">i32</span> {
+data, which is known as &quot;driving&quot; the <code>Visitor</code>.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">impl</span> Deserialize <span class="hljs-keyword">for</span> <span class="hljs-keyword">i32</span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">i32</span>, D::Error&gt;
         <span class="hljs-keyword">where</span> D: Deserializer
     {
         deserializer.deserialize_i32(I32Visitor)
     }
-}</code></pre>
+}
+</code></pre>
 <p>Note that a <code>Deserializer</code> will not necessarily follow the type hint, so the
 call to <code>deserialize_i32</code> does not necessarily mean the <code>Deserializer</code> will call
 <code>I32Visitor::visit_i32</code>. For example JSON treats all signed integer types alike.
 The JSON <code>Deserializer</code> will call <code>visit_i64</code> for any signed integer and
-<code>visit_u64</code> for any unsigned integer, even if hinted a different type.</p><h2 id="other-examples">Other examples</h2><ul><li><a href="deserialize-map.html">Deserializing a map</a>
-</li>
-<li><a href="deserialize-struct.html">Deserializing a struct</a>
-</li></ul>
+<code>visit_u64</code> for any unsigned integer, even if hinted a different type.</p>
+<h2 id="other-examples">Other examples</h2>
+<ul>
+<li><a href="deserialize-map.html">Deserializing a map</a></li>
+<li><a href="deserialize-struct.html">Deserializing a struct</a></li>
+</ul>
 
                                 
                                 </section>
@@ -696,7 +717,7 @@ The JSON <code>Deserializer</code> will call <code>visit_i64</code> for any sign
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.5.2","depth":2,"next":{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.5.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.5.2","depth":2,"next":{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.5.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

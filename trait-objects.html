@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Trait objects · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Trait objects · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,14 +574,18 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="using-serde-trait-objects">Using Serde trait objects</h1><p>The usual Serde <code>Serialize</code> and <code>Serializer</code> traits cannot be used as <a href="https://doc.rust-lang.org/book/trait-objects.html" target="_blank">trait
+                                <h1 id="using-serde-trait-objects">Using Serde trait objects</h1>
+<p>The usual Serde <code>Serialize</code> and <code>Serializer</code> traits cannot be used as <a href="https://doc.rust-lang.org/book/trait-objects.html" target="_blank">trait
 objects</a> like <code>&amp;Serialize</code> or
 boxed trait objects like <code>Box&lt;Serialize&gt;</code> because of Rust&apos;s <a href="http://huonw.github.io/blog/2015/01/object-safety/" target="_blank">&quot;object safety&quot;
 rules</a>. In particular, both
-traits contain generic methods which cannot be made into a trait object.</p><p>The <a href="https://github.com/dtolnay/erased-serde" target="_blank"><code>erased-serde</code></a> crate provides
+traits contain generic methods which cannot be made into a trait object.</p>
+<p>The <a href="https://github.com/dtolnay/erased-serde" target="_blank"><code>erased-serde</code></a> crate provides
 versions of the <code>Serialize</code> and <code>Serializer</code> traits that are object-safe and can
-be used as <code>&amp;Serialize</code>/<code>&amp;Serializer</code> and <code>Box&lt;Serialize&gt;</code>/<code>Box&lt;Serializer&gt;</code>.</p><p>The traits in <code>erased-serde</code> can be used seamlessly with any existing Serde
-<code>Serialize</code> type and any existing Serde <code>Serializer</code> format.</p><pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> erased_serde;
+be used as <code>&amp;Serialize</code>/<code>&amp;Serializer</code> and <code>Box&lt;Serialize&gt;</code>/<code>Box&lt;Serializer&gt;</code>.</p>
+<p>The traits in <code>erased-serde</code> can be used seamlessly with any existing Serde
+<code>Serialize</code> type and any existing Serde <code>Serializer</code> format.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> erased_serde;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_cbor;
 
@@ -612,7 +616,8 @@ be used as <code>&amp;Serialize</code>/<code>&amp;Serializer</code> and <code>Bo
 
     <span class="hljs-comment">// This line prints `[&quot;a&quot;,&quot;b&quot;]` to stdout.</span>
     value.erased_serialize(format).unwrap();
-}</code></pre>
+}
+</code></pre>
 
                                 
                                 </section>
@@ -640,7 +645,7 @@ be used as <code>&amp;Serialize</code>/<code>&amp;Serializer</code> and <code>Bo
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Trait objects","level":"1.6.13","depth":2,"next":{"title":"Transcode into another format","level":"1.6.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.6.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"trait-objects.md","mtime":"2016-10-30T14:29:59.353Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Trait objects","level":"1.6.13","depth":2,"next":{"title":"Transcode into another format","level":"1.6.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.6.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"trait-objects.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

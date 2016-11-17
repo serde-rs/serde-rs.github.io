@@ -2,12 +2,12 @@
 <!DOCTYPE HTML>
 <html lang="en" >
     <head>
-        <title>Examples · Serde</title>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Examples · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.0">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -574,33 +574,49 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="examples">Examples</h1><p><strong><a href="json.html">Structs and enums in JSON</a></strong>: The representation chosen by
+                                <h1 id="examples">Examples</h1>
+<p><strong><a href="json.html">Structs and enums in JSON</a></strong>: The representation chosen by
 <a href="https://github.com/serde-rs/json" target="_blank"><code>serde_json</code></a> for structs and enums. Other
-data formats are encouraged to follow an analogous approach where possible.</p><p><strong><a href="attr-default.html">Default value for a field</a></strong>: Some examples of the
-<code>#[serde(default)]</code> attribute.</p><p><strong><a href="attr-bound.html">Handwritten generic type bounds</a></strong>: Some unusual scenarios in
+data formats are encouraged to follow an analogous approach where possible.</p>
+<p><strong><a href="attr-default.html">Default value for a field</a></strong>: Some examples of the
+<code>#[serde(default)]</code> attribute.</p>
+<p><strong><a href="attr-bound.html">Handwritten generic type bounds</a></strong>: Some unusual scenarios in
 which Serde codegen infers the wrong generic type bounds. The impl bounds can be
-replaced with handwritten ones using the <code>#[serde(bound)]</code> attribute.</p><p><strong><a href="deserialize-map.html">Deserialize for custom map type</a></strong>: Detailed explanation
-of each step involved in deserializing a map.</p><p><strong><a href="serialize-map.html">Serialize for custom map type</a></strong>: Other complex types
-(sequences, structs, tuple structs) are very similar to this as well.</p><p><strong><a href="stream-array.html">Array of values without buffering</a></strong>: Deserialize the
+replaced with handwritten ones using the <code>#[serde(bound)]</code> attribute.</p>
+<p><strong><a href="deserialize-map.html">Deserialize for custom map type</a></strong>: Detailed explanation
+of each step involved in deserializing a map.</p>
+<p><strong><a href="serialize-map.html">Serialize for custom map type</a></strong>: Other complex types
+(sequences, structs, tuple structs) are very similar to this as well.</p>
+<p><strong><a href="stream-array.html">Array of values without buffering</a></strong>: Deserialize the
 maximum value of an array of integers without holding the whole array in memory
 at once. This approach can be adapted to handle a variety of other situations in
-which data needs to be processed while being deserialized instead of after.</p><p><strong><a href="enum-str.html">Serialize enum as string</a></strong>: A macro to impl <code>Serialize</code> and
+which data needs to be processed while being deserialized instead of after.</p>
+<p><strong><a href="enum-str.html">Serialize enum as string</a></strong>: A macro to impl <code>Serialize</code> and
 <code>Deserialize</code> for a C-like enum in a way that represents it as a string across
-all data formats.</p><p><strong><a href="enum-number.html">Serialize enum as number</a></strong>: A macro to impl <code>Serialize</code> and
+all data formats.</p>
+<p><strong><a href="enum-number.html">Serialize enum as number</a></strong>: A macro to impl <code>Serialize</code> and
 <code>Deserialize</code> for a C-like enum in a way that represents it as a <code>u64</code> across
-all data formats.</p><p><strong><a href="attr-rename.html">Serialize fields as camelCase</a></strong>: One common application of
-the <code>#[serde(rename)]</code> attribute.</p><p><strong><a href="attr-skip-serializing.html">Skip serializing field</a></strong>: Some examples of the
-<code>#[serde(skip_serializing)]</code> and <code>#[serde(skip_serializing_if)]</code> attributes.</p><p><strong><a href="newtype-wrapper.html">De/Serialize for other crate</a></strong>: Implementing <code>Serialize</code>
+all data formats.</p>
+<p><strong><a href="attr-rename.html">Serialize fields as camelCase</a></strong>: One common application of
+the <code>#[serde(rename)]</code> attribute.</p>
+<p><strong><a href="attr-skip-serializing.html">Skip serializing field</a></strong>: Some examples of the
+<code>#[serde(skip_serializing)]</code> and <code>#[serde(skip_serializing_if)]</code> attributes.</p>
+<p><strong><a href="newtype-wrapper.html">De/Serialize for other crate</a></strong>: Implementing <code>Serialize</code>
 and <code>Deserialize</code> for a type in a different crate by wrapping it in a newtype
-wrapper.</p><p><strong><a href="deserialize-struct.html">Manually deserialize struct</a></strong>: The long form of the
-<code>Deserialize</code> impl generated by codegen for a simple struct.</p><p><strong><a href="trait-objects.html">Using Serde trait objects</a></strong>: The
+wrapper.</p>
+<p><strong><a href="deserialize-struct.html">Manually deserialize struct</a></strong>: The long form of the
+<code>Deserialize</code> impl generated by codegen for a simple struct.</p>
+<p><strong><a href="trait-objects.html">Using Serde trait objects</a></strong>: The
 <a href="https://github.com/dtolnay/erased-serde" target="_blank">erased-serde</a> crate provides
 type-erased Serde traits that can be used as <code>&amp;Serialize</code>/<code>&amp;Serializer</code> or
-<code>Box&lt;Serialize&gt;</code>/<code>Box&lt;Serializer&gt;</code>.</p><p><strong><a href="transcode.html">Transcode one format into another</a></strong>: Use the
+<code>Box&lt;Serialize&gt;</code>/<code>Box&lt;Serializer&gt;</code>.</p>
+<p><strong><a href="transcode.html">Transcode one format into another</a></strong>: Use the
 <a href="https://github.com/sfackler/serde-transcode" target="_blank">serde-transcode</a> crate to stream
-input in one format to output in another format efficiently.</p><p><strong><a href="string-or-struct.html">Deserialize either a string or a struct</a></strong>: The
+input in one format to output in another format efficiently.</p>
+<p><strong><a href="string-or-struct.html">Deserialize either a string or a struct</a></strong>: The
 <a href="https://docs.docker.com/compose/compose-file/#/build" target="_blank"><code>docker-compose.yml</code></a>
 configuration file has a &quot;build&quot; key which can be either a string or a struct.</p>
+
                                 
                                 </section>
                             
@@ -627,7 +643,7 @@ configuration file has a &quot;build&quot; key which can be either a string or a
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.6","depth":1,"next":{"title":"Structs and enums in JSON","level":"1.6.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"previous":{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"examples.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-10-30T14:31:20.268Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.6","depth":1,"next":{"title":"Structs and enums in JSON","level":"1.6.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"previous":{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"examples.md","mtime":"2016-11-17T18:10:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-11-17T18:27:11.466Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
