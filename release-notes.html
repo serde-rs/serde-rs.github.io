@@ -1,0 +1,912 @@
+
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Release notes · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-codeblock-filename/block.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="troubleshooting.html" />
+    
+    
+    <link rel="prev" href="feature-flags.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book with-summary font-size-2">
+    <div class="book-summary">
+        
+            
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="help.html">
+            
+                <a href="help.html">
+            
+                    
+                    Help
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="codegen.html">
+            
+                <a href="codegen.html">
+            
+                    
+                    Setting up codegen
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="codegen-stable.html">
+            
+                <a href="codegen-stable.html">
+            
+                    
+                    On stable compiler
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="codegen-nightly.html">
+            
+                <a href="codegen-nightly.html">
+            
+                    
+                    On nightly compiler
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="codegen-hybrid.html">
+            
+                <a href="codegen-hybrid.html">
+            
+                    
+                    Supporting both
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="attributes.html">
+            
+                <a href="attributes.html">
+            
+                    
+                    Attributes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="attributes.html">
+            
+                <a href="attributes.html#container-attributes">
+            
+                    
+                    Container attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="attributes.html">
+            
+                <a href="attributes.html#variant-attributes">
+            
+                    
+                    Variant attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="attributes.html">
+            
+                <a href="attributes.html#field-attributes">
+            
+                    
+                    Field attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="custom-serialization.html">
+            
+                <a href="custom-serialization.html">
+            
+                    
+                    Custom serialization
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="impl-serialize.html">
+            
+                <a href="impl-serialize.html">
+            
+                    
+                    Implementing Serialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="impl-deserialize.html">
+            
+                <a href="impl-deserialize.html">
+            
+                    
+                    Implementing Deserialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="unit-testing.html">
+            
+                <a href="unit-testing.html">
+            
+                    
+                    Unit testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="examples.html">
+            
+                <a href="examples.html">
+            
+                    
+                    Examples
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="json.html">
+            
+                <a href="json.html">
+            
+                    
+                    Structs and enums in JSON
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="attr-default.html">
+            
+                <a href="attr-default.html">
+            
+                    
+                    Default value for a field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="attr-bound.html">
+            
+                <a href="attr-bound.html">
+            
+                    
+                    Handwritten generic type bounds
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="deserialize-map.html">
+            
+                <a href="deserialize-map.html">
+            
+                    
+                    Deserialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="serialize-map.html">
+            
+                <a href="serialize-map.html">
+            
+                    
+                    Serialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="stream-array.html">
+            
+                <a href="stream-array.html">
+            
+                    
+                    Array of values without buffering
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.7" data-path="enum-str.html">
+            
+                <a href="enum-str.html">
+            
+                    
+                    Serialize enum as string
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.8" data-path="enum-number.html">
+            
+                <a href="enum-number.html">
+            
+                    
+                    Serialize enum as number
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.9" data-path="attr-rename.html">
+            
+                <a href="attr-rename.html">
+            
+                    
+                    Serialize fields as camelCase
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.10" data-path="attr-skip-serializing.html">
+            
+                <a href="attr-skip-serializing.html">
+            
+                    
+                    Skip serializing field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.11" data-path="newtype-wrapper.html">
+            
+                <a href="newtype-wrapper.html">
+            
+                    
+                    De/Serialize for other crate
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.12" data-path="deserialize-struct.html">
+            
+                <a href="deserialize-struct.html">
+            
+                    
+                    Manually deserialize struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.13" data-path="trait-objects.html">
+            
+                <a href="trait-objects.html">
+            
+                    
+                    Trait objects
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.14" data-path="transcode.html">
+            
+                <a href="transcode.html">
+            
+                    
+                    Transcode into another format
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.15" data-path="string-or-struct.html">
+            
+                <a href="string-or-struct.html">
+            
+                    
+                    Either string or struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="feature-flags.html">
+            
+                <a href="feature-flags.html">
+            
+                    
+                    Feature flags
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.8" data-path="release-notes.html">
+            
+                <a href="release-notes.html">
+            
+                    
+                    Release notes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="troubleshooting.html">
+            
+                <a href="troubleshooting.html">
+            
+                    
+                    Troubleshooting
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="technical-details.html">
+            
+                <a href="technical-details.html">
+            
+                    
+                    Technical details
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Release notes</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="release-notes">Release notes</h1>
+<h2 id="v0821">v0.8.21</h2>
+<ul>
+<li><p>Implement skip_serializing for enum variants
+(<a href="https://github.com/serde-rs/serde/pull/653" target="_blank">#653</a>, thanks @shinglyu)</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
+    A(<span class="hljs-keyword">bool</span>),
+    B(<span class="hljs-built_in">String</span>),
+    <span class="hljs-meta">#[serde(skip_serializing)]</span>
+    C(NotSerializable),
+}
+</code></pre>
+<p>Serialization will fail with a message if that particular variant is the one
+being serialized.</p>
+<blockquote>
+<p>&quot;The enum variant E::C cannot be serialized&quot;</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="v0820">v0.8.20</h2>
+<ul>
+<li><p>Implement skip_deserializing for enum variants
+(<a href="https://github.com/serde-rs/serde/pull/641" target="_blank">#641</a>, thanks @shinglyu)</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
+    A(<span class="hljs-keyword">bool</span>),
+    B(<span class="hljs-built_in">String</span>),
+    <span class="hljs-meta">#[serde(skip_deserializing)]</span>
+    C(NotDeserializable),
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="v0819">v0.8.19</h2>
+<p><em>Support for rustc 1.15.0-nightly (7b3eeea22 2016-11-21)</em></p>
+<h2 id="v0818">v0.8.18</h2>
+<p><em>Support for rustc 1.15.0-nightly (ac635aa95 2016-11-18)</em></p>
+<h2 id="v0817">v0.8.17</h2>
+<p><em>Support for rustc 1.14.0-nightly (7c69b0d5a 2016-11-01)</em></p>
+<h2 id="v0816">v0.8.16</h2>
+<ul>
+<li>Fix possible warning when building with <code>#![warn(unused_results)]</code>
+(<a href="https://github.com/serde-rs/serde/pull/599" target="_blank">#599</a>, thanks @TheCatPlusPlus)</li>
+</ul>
+<h2 id="v0815">v0.8.15</h2>
+<ul>
+<li>Use <a href="https://github.com/dtolnay/post-expansion" target="_blank">post-expansion</a> tricks to make
+serde attributes available to other custom derives  like
+<a href="https://github.com/elastic-rs/elastic-types" target="_blank">elastic_types_derive</a>
+(<a href="https://github.com/serde-rs/serde/pull/592" target="_blank">#592</a>)</li>
+</ul>
+<h2 id="v0814">v0.8.14</h2>
+<ul>
+<li>Fix corrupted deserialization code being generated randomly when using
+serde_codegen (did not affect serde_derive)
+<a href="https://github.com/serde-rs/serde/issues/590" target="_blank">#590</a></li>
+</ul>
+<h2 id="v0813">v0.8.13</h2>
+<ul>
+<li>The empty array <code>[T; 0]</code> now supports deserializing from formats that handle
+fixed-sized arrays only (<a href="https://github.com/serde-rs/serde/issues/582" target="_blank">#582</a>)</li>
+<li>The empty array <code>[T; 0]</code> no longer requires <code>T: Default</code> in order to
+deserialize (<a href="https://github.com/serde-rs/serde/issues/583" target="_blank">#583</a>)</li>
+</ul>
+<h2 id="v0812">v0.8.12</h2>
+<ul>
+<li>Update the serde_derive crate type from &quot;rustc-macro&quot; to &quot;proc-macro&quot; to match
+the blanket rename in Rust (<a href="https://github.com/rust-lang/rust/pull/36945" target="_blank">https://github.com/rust-lang/rust/pull/36945</a>).
+Rustc 1.14.0-nightly (6e8f92f11 2016-10-07) is the first version containing
+the rename.</li>
+</ul>
+<h2 id="v0811">v0.8.11</h2>
+<ul>
+<li>Impl <code>Serialize</code> and <code>Deserialize</code> for
+<a href="https://doc.rust-lang.org/std/net/enum.IpAddr.html" target="_blank"><code>IpAddr</code></a> without
+requiring the <code>unstable</code> feature
+(<a href="https://github.com/serde-rs/serde/pull/568" target="_blank">#568</a>)</li>
+</ul>
+<h2 id="v0810">v0.8.10</h2>
+<p><strong>This release deprecates the old Serde compiler plugin <code>serde_macros</code> in favor of the <a href="https://github.com/rust-lang/rfcs/blob/master/text/1681-macros-1.1.md" target="_blank">Macros 1.1</a>-based implementation <a href="https://crates.io/crates/serde_derive" target="_blank"><code>serde_derive</code></a>.</strong></p>
+<p>We do not intend to release any further version of <code>serde_macros</code>, not even to fix breakage in future nightly versions. The design of Macros 1.1 is such that we do not expect to see the regular breakage with <code>serde_derive</code> that we used to see with <code>serde_macros</code>, as it depends on a far more limited set of unstable compiler internals.</p>
+<p>See <a href="https://serde.rs/codegen-nightly.html" target="_blank">https://serde.rs/codegen-nightly.html</a> for steps to set up <code>serde_derive</code>, or <a href="https://serde.rs/codegen-hybrid.html" target="_blank">https://serde.rs/codegen-hybrid.html</a> for steps to set up a hybrid <code>serde_codegen</code>/<code>serde_derive</code> approach that works on stable.</p>
+<h3 id="old-approach">Old approach</h3>
+<pre><code class="lang-toml"><span class="hljs-section">[dependencies]</span>
+<span class="hljs-attr">serde_macros</span> = <span class="hljs-string">&quot;0.8&quot;</span>
+</code></pre>
+<pre><code class="lang-rust"><span class="hljs-meta">#![feature(plugin, custom_derive)]</span>
+<span class="hljs-meta">#![plugin(serde_macros)]</span>
+</code></pre>
+<h3 id="new-approach">New approach</h3>
+<pre><code class="lang-toml"><span class="hljs-section">[dependencies]</span>
+<span class="hljs-attr">serde_derive</span> = <span class="hljs-string">&quot;0.8&quot;</span>
+</code></pre>
+<pre><code class="lang-rust"><span class="hljs-meta">#![feature(rustc_macro)]</span>
+
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-comment">// everything else is the same</span>
+</code></pre>
+<h2 id="v089">v0.8.9</h2>
+<p><em>Support for rustc 1.13.0-nightly (1265cbf4e 2016-09-15)</em></p>
+<h2 id="v088">v0.8.8</h2>
+<ul>
+<li>Fix faulty generated code when using a <code>serialize_with</code> field attribute along
+with a nonstandard <code>Result</code> type in the same module
+(<a href="https://github.com/serde-rs/serde/pull/546" target="_blank">#546</a>)</li>
+</ul>
+<h2 id="v087">v0.8.7</h2>
+<ul>
+<li><p>Add a <code>forward_to_deserialize!</code> macro to simplify JSON-like <code>Deserializer</code>
+implementations that want to ignore type hints given by <code>Deserialize</code>
+(<a href="https://github.com/serde-rs/serde/pull/525" target="_blank">#525</a>)</p>
+<pre><code class="lang-rust">  <span class="hljs-keyword">impl</span> Deserializer <span class="hljs-keyword">for</span> MyDeserializer {
+      <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;V&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value, Self::Error&gt;
+          <span class="hljs-keyword">where</span> V: Visitor
+      {
+          <span class="hljs-comment">/* ... */</span>
+      }
+
+      forward_to_deserialize! {
+          <span class="hljs-keyword">bool</span> usize <span class="hljs-keyword">u8</span> u16 <span class="hljs-keyword">u32</span> <span class="hljs-keyword">u64</span> isize <span class="hljs-keyword">i8</span> <span class="hljs-keyword">i16</span> <span class="hljs-keyword">i32</span> <span class="hljs-keyword">i64</span> <span class="hljs-keyword">f32</span> <span class="hljs-keyword">f64</span> <span class="hljs-keyword">char</span> <span class="hljs-keyword">str</span> string
+          unit option seq seq_fixed_size bytes map unit_struct newtype_struct
+          tuple_struct <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">struct_field</span></span> tuple <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">ignored_any</span></span>
+      }
+  }
+</code></pre>
+</li>
+<li><p>Add constructors for the <code>Bytes</code> and <code>ByteBuf</code> helpers
+(<a href="https://github.com/serde-rs/serde/pull/520" target="_blank">#520</a>)</p>
+</li>
+<li>Allow <code>MapDeserializer</code> to be deserialized as a sequence of pairs instead of a
+map (<a href="https://github.com/serde-rs/serde/pull/527" target="_blank">#527</a>)</li>
+<li>Fix warnings in generated code for a non-unit struct with no fields
+(<a href="https://github.com/serde-rs/serde/pull/536" target="_blank">#536</a>)</li>
+<li>Minor cleanup of generated serialization code
+(<a href="https://github.com/serde-rs/serde/pull/538" target="_blank">#538</a>)</li>
+</ul>
+<h2 id="v086">v0.8.6</h2>
+<ul>
+<li>Add a <code>serde_derive</code> crate which provides a  <a href="https://github.com/rust-lang/rfcs/blob/master/text/1681-macros-1.1.md" target="_blank">Macros
+1.1</a>
+implementation of <code>#[derive(Serialize, Deserialize)]</code>
+(<a href="https://github.com/serde-rs/serde/pull/530" target="_blank">#530</a>)</li>
+<li>Add <code>serde_codegen::expand_str</code> which is necessary for Macros 1.1</li>
+</ul>
+<p>Using Macros 1.1 requires rustc support (not in nightly yet but available in
+<a href="https://github.com/rust-lang/rust/pull/35957" target="_blank">https://github.com/rust-lang/rust/pull/35957</a>) and cargo support (available in
+<a href="https://github.com/rust-lang/cargo/pull/3064" target="_blank">https://github.com/rust-lang/cargo/pull/3064</a>). Using Macros 1.1 looks like this:</p>
+<p><strong>Cargo.toml</strong></p>
+<pre><code class="lang-rust">[dependencies]
+serde = <span class="hljs-string">&quot;0.8&quot;</span>
+serde_derive = <span class="hljs-string">&quot;0.8&quot;</span>
+</code></pre>
+<p><strong>src/main.rs</strong></p>
+<pre><code class="lang-rust"><span class="hljs-meta">#![feature(rustc_macro)]</span>
+
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ItWorks</span></span> {
+    exciting: <span class="hljs-keyword">bool</span>,
+}
+</code></pre>
+<p>Advantages of this approach:</p>
+<ul>
+<li>We expect Macros 1.1 to be stabilized much sooner than the features that
+serde_macros relies on, so we are finally in sight of having ergonomic Serde
+code generation available on stable Rust.</li>
+<li>Even on nightly Rust, serde_derive is built in a way that is much more stable
+than serde_macros. It will not be affected by breaking libsyntax changes in
+the nightly compiler.</li>
+</ul>
+<h2 id="v085">v0.8.5</h2>
+<p><em>Support for rustc 1.13.0-nightly (eac41469d 2016-08-30)</em></p>
+<h2 id="v084">v0.8.4</h2>
+<ul>
+<li>Implement ValueDeserializer for <code>Cow&lt;str&gt;</code>
+(<a href="https://github.com/serde-rs/serde/pull/513" target="_blank">#513</a>)</li>
+<li>Support maps of unknown size in MapDeserializer
+(<a href="https://github.com/serde-rs/serde/pull/514" target="_blank">#514</a>)</li>
+</ul>
+<h2 id="v083">v0.8.3</h2>
+<ul>
+<li>Fixes codegen for structs that have a lifetime parameter but no generic type
+parameter (<a href="https://github.com/serde-rs/serde/issues/507" target="_blank">#507</a>)</li>
+</ul>
+<h2 id="v082">v0.8.2</h2>
+<ul>
+<li>Using Syntex, <code>serde_codegen::expand</code> now runs with a 16 MB stack by default
+because the previous default was often insufficient
+(<a href="https://github.com/serde-rs/serde/issues/494" target="_blank">#494</a>,
+<a href="https://github.com/serde-rs/serde/pull/503" target="_blank">#503</a>)</li>
+</ul>
+<h2 id="v081">v0.8.1</h2>
+<ul>
+<li>Impl Serialize and Deserialize for std::time::Duration
+(<a href="https://github.com/serde-rs/serde/pull/476" target="_blank">#476</a>)</li>
+<li>Use a thread in the build script of serde_codegen to allow env vars to control
+the stack size (<a href="https://github.com/serde-rs/serde/pull/488" target="_blank">#488</a>)</li>
+</ul>
+<h2 id="v080">v0.8.0</h2>
+<p><em>This release contains significant breaking changes compared to v0.7.x.</em></p>
+<h4 id="traits">Traits</h4>
+<ul>
+<li>The Serializer trait has been modified to allow for streaming serialization -
+serializing seq and map elements before knowing what the end of the seq or map
+will be. (<a href="https://github.com/serde-rs/serde/pull/437" target="_blank">#437</a>)</li>
+<li><p>Reduced boilerplate (no more SeqVisitor and MapVisitor) when implementing Serialize for most types.</p>
+<pre><code class="lang-rust">  <span class="hljs-comment">// OLD API</span>
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MySeqVisitor</span></span> { <span class="hljs-comment">/* ... */</span> }
+  <span class="hljs-keyword">impl</span> <span class="hljs-comment">/* pages of boilerplate */</span>
+  <span class="hljs-built_in">try!</span>(serializer.serialize_seq(MySeqVisitor::new(iter, len)));
+
+  <span class="hljs-comment">// NEW API</span>
+  <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> state = <span class="hljs-built_in">try!</span>(serializer.serialize_seq(len));
+  <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> iter {
+      <span class="hljs-built_in">try!</span>(serializer.serialize_seq_elt(&amp;<span class="hljs-keyword">mut</span> state, e));
+  }
+  <span class="hljs-built_in">try!</span>(serializer.serialize_seq_end(state));
+</code></pre>
+</li>
+<li><p>The Serializer and Deserializer traits no longer provide default
+implementations for any methods. The old defaults were JSON-centric and
+inappropriate for most other formats. Every Serializer and Deserializer should
+mindfully implement all of the methods.
+(<a href="https://github.com/serde-rs/serde/pull/437" target="_blank">#437</a>,
+<a href="https://github.com/serde-rs/serde/pull/452" target="_blank">#452</a>)</p>
+</li>
+</ul>
+<h4 id="codegen">Codegen</h4>
+<ul>
+<li>No more public dependency on Syntex. The <code>serde_codegen::register</code> function
+which was deprecated in
+<a href="https://github.com/serde-rs/serde/releases/tag/v0.7.9" target="_blank">v0.7.9</a> has been
+removed. Users should use <code>serde_codegen::expand</code>. See the readme for sample
+code, and see <a href="https://users.rust-lang.org/t/here-is-how-to-avoid-being-broken-by-syntex-updates/6189?u=dtolnay" target="_blank">this forum
+topic</a>
+for exposition. (<a href="https://github.com/serde-rs/serde/pull/445" target="_blank">#445</a>)</li>
+<li>Adjusted heuristic for generating bounds on generic type parameters
+(<a href="https://github.com/serde-rs/serde/pull/456" target="_blank">#456</a>). This fixes a number of
+issues relating to bounds on recursive types, bounds involving references, and
+bounds involving private types
+(<a href="https://github.com/serde-rs/serde/issues/435" target="_blank">#435</a>,
+<a href="https://github.com/serde-rs/serde/issues/436" target="_blank">#436</a>,
+<a href="https://github.com/serde-rs/serde/issues/441" target="_blank">#441</a>,
+<a href="https://github.com/serde-rs/serde/issues/443" target="_blank">#443</a>)</li>
+</ul>
+<h4 id="impls">Impls</h4>
+<ul>
+<li>The Deserialize impl for <code>PhantomData&lt;T&gt;</code> has been expanded to all <code>T</code>, not
+just <code>T: Deserialize</code> (<a href="https://github.com/serde-rs/serde/pull/457" target="_blank">#457</a>,
+<a href="https://github.com/serde-rs/serde/pull/459" target="_blank">#459</a>)</li>
+<li>Add Deserialize impl for <code>Box&lt;str&gt;</code>
+(<a href="https://github.com/serde-rs/serde/pull/454" target="_blank">#454</a>)</li>
+</ul>
+<h4 id="nightly">Nightly</h4>
+<ul>
+<li>The <code>nightly</code> feature has been renamed to <code>unstable</code> to align with community
+practices. (<a href="https://github.com/serde-rs/serde/issues/404" target="_blank">#404</a>)</li>
+</ul>
+
+                                
+                                </section>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="feature-flags.html" class="navigation navigation-prev " aria-label="Previous page: Feature flags">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="troubleshooting.html" class="navigation navigation-next " aria-label="Next page: Troubleshooting">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Release notes","level":"1.8","depth":1,"next":{"title":"Troubleshooting","level":"1.9","depth":1,"path":"troubleshooting.md","ref":"troubleshooting.md","articles":[]},"previous":{"title":"Feature flags","level":"1.7","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"release-notes.md","mtime":"2016-12-27T04:32:49.304Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T04:33:59.534Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
