@@ -44,11 +44,11 @@ impl<K, V> de::Visitor for MyMapVisitor<K, V>
 
         // While there are entries remaining in the input, add them
         // into our map.
-        while let Some((key, value)) = try!(visitor.visit()) {
+        while let Some((key, value)) = visitor.visit() {
             values.insert(key, value);
         }
 
-        try!(visitor.end());
+        visitor.end()?;
         Ok(values)
     }
 

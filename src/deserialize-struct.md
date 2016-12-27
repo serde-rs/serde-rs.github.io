@@ -57,21 +57,21 @@ impl Deserialize for Duration {
             fn visit_seq<V>(&mut self, mut visitor: V) -> Result<Duration, V::Error>
                 where V: SeqVisitor,
             {
-                let secs: u64 = match try!(visitor.visit()) {
+                let secs: u64 = match visitor.visit()? {
                     Some(value) => value,
                     None => {
-                        try!(visitor.end());
+                        visitor.end()?;
                         return Err(Error::invalid_length(0));
                     }
                 };
-                let nanos: u32 = match try!(visitor.visit()) {
+                let nanos: u32 = match visitor.visit()? {
                     Some(value) => value,
                     None => {
-                        try!(visitor.end());
+                        visitor.end()?;
                         return Err(Error::invalid_length(1));
                     }
                 };
-                try!(visitor.end());
+                visitor.end()?;
                 Ok(Duration::new(secs, nanos))
             }
 
@@ -80,30 +80,30 @@ impl Deserialize for Duration {
             {
                 let mut secs: Option<u64> = None;
                 let mut nanos: Option<u32> = None;
-                while let Some(key) = try!(visitor.visit_key::<Field>()) {
+                while let Some(key) = visitor.visit_key::<Field>()? {
                     match key {
                         Field::Secs => {
                             if secs.is_some() {
                                 return Err(<V::Error as Error>::duplicate_field("secs"));
                             }
-                            secs = Some(try!(visitor.visit_value()));
+                            secs = Some(visitor.visit_value()?);
                         }
                         Field::Nanos => {
                             if nanos.is_some() {
                                 return Err(<V::Error as Error>::duplicate_field("nanos"));
                             }
-                            nanos = Some(try!(visitor.visit_value()));
+                            nanos = Some(visitor.visit_value()?);
                         }
                     }
                 }
-                try!(visitor.end());
+                visitor.end()?;
                 let secs = match secs {
                     Some(secs) => secs,
-                    None => try!(visitor.missing_field("secs")),
+                    None => visitor.missing_field("secs")?,
                 };
                 let nanos = match nanos {
                     Some(nanos) => nanos,
-                    None => try!(visitor.missing_field("nanos")),
+                    None => visitor.missing_field("nanos")?,
                 };
                 Ok(Duration::new(secs, nanos))
             }

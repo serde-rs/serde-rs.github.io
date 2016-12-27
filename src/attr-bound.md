@@ -50,7 +50,7 @@ fn deserialize_from_str<S, D>(deserializer: &mut D) -> Result<S, D::Error>
           S::Err: Display,
           D: Deserializer
 {
-    let s: String = try!(Deserialize::deserialize(deserializer));
+    let s: String = Deserialize::deserialize(deserializer)?;
     S::from_str(&s).map_err(|e| de::Error::custom(e.to_string()))
 }
 
@@ -68,7 +68,7 @@ impl<'a, T: 'a + ?Sized> Deserialize for Ptr<'a, T>
     fn deserialize<D>(deserializer: &mut D) -> Result<Self, D::Error>
         where D: Deserializer
     {
-        let box_t = try!(Deserialize::deserialize(deserializer));
+        let box_t = Deserialize::deserialize(deserializer)?;
         Ok(Ptr::Owned(box_t))
     }
 }

@@ -54,7 +54,7 @@ fn deserialize_max<T, D>(deserializer: &mut D) -> Result<T, D::Error>
             where V: de::SeqVisitor
         {
             // Start with max equal to the first value in the seq.
-            let mut max = match try!(visitor.visit()) {
+            let mut max = match visitor.visit()? {
                 Some(value) => value,
                 None => {
                     // Cannot take the maximum of an empty seq.
@@ -64,11 +64,11 @@ fn deserialize_max<T, D>(deserializer: &mut D) -> Result<T, D::Error>
             };
 
             // Update the max while there are additional values.
-            while let Some(value) = try!(visitor.visit()) {
+            while let Some(value) = visitor.visit()? {
                 max = cmp::max(max, value);
             }
 
-            try!(visitor.end());
+            visitor.end()?;
             Ok(max)
         }
     }

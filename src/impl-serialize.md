@@ -54,9 +54,9 @@ impl<T> Serialize for Vec<T>
     fn serialize<S>(&self, serializer: &mut S) -> Result<(), S::Error>
         where S: Serializer
     {
-        let mut state = try!(serializer.serialize_seq(Some(self.len())));
+        let mut state = serializer.serialize_seq(Some(self.len()))?;
         for e in self {
-            try!(serializer.serialize_seq_elt(&mut state, e));
+            serializer.serialize_seq_elt(&mut state, e)?;
         }
         serializer.serialize_seq_end(state)
     }
