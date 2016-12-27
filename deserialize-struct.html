@@ -638,53 +638,53 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
             <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
                 <span class="hljs-keyword">where</span> V: SeqVisitor,
             {
-                <span class="hljs-keyword">let</span> secs: <span class="hljs-keyword">u64</span> = <span class="hljs-keyword">match</span> <span class="hljs-built_in">try!</span>(visitor.visit()) {
+                <span class="hljs-keyword">let</span> secs: <span class="hljs-keyword">u64</span> = <span class="hljs-keyword">match</span> visitor.visit()? {
                     <span class="hljs-literal">Some</span>(value) =&gt; value,
                     <span class="hljs-literal">None</span> =&gt; {
-                        <span class="hljs-built_in">try!</span>(visitor.end());
+                        visitor.end()?;
                         <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::invalid_length(<span class="hljs-number">0</span>));
                     }
                 };
-                <span class="hljs-keyword">let</span> nanos: <span class="hljs-keyword">u32</span> = <span class="hljs-keyword">match</span> <span class="hljs-built_in">try!</span>(visitor.visit()) {
+                <span class="hljs-keyword">let</span> nanos: <span class="hljs-keyword">u32</span> = <span class="hljs-keyword">match</span> visitor.visit()? {
                     <span class="hljs-literal">Some</span>(value) =&gt; value,
                     <span class="hljs-literal">None</span> =&gt; {
-                        <span class="hljs-built_in">try!</span>(visitor.end());
+                        visitor.end()?;
                         <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::invalid_length(<span class="hljs-number">1</span>));
                     }
                 };
-                <span class="hljs-built_in">try!</span>(visitor.end());
+                visitor.end()?;
                 <span class="hljs-literal">Ok</span>(Duration::new(secs, nanos))
             }
 
             <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;V&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
                 <span class="hljs-keyword">where</span> V: MapVisitor,
             {
-                <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> secs: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-keyword">u64</span>&gt; = <span class="hljs-literal">None</span>;
-                <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> nanos: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-keyword">u32</span>&gt; = <span class="hljs-literal">None</span>;
-                <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(key) = <span class="hljs-built_in">try!</span>(visitor.visit_key::&lt;Field&gt;()) {
+                <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> secs = <span class="hljs-literal">None</span>;
+                <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> nanos = <span class="hljs-literal">None</span>;
+                <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(key) = visitor.visit_key()? {
                     <span class="hljs-keyword">match</span> key {
                         Field::Secs =&gt; {
                             <span class="hljs-keyword">if</span> secs.is_some() {
-                                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(&lt;V::Error <span class="hljs-keyword">as</span> Error&gt;::duplicate_field(<span class="hljs-string">&quot;secs&quot;</span>));
+                                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::duplicate_field(<span class="hljs-string">&quot;secs&quot;</span>));
                             }
-                            secs = <span class="hljs-literal">Some</span>(<span class="hljs-built_in">try!</span>(visitor.visit_value()));
+                            secs = <span class="hljs-literal">Some</span>(visitor.visit_value()?);
                         }
                         Field::Nanos =&gt; {
                             <span class="hljs-keyword">if</span> nanos.is_some() {
-                                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(&lt;V::Error <span class="hljs-keyword">as</span> Error&gt;::duplicate_field(<span class="hljs-string">&quot;nanos&quot;</span>));
+                                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::duplicate_field(<span class="hljs-string">&quot;nanos&quot;</span>));
                             }
-                            nanos = <span class="hljs-literal">Some</span>(<span class="hljs-built_in">try!</span>(visitor.visit_value()));
+                            nanos = <span class="hljs-literal">Some</span>(visitor.visit_value()?);
                         }
                     }
                 }
-                <span class="hljs-built_in">try!</span>(visitor.end());
+                visitor.end()?;
                 <span class="hljs-keyword">let</span> secs = <span class="hljs-keyword">match</span> secs {
                     <span class="hljs-literal">Some</span>(secs) =&gt; secs,
-                    <span class="hljs-literal">None</span> =&gt; <span class="hljs-built_in">try!</span>(visitor.missing_field(<span class="hljs-string">&quot;secs&quot;</span>)),
+                    <span class="hljs-literal">None</span> =&gt; visitor.missing_field(<span class="hljs-string">&quot;secs&quot;</span>)?,
                 };
                 <span class="hljs-keyword">let</span> nanos = <span class="hljs-keyword">match</span> nanos {
                     <span class="hljs-literal">Some</span>(nanos) =&gt; nanos,
-                    <span class="hljs-literal">None</span> =&gt; <span class="hljs-built_in">try!</span>(visitor.missing_field(<span class="hljs-string">&quot;nanos&quot;</span>)),
+                    <span class="hljs-literal">None</span> =&gt; visitor.missing_field(<span class="hljs-string">&quot;nanos&quot;</span>)?,
                 };
                 <span class="hljs-literal">Ok</span>(Duration::new(secs, nanos))
             }
@@ -722,7 +722,7 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Manually deserialize struct","level":"1.6.12","depth":2,"next":{"title":"Trait objects","level":"1.6.13","depth":2,"path":"trait-objects.md","ref":"trait-objects.md","articles":[]},"previous":{"title":"De/Serialize for other crate","level":"1.6.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-struct.md","mtime":"2016-08-28T21:36:42.227Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T04:39:33.586Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Manually deserialize struct","level":"1.6.12","depth":2,"next":{"title":"Trait objects","level":"1.6.13","depth":2,"path":"trait-objects.md","ref":"trait-objects.md","articles":[]},"previous":{"title":"De/Serialize for other crate","level":"1.6.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-struct.md","mtime":"2016-12-27T15:36:12.105Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T15:36:28.552Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

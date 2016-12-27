@@ -640,7 +640,7 @@ processed while being deserialized instead of after.</p>
             <span class="hljs-keyword">where</span> V: de::SeqVisitor
         {
             <span class="hljs-comment">// Start with max equal to the first value in the seq.</span>
-            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = <span class="hljs-keyword">match</span> <span class="hljs-built_in">try!</span>(visitor.visit()) {
+            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = <span class="hljs-keyword">match</span> visitor.visit()? {
                 <span class="hljs-literal">Some</span>(value) =&gt; value,
                 <span class="hljs-literal">None</span> =&gt; {
                     <span class="hljs-comment">// Cannot take the maximum of an empty seq.</span>
@@ -650,11 +650,11 @@ processed while being deserialized instead of after.</p>
             };
 
             <span class="hljs-comment">// Update the max while there are additional values.</span>
-            <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(value) = <span class="hljs-built_in">try!</span>(visitor.visit()) {
+            <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(value) = visitor.visit()? {
                 max = cmp::max(max, value);
             }
 
-            <span class="hljs-built_in">try!</span>(visitor.end());
+            visitor.end()?;
             <span class="hljs-literal">Ok</span>(max)
         }
     }
@@ -713,7 +713,7 @@ processed while being deserialized instead of after.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.6.6","depth":2,"next":{"title":"Serialize enum as string","level":"1.6.7","depth":2,"path":"enum-str.md","ref":"enum-str.md","articles":[]},"previous":{"title":"Serialize for custom map type","level":"1.6.5","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2016-10-08T23:47:02.507Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T04:39:33.586Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.6.6","depth":2,"next":{"title":"Serialize enum as string","level":"1.6.7","depth":2,"path":"enum-str.md","ref":"enum-str.md","articles":[]},"previous":{"title":"Serialize for custom map type","level":"1.6.5","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2016-12-27T15:31:21.273Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T15:36:28.552Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

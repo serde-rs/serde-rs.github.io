@@ -636,7 +636,7 @@ programmer.</p>
           S::<span class="hljs-literal">Err</span>: Display,
           D: Deserializer
 {
-    <span class="hljs-keyword">let</span> s: <span class="hljs-built_in">String</span> = <span class="hljs-built_in">try!</span>(Deserialize::deserialize(deserializer));
+    <span class="hljs-keyword">let</span> s: <span class="hljs-built_in">String</span> = Deserialize::deserialize(deserializer)?;
     S::from_str(&amp;s).map_err(|e| de::Error::custom(e.to_string()))
 }
 
@@ -654,7 +654,7 @@ programmer.</p>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
         <span class="hljs-keyword">where</span> D: Deserializer
     {
-        <span class="hljs-keyword">let</span> box_t = <span class="hljs-built_in">try!</span>(Deserialize::deserialize(deserializer));
+        <span class="hljs-keyword">let</span> box_t = Deserialize::deserialize(deserializer)?;
         <span class="hljs-literal">Ok</span>(Ptr::Owned(box_t))
     }
 }
@@ -700,7 +700,7 @@ programmer.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"next":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"previous":{"title":"Default value for a field","level":"1.6.2","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-bound.md","mtime":"2016-10-08T23:47:01.079Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T04:39:33.586Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"next":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"previous":{"title":"Default value for a field","level":"1.6.2","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-bound.md","mtime":"2016-12-27T15:31:07.841Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T15:36:28.552Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
