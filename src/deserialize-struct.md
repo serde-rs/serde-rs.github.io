@@ -78,19 +78,19 @@ impl Deserialize for Duration {
             fn visit_map<V>(&mut self, mut visitor: V) -> Result<Duration, V::Error>
                 where V: MapVisitor,
             {
-                let mut secs: Option<u64> = None;
-                let mut nanos: Option<u32> = None;
-                while let Some(key) = visitor.visit_key::<Field>()? {
+                let mut secs = None;
+                let mut nanos = None;
+                while let Some(key) = visitor.visit_key()? {
                     match key {
                         Field::Secs => {
                             if secs.is_some() {
-                                return Err(<V::Error as Error>::duplicate_field("secs"));
+                                return Err(Error::duplicate_field("secs"));
                             }
                             secs = Some(visitor.visit_value()?);
                         }
                         Field::Nanos => {
                             if nanos.is_some() {
-                                return Err(<V::Error as Error>::duplicate_field("nanos"));
+                                return Err(Error::duplicate_field("nanos"));
                             }
                             nanos = Some(visitor.visit_value()?);
                         }
