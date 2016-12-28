@@ -599,23 +599,19 @@ data, or transcode unformatted JSON into its pretty-printed form.</p>
 <p>This example implements the equivalent of Go&apos;s
 <a href="https://golang.org/pkg/encoding/json/#Compact" target="_blank"><code>json.Compact</code></a> function which
 removes insignificant whitespace from a JSON string in a streaming way.</p>
-<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_transcode;
-
-<span class="hljs-keyword">use</span> serde::Serialize;
-<span class="hljs-keyword">use</span> serde_transcode::Transcoder;
 
 <span class="hljs-keyword">use</span> std::io;
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
     <span class="hljs-comment">// A JSON input with plenty of whitespace.</span>
     <span class="hljs-keyword">let</span> input = r#<span class="hljs-string">&quot;
-        {
-            &quot;</span>a boolean<span class="hljs-string">&quot;: true,
-            &quot;</span>an array<span class="hljs-string">&quot;: [3, 2, 1]
-        }
-        &quot;</span>#;
+      {
+        &quot;</span>a boolean<span class="hljs-string">&quot;: true,
+        &quot;</span>an array<span class="hljs-string">&quot;: [3, 2, 1]
+      }
+    &quot;</span>#;
 
     <span class="hljs-comment">// Iterator over the bytes of the input JSON.</span>
     <span class="hljs-keyword">let</span> iter = input.bytes().map(<span class="hljs-literal">Ok</span>);
@@ -628,7 +624,7 @@ removes insignificant whitespace from a JSON string in a streaming way.</p>
 
     <span class="hljs-comment">// Prints `{&quot;a boolean&quot;:true,&quot;an array&quot;:[3,2,1]}` to stdout.</span>
     <span class="hljs-comment">// This line works with any self-describing Deserializer and any Serializer.</span>
-    Transcoder::new(&amp;<span class="hljs-keyword">mut</span> deserializer).serialize(&amp;<span class="hljs-keyword">mut</span> serializer).unwrap();
+    serde_transcode::transcode(&amp;<span class="hljs-keyword">mut</span> deserializer, &amp;<span class="hljs-keyword">mut</span> serializer).unwrap();
 }
 </code></pre>
 
@@ -658,7 +654,7 @@ removes insignificant whitespace from a JSON string in a streaming way.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Transcode into another format","level":"1.6.14","depth":2,"next":{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"previous":{"title":"Trait objects","level":"1.6.13","depth":2,"path":"trait-objects.md","ref":"trait-objects.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"transcode.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-27T15:36:28.552Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Transcode into another format","level":"1.6.14","depth":2,"next":{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"previous":{"title":"Trait objects","level":"1.6.13","depth":2,"path":"trait-objects.md","ref":"trait-objects.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"transcode.md","mtime":"2016-12-28T16:04:21.978Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-28T16:04:44.456Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
