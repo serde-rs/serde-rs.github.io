@@ -15,23 +15,19 @@ This example implements the equivalent of Go's
 removes insignificant whitespace from a JSON string in a streaming way.
 
 ```rust
-extern crate serde;
 extern crate serde_json;
 extern crate serde_transcode;
-
-use serde::Serialize;
-use serde_transcode::Transcoder;
 
 use std::io;
 
 fn main() {
     // A JSON input with plenty of whitespace.
     let input = r#"
-        {
-            "a boolean": true,
-            "an array": [3, 2, 1]
-        }
-        "#;
+      {
+        "a boolean": true,
+        "an array": [3, 2, 1]
+      }
+    "#;
 
     // Iterator over the bytes of the input JSON.
     let iter = input.bytes().map(Ok);
@@ -44,6 +40,6 @@ fn main() {
 
     // Prints `{"a boolean":true,"an array":[3,2,1]}` to stdout.
     // This line works with any self-describing Deserializer and any Serializer.
-    Transcoder::new(&mut deserializer).serialize(&mut serializer).unwrap();
+    serde_transcode::transcode(&mut deserializer, &mut serializer).unwrap();
 }
 ```
