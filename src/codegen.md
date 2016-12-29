@@ -4,6 +4,9 @@ Serde provides code generation to generate implementations of the `Serialize`
 and `Deserialize` traits for structs defined in your crate, allowing them to be
 used conveniently with all of Serde's data formats.
 
+**You only need codegen if your code is using `#[derive(Serialize,
+Deserialize)]`**
+
 Codegen is based on Rust's `#[derive]` mechanism, just like what you would use
 to automatically derive implementations of the built-in `Clone`, `Copy`, or
 `Debug` traits. It is able to generate implementations for most structs
@@ -15,11 +18,13 @@ There are two different ways of setting up code generation depending on whether
 your crate will be used with stable released versions of Rust or with unstable
 nightly versions. The approach intended for the nightly compiler takes advantage
 of Rust's experimental support for "Macros 1.1" plugins which can only be
-enabled on nightly: `#![feature(proc_macro)]`. The approach intended for the
-stable compiler instead uses a code generation library called
+enabled on nightly: `#![feature(proc_macro)]`. This feature will be stabilized
+in Rust 1.15 in February 2017. The approach intended for the stable compiler
+instead uses a code generation library called
 [Syntex](technical-details.md#syntex) and a [Cargo build
 script](http://doc.crates.io/build-script.html) to write out the generated code
-to a file and include it into your crate.
+to a file and include it into your crate. This approach will not be supported
+after Rust 1.15 in February 2017.
 
 There is also a third hybrid approach which uses Syntex by default but uses a
 Cargo [feature](http://doc.crates.io/manifest.html#the-features-section) to

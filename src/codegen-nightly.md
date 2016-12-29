@@ -11,8 +11,8 @@ line and an extern crate; none of the disadvantages of the [stable
 approach](codegen-stable.md).
 
 **Disadvantages of this approach**: depends on an unstable Rust feature so it
-only works if you are building with a nightly compiler; stabilization of the
-feature is tracked in
+only works if you are building with a nightly compiler; this feature will be
+stabilized in Rust 1.15 in February 2017; stabilization is tracked in
 [rust-lang/rust#35900](https://github.com/rust-lang/rust/issues/35900).
 
 Here is the `Cargo.toml`:
