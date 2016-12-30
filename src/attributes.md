@@ -79,6 +79,14 @@ on it.
 
   Like `rename = "name"` but applies to deserialization only.
 
+- ##### `#[serde(skip_serializing)]`
+
+  Never serialize this variant, fail if it tries to be serialized.
+
+- ##### `#[serde(skip_deserializing)]`
+
+  Never deserialize this variant.
+
 ## Field attributes
 
 - ##### `#[serde(rename = "name")]`
