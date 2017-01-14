@@ -17,11 +17,10 @@ manually](custom-serialization.md).
 There are two different ways of setting up code generation depending on whether
 your crate will be used with stable released versions of Rust or with unstable
 nightly versions. The approach intended for the nightly compiler takes advantage
-of Rust's experimental support for "Macros 1.1" plugins which can only be
-enabled on nightly: `#![feature(proc_macro)]`. This feature will be stabilized
-in Rust 1.15 in February 2017. The approach intended for the stable compiler
-instead uses a code generation library called
-[Syntex](technical-details.md#syntex) and a [Cargo build
+of Rust's experimental support for "Macros 1.1" plugins which can only be used
+on nightly. This feature will be stabilized in Rust 1.15 in February 2017. The
+approach intended for the stable compiler instead uses a code generation library
+called [Syntex](technical-details.md#syntex) and a [Cargo build
 script](http://doc.crates.io/build-script.html) to write out the generated code
 to a file and include it into your crate. This approach will not be supported
 after Rust 1.15 in February 2017.

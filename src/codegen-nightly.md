@@ -29,12 +29,10 @@ serde_derive = "0.8"
 serde_json = "0.8"  # just for the example, not required in general
 ```
 
-Note that it does not need a build script. Now the `src/main.rs` which enables
-the unstable `proc_macro` feature and sets up Serde's custom derive:
+Note that it does not need a build script. Now the `src/main.rs` which uses
+Serde's custom derives:
 
 ```rust:src/main.rs
-#![feature(proc_macro)]
-
 #[macro_use]
 extern crate serde_derive;
 

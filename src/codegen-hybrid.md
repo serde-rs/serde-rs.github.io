@@ -44,8 +44,6 @@ struct Point {
 Here is the main code of the program in `src/main.rs`.
 
 ```rust:src/main.rs
-#![cfg_attr(feature = "serde_derive", feature(proc_macro))]
-
 #[cfg(feature = "serde_derive")]
 #[macro_use]
 extern crate serde_derive;

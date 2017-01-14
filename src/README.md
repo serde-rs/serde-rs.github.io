@@ -67,8 +67,6 @@ generation to `#[derive]` serialization implementations for structs in your own
 program. Using the code generation goes like this:
 
 ```rust
-#![feature(proc_macro)]
-
 #[macro_use]
 extern crate serde_derive;
 

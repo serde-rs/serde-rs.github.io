@@ -24,8 +24,6 @@ We can use Rust's
 Serde's `deserialize_with` attribute to handle this pattern in a general way.
 
 ```rust
-#![feature(proc_macro)]
-
 #[macro_use]
 extern crate serde_derive;
 
