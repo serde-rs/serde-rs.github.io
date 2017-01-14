@@ -22,10 +22,6 @@ maximum value of an array of integers without holding the whole array in memory
 at once. This approach can be adapted to handle a variety of other situations in
 which data needs to be processed while being deserialized instead of after.
 
-**[Serialize enum as string](enum-str.md)**: A macro to impl `Serialize` and
-`Deserialize` for a C-like enum in a way that represents it as a string across
-all data formats.
-
 **[Serialize enum as number](enum-number.md)**: A macro to impl `Serialize` and
 `Deserialize` for a C-like enum in a way that represents it as a `u64` across
 all data formats.
