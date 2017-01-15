@@ -1,5 +1,13 @@
 # Release notes
 
+## v0.8.22
+
+- Remove `#![feature(proc_macro)]` feature gates to support serde_derive on the
+  beta channel!
+- Support deserializing a
+  [`ByteBuf`](https://docs.serde.rs/serde/bytes/struct.ByteBuf.html) from a
+  string ([#645](https://github.com/serde-rs/serde/pull/645))
+
 ## v0.8.21
 
 - Implement skip_serializing for enum variants
