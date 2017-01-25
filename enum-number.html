@@ -124,51 +124,6 @@
             
 
             
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="1.3.1" data-path="codegen-stable.html">
-            
-                <a href="codegen-stable.html">
-            
-                    
-                    On stable compiler
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3.2" data-path="codegen-nightly.html">
-            
-                <a href="codegen-nightly.html">
-            
-                    
-                    On nightly compiler
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3.3" data-path="codegen-hybrid.html">
-            
-                <a href="codegen-hybrid.html">
-            
-                    
-                    Supporting both
-            
-                </a>
-            
-
-            
-        </li>
-    
-
-            </ul>
-            
         </li>
     
         <li class="chapter " data-level="1.4" data-path="attributes.html">
@@ -514,32 +469,6 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9" data-path="troubleshooting.html">
-            
-                <a href="troubleshooting.html">
-            
-                    
-                    Troubleshooting
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.10" data-path="technical-details.html">
-            
-                <a href="technical-details.html">
-            
-                    
-                    Technical details
-            
-                </a>
-            
-
-            
-        </li>
-    
 
     
 </ul>
@@ -578,6 +507,8 @@
 <pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 
+<span class="hljs-keyword">use</span> std::fmt;
+
 <span class="hljs-built_in">macro_rules!</span> enum_number {
     ($name:ident { $($variant:ident = $value:expr, )* }) =&gt; {
         <span class="hljs-meta">#[derive(Clone, Copy, Debug, Eq, PartialEq)]</span>
@@ -586,8 +517,8 @@
         }
 
         <span class="hljs-keyword">impl</span> ::serde::Serialize <span class="hljs-keyword">for</span> $name {
-            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: &amp;<span class="hljs-keyword">mut</span> S) -&gt; <span class="hljs-built_in">Result</span>&lt;(), S::Error&gt;
-                <span class="hljs-keyword">where</span> S: ::serde::Serializer,
+            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
+                <span class="hljs-keyword">where</span> S: ::serde::Serializer
             {
                 <span class="hljs-comment">// Serialize the enum as a u64.</span>
                 serializer.serialize_u64(*<span class="hljs-keyword">self</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">u64</span>)
@@ -595,23 +526,27 @@
         }
 
         <span class="hljs-keyword">impl</span> ::serde::Deserialize <span class="hljs-keyword">for</span> $name {
-            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-                <span class="hljs-keyword">where</span> D: ::serde::Deserializer,
+            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
+                <span class="hljs-keyword">where</span> D: ::serde::Deserializer
             {
                 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Visitor</span></span>;
 
                 <span class="hljs-keyword">impl</span> ::serde::de::Visitor <span class="hljs-keyword">for</span> Visitor {
                     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = $name;
 
-                    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_u64</span></span>&lt;E&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">u64</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;$name, E&gt;
-                        <span class="hljs-keyword">where</span> E: ::serde::de::Error,
+                    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
+                        formatter.write_str(<span class="hljs-string">&quot;positive integer&quot;</span>)
+                    }
+
+                    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_u64</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">u64</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;$name, E&gt;
+                        <span class="hljs-keyword">where</span> E: ::serde::de::Error
                     {
                         <span class="hljs-comment">// Rust does not come with a simple way of converting a</span>
                         <span class="hljs-comment">// number to an enum, so use a big `match`.</span>
                         <span class="hljs-keyword">match</span> value {
                             $( $value =&gt; <span class="hljs-literal">Ok</span>($name::$variant), )*
-                            _ =&gt; <span class="hljs-literal">Err</span>(E::invalid_value(
-                                &amp;<span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;unknown {} value: {}&quot;</span>,
+                            _ =&gt; <span class="hljs-literal">Err</span>(E::custom(
+                                <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;unknown {} value: {}&quot;</span>,
                                 <span class="hljs-built_in">stringify!</span>($name), value))),
                         }
                     }
@@ -668,7 +603,7 @@ enum_number!(SmallNumber {
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Serialize enum as number","level":"1.6.7","depth":2,"next":{"title":"Serialize fields as camelCase","level":"1.6.8","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},"previous":{"title":"Array of values without buffering","level":"1.6.6","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"enum-number.md","mtime":"2016-08-28T21:36:42.227Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-15T06:36:26.379Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Serialize enum as number","level":"1.6.7","depth":2,"next":{"title":"Serialize fields as camelCase","level":"1.6.8","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},"previous":{"title":"Array of values without buffering","level":"1.6.6","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"enum-number.md","mtime":"2017-01-25T17:57:20.660Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-25T21:13:08.834Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

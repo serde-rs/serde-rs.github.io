@@ -124,51 +124,6 @@
             
 
             
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="1.3.1" data-path="codegen-stable.html">
-            
-                <a href="codegen-stable.html">
-            
-                    
-                    On stable compiler
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3.2" data-path="codegen-nightly.html">
-            
-                <a href="codegen-nightly.html">
-            
-                    
-                    On nightly compiler
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3.3" data-path="codegen-hybrid.html">
-            
-                <a href="codegen-hybrid.html">
-            
-                    
-                    Supporting both
-            
-                </a>
-            
-
-            
-        </li>
-    
-
-            </ul>
-            
         </li>
     
         <li class="chapter " data-level="1.4" data-path="attributes.html">
@@ -514,32 +469,6 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9" data-path="troubleshooting.html">
-            
-                <a href="troubleshooting.html">
-            
-                    
-                    Troubleshooting
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.10" data-path="technical-details.html">
-            
-                <a href="technical-details.html">
-            
-                    
-                    Technical details
-            
-                </a>
-            
-
-            
-        </li>
-    
 
     
 </ul>
@@ -608,21 +537,25 @@
     <span class="hljs-comment">// The type that our Visitor is going to produce.</span>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = MyMap&lt;K, V&gt;;
 
+    <span class="hljs-comment">// Format a message stating what data this Visitor expects to receive.</span>
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
+        formatter.write_str(<span class="hljs-string">&quot;a very special map&quot;</span>)
+    }
+
     <span class="hljs-comment">// Deserialize MyMap from an abstract &quot;map&quot; provided by the</span>
     <span class="hljs-comment">// Deserializer. The MapVisitor input is a callback provided by</span>
     <span class="hljs-comment">// the Deserializer to let us see each entry in the map.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;M&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: M) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, M::Error&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;M&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: M) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, M::Error&gt;
         <span class="hljs-keyword">where</span> M: de::MapVisitor
     {
         <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> values = MyMap::with_capacity(visitor.size_hint().<span class="hljs-number">0</span>);
 
         <span class="hljs-comment">// While there are entries remaining in the input, add them</span>
         <span class="hljs-comment">// into our map.</span>
-        <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>((key, value)) = visitor.visit() {
+        <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>((key, value)) = visitor.visit()? {
             values.insert(key, value);
         }
 
-        visitor.end()?;
         <span class="hljs-literal">Ok</span>(values)
     }
 
@@ -630,7 +563,7 @@
     <span class="hljs-comment">// the abstract &quot;unit&quot; type. This corresponds to `null` in JSON.</span>
     <span class="hljs-comment">// If your JSON contains `null` for a field that is supposed to</span>
     <span class="hljs-comment">// be a MyMap, we interpret that as an empty map.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_unit</span></span>&lt;E&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, E&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_unit</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, E&gt;
         <span class="hljs-keyword">where</span> E: de::Error
     {
         <span class="hljs-literal">Ok</span>(MyMap::new())
@@ -642,7 +575,7 @@
     <span class="hljs-keyword">where</span> K: Deserialize,
           V: Deserialize
 {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
         <span class="hljs-keyword">where</span> D: Deserializer
     {
         <span class="hljs-comment">// Instantiate our Visitor and ask the Deserializer to drive</span>
@@ -678,7 +611,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"next":{"title":"Serialize for custom map type","level":"1.6.5","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2016-12-27T15:31:32.821Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-15T06:36:26.379Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.6.4","depth":2,"next":{"title":"Serialize for custom map type","level":"1.6.5","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.6.3","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2017-01-25T17:36:46.288Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-25T21:13:08.834Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

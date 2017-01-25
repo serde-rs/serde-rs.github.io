@@ -124,51 +124,6 @@
             
 
             
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="1.3.1" data-path="codegen-stable.html">
-            
-                <a href="codegen-stable.html">
-            
-                    
-                    On stable compiler
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3.2" data-path="codegen-nightly.html">
-            
-                <a href="codegen-nightly.html">
-            
-                    
-                    On nightly compiler
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3.3" data-path="codegen-hybrid.html">
-            
-                <a href="codegen-hybrid.html">
-            
-                    
-                    Supporting both
-            
-                </a>
-            
-
-            
-        </li>
-    
-
-            </ul>
-            
         </li>
     
         <li class="chapter " data-level="1.4" data-path="attributes.html">
@@ -514,32 +469,6 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9" data-path="troubleshooting.html">
-            
-                <a href="troubleshooting.html">
-            
-                    
-                    Troubleshooting
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.10" data-path="technical-details.html">
-            
-                <a href="technical-details.html">
-            
-                    
-                    Technical details
-            
-                </a>
-            
-
-            
-        </li>
-    
 
     
 </ul>
@@ -598,7 +527,7 @@ same way as the one you wanted.</p>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Data</span></span>(not_my_crate::Data);
 
 <span class="hljs-keyword">impl</span> Serialize <span class="hljs-keyword">for</span> Data {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: &amp;<span class="hljs-keyword">mut</span> S) -&gt; <span class="hljs-built_in">Result</span>&lt;(), S::Error&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
         <span class="hljs-keyword">where</span> S: Serializer
     {
         <span class="hljs-comment">// Any implementation of Serialize.</span>
@@ -606,7 +535,7 @@ same way as the one you wanted.</p>
 }
 
 <span class="hljs-keyword">impl</span> Deserialize <span class="hljs-keyword">for</span> Data {
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: &amp;<span class="hljs-keyword">mut</span> D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
         <span class="hljs-keyword">where</span> D: Deserializer
     {
         <span class="hljs-comment">// Any implementation of Deserialize.</span>
@@ -657,7 +586,7 @@ same way as the one you wanted.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"De/Serialize for other crate","level":"1.6.10","depth":2,"next":{"title":"Manually deserialize struct","level":"1.6.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"previous":{"title":"Skip serializing field","level":"1.6.9","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"newtype-wrapper.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-15T06:36:26.379Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"De/Serialize for other crate","level":"1.6.10","depth":2,"next":{"title":"Manually deserialize struct","level":"1.6.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"previous":{"title":"Skip serializing field","level":"1.6.9","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"newtype-wrapper.md","mtime":"2017-01-25T17:46:41.692Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-25T21:13:08.834Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
