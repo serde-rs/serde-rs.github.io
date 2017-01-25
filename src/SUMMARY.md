@@ -27,4 +27,3 @@
     * [Transcode into another format](transcode.md)
     * [Either string or struct](string-or-struct.md)
 * [Feature flags](feature-flags.md)
-* [Release notes](release-notes.md)
