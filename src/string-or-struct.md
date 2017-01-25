@@ -32,6 +32,7 @@ extern crate serde_yaml;
 extern crate void;
 
 use std::collections::BTreeMap as Map;
+use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
 

@@ -91,9 +91,7 @@ impl de::Visitor for I32Visitor {
     }
 
     // Similar for other methods:
-    //   - visit_isize
     //   - visit_i16
-    //   - visit_usize
     //   - visit_u8
     //   - visit_u16
     //   - visit_u32

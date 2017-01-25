@@ -49,7 +49,6 @@ impl Deserialize for Duration {
                     }
                 }
 
-                const FIELDS: &'static [&'static str] = &["secs", "nanos"];
                 deserializer.deserialize_struct_field(FieldVisitor)
             }
         }
@@ -86,17 +85,17 @@ impl Deserialize for Duration {
             {
                 let mut secs = None;
                 let mut nanos = None;
-                while let Some(key) = visitor.visit_key::<Field>()? {
+                while let Some(key) = visitor.visit_key()? {
                     match key {
                         Field::Secs => {
                             if secs.is_some() {
-                                return Err(<V::Error as Error>::duplicate_field("secs"));
+                                return Err(Error::duplicate_field("secs"));
                             }
                             secs = Some(visitor.visit_value()?);
                         }
                         Field::Nanos => {
                             if nanos.is_some() {
-                                return Err(<V::Error as Error>::duplicate_field("nanos"));
+                                return Err(Error::duplicate_field("nanos"));
                             }
                             nanos = Some(visitor.visit_value()?);
                         }
@@ -104,11 +103,11 @@ impl Deserialize for Duration {
                 }
                 let secs = match secs {
                     Some(secs) => secs,
-                    None => return Err(<V::Error as Error>::missing_field("secs")),
+                    None => return Err(Error::missing_field("secs")),
                 };
                 let nanos = match nanos {
                     Some(nanos) => nanos,
-                    None => return Err(<V::Error as Error>::missing_field("nanos")),
+                    None => return Err(Error::missing_field("nanos")),
                 };
                 Ok(Duration::new(secs, nanos))
             }

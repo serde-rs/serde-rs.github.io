@@ -36,7 +36,7 @@ impl<K, V> de::Visitor for MyMapVisitor<K, V>
 
     // Format a message stating what data this Visitor expects to receive.
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("struct MyMap or a unit value")
+        formatter.write_str("a very special map")
     }
 
     // Deserialize MyMap from an abstract "map" provided by the
@@ -49,7 +49,7 @@ impl<K, V> de::Visitor for MyMapVisitor<K, V>
 
         // While there are entries remaining in the input, add them
         // into our map.
-        while let Some((key, value)) = visitor.visit() {
+        while let Some((key, value)) = visitor.visit()? {
             values.insert(key, value);
         }
 

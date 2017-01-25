@@ -1,8 +1,10 @@
 # Release notes
 
-## v0.9
-- Remove syntex and hybrid setups
-- Update API to 0.9
+## v0.8.23
+
+- Add [categories](http://integer32.com/2017/01/20/categories-and-ci-badges.html)
+  to crates.io ([#707](https://github.com/serde-rs/serde/pull/707), thanks
+  @shepmaster)
 
 ## v0.8.22
 

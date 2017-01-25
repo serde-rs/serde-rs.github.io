@@ -25,7 +25,7 @@ mod not_my_crate {
 struct Data(not_my_crate::Data);
 
 impl Serialize for Data {
-    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer
     {
         // Any implementation of Serialize.

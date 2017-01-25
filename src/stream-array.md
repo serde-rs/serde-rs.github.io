@@ -13,7 +13,7 @@ extern crate serde;
 extern crate serde_json;
 use serde::{de, Deserialize, Deserializer};
 
-use std::cmp;
+use std::{cmp, fmt};
 use std::marker::PhantomData;
 
 #[derive(Deserialize)]
@@ -47,6 +47,10 @@ fn deserialize_max<T, D>(deserializer: D) -> Result<T, D::Error>
         /// Return type of this visitor. This visitor computes the max of a
         /// sequence of values of type T, so the type of the maximum is T.
         type Value = T;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            formatter.write_str("a nonempty sequence of numbers")
+        }
 
         fn visit_seq<V>(self, mut visitor: V) -> Result<T, V::Error>
             where V: de::SeqVisitor

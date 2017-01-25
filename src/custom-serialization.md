@@ -12,7 +12,7 @@ The traits each have a single method:
 
 ```rust
 pub trait Serialize {
-    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer;
 }
 

@@ -4,6 +4,8 @@
 extern crate serde;
 extern crate serde_json;
 
+use std::fmt;
+
 macro_rules! enum_number {
     ($name:ident { $($variant:ident = $value:expr, )* }) => {
         #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -12,7 +14,7 @@ macro_rules! enum_number {
         }
 
         impl ::serde::Serialize for $name {
-            fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
                 where S: ::serde::Serializer,
             {
                 // Serialize the enum as a u64.
@@ -40,8 +42,8 @@ macro_rules! enum_number {
                         // number to an enum, so use a big `match`.
                         match value {
                             $( $value => Ok($name::$variant), )*
-                            _ => Err(E::invalid_value(
-                                &format!("unknown {} value: {}",
+                            _ => Err(E::custom(
+                                format!("unknown {} value: {}",
                                 stringify!($name), value))),
                         }
                     }

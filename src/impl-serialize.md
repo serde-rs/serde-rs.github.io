@@ -5,7 +5,7 @@ looks like this:
 
 ```rust
 pub trait Serialize {
-    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer;
 }
 ```
@@ -26,7 +26,7 @@ As the simplest example, here is the builtin `Serialize` impl for the primitive
 
 ```rust
 impl Serialize for i32 {
-    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer
     {
         serializer.serialize_i32(*self)
@@ -51,7 +51,7 @@ responsible for passing to each method.
 impl<T> Serialize for Vec<T>
     where T: Serialize
 {
-    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer
     {
         let mut seq = serializer.serialize_seq(Some(self.len()))?;
