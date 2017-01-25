@@ -24,9 +24,11 @@ version = "0.1.0"
 authors = ["Me <user@rust-lang.org>"]
 
 [dependencies]
-serde = "0.8"
-serde_derive = "0.8"
-serde_json = "0.8"  # just for the example, not required in general
+serde = "0.9"
+serde_derive = "0.9"
+
+# serde_json is just for the example, not required in general
+serde_json = "0.9"
 ```
 
 Now the `src/main.rs` which uses Serde's custom derives:
