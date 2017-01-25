@@ -43,9 +43,7 @@ as a primitive number](https://serde.rs/enum-number.html).
 
 ## Serializing a sequence or map
 
-Complex types follow a three-step process of init, elements, end. The Serializer
-gets to keep track of some state which the Serialize implementation is
-responsible for passing to each method.
+Complex types follow a three-step process of init, elements, end.
 
 ```rust
 impl<T> Serialize for Vec<T>
@@ -64,7 +62,7 @@ impl<T> Serialize for Vec<T>
 ```
 
 [Serializing a map](serialize-map.md) works the same way but with separate calls
-in the loop for `serialize_map_key` and `serialize_map_value`.
+in the loop for `serialize_key` and `serialize_value`.
 
 ## Serializing a struct
 
@@ -83,8 +81,8 @@ around the inner value, serializing just the inner value. See for example
 ```rust
 // An ordinary struct. Use three-step process:
 //   1. serialize_struct
-//   2. serialize_struct_elt
-//   3. serialize_struct_end
+//   2. serialize_field
+//   3. end
 struct Color {
     r: u8,
     g: u8,
@@ -93,8 +91,8 @@ struct Color {
 
 // A tuple struct. Use three-step process:
 //   1. serialize_tuple_struct
-//   2. serialize_tuple_struct_elt
-//   3. serialize_tuple_struct_end
+//   2. serialize_field
+//   3. end
 struct Point2D(f64, f64);
 
 // A newtype struct. Use serialize_newtype_struct.
@@ -114,14 +112,14 @@ Serializing enum variants is very similar to serializing structs.
 enum E {
     // Use three-step process:
     //   1. serialize_struct_variant
-    //   2. serialize_struct_variant_elt
-    //   3. serialize_struct_variant_end
+    //   2. serialize_field
+    //   3. end
     Color { r: u8, g: u8, b: u8 },
 
     // Use three-step process:
     //   1. serialize_tuple_variant
-    //   2. serialize_tuple_variant_elt
-    //   3. serialize_tuple_variant_end
+    //   2. serialize_field
+    //   3. end
     Point2D(f64, f64),
 
     // Use serialize_newtype_variant.
