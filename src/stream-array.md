@@ -35,7 +35,7 @@ struct Outer {
 ///
 /// This function is generic over T which can be any type that implements
 /// Ord. Above, it is used with T=u64.
-fn deserialize_max<T, D>(deserializer: &mut D) -> Result<T, D::Error>
+fn deserialize_max<T, D>(deserializer: D) -> Result<T, D::Error>
     where T: Deserialize + Ord,
           D: Deserializer
 {
@@ -48,7 +48,7 @@ fn deserialize_max<T, D>(deserializer: &mut D) -> Result<T, D::Error>
         /// sequence of values of type T, so the type of the maximum is T.
         type Value = T;
 
-        fn visit_seq<V>(&mut self, mut visitor: V) -> Result<T, V::Error>
+        fn visit_seq<V>(self, mut visitor: V) -> Result<T, V::Error>
             where V: de::SeqVisitor
         {
             // Start with max equal to the first value in the seq.
@@ -66,7 +66,6 @@ fn deserialize_max<T, D>(deserializer: &mut D) -> Result<T, D::Error>
                 max = cmp::max(max, value);
             }
 
-            visitor.end()?;
             Ok(max)
         }
     }

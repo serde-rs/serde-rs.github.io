@@ -43,13 +43,13 @@ struct Outer<'a, S, T: 'a + ?Sized> {
 /// Deserialize a type `S` by deserializing a string, then using the `FromStr`
 /// impl of `S` to create the result. The generic type `S` is not required to
 /// implement `Deserialize`.
-fn deserialize_from_str<S, D>(deserializer: &mut D) -> Result<S, D::Error>
+fn deserialize_from_str<S, D>(deserializer: D) -> Result<S, D::Error>
     where S: FromStr,
           S::Err: Display,
           D: Deserializer
 {
     let s: String = Deserialize::deserialize(deserializer)?;
-    S::from_str(&s).map_err(|e| de::Error::custom(e.to_string()))
+    S::from_str(&s).map_err(de::Error::custom)
 }
 
 /// A pointer to `T` which may or may not own the data. When deserializing we
@@ -63,11 +63,10 @@ enum Ptr<'a, T: 'a + ?Sized> {
 impl<'a, T: 'a + ?Sized> Deserialize for Ptr<'a, T>
     where Box<T>: Deserialize
 {
-    fn deserialize<D>(deserializer: &mut D) -> Result<Self, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where D: Deserializer
     {
-        let box_t = Deserialize::deserialize(deserializer)?;
-        Ok(Ptr::Owned(box_t))
+        Deserialize::deserialize(deserializer).map(Ptr::Owned)
     }
 }
 

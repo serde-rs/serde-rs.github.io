@@ -111,7 +111,7 @@ impl FromStr for Build {
     }
 }
 
-fn string_or_struct<T, D>(d: &mut D) -> Result<T, D::Error>
+fn string_or_struct<T, D>(d: D) -> Result<T, D::Error>
     where T: Deserialize + FromStr<Err = Void>,
           D: Deserializer
 {
@@ -127,21 +127,24 @@ fn string_or_struct<T, D>(d: &mut D) -> Result<T, D::Error>
     {
         type Value = T;
 
-        fn visit_str<E>(&mut self, value: &str) -> Result<T, E>
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            formatter.write_str("string or map")
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<T, E>
             where E: de::Error
         {
             Ok(FromStr::from_str(value).unwrap())
         }
 
-        fn visit_map<M>(&mut self, visitor: M) -> Result<T, M::Error>
+        fn visit_map<M>(self, visitor: M) -> Result<T, M::Error>
             where M: de::MapVisitor
         {
             // `MapVisitorDeserializer` is a wrapper that turns a `MapVisitor`
             // into a `Deserializer`, allowing it to be used as the input to T's
             // `Deserialize` implementation. T then deserializes itself using
             // the entries from the map visitor.
-            let mut mvd = de::value::MapVisitorDeserializer::new(visitor);
-            Deserialize::deserialize(&mut mvd)
+            Deserialize::deserialize(de::value::MapVisitorDeserializer::new(visitor))
         }
     }
 

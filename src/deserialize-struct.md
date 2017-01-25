@@ -20,13 +20,13 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.
 
 ```rust
 impl Deserialize for Duration {
-    fn deserialize<D>(deserializer: &mut D) -> Result<Self, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where D: Deserializer,
     {
         enum Field { Secs, Nanos };
 
         impl Deserialize for Field {
-            fn deserialize<D>(deserializer: &mut D) -> Result<Field, D::Error>
+            fn deserialize<D>(deserializer: D) -> Result<Field, D::Error>
                 where D: Deserializer,
             {
                 struct FieldVisitor;
@@ -34,17 +34,22 @@ impl Deserialize for Duration {
                 impl Visitor for FieldVisitor {
                     type Value = Field;
 
-                    fn visit_str<E>(&mut self, value: &str) -> Result<Field, E>
+                    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                        formatter.write_str("`secs` or `nanos`")
+                    }
+
+                    fn visit_str<E>(self, value: &str) -> Result<Field, E>
                         where E: Error,
                     {
                         match value {
                             "secs" => Ok(Field::Secs),
                             "nanos" => Ok(Field::Nanos),
-                            _ => Err(Error::unknown_field(value)),
+                            _ => Err(Error::unknown_field(value, FIELDS)),
                         }
                     }
                 }
 
+                const FIELDS: &'static [&'static str] = &["secs", "nanos"];
                 deserializer.deserialize_struct_field(FieldVisitor)
             }
         }
@@ -54,56 +59,56 @@ impl Deserialize for Duration {
         impl Visitor for DurationVisitor {
             type Value = Duration;
 
-            fn visit_seq<V>(&mut self, mut visitor: V) -> Result<Duration, V::Error>
+            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                formatter.write_str("struct Duration")
+            }
+
+            fn visit_seq<V>(self, mut visitor: V) -> Result<Duration, V::Error>
                 where V: SeqVisitor,
             {
                 let secs: u64 = match visitor.visit()? {
                     Some(value) => value,
                     None => {
-                        visitor.end()?;
-                        return Err(Error::invalid_length(0));
+                        return Err(Error::invalid_length(0, &self));
                     }
                 };
                 let nanos: u32 = match visitor.visit()? {
                     Some(value) => value,
                     None => {
-                        visitor.end()?;
-                        return Err(Error::invalid_length(1));
+                        return Err(Error::invalid_length(1, &self));
                     }
                 };
-                visitor.end()?;
                 Ok(Duration::new(secs, nanos))
             }
 
-            fn visit_map<V>(&mut self, mut visitor: V) -> Result<Duration, V::Error>
+            fn visit_map<V>(self, mut visitor: V) -> Result<Duration, V::Error>
                 where V: MapVisitor,
             {
                 let mut secs = None;
                 let mut nanos = None;
-                while let Some(key) = visitor.visit_key()? {
+                while let Some(key) = visitor.visit_key::<Field>()? {
                     match key {
                         Field::Secs => {
                             if secs.is_some() {
-                                return Err(Error::duplicate_field("secs"));
+                                return Err(<V::Error as Error>::duplicate_field("secs"));
                             }
                             secs = Some(visitor.visit_value()?);
                         }
                         Field::Nanos => {
                             if nanos.is_some() {
-                                return Err(Error::duplicate_field("nanos"));
+                                return Err(<V::Error as Error>::duplicate_field("nanos"));
                             }
                             nanos = Some(visitor.visit_value()?);
                         }
                     }
                 }
-                visitor.end()?;
                 let secs = match secs {
                     Some(secs) => secs,
-                    None => visitor.missing_field("secs")?,
+                    None => return Err(<V::Error as Error>::missing_field("secs")),
                 };
                 let nanos = match nanos {
                     Some(nanos) => nanos,
-                    None => visitor.missing_field("nanos")?,
+                    None => return Err(<V::Error as Error>::missing_field("nanos")),
                 };
                 Ok(Duration::new(secs, nanos))
             }

@@ -34,10 +34,15 @@ impl<K, V> de::Visitor for MyMapVisitor<K, V>
     // The type that our Visitor is going to produce.
     type Value = MyMap<K, V>;
 
+    // Format a message stating what data this Visitor expects to receive.
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("struct MyMap or a unit value")
+    }
+
     // Deserialize MyMap from an abstract "map" provided by the
     // Deserializer. The MapVisitor input is a callback provided by
     // the Deserializer to let us see each entry in the map.
-    fn visit_map<M>(&mut self, mut visitor: M) -> Result<Self::Value, M::Error>
+    fn visit_map<M>(self, mut visitor: M) -> Result<Self::Value, M::Error>
         where M: de::MapVisitor
     {
         let mut values = MyMap::with_capacity(visitor.size_hint().0);
@@ -48,7 +53,6 @@ impl<K, V> de::Visitor for MyMapVisitor<K, V>
             values.insert(key, value);
         }
 
-        visitor.end()?;
         Ok(values)
     }
 
@@ -56,7 +60,7 @@ impl<K, V> de::Visitor for MyMapVisitor<K, V>
     // the abstract "unit" type. This corresponds to `null` in JSON.
     // If your JSON contains `null` for a field that is supposed to
     // be a MyMap, we interpret that as an empty map.
-    fn visit_unit<E>(&mut self) -> Result<Self::Value, E>
+    fn visit_unit<E>(self) -> Result<Self::Value, E>
         where E: de::Error
     {
         Ok(MyMap::new())
@@ -68,7 +72,7 @@ impl<K, V> Deserialize for MyMap<K, V>
     where K: Deserialize,
           V: Deserialize
 {
-    fn deserialize<D>(deserializer: &mut D) -> Result<Self, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where D: Deserializer
     {
         // Instantiate our Visitor and ask the Deserializer to drive
