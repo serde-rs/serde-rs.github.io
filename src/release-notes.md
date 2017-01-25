@@ -1,5 +1,9 @@
 # Release notes
 
+## v0.9
+- Remove syntex and hybrid setups
+- Update API to 0.9
+
 ## v0.8.22
 
 - Remove `#![feature(proc_macro)]` feature gates to support serde_derive on the

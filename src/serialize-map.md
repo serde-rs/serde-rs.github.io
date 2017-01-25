@@ -5,15 +5,15 @@ impl<K, V> Serialize for MyMap<K, V>
     where K: Serialize,
           V: Serialize
 {
-    fn serialize<S>(&self, serializer: &mut S) -> Result<(), S::Error>
+    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
         where S: Serializer
     {
-        let mut state = serializer.serialize_map(Some(self.len()))?;
+        let mut map = serializer.serialize_map(Some(self.len()))?;
         for (k, v) in self {
-            serializer.serialize_map_key(&mut state, k)?;
-            serializer.serialize_map_value(&mut state, v)?;
+            map.serialize_key(k)?;
+            map.serialize_value(v)?;
         }
-        serializer.serialize_map_end(state)
+        map.end()
     }
 }
 ```

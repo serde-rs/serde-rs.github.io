@@ -5,7 +5,7 @@ looks like this:
 
 ```rust
 pub trait Deserialize: Sized {
-    fn deserialize<D>(deserializer: &mut D) -> Result<Self, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where D: Deserializer;
 }
 ```
@@ -63,19 +63,23 @@ struct I32Visitor;
 impl de::Visitor for I32Visitor {
     type Value = i32;
 
-    fn visit_i8<E>(&mut self, value: i8) -> Result<i32, E>
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("an integer between -2^31 and 2^31")
+    }
+
+    fn visit_i8<E>(self, value: i8) -> Result<i32, E>
         where E: de::Error
     {
         Ok(value as i32)
     }
 
-    fn visit_i32<E>(&mut self, value: i32) -> Result<i32, E>
+    fn visit_i32<E>(self, value: i32) -> Result<i32, E>
         where E: de::Error
     {
         Ok(value)
     }
 
-    fn visit_i64<E>(&mut self, value: i64) -> Result<i32, E>
+    fn visit_i64<E>(self, value: i64) -> Result<i32, E>
         where E: de::Error
     {
         use std::i32;
@@ -112,7 +116,7 @@ data, which is known as "driving" the `Visitor`.
 
 ```rust
 impl Deserialize for i32 {
-    fn deserialize<D>(deserializer: &mut D) -> Result<i32, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<i32, D::Error>
         where D: Deserializer
     {
         deserializer.deserialize_i32(I32Visitor)

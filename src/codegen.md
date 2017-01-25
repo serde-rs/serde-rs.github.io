@@ -12,29 +12,52 @@ to automatically derive implementations of the built-in `Clone`, `Copy`, or
 `Debug` traits. It is able to generate implementations for most structs
 including ones with elaborate generic types or trait bounds. On rare occasions,
 for an especially convoluted type you may need to [implement the traits
-manually](custom-serialization.md).
+manually](custom-serialization.md). Note that this requires a compiler of
+version 1.15 or newer.
 
-There are two different ways of setting up code generation depending on whether
-your crate will be used with stable released versions of Rust or with unstable
-nightly versions. The approach intended for the nightly compiler takes advantage
-of Rust's experimental support for "Macros 1.1" plugins which can only be used
-on nightly. This feature will be stabilized in Rust 1.15 in February 2017. The
-approach intended for the stable compiler instead uses a code generation library
-called [Syntex](technical-details.md#syntex) and a [Cargo build
-script](http://doc.crates.io/build-script.html) to write out the generated code
-to a file and include it into your crate. This approach will not be supported
-after Rust 1.15 in February 2017.
+Here is the `Cargo.toml`:
 
-There is also a third hybrid approach which uses Syntex by default but uses a
-Cargo [feature](http://doc.crates.io/manifest.html#the-features-section) to
-switch to Macros 1.1 when running with nightly.
+```toml:Cargo.toml
+[package]
+name = "my-crate"
+version = "0.1.0"
+authors = ["Me <user@rust-lang.org>"]
 
-One downside of the Syntex (stable) approach is that errors and warnings emitted
-by `rustc` can sometimes point into the nasty generated code and those can be
-difficult to trace back to the true source of the problem. We recommend setting
-up the hybrid approach but doing your primary development and debugging using a
-nightly compiler.
+[dependencies]
+serde = "0.8"
+serde_derive = "0.8"
+serde_json = "0.8"  # just for the example, not required in general
+```
 
-* [Codegen targetting stable compiler](codegen-stable.md)
-* [Codegen targetting nightly compiler](codegen-nightly.md)
-* [Supporting both stable and nightly](codegen-hybrid.md)
+Now the `src/main.rs` which uses Serde's custom derives:
+
+```rust:src/main.rs
+#[macro_use]
+extern crate serde_derive;
+
+extern crate serde_json;
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+fn main() {
+    let point = Point { x: 1, y: 2 };
+
+    let serialized = serde_json::to_string(&point).unwrap();
+    println!("serialized = {}", serialized);
+
+    let deserialized: Point = serde_json::from_str(&serialized).unwrap();
+    println!("deserialized = {:?}", deserialized);
+}
+```
+
+Here is the output:
+
+```
+$ cargo run
+serialized = {"x":1,"y":2}
+deserialized = Point { x: 1, y: 2 }
+```
