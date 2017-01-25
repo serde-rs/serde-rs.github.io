@@ -536,9 +536,7 @@ methods may be useful if you have a type that needs to be represented as a
 primitive in its serialized form. For example you could <a href="https://serde.rs/enum-number.html" target="_blank">serialize a C-like enum
 as a primitive number</a>.</p>
 <h2 id="serializing-a-sequence-or-map">Serializing a sequence or map</h2>
-<p>Complex types follow a three-step process of init, elements, end. The Serializer
-gets to keep track of some state which the Serialize implementation is
-responsible for passing to each method.</p>
+<p>Complex types follow a three-step process of init, elements, end.</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">impl</span>&lt;T&gt; Serialize <span class="hljs-keyword">for</span> <span class="hljs-built_in">Vec</span>&lt;T&gt;
     <span class="hljs-keyword">where</span> T: Serialize
 {
@@ -554,7 +552,7 @@ responsible for passing to each method.</p>
 }
 </code></pre>
 <p><a href="serialize-map.html">Serializing a map</a> works the same way but with separate calls
-in the loop for <code>serialize_map_key</code> and <code>serialize_map_value</code>.</p>
+in the loop for <code>serialize_key</code> and <code>serialize_value</code>.</p>
 <h2 id="serializing-a-struct">Serializing a struct</h2>
 <p>Serde distinguishes between four types of structs. <a href="https://doc.rust-lang.org/book/structs.html" target="_blank">Ordinary
 structs</a> and <a href="https://doc.rust-lang.org/book/structs.html#tuple-structs" target="_blank">tuple
@@ -568,8 +566,8 @@ around the inner value, serializing just the inner value. See for example
 <a href="json.html">JSON&apos;s treatment of newtype structs</a>.</p>
 <pre><code class="lang-rust"><span class="hljs-comment">// An ordinary struct. Use three-step process:</span>
 <span class="hljs-comment">//   1. serialize_struct</span>
-<span class="hljs-comment">//   2. serialize_struct_elt</span>
-<span class="hljs-comment">//   3. serialize_struct_end</span>
+<span class="hljs-comment">//   2. serialize_field</span>
+<span class="hljs-comment">//   3. end</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Color</span></span> {
     r: <span class="hljs-keyword">u8</span>,
     g: <span class="hljs-keyword">u8</span>,
@@ -578,8 +576,8 @@ around the inner value, serializing just the inner value. See for example
 
 <span class="hljs-comment">// A tuple struct. Use three-step process:</span>
 <span class="hljs-comment">//   1. serialize_tuple_struct</span>
-<span class="hljs-comment">//   2. serialize_tuple_struct_elt</span>
-<span class="hljs-comment">//   3. serialize_tuple_struct_end</span>
+<span class="hljs-comment">//   2. serialize_field</span>
+<span class="hljs-comment">//   3. end</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point2D</span></span>(<span class="hljs-keyword">f64</span>, <span class="hljs-keyword">f64</span>);
 
 <span class="hljs-comment">// A newtype struct. Use serialize_newtype_struct.</span>
@@ -593,14 +591,14 @@ around the inner value, serializing just the inner value. See for example
 <pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
     <span class="hljs-comment">// Use three-step process:</span>
     <span class="hljs-comment">//   1. serialize_struct_variant</span>
-    <span class="hljs-comment">//   2. serialize_struct_variant_elt</span>
-    <span class="hljs-comment">//   3. serialize_struct_variant_end</span>
+    <span class="hljs-comment">//   2. serialize_field</span>
+    <span class="hljs-comment">//   3. end</span>
     Color { r: <span class="hljs-keyword">u8</span>, g: <span class="hljs-keyword">u8</span>, b: <span class="hljs-keyword">u8</span> },
 
     <span class="hljs-comment">// Use three-step process:</span>
     <span class="hljs-comment">//   1. serialize_tuple_variant</span>
-    <span class="hljs-comment">//   2. serialize_tuple_variant_elt</span>
-    <span class="hljs-comment">//   3. serialize_tuple_variant_end</span>
+    <span class="hljs-comment">//   2. serialize_field</span>
+    <span class="hljs-comment">//   3. end</span>
     Point2D(<span class="hljs-keyword">f64</span>, <span class="hljs-keyword">f64</span>),
 
     <span class="hljs-comment">// Use serialize_newtype_variant.</span>
@@ -660,7 +658,7 @@ and <code>Option::Some</code> as just the contained value.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing Serialize","level":"1.5.1","depth":2,"next":{"title":"Implementing Deserialize","level":"1.5.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"previous":{"title":"Custom serialization","level":"1.5","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.5.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.5.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serialize.md","mtime":"2017-01-25T17:45:53.562Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-25T21:13:08.834Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing Serialize","level":"1.5.1","depth":2,"next":{"title":"Implementing Deserialize","level":"1.5.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"previous":{"title":"Custom serialization","level":"1.5","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.5.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.5.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serialize.md","mtime":"2017-01-25T22:24:07.835Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-25T22:24:33.424Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
