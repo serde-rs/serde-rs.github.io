@@ -21,13 +21,13 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.
 ```rust
 impl Deserialize for Duration {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer,
+        where D: Deserializer
     {
         enum Field { Secs, Nanos };
 
         impl Deserialize for Field {
             fn deserialize<D>(deserializer: D) -> Result<Field, D::Error>
-                where D: Deserializer,
+                where D: Deserializer
             {
                 struct FieldVisitor;
 
@@ -39,7 +39,7 @@ impl Deserialize for Duration {
                     }
 
                     fn visit_str<E>(self, value: &str) -> Result<Field, E>
-                        where E: Error,
+                        where E: Error
                     {
                         match value {
                             "secs" => Ok(Field::Secs),
@@ -63,7 +63,7 @@ impl Deserialize for Duration {
             }
 
             fn visit_seq<V>(self, mut visitor: V) -> Result<Duration, V::Error>
-                where V: SeqVisitor,
+                where V: SeqVisitor
             {
                 let secs: u64 = match visitor.visit()? {
                     Some(value) => value,
@@ -81,7 +81,7 @@ impl Deserialize for Duration {
             }
 
             fn visit_map<V>(self, mut visitor: V) -> Result<Duration, V::Error>
-                where V: MapVisitor,
+                where V: MapVisitor
             {
                 let mut secs = None;
                 let mut nanos = None;
