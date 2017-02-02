@@ -1,19 +1,20 @@
 # Setting up codegen
 
 Serde provides code generation to generate implementations of the `Serialize`
-and `Deserialize` traits for structs defined in your crate, allowing them to be
-used conveniently with all of Serde's data formats.
+and `Deserialize` traits for data structures defined in your crate, allowing
+them to be used conveniently with all of Serde's data formats.
 
 **You only need codegen if your code is using `#[derive(Serialize,
-Deserialize)]`**
+Deserialize)]`.**
 
 Codegen is based on Rust's `#[derive]` mechanism, just like what you would use
 to automatically derive implementations of the built-in `Clone`, `Copy`, or
-`Debug` traits. It is able to generate implementations for most structs
-including ones with elaborate generic types or trait bounds. On rare occasions,
-for an especially convoluted type you may need to [implement the traits
-manually](custom-serialization.md). Note that this requires a compiler of
-version 1.15 or newer.
+`Debug` traits. It is able to generate implementations for most structs and
+enums including ones with elaborate generic types or trait bounds. On rare
+occasions, for an especially convoluted type you may need to [implement the
+traits manually](custom-serialization.md).
+
+These derives require a Rust compiler version 1.15 or newer.
 
 Here is the `Cargo.toml`:
 
