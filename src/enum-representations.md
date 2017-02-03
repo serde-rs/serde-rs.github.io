@@ -82,13 +82,13 @@ deserializes successfully is the one returned.
 This representation can handle enums containing any type of variant.
 
 As another example of an untagged enum, this enum can be deserialized from
-either an integer or a two-element array of integers:
+either an integer or an array of two strings:
 
 ```rust
 #[derive(Serialize, Deserialize)]
 #[serde(untagged)]
 enum Data {
     Integer(u64),
-    Pair(u64, u64),
+    Pair(String, String),
 }
 ```
