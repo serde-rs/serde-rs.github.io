@@ -134,7 +134,7 @@ on it.
 
   Serialize this field using a function that is different from its
   implementation of `Serialize`. The given function must be callable as
-  `fn<S>(&T, &mut S) -> Result<(), S::Error> where S: Serializer`, although it
+  `fn<S>(&T, S) -> Result<(), S::Error> where S: Serializer`, although it
   may also be generic over `T`. Fields used with `serialize_with` do not need to
   implement `Serialize`.
 
@@ -142,7 +142,7 @@ on it.
 
   Deserialize this field using a function that is different from its
   implementation of `Deserialize`. The given function must be callable as
-  `fn<D>(&mut D) -> Result<T, D::Error> where D: Deserializer`, although it may
+  `fn<D>(D) -> Result<T, D::Error> where D: Deserializer`, although it may
   also be generic over `T`. Fields used with `deserialize_with` do not need to
   implement `Deserialize`.
 
