@@ -13,6 +13,7 @@
     * [Unit testing](unit-testing.md)
 * [Examples](examples.md)
     * [Structs and enums in JSON](json.md)
+    * [Enum representations](enum-representations.md)
     * [Default value for a field](attr-default.md)
     * [Handwritten generic type bounds](attr-bound.md)
     * [Deserialize for custom map type](deserialize-map.md)

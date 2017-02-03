@@ -51,6 +51,17 @@ on it.
   attribute is not present, by default unknown fields are ignored for
   self-describing formats like JSON.
 
+- ##### `#[serde(tag = "type")]`
+
+  Use the internally tagged enum representation for this enum, with the given
+  tag. See [enum representations](enum-representations.md) for details on this
+  representation.
+
+- ##### `#[serde(untagged)]`
+
+  Use the untagged enum representation for this enum. See [enum
+  representations](enum-representations.md) for details on this representation.
+
 - ##### `#[serde(bound = "T: MyTrait")]`
 
   Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
