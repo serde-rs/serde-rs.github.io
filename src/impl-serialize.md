@@ -56,7 +56,7 @@ impl<T> Serialize for Vec<T>
         for e in self {
             seq.serialize_element(e)?;
         }
-        serializer.end()
+        seq.end()
     }
 }
 ```
