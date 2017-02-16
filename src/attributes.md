@@ -145,7 +145,7 @@ on it.
 
   Serialize this field using a function that is different from its
   implementation of `Serialize`. The given function must be callable as
-  `fn<S>(&T, S) -> Result<(), S::Error> where S: Serializer`, although it
+  `fn<S>(&T, S) -> Result<S::Ok, S::Error> where S: Serializer`, although it
   may also be generic over `T`. Fields used with `serialize_with` do not need to
   implement `Serialize`.
 
