@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Structs and enums in JSON · Serde</title>
+        <title>Custom date format · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="enum-representations.html" />
+    <link rel="next" href="feature-flags.html" />
     
     
-    <link rel="prev" href="examples.html" />
+    <link rel="prev" href="string-or-struct.html" />
     
 
     </head>
@@ -256,7 +256,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.6.1" data-path="json.html">
+        <li class="chapter " data-level="1.6.1" data-path="json.html">
             
                 <a href="json.html">
             
@@ -451,7 +451,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.16" data-path="custom-date-format.html">
+        <li class="chapter active" data-level="1.6.16" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -504,7 +504,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Structs and enums in JSON</a>
+        <a href="." >Custom date format</a>
     </h1>
 </div>
 
@@ -516,39 +516,72 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="structs-and-enums-in-json">Structs and enums in JSON</h1>
-<p>A Serde <code>Serializer</code> is responsible for selecting the convention by which Rust
-structs and enums are represented in that format. Here are the conventions
-selected by the <a href="https://github.com/serde-rs/json" target="_blank"><code>serde_json</code></a> data format.
-For consistency other formats are encouraged to develop analogous conventions
-where possible.</p>
-<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">W</span></span> {
-    a: <span class="hljs-keyword">i32</span>,
-    b: <span class="hljs-keyword">i32</span>,
+                                <h1 id="date-in-a-custom-format">Date in a custom format</h1>
+<p>This uses the <a href="https://github.com/chronotope/chrono" target="_blank"><code>chrono</code></a> crate to
+serialize and deserialize JSON data containing a custom date format. The
+<code>serialize_with</code> and <code>deserialize_with</code> attributes are used to provide the logic
+for handling the custom representation.</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> chrono;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+
+<span class="hljs-keyword">use</span> chrono::{DateTime, UTC, TimeZone};
+<span class="hljs-keyword">use</span> serde::{Deserialize, Serializer, Deserializer};
+
+<span class="hljs-keyword">const</span> DATE_FORMAT: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span> = <span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>;
+
+<span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StructWithCustomDate</span></span> {
+    <span class="hljs-comment">// DateTime supports Serde out of the box, but uses RFC3339 format. Provide</span>
+    <span class="hljs-comment">// some custom logic to make it use our desired format.</span>
+    <span class="hljs-meta">#[serde(serialize_with = <span class="hljs-meta-string">&quot;date_as_string&quot;</span>, deserialize_with = <span class="hljs-meta-string">&quot;date_from_string&quot;</span>)]</span>
+    <span class="hljs-keyword">pub</span> timestamp: DateTime&lt;UTC&gt;,
+
+    <span class="hljs-comment">// Any other fields in the struct.</span>
+    <span class="hljs-keyword">pub</span> bidder: <span class="hljs-built_in">String</span>,
 }
-<span class="hljs-keyword">let</span> w = W { a: <span class="hljs-number">0</span>, b: <span class="hljs-number">0</span> }; <span class="hljs-comment">// Represented as `{&quot;a&quot;:0,&quot;b&quot;:0}`</span>
 
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">X</span></span>(<span class="hljs-keyword">i32</span>, <span class="hljs-keyword">i32</span>);
-<span class="hljs-keyword">let</span> x = X(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">// Represented as `[0,0]`</span>
-
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Y</span></span>(<span class="hljs-keyword">i32</span>);
-<span class="hljs-keyword">let</span> y = Y(<span class="hljs-number">0</span>); <span class="hljs-comment">// Represented as just the inner value `0`</span>
-
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Z</span></span>;
-<span class="hljs-keyword">let</span> z = Z; <span class="hljs-comment">// Represented as `null`</span>
-
-<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
-    W { a: <span class="hljs-keyword">i32</span>, b: <span class="hljs-keyword">i32</span> },
-    X(<span class="hljs-keyword">i32</span>, <span class="hljs-keyword">i32</span>),
-    Y(<span class="hljs-keyword">i32</span>),
-    Z,
+<span class="hljs-comment">// The signature of a serialize_with function must follow the pattern:</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//    fn ser&lt;S&gt;(&amp;T, S) -&gt; Result&lt;S::Ok, S::Error&gt; where S: Serializer</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// although it may also be generic over the input types T.</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">date_as_string</span></span>&lt;S&gt;(date: &amp;DateTime&lt;UTC&gt;, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
+    <span class="hljs-keyword">where</span> S: Serializer
+{
+    <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;{}&quot;</span>, date.format(DATE_FORMAT));
+    serializer.serialize_str(&amp;s)
 }
-<span class="hljs-keyword">let</span> w = E::W { a: <span class="hljs-number">0</span>, b: <span class="hljs-number">0</span> }; <span class="hljs-comment">// Represented as `{&quot;W&quot;:{&quot;a&quot;:0,&quot;b&quot;:0}}`</span>
-<span class="hljs-keyword">let</span> x = E::X(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);          <span class="hljs-comment">// Represented as `{&quot;X&quot;:[0,0]}`</span>
-<span class="hljs-keyword">let</span> y = E::Y(<span class="hljs-number">0</span>);             <span class="hljs-comment">// Represented as `{&quot;Y&quot;:0}`</span>
-<span class="hljs-keyword">let</span> z = E::Z;                <span class="hljs-comment">// Represented as `&quot;Z&quot;`</span>
-                             <span class="hljs-comment">// but can also be deserialized from `{&quot;Z&quot;:null}`</span>
-                             <span class="hljs-comment">//                               and `{&quot;Z&quot;:[]}`</span>
+
+<span class="hljs-comment">// The signature of a deserialize_with function must follow the pattern:</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//    fn de&lt;D&gt;(D) -&gt; Result&lt;T, D::Error&gt; where D: Deserializer</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// although it may also be generic over the output types T.</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">date_from_string</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;DateTime&lt;UTC&gt;, D::Error&gt;
+    <span class="hljs-keyword">where</span> D: Deserializer
+{
+    <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">String</span>::deserialize(deserializer)?;
+    UTC.datetime_from_str(&amp;s, DATE_FORMAT).map_err(serde::de::Error::custom)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> json_str = r#<span class="hljs-string">&quot;
+      {
+        &quot;</span>timestamp<span class="hljs-string">&quot;: &quot;</span><span class="hljs-number">2017</span>-<span class="hljs-number">02</span>-<span class="hljs-number">16</span> <span class="hljs-number">21</span>:<span class="hljs-number">54</span>:<span class="hljs-number">30</span><span class="hljs-string">&quot;,
+        &quot;</span>bidde<span class="hljs-string">r&quot;: &quot;</span>Skrillex<span class="hljs-string">&quot;
+      }
+    &quot;</span>#;
+
+    <span class="hljs-keyword">let</span> data: StructWithCustomDate = serde_json::from_str(json_str).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:#?}&quot;</span>, data);
+
+    <span class="hljs-keyword">let</span> serialized = serde_json::to_string_pretty(&amp;data).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, serialized);
+}
 </code></pre>
 
                                 
@@ -561,12 +594,12 @@ where possible.</p>
 
             
                 
-                <a href="examples.html" class="navigation navigation-prev " aria-label="Previous page: Examples">
+                <a href="string-or-struct.html" class="navigation navigation-prev " aria-label="Previous page: Either string or struct">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="enum-representations.html" class="navigation navigation-next " aria-label="Next page: Enum representations">
+                <a href="feature-flags.html" class="navigation navigation-next " aria-label="Next page: Feature flags">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -577,7 +610,7 @@ where possible.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Structs and enums in JSON","level":"1.6.1","depth":2,"next":{"title":"Enum representations","level":"1.6.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},"previous":{"title":"Examples","level":"1.6","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Structs and enums in JSON","level":"1.6.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},{"title":"Enum representations","level":"1.6.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},{"title":"Default value for a field","level":"1.6.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.6.4","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.6.5","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Serialize for custom map type","level":"1.6.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.6.7","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as number","level":"1.6.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.6.9","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.6.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"De/Serialize for other crate","level":"1.6.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},{"title":"Manually deserialize struct","level":"1.6.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Trait objects","level":"1.6.13","depth":2,"path":"trait-objects.md","ref":"trait-objects.md","articles":[]},{"title":"Transcode into another format","level":"1.6.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},{"title":"Custom date format","level":"1.6.16","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"sane-sidebar":{},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"json.md","mtime":"2016-08-28T21:36:42.231Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-02-17T03:33:32.460Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Custom date format","level":"1.6.16","depth":2,"next":{"title":"Feature flags","level":"1.7","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"previous":{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"sane-sidebar":{},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"custom-date-format.md","mtime":"2017-02-17T03:33:26.166Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-02-17T03:33:32.460Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
