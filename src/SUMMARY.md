@@ -27,5 +27,5 @@
     * [Trait objects](trait-objects.md)
     * [Transcode into another format](transcode.md)
     * [Either string or struct](string-or-struct.md)
-    * [Deserialize a struct with a custom date format](custom-date-format.md)
+    * [Custom date format](custom-date-format.md)
 * [Feature flags](feature-flags.md)

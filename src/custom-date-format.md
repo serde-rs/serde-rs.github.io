@@ -1,50 +1,70 @@
-# Deserialize a struct with a custom date format
-This uses the `chrono` crate to deserialize and serialize
-JSON data containing a custom date format. The `serialize_wth`
-and `deserialize_with` are used to provide the custom functions
-(`serialize_date` and `deserialize_date` respectively).
+# Date in a custom format
+
+This uses the [`chrono`](https://github.com/chronotope/chrono) crate to
+serialize and deserialize JSON data containing a custom date format. The
+`serialize_with` and `deserialize_with` attributes are used to provide the logic
+for handling the custom representation.
 
 ```rust
-extern crate serde;
-extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
-extern crate chrono;
 
-use serde::{Deserialize, Serializer, Deserializer};
+extern crate chrono;
+extern crate serde;
+extern crate serde_json;
+
 use chrono::{DateTime, UTC, TimeZone};
+use serde::{Deserialize, Serializer, Deserializer};
 
 const DATE_FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
 
-fn deserialize_date<D>(deserializer: D) -> Result<DateTime<UTC>, D::Error>
-    where D: Deserializer
-{
-    use serde::de::Error;
-
-    String::deserialize(deserializer).and_then(|s| {
-        UTC.datetime_from_str(&s, DATE_FORMAT)
-            .map_err(|err| Error::custom(err.to_string()))
-    })
-}
-
-fn serialize_date<S>(date: &DateTime<UTC>, serializer: S) -> Result<S::Ok, S::Error>
-    where S: Serializer
-{
-    serializer.serialize_str(&format!("{}", date.format(DATE_FORMAT)))
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct StructWithCustomDate {
-    #[serde(serialize_with = "serialize_date", deserialize_with = "deserialize_date")]
-    pub date: DateTime<UTC>,
-    pub id: i32,
+    // DateTime supports Serde out of the box, but uses RFC3339 format. Provide
+    // some custom logic to make it use our desired format.
+    #[serde(serialize_with = "date_as_string", deserialize_with = "date_from_string")]
+    pub timestamp: DateTime<UTC>,
+
+    // Any other fields in the struct.
+    pub bidder: String,
+}
+
+// The signature of a serialize_with function must follow the pattern:
+//
+//    fn ser<S>(&T, S) -> Result<S::Ok, S::Error> where S: Serializer
+//
+// although it may also be generic over the input types T.
+fn date_as_string<S>(date: &DateTime<UTC>, serializer: S) -> Result<S::Ok, S::Error>
+    where S: Serializer
+{
+    let s = format!("{}", date.format(DATE_FORMAT));
+    serializer.serialize_str(&s)
+}
+
+// The signature of a deserialize_with function must follow the pattern:
+//
+//    fn de<D>(D) -> Result<T, D::Error> where D: Deserializer
+//
+// although it may also be generic over the output types T.
+fn date_from_string<D>(deserializer: D) -> Result<DateTime<UTC>, D::Error>
+    where D: Deserializer
+{
+    let s = String::deserialize(deserializer)?;
+    UTC.datetime_from_str(&s, DATE_FORMAT).map_err(serde::de::Error::custom)
 }
 
 fn main() {
-    let json_str = r#"{"date":"2017-02-16 21:54:30","id":1}"#;
-    let thing: StructWithCustomDate = serde_json::from_str(json_str).unwrap();
-    let deserialized = serde_json::to_string(&thing).unwrap();
+    let json_str = r#"
+      {
+        "timestamp": "2017-02-16 21:54:30",
+        "bidder": "Skrillex"
+      }
+    "#;
 
-    assert_eq!(deserialized, json_str)
+    let data: StructWithCustomDate = serde_json::from_str(json_str).unwrap();
+    println!("{:#?}", data);
+
+    let serialized = serde_json::to_string_pretty(&data).unwrap();
+    println!("{}", serialized);
 }
 ```
