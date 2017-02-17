@@ -51,3 +51,6 @@ input in one format to output in another format efficiently.
 **[Deserialize either a string or a struct](string-or-struct.md)**: The
 [`docker-compose.yml`](https://docs.docker.com/compose/compose-file/#/build)
 configuration file has a "build" key which can be either a string or a struct.
+
+**[Deserialize a struct with a custom date format](custom-date-format.md)**:
+This shows how to parse a custom date format with `chrono`.
