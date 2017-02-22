@@ -176,6 +176,12 @@ on it.
   also be generic over `T`. Fields used with `deserialize_with` do not need to
   implement `Deserialize`.
 
+- ##### `#[serde(with = "module")]`
+
+  Combination of `serialize_with` and `deserialize_with`. Serde will use
+  `$module::serialize` as the `serialize_with` function and
+  `$module::deserialize` as the `deserialize_with` function.
+
 - ##### `#[serde(bound = "T: MyTrait")]`
 
   Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
