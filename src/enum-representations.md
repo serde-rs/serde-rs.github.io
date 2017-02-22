@@ -51,12 +51,34 @@ Written in JSON syntax, the internally tagged representation looks like this:
 ```
 
 The tag identifying which variant we are dealing with is now inside of the
-content, next to any other fields of the variant.
+content, next to any other fields of the variant. This representation is common
+in Java libraries.
 
 This representation works for struct variants, newtype variants containing
 structs or maps, and unit variants but does not work for enums containing tuple
 variants. Using a `#[serde(tag = "...")]` attribute on an enum containing a
 tuple variant is an error at compile time.
+
+## Adjacently tagged
+
+```rust
+#[derive(Serialize, Deserialize)]
+#[serde(tag = "t", content = "c")]
+enum Block {
+    Para(Vec<Inline>),
+    Str(String),
+}
+```
+
+This representation is common the Haskell world. Written in JSON syntax:
+
+```json
+{"t": "Para", "c": [{...}, {...}]}
+{"t": "Str", "c": "the string"}
+```
+
+The tag and the content are adjacent to each other as two fields within the same
+object.
 
 ## Untagged
 

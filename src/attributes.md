@@ -57,6 +57,12 @@ on it.
   tag. See [enum representations](enum-representations.md) for details on this
   representation.
 
+- ##### `#[serde(tag = "t", content = "c")]`
+
+  Use the adjacently tagged enum representation for this enum, with the given
+  field names for the tag and content. See [enum
+  representations](enum-representations.md) for details on this representation.
+
 - ##### `#[serde(untagged)]`
 
   Use the untagged enum representation for this enum. See [enum
