@@ -81,6 +81,19 @@ on it.
 
   Where-clause for the `Deserialize` impl.
 
+- ##### `#[serde(default)]`
+
+  When deserializing, any missing fields should be filled in from the struct's
+  implementation of `Default`. Only allowed on structs.
+
+- ##### `#[serde(default = "path")]`
+
+  When deserializing, any missing fields should be filled in from the object
+  returned by the given function or method. The function must be callable as
+  `fn() -> T`. For example `default = "my_default"` would invoke `my_default()`
+  and `default = "SomeTrait::some_default"` would invoke
+  `SomeTrait::some_default()`. Only allowed on structs.
+
 ## Variant attributes
 
 - ##### `#[serde(rename = "name")]`
