@@ -518,9 +518,8 @@
                                 
                                 <h1 id="date-in-a-custom-format">Date in a custom format</h1>
 <p>This uses the <a href="https://github.com/chronotope/chrono" target="_blank"><code>chrono</code></a> crate to
-serialize and deserialize JSON data containing a custom date format. The
-<code>serialize_with</code> and <code>deserialize_with</code> attributes are used to provide the logic
-for handling the custom representation.</p>
+serialize and deserialize JSON data containing a custom date format. The <code>with</code>
+attribute is used to provide the logic for handling the custom representation.</p>
 <pre><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
 
@@ -528,44 +527,48 @@ for handling the custom representation.</p>
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 
-<span class="hljs-keyword">use</span> chrono::{DateTime, UTC, TimeZone};
-<span class="hljs-keyword">use</span> serde::{Deserialize, Serializer, Deserializer};
-
-<span class="hljs-keyword">const</span> DATE_FORMAT: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span> = <span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>;
+<span class="hljs-keyword">use</span> chrono::{DateTime, UTC};
 
 <span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
 <span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StructWithCustomDate</span></span> {
     <span class="hljs-comment">// DateTime supports Serde out of the box, but uses RFC3339 format. Provide</span>
     <span class="hljs-comment">// some custom logic to make it use our desired format.</span>
-    <span class="hljs-meta">#[serde(serialize_with = <span class="hljs-meta-string">&quot;date_as_string&quot;</span>, deserialize_with = <span class="hljs-meta-string">&quot;date_from_string&quot;</span>)]</span>
+    <span class="hljs-meta">#[serde(with = <span class="hljs-meta-string">&quot;my_date_format&quot;</span>)]</span>
     <span class="hljs-keyword">pub</span> timestamp: DateTime&lt;UTC&gt;,
 
     <span class="hljs-comment">// Any other fields in the struct.</span>
     <span class="hljs-keyword">pub</span> bidder: <span class="hljs-built_in">String</span>,
 }
 
-<span class="hljs-comment">// The signature of a serialize_with function must follow the pattern:</span>
-<span class="hljs-comment">//</span>
-<span class="hljs-comment">//    fn ser&lt;S&gt;(&amp;T, S) -&gt; Result&lt;S::Ok, S::Error&gt; where S: Serializer</span>
-<span class="hljs-comment">//</span>
-<span class="hljs-comment">// although it may also be generic over the input types T.</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">date_as_string</span></span>&lt;S&gt;(date: &amp;DateTime&lt;UTC&gt;, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
-    <span class="hljs-keyword">where</span> S: Serializer
-{
-    <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;{}&quot;</span>, date.format(DATE_FORMAT));
-    serializer.serialize_str(&amp;s)
-}
+<span class="hljs-keyword">mod</span> my_date_format {
+    <span class="hljs-keyword">use</span> chrono::{DateTime, UTC, TimeZone};
+    <span class="hljs-keyword">use</span> serde::{<span class="hljs-keyword">self</span>, Deserialize, Serializer, Deserializer};
 
-<span class="hljs-comment">// The signature of a deserialize_with function must follow the pattern:</span>
-<span class="hljs-comment">//</span>
-<span class="hljs-comment">//    fn de&lt;D&gt;(D) -&gt; Result&lt;T, D::Error&gt; where D: Deserializer</span>
-<span class="hljs-comment">//</span>
-<span class="hljs-comment">// although it may also be generic over the output types T.</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">date_from_string</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;DateTime&lt;UTC&gt;, D::Error&gt;
-    <span class="hljs-keyword">where</span> D: Deserializer
-{
-    <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">String</span>::deserialize(deserializer)?;
-    UTC.datetime_from_str(&amp;s, DATE_FORMAT).map_err(serde::de::Error::custom)
+    <span class="hljs-keyword">const</span> FORMAT: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span> = <span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>;
+
+    <span class="hljs-comment">// The signature of a serialize_with function must follow the pattern:</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">//    fn serialize&lt;S&gt;(&amp;T, S) -&gt; Result&lt;S::Ok, S::Error&gt; where S: Serializer</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// although it may also be generic over the input types T.</span>
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(date: &amp;DateTime&lt;UTC&gt;, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
+        <span class="hljs-keyword">where</span> S: Serializer
+    {
+        <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;{}&quot;</span>, date.format(FORMAT));
+        serializer.serialize_str(&amp;s)
+    }
+
+    <span class="hljs-comment">// The signature of a deserialize_with function must follow the pattern:</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">//    fn deserialize&lt;D&gt;(D) -&gt; Result&lt;T, D::Error&gt; where D: Deserializer</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// although it may also be generic over the output types T.</span>
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;DateTime&lt;UTC&gt;, D::Error&gt;
+        <span class="hljs-keyword">where</span> D: Deserializer
+    {
+        <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">String</span>::deserialize(deserializer)?;
+        UTC.datetime_from_str(&amp;s, FORMAT).map_err(serde::de::Error::custom)
+    }
 }
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
@@ -610,7 +613,7 @@ for handling the custom representation.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Custom date format","level":"1.6.16","depth":2,"next":{"title":"Feature flags","level":"1.7","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"previous":{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"sane-sidebar":{},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"custom-date-format.md","mtime":"2017-02-17T03:33:26.166Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-02-22T00:24:56.753Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Custom date format","level":"1.6.16","depth":2,"next":{"title":"Feature flags","level":"1.7","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"previous":{"title":"Either string or struct","level":"1.6.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"sane-sidebar":{},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"custom-date-format.md","mtime":"2017-02-22T00:30:55.041Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-02-22T00:32:29.793Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
