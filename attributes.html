@@ -584,6 +584,17 @@ trait bounds inferred by Serde.</p>
 <li><h5 id="serdebounddeserialize---t-mytrait"><code>#[serde(bound(deserialize  = &quot;T: MyTrait&quot;))]</code></h5>
 <p>Where-clause for the <code>Deserialize</code> impl.</p>
 </li>
+<li><h5 id="serdedefault"><code>#[serde(default)]</code></h5>
+<p>When deserializing, any missing fields should be filled in from the struct&apos;s
+implementation of <code>Default</code>. Only allowed on structs.</p>
+</li>
+<li><h5 id="serdedefault--path"><code>#[serde(default = &quot;path&quot;)]</code></h5>
+<p>When deserializing, any missing fields should be filled in from the object
+returned by the given function or method. The function must be callable as
+<code>fn() -&gt; T</code>. For example <code>default = &quot;my_default&quot;</code> would invoke <code>my_default()</code>
+and <code>default = &quot;SomeTrait::some_default&quot;</code> would invoke
+<code>SomeTrait::some_default()</code>. Only allowed on structs.</p>
+</li>
 </ul>
 <h2 id="variant-attributes">Variant attributes</h2>
 <ul>
@@ -691,7 +702,7 @@ trait bounds inferred by Serde for the current field.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.4","depth":1,"next":{"title":"Container attributes","level":"1.4.1","depth":2,"anchor":"#container-attributes","path":"attributes.md","ref":"attributes.md#container-attributes","articles":[]},"previous":{"title":"Setting up codegen","level":"1.3","depth":1,"path":"codegen.md","ref":"codegen.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"sane-sidebar":{},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-02-22T00:20:44.646Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-02-22T00:21:02.290Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.4","depth":1,"next":{"title":"Container attributes","level":"1.4.1","depth":2,"anchor":"#container-attributes","path":"attributes.md","ref":"attributes.md#container-attributes","articles":[]},"previous":{"title":"Setting up codegen","level":"1.3","depth":1,"path":"codegen.md","ref":"codegen.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"sane-sidebar":{},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-02-22T00:24:40.035Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-02-22T00:24:56.753Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
