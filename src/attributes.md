@@ -47,7 +47,7 @@ on it.
 
 - ##### `#[serde(deny_unknown_fields)]`
 
-  Always error during serialization when encountering unknown fields. When this
+  Always error during deserialization when encountering unknown fields. When this
   attribute is not present, by default unknown fields are ignored for
   self-describing formats like JSON.
 
