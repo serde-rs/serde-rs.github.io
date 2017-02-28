@@ -45,6 +45,13 @@ on it.
 
   Like `rename = "name"` but applies to deserialization only.
 
+- ##### `#[serde(rename_all = "...")]`
+
+  Rename all the fields (if this is a struct) or variants (if this is an enum)
+  according to the given case convention. The possible values are
+  `"PascalCase"`, `"camelCase"`, `"snake_case"`, `"SCREAMING_SNAKE_CASE"`,
+  `"kebab-case"`.
+
 - ##### `#[serde(deny_unknown_fields)]`
 
   Always error during deserialization when encountering unknown fields. When this
@@ -108,6 +115,12 @@ on it.
 - ##### `#[serde(rename(deserialize = "name"))]`
 
   Like `rename = "name"` but applies to deserialization only.
+
+- ##### `#[serde(rename_all = "...")]`
+
+  Rename all the fields of this struct variant according to the given case
+  convention. The possible values are `"PascalCase"`, `"camelCase"`,
+  `"snake_case"`, `"SCREAMING_SNAKE_CASE"`, `"kebab-case"`.
 
 - ##### `#[serde(skip_serializing)]`
 
