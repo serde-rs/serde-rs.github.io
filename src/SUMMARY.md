@@ -24,7 +24,6 @@
     * [Skip serializing field](attr-skip-serializing.md)
     * [De/Serialize for other crate](newtype-wrapper.md)
     * [Manually deserialize struct](deserialize-struct.md)
-    * [Trait objects](trait-objects.md)
     * [Transcode into another format](transcode.md)
     * [Either string or struct](string-or-struct.md)
     * [Custom date format](custom-date-format.md)
