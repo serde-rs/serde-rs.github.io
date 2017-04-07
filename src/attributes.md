@@ -37,14 +37,6 @@ on it.
   Serialize and deserialize this struct or enum with the given name instead of
   its Rust name.
 
-- ##### `#[serde(rename(serialize = "name"))]`
-
-  Like `rename = "name"` but applies to serialization only.
-
-- ##### `#[serde(rename(deserialize = "name"))]`
-
-  Like `rename = "name"` but applies to deserialization only.
-
 - ##### `#[serde(rename_all = "...")]`
 
   Rename all the fields (if this is a struct) or variants (if this is an enum)
@@ -108,14 +100,6 @@ on it.
   Serialize and deserialize this variant with the given name instead of its Rust
   name.
 
-- ##### `#[serde(rename(serialize = "name"))]`
-
-  Like `rename = "name"` but applies to serialization only.
-
-- ##### `#[serde(rename(deserialize = "name"))]`
-
-  Like `rename = "name"` but applies to deserialization only.
-
 - ##### `#[serde(rename_all = "...")]`
 
   Rename all the fields of this struct variant according to the given case
@@ -137,14 +121,6 @@ on it.
   Serialize and deserialize this field with the given name instead of its Rust
   name. This is useful for [serializing fields as camelCase](attr-rename.md) or
   serializing fields with names that are reserved Rust keywords.
-
-- ##### `#[serde(rename(serialize = "name"))]`
-
-  Like `rename = "name"` but applies to serialization only.
-
-- ##### `#[serde(rename(deserialize = "name"))]`
-
-  Like `rename = "name"` but applies to deserialization only.
 
 - ##### `#[serde(default)]`
 
