@@ -504,7 +504,14 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="implement-deserialize-for-a-custom-map-type">Implement Deserialize for a custom map type</h1>
-<pre><code class="lang-rust"><span class="hljs-comment">// A Visitor is a type that holds methods that a Deserializer can drive</span>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+
+<span class="hljs-keyword">use</span> std::fmt;
+<span class="hljs-keyword">use</span> std::marker::PhantomData;
+
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, Deserializer, Visitor, MapVisitor};
+
+<span class="hljs-comment">// A Visitor is a type that holds methods that a Deserializer can drive</span>
 <span class="hljs-comment">// depending on what is contained in the input data.</span>
 <span class="hljs-comment">//</span>
 <span class="hljs-comment">// In the case of a map we need generic type parameters K and V to be</span>
@@ -530,7 +537,7 @@
 <span class="hljs-comment">// implemented here, for example deserializing from integers or strings.</span>
 <span class="hljs-comment">// By default those methods will return an error, which makes sense</span>
 <span class="hljs-comment">// because we cannot deserialize a MyMap from an integer or string.</span>
-<span class="hljs-keyword">impl</span>&lt;K, V&gt; de::Visitor <span class="hljs-keyword">for</span> MyMapVisitor&lt;K, V&gt;
+<span class="hljs-keyword">impl</span>&lt;K, V&gt; Visitor <span class="hljs-keyword">for</span> MyMapVisitor&lt;K, V&gt;
     <span class="hljs-keyword">where</span> K: Deserialize,
           V: Deserialize
 {
@@ -546,7 +553,7 @@
     <span class="hljs-comment">// Deserializer. The MapVisitor input is a callback provided by</span>
     <span class="hljs-comment">// the Deserializer to let us see each entry in the map.</span>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;M&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: M) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, M::Error&gt;
-        <span class="hljs-keyword">where</span> M: de::MapVisitor
+        <span class="hljs-keyword">where</span> M: MapVisitor
     {
         <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> values = MyMap::with_capacity(visitor.size_hint().<span class="hljs-number">0</span>);
 
@@ -611,7 +618,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.6.5","depth":2,"next":{"title":"Serialize for custom map type","level":"1.6.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.6.4","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"sane-sidebar":{},"codeblock-filename":{},"highlight":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2017-01-25T17:36:46.288Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-07T20:54:27.899Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deserialize for custom map type","level":"1.6.5","depth":2,"next":{"title":"Serialize for custom map type","level":"1.6.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"previous":{"title":"Handwritten generic type bounds","level":"1.6.4","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-filename","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-filename":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-map.md","mtime":"2017-04-08T00:43:14.694Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-08T02:39:29.331Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
