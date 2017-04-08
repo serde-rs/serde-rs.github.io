@@ -4,10 +4,16 @@ The [`Serialize`](https://docs.serde.rs/serde/ser/trait.Serialize.html) trait
 looks like this:
 
 ```rust
+# extern crate serde;
+#
+# use serde::Serializer;
+#
 pub trait Serialize {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer;
 }
+#
+# fn main() {}
 ```
 
 This method's job is to take your type (`&self`) and turn it into a series of
@@ -25,13 +31,38 @@ As the simplest example, here is the builtin `Serialize` impl for the primitive
 `i32`.
 
 ```rust
+# extern crate serde;
+#
+# use std::os::raw::c_int as ActualI32;
+#
+# use serde::{Serialize, Serializer};
+#
+# #[allow(dead_code, non_camel_case_types)]
+# struct i32;
+#
+# trait Serialize2 {
+#     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+#         where S: Serializer;
+# }
+#
 impl Serialize for i32 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer
     {
+#         impl Serialize2 for ActualI32 {
+#             fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+#                 where S: Serializer
+#             {
         serializer.serialize_i32(*self)
+#             }
+#         }
+#
+#         let _ = serializer;
+#         unimplemented!()
     }
 }
+#
+# fn main() {}
 ```
 
 Serde provides such impls for all of Rust's [primitive
@@ -46,6 +77,29 @@ as a primitive number](https://serde.rs/enum-number.html).
 Complex types follow a three-step process of init, elements, end.
 
 ```rust
+# extern crate serde;
+#
+# use std::marker::PhantomData;
+#
+# struct Vec<T>(PhantomData<T>);
+#
+# impl<T> Vec<T> {
+#     fn len(&self) -> usize {
+#         unimplemented!()
+#     }
+# }
+#
+# impl<'a, T> IntoIterator for &'a Vec<T> {
+#     type Item = &'a T;
+#     type IntoIter = Box<Iterator<Item = &'a T>>;
+#
+#     fn into_iter(self) -> Self::IntoIter {
+#         unimplemented!()
+#     }
+# }
+#
+use serde::ser::{Serialize, Serializer, SerializeSeq};
+
 impl<T> Serialize for Vec<T>
     where T: Serialize
 {
@@ -59,6 +113,8 @@ impl<T> Serialize for Vec<T>
         seq.end()
     }
 }
+#
+# fn main() {}
 ```
 
 [Serializing a map](serialize-map.md) works the same way but with separate calls
@@ -83,6 +139,7 @@ around the inner value, serializing just the inner value. See for example
 //   1. serialize_struct
 //   2. serialize_field
 //   3. end
+# #[allow(dead_code)]
 struct Color {
     r: u8,
     g: u8,
@@ -93,22 +150,26 @@ struct Color {
 //   1. serialize_tuple_struct
 //   2. serialize_field
 //   3. end
+# #[allow(dead_code)]
 struct Point2D(f64, f64);
 
 // A newtype struct. Use serialize_newtype_struct.
+# #[allow(dead_code)]
 struct Inches(u64);
 
 // A unit struct. Use serialize_unit_struct.
+# #[allow(dead_code)]
 struct Instance;
+#
+# fn main() {}
 ```
-
-
 
 ## Serializing an enum
 
 Serializing enum variants is very similar to serializing structs.
 
 ```rust
+# #[allow(dead_code)]
 enum E {
     // Use three-step process:
     //   1. serialize_struct_variant
@@ -128,6 +189,8 @@ enum E {
     // Use serialize_unit_variant.
     Instance,
 }
+#
+# fn main() {}
 ```
 
 ## Other special cases

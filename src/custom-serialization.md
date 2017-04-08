@@ -11,6 +11,10 @@ traits for your type.
 The traits each have a single method:
 
 ```rust
+# extern crate serde;
+#
+# use serde::{Serializer, Deserializer};
+#
 pub trait Serialize {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer;
@@ -20,6 +24,8 @@ pub trait Deserialize: Sized {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where D: Deserializer;
 }
+#
+# fn main() {}
 ```
 
 These methods are generic over the serialization format, represented by the

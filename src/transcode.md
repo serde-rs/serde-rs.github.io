@@ -29,11 +29,8 @@ fn main() {
       }
     "#;
 
-    // Iterator over the bytes of the input JSON.
-    let iter = input.bytes().map(Ok);
-
     // A JSON deserializer. You can use any Serde Deserializer here.
-    let mut deserializer = serde_json::Deserializer::new(iter);
+    let mut deserializer = serde_json::Deserializer::from_str(input);
 
     // A compacted JSON serializer. You can use any Serde Serializer here.
     let mut serializer = serde_json::Serializer::new(io::stdout());

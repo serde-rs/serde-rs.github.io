@@ -7,6 +7,10 @@ For consistency other formats are encouraged to develop analogous conventions
 where possible.
 
 ```rust
+# #![allow(dead_code, unused_variables)]
+#
+# fn main() {
+#
 struct W {
     a: i32,
     b: i32,
@@ -34,4 +38,6 @@ let y = E::Y(0);             // Represented as `{"Y":0}`
 let z = E::Z;                // Represented as `"Z"`
                              // but can also be deserialized from `{"Z":null}`
                              //                               and `{"Z":[]}`
+#
+# }
 ```

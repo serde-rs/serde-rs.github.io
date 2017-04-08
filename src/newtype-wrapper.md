@@ -13,8 +13,14 @@ provide a way to implement Serialize and Deserialize for a type that behaves the
 same way as the one you wanted.
 
 ```rust
-use serde::{Serialize, Serializer, Deserialize, Deserializer};
+# #[macro_use]
+# extern crate serde_derive;
+#
+# extern crate serde;
+#
 use std::ops::Deref;
+
+use serde::{Serialize, Serializer, Deserialize, Deserializer};
 
 // Pretend this module is from some other crate.
 mod not_my_crate {
@@ -29,6 +35,8 @@ impl Serialize for Data {
         where S: Serializer
     {
         // Any implementation of Serialize.
+#         let _ = serializer;
+#         unimplemented!()
     }
 }
 
@@ -37,6 +45,8 @@ impl Deserialize for Data {
         where D: Deserializer
     {
         // Any implementation of Deserialize.
+#         let _ = deserializer;
+#         unimplemented!()
     }
 }
 
@@ -56,4 +66,6 @@ struct Outer {
     name: String,
     data: Data,
 }
+#
+# fn main() {}
 ```

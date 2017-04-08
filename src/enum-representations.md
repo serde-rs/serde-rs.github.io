@@ -3,11 +3,19 @@
 Consider the following enum type:
 
 ```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
+# type Params = ();
+# type Value = ();
+#
 #[derive(Serialize, Deserialize)]
 enum Message {
     Request { id: String, method: String, params: Params },
     Response { id: String, result: Value },
 }
+#
+# fn main() {}
 ```
 
 ## Externally tagged
@@ -36,12 +44,20 @@ other possible representations.
 ## Internally tagged
 
 ```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
+# type Params = ();
+# type Value = ();
+#
 #[derive(Serialize, Deserialize)]
 #[serde(tag = "type")]
 enum Message {
     Request { id: String, method: String, params: Params },
     Response { id: String, result: Value },
 }
+#
+# fn main() {}
 ```
 
 Written in JSON syntax, the internally tagged representation looks like this:
@@ -62,12 +78,19 @@ tuple variant is an error at compile time.
 ## Adjacently tagged
 
 ```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
+# type Inline = ();
+#
 #[derive(Serialize, Deserialize)]
 #[serde(tag = "t", content = "c")]
 enum Block {
     Para(Vec<Inline>),
     Str(String),
 }
+#
+# fn main() {}
 ```
 
 This representation is common the Haskell world. Written in JSON syntax:
@@ -83,12 +106,20 @@ object.
 ## Untagged
 
 ```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
+# type Params = ();
+# type Value = ();
+#
 #[derive(Serialize, Deserialize)]
 #[serde(untagged)]
 enum Message {
     Request { id: String, method: String, params: Params },
     Response { id: String, result: Value },
 }
+#
+# fn main() {}
 ```
 
 Written in JSON syntax, the untagged representation looks like this:
@@ -107,10 +138,15 @@ As another example of an untagged enum, this enum can be deserialized from
 either an integer or an array of two strings:
 
 ```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
 #[derive(Serialize, Deserialize)]
 #[serde(untagged)]
 enum Data {
     Integer(u64),
     Pair(String, String),
 }
+#
+# fn main() {}
 ```

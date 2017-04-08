@@ -19,13 +19,90 @@ Here is an example from the
 [`linked-hash-map`](https://github.com/contain-rs/linked-hash-map) crate.
 
 ```rust
+# extern crate serde;
+#
 extern crate linked_hash_map;
+# #[allow(unused_imports)]
 use linked_hash_map::LinkedHashMap;
 
 extern crate serde_test;
+#
+# mod test {
+#     use std::fmt;
+#     use std::marker::PhantomData;
+#
+#     use serde::ser::{Serialize, Serializer, SerializeMap};
+#     use serde::de::{Deserialize, Deserializer, Visitor, MapVisitor};
+#
 use serde_test::{Token, assert_tokens};
+#
+#     // The version of linked-hash-map used by yaml-rust is not compatible
+#     // with Serde 0.9, and Skeptic tests cannot have more than one version
+#     // of any dependency. Reimplement a dumb immitation here.
+#     #[derive(PartialEq, Debug)]
+#     struct LinkedHashMap<K, V>(Vec<(K, V)>);
+#
+#     impl<K, V> LinkedHashMap<K, V> {
+#         fn new() -> Self {
+#             LinkedHashMap(Vec::new())
+#         }
+#
+#         fn insert(&mut self, k: K, v: V) {
+#             self.0.push((k, v));
+#         }
+#     }
+#
+#     impl<K, V> Serialize for LinkedHashMap<K, V>
+#         where K: Serialize,
+#               V: Serialize
+#     {
+#         fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+#             where S: Serializer
+#         {
+#             let mut map = serializer.serialize_map(Some(self.0.len()))?;
+#             for &(ref k, ref v) in &self.0 {
+#                 map.serialize_entry(k, v)?;
+#             }
+#             map.end()
+#         }
+#     }
+#
+#     struct LinkedHashMapVisitor<K, V>(PhantomData<(K, V)>);
+#
+#     impl<K, V> Visitor for LinkedHashMapVisitor<K, V>
+#         where K: Deserialize,
+#               V: Deserialize
+#     {
+#         type Value = LinkedHashMap<K, V>;
+#
+#         fn expecting(&self, _: &mut fmt::Formatter) -> fmt::Result {
+#             unimplemented!()
+#         }
+#
+#         fn visit_map<M>(self, mut visitor: M) -> Result<Self::Value, M::Error>
+#             where M: MapVisitor
+#         {
+#             let mut map = LinkedHashMap::new();
+#             while let Some((key, value)) = visitor.visit()? {
+#                 map.insert(key, value);
+#             }
+#             Ok(map)
+#         }
+#     }
+#
+#     impl<K, V> Deserialize for LinkedHashMap<K, V>
+#         where K: Deserialize,
+#               V: Deserialize
+#     {
+#         fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+#             where D: Deserializer
+#         {
+#             deserializer.deserialize_map(LinkedHashMapVisitor(PhantomData))
+#         }
+#     }
 
 #[test]
+# fn skeptic_test_ser_de_empty() {}
 fn test_ser_de_empty() {
     let map = LinkedHashMap::<char, u32>::new();
 
@@ -36,6 +113,7 @@ fn test_ser_de_empty() {
 }
 
 #[test]
+# fn skeptic_test_ser_de() {}
 fn test_ser_de() {
     let mut map = LinkedHashMap::new();
     map.insert('b', 20);
@@ -58,4 +136,14 @@ fn test_ser_de() {
         Token::MapEnd,
     ]);
 }
+#
+#     pub fn run_tests() {
+#         test_ser_de_empty();
+#         test_ser_de();
+#     }
+# }
+#
+# fn main() {
+#     test::run_tests();
+# }
 ```

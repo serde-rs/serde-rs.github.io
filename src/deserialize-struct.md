@@ -5,10 +5,13 @@ Only when [codegen](codegen.md) is not getting the job done.
 The `Deserialize` impl below corresponds to the following struct:
 
 ```rust
+# #[allow(dead_code)]
 struct Duration {
     secs: u64,
     nanos: u32,
 }
+#
+# fn main() {}
 ```
 
 Deserializing a struct is somewhat more complicated than [deserializing a
@@ -19,6 +22,24 @@ The implementation supports two possible ways that a struct may be represented
 by a data format: as a seq like in Bincode, and as a map like in JSON.
 
 ```rust
+# extern crate serde;
+#
+# #[allow(dead_code)]
+# struct Duration {
+#     secs: u64,
+#     nanos: u32,
+# }
+#
+# impl Duration {
+#     fn new(_: u64, _: u32) -> Self {
+#         unimplemented!()
+#     }
+# }
+#
+use std::fmt;
+
+use serde::de::{self, Deserialize, Deserializer, Visitor, SeqVisitor, MapVisitor};
+
 impl Deserialize for Duration {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where D: Deserializer
@@ -39,12 +60,12 @@ impl Deserialize for Duration {
                     }
 
                     fn visit_str<E>(self, value: &str) -> Result<Field, E>
-                        where E: Error
+                        where E: de::Error
                     {
                         match value {
                             "secs" => Ok(Field::Secs),
                             "nanos" => Ok(Field::Nanos),
-                            _ => Err(Error::unknown_field(value, FIELDS)),
+                            _ => Err(de::Error::unknown_field(value, FIELDS)),
                         }
                     }
                 }
@@ -68,13 +89,13 @@ impl Deserialize for Duration {
                 let secs: u64 = match visitor.visit()? {
                     Some(value) => value,
                     None => {
-                        return Err(Error::invalid_length(0, &self));
+                        return Err(de::Error::invalid_length(0, &self));
                     }
                 };
                 let nanos: u32 = match visitor.visit()? {
                     Some(value) => value,
                     None => {
-                        return Err(Error::invalid_length(1, &self));
+                        return Err(de::Error::invalid_length(1, &self));
                     }
                 };
                 Ok(Duration::new(secs, nanos))
@@ -89,13 +110,13 @@ impl Deserialize for Duration {
                     match key {
                         Field::Secs => {
                             if secs.is_some() {
-                                return Err(Error::duplicate_field("secs"));
+                                return Err(de::Error::duplicate_field("secs"));
                             }
                             secs = Some(visitor.visit_value()?);
                         }
                         Field::Nanos => {
                             if nanos.is_some() {
-                                return Err(Error::duplicate_field("nanos"));
+                                return Err(de::Error::duplicate_field("nanos"));
                             }
                             nanos = Some(visitor.visit_value()?);
                         }
@@ -103,11 +124,11 @@ impl Deserialize for Duration {
                 }
                 let secs = match secs {
                     Some(secs) => secs,
-                    None => return Err(Error::missing_field("secs")),
+                    None => return Err(de::Error::missing_field("secs")),
                 };
                 let nanos = match nanos {
                     Some(nanos) => nanos,
-                    None => return Err(Error::missing_field("nanos")),
+                    None => return Err(de::Error::missing_field("nanos")),
                 };
                 Ok(Duration::new(secs, nanos))
             }
@@ -117,4 +138,6 @@ impl Deserialize for Duration {
         deserializer.deserialize_struct("Duration", FIELDS, DurationVisitor)
     }
 }
+#
+# fn main() {}
 ```

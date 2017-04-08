@@ -4,10 +4,16 @@ The [`Deserialize`](https://docs.serde.rs/serde/de/trait.Deserialize.html) trait
 looks like this:
 
 ```rust
+# extern crate serde;
+#
+# use serde::Deserializer;
+#
 pub trait Deserialize: Sized {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where D: Deserializer;
 }
+#
+# fn main() {}
 ```
 
 This method's job is to provide the
@@ -58,9 +64,16 @@ Here is a `Visitor` that is able to deserialize a primitive `i32` from a variety
 of types.
 
 ```rust
+# extern crate serde;
+#
+use std::fmt;
+
+use serde::de::{self, Visitor};
+
+# #[allow(dead_code)]
 struct I32Visitor;
 
-impl de::Visitor for I32Visitor {
+impl Visitor for I32Visitor {
     type Value = i32;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
@@ -97,6 +110,8 @@ impl de::Visitor for I32Visitor {
     //   - visit_u32
     //   - visit_u64
 }
+#
+# fn main() {}
 ```
 
 The `Visitor` trait has lots more methods that are not implemented for
@@ -113,6 +128,24 @@ Deserialize a value by passing a `Visitor` to the given `Deserializer`. The
 data, which is known as "driving" the `Visitor`.
 
 ```rust
+# extern crate serde;
+#
+# use std::fmt;
+#
+# use serde::de::{Deserialize, Deserializer, Visitor};
+#
+# #[allow(non_camel_case_types)]
+# struct i32;
+# struct I32Visitor;
+#
+# impl Visitor for I32Visitor {
+#     type Value = i32;
+#
+#     fn expecting(&self, _: &mut fmt::Formatter) -> fmt::Result {
+#         unimplemented!()
+#     }
+# }
+#
 impl Deserialize for i32 {
     fn deserialize<D>(deserializer: D) -> Result<i32, D::Error>
         where D: Deserializer
@@ -120,6 +153,8 @@ impl Deserialize for i32 {
         deserializer.deserialize_i32(I32Visitor)
     }
 }
+#
+# fn main() {}
 ```
 
 Note that a `Deserializer` will not necessarily follow the type hint, so the

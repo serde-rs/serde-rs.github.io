@@ -16,6 +16,7 @@ struct Resource {
 
     // Never serialized.
     #[serde(skip_serializing)]
+    # #[allow(dead_code)]
     hash: String,
 
     // Use a method to decide whether the field should be skipped.

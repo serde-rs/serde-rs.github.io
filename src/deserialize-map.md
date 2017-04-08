@@ -1,6 +1,29 @@
 # Implement Deserialize for a custom map type
 
 ```rust
+extern crate serde;
+
+use std::fmt;
+use std::marker::PhantomData;
+
+use serde::de::{self, Deserialize, Deserializer, Visitor, MapVisitor};
+#
+# struct MyMap<K, V>(PhantomData<K>, PhantomData<V>);
+#
+# impl<K, V> MyMap<K, V> {
+#     fn new() -> Self {
+#         unimplemented!()
+#     }
+#
+#     fn with_capacity(_: usize) -> Self {
+#         unimplemented!()
+#     }
+#
+#     fn insert(&mut self, _: K, _: V) {
+#         unimplemented!()
+#     }
+# }
+
 // A Visitor is a type that holds methods that a Deserializer can drive
 // depending on what is contained in the input data.
 //
@@ -27,7 +50,7 @@ impl<K, V> MyMapVisitor<K, V> {
 // implemented here, for example deserializing from integers or strings.
 // By default those methods will return an error, which makes sense
 // because we cannot deserialize a MyMap from an integer or string.
-impl<K, V> de::Visitor for MyMapVisitor<K, V>
+impl<K, V> Visitor for MyMapVisitor<K, V>
     where K: Deserialize,
           V: Deserialize
 {
@@ -43,7 +66,7 @@ impl<K, V> de::Visitor for MyMapVisitor<K, V>
     // Deserializer. The MapVisitor input is a callback provided by
     // the Deserializer to let us see each entry in the map.
     fn visit_map<M>(self, mut visitor: M) -> Result<Self::Value, M::Error>
-        where M: de::MapVisitor
+        where M: MapVisitor
     {
         let mut values = MyMap::with_capacity(visitor.size_hint().0);
 
@@ -80,4 +103,6 @@ impl<K, V> Deserialize for MyMap<K, V>
         deserializer.deserialize_map(MyMapVisitor::new())
     }
 }
+#
+# fn main() {}
 ```

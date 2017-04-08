@@ -12,6 +12,9 @@ There are three categories of attributes:
 - *Field attributes* apply to one field in a struct or in an enum variant.
 
 ```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]  // <-- this is a container attribute
 struct S {
@@ -25,6 +28,8 @@ enum E {
     #[serde(rename = "a")]  // <-- this is a variant attribute
     A(String),
 }
+#
+# fn main() {}
 ```
 
 Note that a single struct, enum, variant, or field may have multiple attributes

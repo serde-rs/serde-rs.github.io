@@ -18,6 +18,7 @@ use std::marker::PhantomData;
 
 #[derive(Deserialize)]
 struct Outer {
+    # #[allow(dead_code)]
     id: String,
 
     // Deserialize this field by computing the maximum value of a sequence

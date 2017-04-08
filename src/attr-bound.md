@@ -56,6 +56,7 @@ fn deserialize_from_str<S, D>(deserializer: D) -> Result<S, D::Error>
 /// always want to produce owned data.
 #[derive(Debug)]
 enum Ptr<'a, T: 'a + ?Sized> {
+    # #[allow(dead_code)]
     Ref(&'a T),
     Owned(Box<T>),
 }
