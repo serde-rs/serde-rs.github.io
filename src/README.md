@@ -70,6 +70,7 @@ program. Using the code generation goes like this:
 #[macro_use]
 extern crate serde_derive;
 
+extern crate serde;
 extern crate serde_json;
 
 #[derive(Serialize, Deserialize, Debug)]
