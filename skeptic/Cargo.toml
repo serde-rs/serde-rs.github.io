@@ -5,6 +5,7 @@ authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = "build.rs"
 
 [build-dependencies]
+glob = "0.2"
 skeptic = "0.8"
 
 [dev-dependencies]
