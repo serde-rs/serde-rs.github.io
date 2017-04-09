@@ -6,7 +6,7 @@ build = "build.rs"
 
 [build-dependencies]
 glob = "0.2"
-skeptic = "0.8"
+skeptic = "0.9"
 
 [dev-dependencies]
 chrono = "0.3"
@@ -17,8 +17,5 @@ serde_json = "0.9"
 serde_test = "0.9"
 serde-transcode = "0.2"
 serde_yaml = "0.6"
-skeptic = "0.8"
+skeptic = "0.9"
 void = "1.0"
-
-[replace]
-'skeptic:0.8.1' = { git = "https://github.com/dtolnay/skeptic", branch = "omit" }
