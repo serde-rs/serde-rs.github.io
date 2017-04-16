@@ -1,3 +1,18 @@
 .markdown-section pre {
     line-height: 1.3;
+    background: none;
+    border: 2px solid transparent;
+    border-left: 10px solid #e0e0e0;
+    padding: .65em 1em;
+    margin: .85em 0;
+}
+
+.markdown-section pre:hover {
+    border: 2px solid #e0e0e0;
+    border-left: 10px solid #e0e0e0;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal pre .hljs-comment,
+.book .book-body .page-wrapper .page-inner section.normal code .hljs-comment {
+    color: #787878;
 }
