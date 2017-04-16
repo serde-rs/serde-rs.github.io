@@ -18,7 +18,8 @@ These derives require a Rust compiler version 1.15 or newer.
 
 Here is the `Cargo.toml`:
 
-```toml:Cargo.toml
+!FILENAME Cargo.toml
+```toml
 [package]
 name = "my-crate"
 version = "0.1.0"
@@ -34,7 +35,8 @@ serde_json = "0.9"
 
 Now the `src/main.rs` which uses Serde's custom derives:
 
-```rust:src/main.rs
+!FILENAME src/main.rs
+```rust
 #[macro_use]
 extern crate serde_derive;
 
