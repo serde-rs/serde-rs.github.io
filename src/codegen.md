@@ -36,6 +36,7 @@ serde_json = "0.9"
 Now the `src/main.rs` which uses Serde's custom derives:
 
 !FILENAME src/main.rs
+!PLAYGROUND 454091616f81d99a48e72d1c5a430f2a
 ```rust
 #[macro_use]
 extern crate serde_derive;

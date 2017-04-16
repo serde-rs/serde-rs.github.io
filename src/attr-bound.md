@@ -10,6 +10,7 @@ As with most heuristics, this is not always right and Serde provides an escape
 hatch to replace the automatically generated bound by one written by the
 programmer.
 
+!PLAYGROUND bf18be9186ff58ffc5079606a02f1260
 ```rust
 #[macro_use]
 extern crate serde_derive;

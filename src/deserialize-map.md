@@ -1,5 +1,6 @@
 # Implement Deserialize for a custom map type
 
+!PLAYGROUND 258a9de152ce751d89403772d810cd10
 ```rust
 extern crate serde;
 

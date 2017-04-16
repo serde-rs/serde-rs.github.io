@@ -1,5 +1,6 @@
 # Skip serializing field
 
+!PLAYGROUND f69adf6a6856d32a13acaa23735feed3
 ```rust
 #[macro_use]
 extern crate serde_derive;

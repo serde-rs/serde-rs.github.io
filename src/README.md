@@ -66,6 +66,7 @@ types in any of the above formats. For example `String`, `&str`, `usize`,
 generation to `#[derive]` serialization implementations for structs in your own
 program. Using the code generation goes like this:
 
+!PLAYGROUND a58fc361e02c4c0a08fd99cacd9567d1
 ```rust
 #[macro_use]
 extern crate serde_derive;
