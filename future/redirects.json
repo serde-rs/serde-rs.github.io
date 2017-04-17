@@ -1,0 +1,8 @@
+{
+    "redirects": [
+        {
+            "from": "codegen.html",
+            "to": "derive.html"
+        }
+    ]
+}

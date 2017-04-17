@@ -1,4 +1,4 @@
-# Setting up codegen
+# Using derive
 
 Serde provides code generation to generate implementations of the `Serialize`
 and `Deserialize` traits for data structures defined in your crate, allowing

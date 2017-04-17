@@ -2,7 +2,7 @@
 
 * [Overview](README.md)
 * [Help](help.md)
-* [Setting up codegen](codegen.md)
+* [Using derive](derive.md)
 * [Attributes](attributes.md)
     * [Container attributes](attributes.md#container-attributes)
     * [Variant attributes](attributes.md#variant-attributes)
