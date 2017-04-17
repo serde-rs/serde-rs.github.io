@@ -4,6 +4,7 @@
 * [Help](help.md)
 * [Serde data model](data-model.md)
 * [Using derive](derive.md)
+* [Deserializer lifetimes](lifetimes.md)
 * [Attributes](attributes.md)
     * [Container attributes](attributes.md#container-attributes)
     * [Variant attributes](attributes.md#variant-attributes)
