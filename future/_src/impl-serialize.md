@@ -20,10 +20,10 @@ This method's job is to take your type (`&self`) and turn it into a series of
 method calls on the given
 [`Serializer`](https://docs.serde.rs/serde/ser/trait.Serializer.html).
 
-In most cases Serde's [codegen](codegen.md) is able to generate an appropriate
+In most cases Serde's [derive](derive.md) is able to generate an appropriate
 implementation of `Serialize` for structs and enums defined in your crate.
 Should you need to customize the serialization behavior for a type in a way that
-codegen does not support, you can implement `Serialize` yourself.
+derive does not support, you can implement `Serialize` yourself.
 
 ## Serializing a primitive
 

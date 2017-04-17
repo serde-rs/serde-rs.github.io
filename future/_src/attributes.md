@@ -2,7 +2,7 @@
 
 [Attributes](https://doc.rust-lang.org/book/attributes.html) are used to
 customize the `Serialize` and `Deserialize` implementations produced by Serde's
-code generation.
+derive.
 
 There are three categories of attributes:
 

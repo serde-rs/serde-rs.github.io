@@ -1,6 +1,6 @@
 # Manually implementing Deserialize for a struct
 
-Only when [codegen](codegen.md) is not getting the job done.
+Only when [derive](derive.md) is not getting the job done.
 
 The `Deserialize` impl below corresponds to the following struct:
 

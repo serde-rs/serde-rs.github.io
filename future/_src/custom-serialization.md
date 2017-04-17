@@ -1,6 +1,6 @@
 # Custom serialization
 
-Serde [code generation](codegen.md) through `#[derive(Serialize, Deserialize)]`
+Serde's [derive macro](derive.md) through `#[derive(Serialize, Deserialize)]`
 provides reasonable default serialization behavior for structs and enums and it
 can be customized to some extent using [attributes](attributes.md). For unusual
 needs, Serde allows full customization of the serialization behavior by manually

@@ -21,10 +21,10 @@ This method's job is to provide the
 [`Visitor`](https://docs.serde.rs/serde/de/trait.Visitor.html) that can be
 driven by the Deserializer to construct an instance of your type.
 
-In most cases Serde's [codegen](codegen.md) is able to generate an appropriate
+In most cases Serde's [derive](derive.md) is able to generate an appropriate
 implementation of `Deserialize` for structs and enums defined in your crate.
 Should you need to customize the deserialization behavior for a type in a way
-that codegen does not support, you can implement `Deserialize` yourself.
+that derive does not support, you can implement `Deserialize` yourself.
 Implementing `Deserialize` for a type tends to be more complicated than
 implementing `Serialize`.
 
