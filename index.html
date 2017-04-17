@@ -501,7 +501,11 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <p><span style="float:right"><a href="https://github.com/serde-rs/serde" target="_blank"><img src="img/github.svg" alt="github"></a> <a href="https://docs.serde.rs/serde/" target="_blank"><img src="img/rustdoc.svg" alt="rustdoc"></a> <a href="https://crates.io/crates/serde" target="_blank"><img src="https://img.shields.io/crates/v/serde.svg?style=social" alt="Latest Version"></a></span></p>
+                                <p><span style="float:right">
+  <a href="https://github.com/serde-rs/serde" target="_blank"><img src="img/github.svg" alt="GitHub"></a>
+  <a href="https://docs.serde.rs/serde/" target="_blank"><img src="img/rustdoc.svg" alt="rustdoc"></a>
+  <a href="https://crates.io/crates/serde" target="_blank"><img src="https://img.shields.io/crates/v/serde.svg?style=social" alt="Latest Version"></a>
+</span></p>
 <h1 id="serde">Serde</h1>
 <p>Serde is a framework for <strong><em>ser</em></strong>ializing and <strong><em>de</em></strong>serializing Rust data
 structures efficiently and generically.</p>
@@ -514,44 +518,35 @@ and deserialized using any supported data format.</p>
 <p>Where many other languages rely on runtime reflection for serializing data,
 Serde is instead built on Rust&apos;s powerful trait system. A data structure that
 knows how to serialize and deserialize itself is one that implements Serde&apos;s
-<code>Serialize</code> and <code>Deserialize</code> traits (or uses Serde&apos;s code generation to
-automatically derive implementations at compile time). This avoids any overhead
-of reflection or runtime type information. In fact in many situations the
-interaction between data structure and data format can be completely optimized
-away by the Rust compiler, leaving Serde serialization to perform roughly the
-same speed as a handwritten serializer for the specific selection of data
+<code>Serialize</code> and <code>Deserialize</code> traits (or uses Serde&apos;s derive attribute to
+automatically generate implementations at compile time). This avoids any
+overhead of reflection or runtime type information. In fact in many situations
+the interaction between data structure and data format can be completely
+optimized away by the Rust compiler, leaving Serde serialization to perform
+the same speed as a handwritten serializer for the specific selection of data
 structure and data format.</p>
 <h3 id="data-formats">Data formats</h3>
 <p>The following is a partial list of data formats that have been implemented for
 Serde by the community.</p>
 <ul>
-<li><a href="https://github.com/serde-rs/json" target="_blank">JSON</a>, the ubiquitous JavaScript Object
-Notation used by many HTTP APIs.</li>
-<li><a href="https://github.com/TyOverby/bincode" target="_blank">Bincode</a>, a compact binary format used
-for IPC within the Servo rendering engine.</li>
-<li><a href="https://github.com/pyfisch/cbor" target="_blank">CBOR</a>, a Concise Binary Object
-Representation designed for small message size without the need for version
-negotiation.</li>
-<li><a href="https://github.com/dtolnay/serde-yaml" target="_blank">YAML</a>, a popular human-friendly
-configuration language that ain&apos;t markup language.</li>
-<li><a href="https://github.com/3Hren/msgpack-rust" target="_blank">MessagePack</a>, an efficient binary
-format that resembles a compact JSON.</li>
-<li><a href="https://github.com/alexcrichton/toml-rs" target="_blank">TOML</a>, a minimal configuration
-format used by <a href="http://doc.crates.io/manifest.html" target="_blank">Cargo</a>.</li>
-<li><a href="https://github.com/birkenfeld/serde-pickle" target="_blank">Pickle</a>, a format common in the
-Python world.</li>
-<li><a href="https://github.com/laktak/hjson-rust" target="_blank">Hjson</a>, a variant of JSON designed to
-be readable and writable by humans.</li>
-<li><a href="https://github.com/zonyitoo/bson-rs" target="_blank">BSON</a>, the data storage and network
-transfer format used by MongoDB.</li>
-<li><a href="https://github.com/nox/serde_urlencoded" target="_blank">URL</a>, the x-www-form-urlencoded
-format.</li>
-<li><a href="https://github.com/serde-rs/xml" target="_blank">XML</a>, the flexible machine-friendly W3C
-standard. <em>(deserialization only)</em></li>
-<li><a href="https://github.com/softprops/envy" target="_blank">Envy</a>, a way to deserialize environment
-variables into Rust structs. <em>(deserialization only)</em></li>
-<li><a href="https://github.com/OneSignal/serde-redis" target="_blank">Redis</a>, deserialize values from
-Redis when using <a href="https://crates.io/crates/redis" target="_blank">redis-rs</a>.
+<li><a href="https://github.com/serde-rs/json" target="_blank">JSON</a>, the ubiquitous JavaScript Object Notation used by many HTTP APIs.</li>
+<li><a href="https://github.com/TyOverby/bincode" target="_blank">Bincode</a>, a compact binary format used for IPC within the Servo rendering
+engine.</li>
+<li><a href="https://github.com/pyfisch/cbor" target="_blank">CBOR</a>, a Concise Binary Object Representation designed for small message size
+without the need for version negotiation.</li>
+<li><a href="https://github.com/dtolnay/serde-yaml" target="_blank">YAML</a>, a popular human-friendly configuration language that ain&apos;t markup
+language.</li>
+<li><a href="https://github.com/3Hren/msgpack-rust" target="_blank">MessagePack</a>, an efficient binary format that resembles a compact JSON.</li>
+<li><a href="https://github.com/alexcrichton/toml-rs" target="_blank">TOML</a>, a minimal configuration format used by <a href="http://doc.crates.io/manifest.html" target="_blank">Cargo</a>.</li>
+<li><a href="https://github.com/birkenfeld/serde-pickle" target="_blank">Pickle</a>, a format common in the Python world.</li>
+<li><a href="https://github.com/laktak/hjson-rust" target="_blank">Hjson</a>, a variant of JSON designed to be readable and writable by humans.</li>
+<li><a href="https://github.com/zonyitoo/bson-rs" target="_blank">BSON</a>, the data storage and network transfer format used by MongoDB.</li>
+<li><a href="https://github.com/nox/serde_urlencoded" target="_blank">URL</a>, the x-www-form-urlencoded format.</li>
+<li><a href="https://github.com/RReverser/serde-xml-rs" target="_blank">XML</a>, the flexible machine-friendly W3C standard.
+<em>(deserialization only)</em></li>
+<li><a href="https://github.com/softprops/envy" target="_blank">Envy</a>, a way to deserialize environment variables into Rust structs.
+<em>(deserialization only)</em></li>
+<li><a href="https://github.com/OneSignal/serde-redis" target="_blank">Redis</a>, deserialize values from Redis when using <a href="https://crates.io/crates/redis" target="_blank">redis-rs</a>.
 <em>(deserialization only)</em></li>
 </ul>
 <h3 id="data-structures">Data structures</h3>
@@ -611,7 +606,7 @@ program. Using the code generation goes like this:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2017-04-16T23:11:38.285Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-16T23:23:52.412Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2017-04-17T03:41:57.165Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T03:58:11.262Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
