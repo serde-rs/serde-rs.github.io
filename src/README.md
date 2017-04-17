@@ -29,34 +29,41 @@ structure and data format.
 The following is a partial list of data formats that have been implemented for
 Serde by the community.
 
-- [JSON](https://github.com/serde-rs/json), the ubiquitous JavaScript Object
-  Notation used by many HTTP APIs.
-- [Bincode](https://github.com/TyOverby/bincode), a compact binary format used
-  for IPC within the Servo rendering engine.
-- [CBOR](https://github.com/pyfisch/cbor), a Concise Binary Object
-  Representation designed for small message size without the need for version
-  negotiation.
-- [YAML](https://github.com/dtolnay/serde-yaml), a popular human-friendly
-  configuration language that ain't markup language.
-- [MessagePack](https://github.com/3Hren/msgpack-rust), an efficient binary
-  format that resembles a compact JSON.
-- [TOML](https://github.com/alexcrichton/toml-rs), a minimal configuration
-  format used by [Cargo](http://doc.crates.io/manifest.html).
-- [Pickle](https://github.com/birkenfeld/serde-pickle), a format common in the
-  Python world.
-- [Hjson](https://github.com/laktak/hjson-rust), a variant of JSON designed to
-  be readable and writable by humans.
-- [BSON](https://github.com/zonyitoo/bson-rs), the data storage and network
-  transfer format used by MongoDB.
-- [URL](https://github.com/nox/serde_urlencoded), the x-www-form-urlencoded
-  format.
-- [XML](https://github.com/serde-rs/xml), the flexible machine-friendly W3C
-  standard. *(deserialization only)*
-- [Envy](https://github.com/softprops/envy), a way to deserialize environment
-  variables into Rust structs. *(deserialization only)*
-- [Redis](https://github.com/OneSignal/serde-redis), deserialize values from
-  Redis when using [redis-rs](https://crates.io/crates/redis).
+- [JSON], the ubiquitous JavaScript Object Notation used by many HTTP APIs.
+- [Bincode], a compact binary format used for IPC within the Servo rendering
+  engine.
+- [CBOR], a Concise Binary Object Representation designed for small message size
+  without the need for version negotiation.
+- [YAML], a popular human-friendly configuration language that ain't markup
+  language.
+- [MessagePack], an efficient binary format that resembles a compact JSON.
+- [TOML], a minimal configuration format used by [Cargo].
+- [Pickle], a format common in the Python world.
+- [Hjson], a variant of JSON designed to be readable and writable by humans.
+- [BSON], the data storage and network transfer format used by MongoDB.
+- [URL], the x-www-form-urlencoded format.
+- [XML], the flexible machine-friendly W3C standard.
   *(deserialization only)*
+- [Envy], a way to deserialize environment variables into Rust structs.
+  *(deserialization only)*
+- [Redis], deserialize values from Redis when using [redis-rs].
+  *(deserialization only)*
+
+[JSON]: https://github.com/serde-rs/json
+[Bincode]: https://github.com/TyOverby/bincode
+[CBOR]: https://github.com/pyfisch/cbor
+[YAML]: https://github.com/dtolnay/serde-yaml
+[MessagePack]: https://github.com/3Hren/msgpack-rust
+[TOML]: https://github.com/alexcrichton/toml-rs
+[Pickle]: https://github.com/birkenfeld/serde-pickle
+[Hjson]: https://github.com/laktak/hjson-rust
+[BSON]: https://github.com/zonyitoo/bson-rs
+[URL]: https://github.com/nox/serde_urlencoded
+[XML]: https://github.com/RReverser/serde-xml-rs
+[Envy]: https://github.com/softprops/envy
+[Redis]: https://github.com/OneSignal/serde-redis
+[Cargo]: http://doc.crates.io/manifest.html
+[redis-rs]: https://crates.io/crates/redis
 
 ### Data structures
 
