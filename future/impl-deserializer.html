@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Unit testing · Serde</title>
+        <title>Deserializer · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="data-format.html" />
+    <link rel="next" href="lifetimes.html" />
     
     
-    <link rel="prev" href="impl-deserialize.html" />
+    <link rel="prev" href="impl-serializer.html" />
     
 
     </head>
@@ -241,7 +241,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.6.3" data-path="unit-testing.html">
+        <li class="chapter " data-level="1.6.3" data-path="unit-testing.html">
             
                 <a href="unit-testing.html">
             
@@ -312,7 +312,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7.4" data-path="impl-deserializer.html">
+        <li class="chapter active" data-level="1.7.4" data-path="impl-deserializer.html">
             
                 <a href="impl-deserializer.html">
             
@@ -592,7 +592,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Unit testing</a>
+        <a href="." >Deserializer</a>
     </h1>
 </div>
 
@@ -604,62 +604,7 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="unit-testing">Unit testing</h1>
-<p>The <a href="https://docs.serde.rs/serde_test/" target="_blank"><code>serde_test</code></a> crate provides a
-convenient concise way to write unit tests for implementations of <code>Serialize</code>
-and <code>Deserialize</code>.</p>
-<p>The <code>Serialize</code> impl for a value can be characterized by the sequence of
-<a href="https://docs.serde.rs/serde/ser/trait.Serializer.html" target="_blank"><code>Serializer</code></a> calls that
-are made in the course of serializing the value, so <code>serde_test</code> provides a
-<a href="https://docs.serde.rs/serde_test/enum.Token.html" target="_blank"><code>Token</code></a> abstraction which
-corresponds roughly to <code>Serializer</code> method calls. It provides an
-<code>assert_ser_tokens</code> funtion to test that a value serializes into a particular
-sequence of method calls, an <code>assert_de_tokens</code> function to test that a value
-can be deserialized from a particular sequence of method calls, and an
-<code>assert_tokens</code> function to test both directions. It also provides functions to
-test expected failure conditions.</p>
-<p>Here is an example from the
-<a href="https://github.com/contain-rs/linked-hash-map" target="_blank"><code>linked-hash-map</code></a> crate.</p>
-<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> linked_hash_map;
-<span class="hljs-keyword">use</span> linked_hash_map::LinkedHashMap;
-
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_test;
-<span class="hljs-keyword">use</span> serde_test::{Token, assert_tokens};
-
-<span class="hljs-meta">#[test]</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">test_ser_de_empty</span></span>() {
-    <span class="hljs-keyword">let</span> map = LinkedHashMap::&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">u32</span>&gt;::new();
-
-    assert_tokens(&amp;map, &amp;[
-        Token::MapStart(<span class="hljs-literal">Some</span>(<span class="hljs-number">0</span>)),
-        Token::MapEnd,
-    ]);
-}
-
-<span class="hljs-meta">#[test]</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">test_ser_de</span></span>() {
-    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> map = LinkedHashMap::new();
-    map.insert(<span class="hljs-string">&apos;b&apos;</span>, <span class="hljs-number">20</span>);
-    map.insert(<span class="hljs-string">&apos;a&apos;</span>, <span class="hljs-number">10</span>);
-    map.insert(<span class="hljs-string">&apos;c&apos;</span>, <span class="hljs-number">30</span>);
-
-    assert_tokens(&amp;map, &amp;[
-        Token::MapStart(<span class="hljs-literal">Some</span>(<span class="hljs-number">3</span>)),
-            Token::MapSep,
-            Token::Char(<span class="hljs-string">&apos;b&apos;</span>),
-            Token::I32(<span class="hljs-number">20</span>),
-
-            Token::MapSep,
-            Token::Char(<span class="hljs-string">&apos;a&apos;</span>),
-            Token::I32(<span class="hljs-number">10</span>),
-
-            Token::MapSep,
-            Token::Char(<span class="hljs-string">&apos;c&apos;</span>),
-            Token::I32(<span class="hljs-number">30</span>),
-        Token::MapEnd,
-    ]);
-}
-</code></pre>
+                                <h1 id="implementing-a-deserializer">Implementing a Deserializer</h1>
 
                                 
                                 </section>
@@ -671,12 +616,12 @@ test expected failure conditions.</p>
 
             
                 
-                <a href="impl-deserialize.html" class="navigation navigation-prev " aria-label="Previous page: Implementing Deserialize">
+                <a href="impl-serializer.html" class="navigation navigation-prev " aria-label="Previous page: Serializer">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="data-format.html" class="navigation navigation-next " aria-label="Next page: Writing a data format">
+                <a href="lifetimes.html" class="navigation navigation-next " aria-label="Next page: Deserializer lifetimes">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -687,7 +632,7 @@ test expected failure conditions.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Unit testing","level":"1.6.3","depth":2,"next":{"title":"Writing a data format","level":"1.7","depth":1,"path":"data-format.md","ref":"data-format.md","articles":[{"title":"Conventions","level":"1.7.1","depth":2,"path":"conventions.md","ref":"conventions.md","articles":[]},{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},{"title":"Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},{"title":"Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]}]},"previous":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"unit-testing.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T20:52:51.630Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2017-04-17T20:27:10.743Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T20:52:51.630Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
