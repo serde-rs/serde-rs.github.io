@@ -4,7 +4,7 @@ extern crate skeptic;
 use glob::glob;
 
 fn main() {
-    let sources = glob("../src/*.md")
+    let sources = glob("../_src/*.md")
         .unwrap()
         .map(|md| md.unwrap().to_str().unwrap().to_owned())
         .collect::<Vec<_>>();
