@@ -1,0 +1,18 @@
+.markdown-section ul.checklist {
+    list-style-type: none;
+    padding-left: 3em;
+}
+
+.markdown-section ul.checklist li div.checkbox {
+    width: 0;
+    height: 0;
+    position: relative;
+    top: 0.2em;
+}
+
+.markdown-section ul.checklist li div.checkbox input[type='checkbox'] {
+    position: absolute;
+    right: 0.5em;
+    width: 1.25em;
+    height: 1.25em;
+}

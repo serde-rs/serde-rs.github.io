@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Array of values without buffering · Serde</title>
+        <title>Using derive · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="enum-number.html" />
+    <link rel="next" href="attributes.html" />
     
     
-    <link rel="prev" href="serialize-map.html" />
+    <link rel="prev" href="data-model.html" />
     
 
     </head>
@@ -130,7 +130,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="derive.html">
+        <li class="chapter active" data-level="1.4" data-path="derive.html">
             
                 <a href="derive.html">
             
@@ -351,7 +351,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.7.7" data-path="stream-array.html">
+        <li class="chapter " data-level="1.7.7" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -508,7 +508,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Array of values without buffering</a>
+        <a href="." >Using derive</a>
     </h1>
 </div>
 
@@ -520,107 +520,73 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="process-an-array-of-values-without-buffering-into-a-vec">Process an array of values without buffering into a Vec</h1>
-<p>Suppose we have an array of integers and we want to figure out the maximum value
-without holding the whole array in memory all at once. This approach can be
-adapted to handle a variety of other situations in which data needs to be
-processed while being deserialized instead of after.</p>
-<pre><a class="playground-link" target="_blank" href="https://play.integer32.com/?gist=d25a611608d089339dc83135e2d749e4"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
+                                <h1 id="using-derive">Using derive</h1>
+<p>Serde provides a derive macro to generate implementations of the <code>Serialize</code> and
+<code>Deserialize</code> traits for data structures defined in your crate, allowing them to
+be represented conveniently in all of Serde&apos;s data formats.</p>
+<p><strong>You only need to set this up if your code is using <code>#[derive(Serialize,
+Deserialize)]</code>.</strong></p>
+<p>This functionality is based on Rust&apos;s <code>#[derive]</code> mechanism, just like what you
+would use to automatically derive implementations of the built-in <code>Clone</code>,
+<code>Copy</code>, <code>Debug</code>, or other traits. It is able to generate implementations for
+most structs and enums including ones with elaborate generic types or trait
+bounds. On rare occasions, for an especially convoluted type you may need to
+<a href="custom-serialization.html">implement the traits manually</a>.</p>
+<p>These derives require a Rust compiler version 1.15 or newer.</p>
+<ul class="checklist">
+<li><label><div class="checkbox"><input type="checkbox"></div>Add <code>serde = &quot;1.0&quot;</code> as a dependency in Cargo.toml.</label></li>
+<li><label><div class="checkbox"><input type="checkbox"></div>Add <code>serde_derive = &quot;1.0&quot;</code> as a dependency in Cargo.toml.</label></li>
+<li><label><div class="checkbox"><input type="checkbox"></div>Ensure that all other Serde-based dependencies (for example serde_json) are on
+a version that is compatible with serde 1.0.</label></li>
+<li><label><div class="checkbox"><input type="checkbox"></div>If you have a main.rs, add <code>#[macro_use] extern crate serde_derive</code> there.</label></li>
+<li><label><div class="checkbox"><input type="checkbox"></div>If you have a lib.rs, add <code>#[macro_use] extern crate serde_derive</code> there.</label></li>
+<li><label><div class="checkbox"><input type="checkbox"></div>Use <code>#[derive(Serialize)]</code> on structs and enums that you want to serialize.</label></li>
+<li><label><div class="checkbox"><input type="checkbox"></div>Use <code>#[derive(Deserialize)]</code> on structs and enums that you want to
+deserialize.</label></li>
+</ul>
+<p>Here is the <code>Cargo.toml</code>:</p>
+<div><p class="code-filename">Cargo.toml</p></div>
+<pre><code class="lang-toml"><span class="hljs-section">[package]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;my-crate&quot;</span>
+<span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
+<span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;Me &lt;user@rust-lang.org&gt;&quot;</span>]
+<span class="hljs-section">
+[dependencies]</span>
+<span class="hljs-attr">serde</span> = <span class="hljs-string">&quot;1.0&quot;</span>
+<span class="hljs-attr">serde_derive</span> = <span class="hljs-string">&quot;1.0&quot;</span>
+
+<span class="hljs-comment"># serde_json is just for the example, not required in general</span>
+<span class="hljs-attr">serde_json</span> = <span class="hljs-string">&quot;1.0&quot;</span>
+</code></pre>
+<p>Now the <code>src/main.rs</code> which uses Serde&apos;s custom derives:</p>
+<div><p class="code-filename">src/main.rs</p></div>
+<pre><a class="playground-link" target="_blank" href="https://play.integer32.com/?gist=454091616f81d99a48e72d1c5a430f2a"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
 
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
-<span class="hljs-keyword">use</span> serde::{de, Deserialize, Deserializer};
 
-<span class="hljs-keyword">use</span> std::{cmp, fmt};
-<span class="hljs-keyword">use</span> std::marker::PhantomData;
-
-<span class="hljs-meta">#[derive(Deserialize)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Outer</span></span> {
-    id: <span class="hljs-built_in">String</span>,
-
-    <span class="hljs-comment">// Deserialize this field by computing the maximum value of a sequence</span>
-    <span class="hljs-comment">// (JSON array) of values.</span>
-    <span class="hljs-meta">#[serde(deserialize_with = <span class="hljs-meta-string">&quot;deserialize_max&quot;</span>)]</span>
-    <span class="hljs-comment">// Despite the struct field being named `max_value`, it is going to come</span>
-    <span class="hljs-comment">// from a JSON field called `values`.</span>
-    <span class="hljs-meta">#[serde(rename(deserialize = <span class="hljs-meta-string">&quot;values&quot;</span>))]</span>
-    max_value: <span class="hljs-keyword">u64</span>,
-}
-
-<span class="hljs-comment">/// Deserialize the maximum of a sequence of values. The entire sequence</span>
-<span class="hljs-comment">/// is not buffered into memory as it would be if we deserialize to Vec&lt;T&gt;</span>
-<span class="hljs-comment">/// and then compute the maximum later.</span>
-<span class="hljs-comment">///</span>
-<span class="hljs-comment">/// This function is generic over T which can be any type that implements</span>
-<span class="hljs-comment">/// Ord. Above, it is used with T=u64.</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_max</span></span>&lt;T, D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;T, D::Error&gt;
-    <span class="hljs-keyword">where</span> T: Deserialize + <span class="hljs-built_in">Ord</span>,
-          D: Deserializer
-{
-    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MaxVisitor</span></span>&lt;T&gt;(PhantomData&lt;T&gt;);
-
-    <span class="hljs-keyword">impl</span>&lt;T&gt; de::Visitor <span class="hljs-keyword">for</span> MaxVisitor&lt;T&gt;
-        <span class="hljs-keyword">where</span> T: Deserialize + <span class="hljs-built_in">Ord</span>
-    {
-        <span class="hljs-comment">/// Return type of this visitor. This visitor computes the max of a</span>
-        <span class="hljs-comment">/// sequence of values of type T, so the type of the maximum is T.</span>
-        <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
-
-        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
-            formatter.write_str(<span class="hljs-string">&quot;a nonempty sequence of numbers&quot;</span>)
-        }
-
-        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;T, V::Error&gt;
-            <span class="hljs-keyword">where</span> V: de::SeqVisitor
-        {
-            <span class="hljs-comment">// Start with max equal to the first value in the seq.</span>
-            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = <span class="hljs-keyword">match</span> visitor.visit()? {
-                <span class="hljs-literal">Some</span>(value) =&gt; value,
-                <span class="hljs-literal">None</span> =&gt; {
-                    <span class="hljs-comment">// Cannot take the maximum of an empty seq.</span>
-                    <span class="hljs-keyword">let</span> msg = <span class="hljs-string">&quot;no values in seq when looking for maximum&quot;</span>;
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::custom(msg));
-                }
-            };
-
-            <span class="hljs-comment">// Update the max while there are additional values.</span>
-            <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(value) = visitor.visit()? {
-                max = cmp::max(max, value);
-            }
-
-            <span class="hljs-literal">Ok</span>(max)
-        }
-    }
-
-    <span class="hljs-comment">// Create the visitor and ask the deserializer to drive it. The</span>
-    <span class="hljs-comment">// deserializer will call visitor.visit_seq if a seq is present in</span>
-    <span class="hljs-comment">// the input data.</span>
-    <span class="hljs-keyword">let</span> visitor = MaxVisitor(PhantomData);
-    deserializer.deserialize_seq(visitor)
+<span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
+    x: <span class="hljs-keyword">i32</span>,
+    y: <span class="hljs-keyword">i32</span>,
 }
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> j = r#<span class="hljs-string">&quot;
-        {
-          &quot;</span>id<span class="hljs-string">&quot;: &quot;</span>demo-deserialize-max<span class="hljs-string">&quot;,
-          &quot;</span>values<span class="hljs-string">&quot;: [
-            256,
-            100,
-            384,
-            314,
-            271
-          ]
-        }
-    &quot;</span>#;
+    <span class="hljs-keyword">let</span> point = Point { x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span> };
 
-    <span class="hljs-keyword">let</span> out: Outer = serde_json::from_str(j).unwrap();
+    <span class="hljs-keyword">let</span> serialized = serde_json::to_string(&amp;point).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;serialized = {}&quot;</span>, serialized);
 
-    <span class="hljs-comment">// Prints &quot;max value: 384&quot;</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;max value: {}&quot;</span>, out.max_value);
+    <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
 }
 </code></pre>
-
+<p>Here is the output:</p>
+<pre><code>$ cargo run
+serialized = {&quot;x&quot;:1,&quot;y&quot;:2}
+deserialized = Point { x: 1, y: 2 }
+</code></pre>
                                 
                                 </section>
                             
@@ -631,12 +597,12 @@ processed while being deserialized instead of after.</p>
 
             
                 
-                <a href="serialize-map.html" class="navigation navigation-prev " aria-label="Previous page: Serialize for custom map type">
+                <a href="data-model.html" class="navigation navigation-prev " aria-label="Previous page: Serde data model">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="enum-number.html" class="navigation navigation-next " aria-label="Next page: Serialize enum as number">
+                <a href="attributes.html" class="navigation navigation-next " aria-label="Next page: Attributes">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -647,7 +613,7 @@ processed while being deserialized instead of after.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.7.7","depth":2,"next":{"title":"Serialize enum as number","level":"1.7.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"previous":{"title":"Serialize for custom map type","level":"1.7.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T17:39:59.995Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Using derive","level":"1.4","depth":1,"next":{"title":"Attributes","level":"1.5","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.5.1","depth":2,"anchor":"#container-attributes","path":"attributes.md","ref":"attributes.md#container-attributes","articles":[]},{"title":"Variant attributes","level":"1.5.2","depth":2,"anchor":"#variant-attributes","path":"attributes.md","ref":"attributes.md#variant-attributes","articles":[]},{"title":"Field attributes","level":"1.5.3","depth":2,"anchor":"#field-attributes","path":"attributes.md","ref":"attributes.md#field-attributes","articles":[]}]},"previous":{"title":"Serde data model","level":"1.3","depth":1,"path":"data-model.md","ref":"data-model.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"derive.md","mtime":"2017-04-17T17:27:53.808Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T17:39:59.995Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
