@@ -78,11 +78,15 @@ the following 27 types:
 - **tuple_variant**
   - For example the `E::T` in `enum E { T(u8, u8) }`.
 - **map**
-  - A heterogeneous key-value pairing, for example `BTreeMap<K, V>`.
+  - A variably sized heterogeneous key-value pairing, for example `BTreeMap<K,
+    V>`. When serializing, the length may or may not be known before iterating
+    through all the entries. When deserializing, the length is determined by
+    looking at the serialized data.
 - **struct**
-  - A heterogeneous key-value pairing in which the keys are strings and will be
-    known at deserialization time without looking at the serialized data, for
-    example `struct S { r: u8, g: u8, b: u8 }`.
+  - A statically sized heterogeneous key-value pairing in which the keys are
+    compile-time constant strings and will be known at deserialization time
+    without looking at the serialized data, for example `struct S { r: u8, g:
+    u8, b: u8 }`.
 - **struct_variant**
   - For example the `E::S` in `enum E { S { r: u8, g: u8, b: u8 } }`.
 
