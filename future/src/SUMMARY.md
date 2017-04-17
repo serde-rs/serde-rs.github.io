@@ -2,6 +2,7 @@
 
 * [Overview](README.md)
 * [Help](help.md)
+* [Serde data model](data-model.md)
 * [Using derive](derive.md)
 * [Attributes](attributes.md)
     * [Container attributes](attributes.md#container-attributes)
