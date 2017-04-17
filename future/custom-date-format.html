@@ -1,0 +1,639 @@
+
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Custom date format · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-codeblock-rust/block.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="feature-flags.html" />
+    
+    
+    <link rel="prev" href="string-or-struct.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book with-summary font-size-2">
+    <div class="book-summary">
+        
+            
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="help.html">
+            
+                <a href="help.html">
+            
+                    
+                    Help
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="codegen.html">
+            
+                <a href="codegen.html">
+            
+                    
+                    Using derive
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="attributes.html">
+            
+                <a href="attributes.html">
+            
+                    
+                    Attributes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="attributes.html">
+            
+                <a href="attributes.html#container-attributes">
+            
+                    
+                    Container attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="attributes.html">
+            
+                <a href="attributes.html#variant-attributes">
+            
+                    
+                    Variant attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="attributes.html">
+            
+                <a href="attributes.html#field-attributes">
+            
+                    
+                    Field attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="custom-serialization.html">
+            
+                <a href="custom-serialization.html">
+            
+                    
+                    Custom serialization
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="impl-serialize.html">
+            
+                <a href="impl-serialize.html">
+            
+                    
+                    Implementing Serialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="impl-deserialize.html">
+            
+                <a href="impl-deserialize.html">
+            
+                    
+                    Implementing Deserialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="unit-testing.html">
+            
+                <a href="unit-testing.html">
+            
+                    
+                    Unit testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="examples.html">
+            
+                <a href="examples.html">
+            
+                    
+                    Examples
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="json.html">
+            
+                <a href="json.html">
+            
+                    
+                    Structs and enums in JSON
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="enum-representations.html">
+            
+                <a href="enum-representations.html">
+            
+                    
+                    Enum representations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="attr-default.html">
+            
+                <a href="attr-default.html">
+            
+                    
+                    Default value for a field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="attr-bound.html">
+            
+                <a href="attr-bound.html">
+            
+                    
+                    Handwritten generic type bounds
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="deserialize-map.html">
+            
+                <a href="deserialize-map.html">
+            
+                    
+                    Deserialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="serialize-map.html">
+            
+                <a href="serialize-map.html">
+            
+                    
+                    Serialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.7" data-path="stream-array.html">
+            
+                <a href="stream-array.html">
+            
+                    
+                    Array of values without buffering
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.8" data-path="enum-number.html">
+            
+                <a href="enum-number.html">
+            
+                    
+                    Serialize enum as number
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.9" data-path="attr-rename.html">
+            
+                <a href="attr-rename.html">
+            
+                    
+                    Serialize fields as camelCase
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.10" data-path="attr-skip-serializing.html">
+            
+                <a href="attr-skip-serializing.html">
+            
+                    
+                    Skip serializing field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.11" data-path="newtype-wrapper.html">
+            
+                <a href="newtype-wrapper.html">
+            
+                    
+                    De/Serialize for other crate
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.12" data-path="deserialize-struct.html">
+            
+                <a href="deserialize-struct.html">
+            
+                    
+                    Manually deserialize struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.13" data-path="transcode.html">
+            
+                <a href="transcode.html">
+            
+                    
+                    Transcode into another format
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.14" data-path="string-or-struct.html">
+            
+                <a href="string-or-struct.html">
+            
+                    
+                    Either string or struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.15" data-path="custom-date-format.html">
+            
+                <a href="custom-date-format.html">
+            
+                    
+                    Custom date format
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="feature-flags.html">
+            
+                <a href="feature-flags.html">
+            
+                    
+                    Feature flags
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Custom date format</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="date-in-a-custom-format">Date in a custom format</h1>
+<p>This uses the <a href="https://github.com/chronotope/chrono" target="_blank"><code>chrono</code></a> crate to
+serialize and deserialize JSON data containing a custom date format. The <code>with</code>
+attribute is used to provide the logic for handling the custom representation.</p>
+<pre><a class="playground-link" target="_blank" href="https://play.integer32.com/?gist=09c801c9381f700940a8075500b24b8c"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> chrono;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+
+<span class="hljs-keyword">use</span> chrono::{DateTime, UTC};
+
+<span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StructWithCustomDate</span></span> {
+    <span class="hljs-comment">// DateTime supports Serde out of the box, but uses RFC3339 format. Provide</span>
+    <span class="hljs-comment">// some custom logic to make it use our desired format.</span>
+    <span class="hljs-meta">#[serde(with = <span class="hljs-meta-string">&quot;my_date_format&quot;</span>)]</span>
+    <span class="hljs-keyword">pub</span> timestamp: DateTime&lt;UTC&gt;,
+
+    <span class="hljs-comment">// Any other fields in the struct.</span>
+    <span class="hljs-keyword">pub</span> bidder: <span class="hljs-built_in">String</span>,
+}
+
+<span class="hljs-keyword">mod</span> my_date_format {
+    <span class="hljs-keyword">use</span> chrono::{DateTime, UTC, TimeZone};
+    <span class="hljs-keyword">use</span> serde::{<span class="hljs-keyword">self</span>, Deserialize, Serializer, Deserializer};
+
+    <span class="hljs-keyword">const</span> FORMAT: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span> = <span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>;
+
+    <span class="hljs-comment">// The signature of a serialize_with function must follow the pattern:</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">//    fn serialize&lt;S&gt;(&amp;T, S) -&gt; Result&lt;S::Ok, S::Error&gt; where S: Serializer</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// although it may also be generic over the input types T.</span>
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(date: &amp;DateTime&lt;UTC&gt;, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
+        <span class="hljs-keyword">where</span> S: Serializer
+    {
+        <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;{}&quot;</span>, date.format(FORMAT));
+        serializer.serialize_str(&amp;s)
+    }
+
+    <span class="hljs-comment">// The signature of a deserialize_with function must follow the pattern:</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">//    fn deserialize&lt;D&gt;(D) -&gt; Result&lt;T, D::Error&gt; where D: Deserializer</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// although it may also be generic over the output types T.</span>
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;DateTime&lt;UTC&gt;, D::Error&gt;
+        <span class="hljs-keyword">where</span> D: Deserializer
+    {
+        <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">String</span>::deserialize(deserializer)?;
+        UTC.datetime_from_str(&amp;s, FORMAT).map_err(serde::de::Error::custom)
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> json_str = r#<span class="hljs-string">&quot;
+      {
+        &quot;</span>timestamp<span class="hljs-string">&quot;: &quot;</span><span class="hljs-number">2017</span>-<span class="hljs-number">02</span>-<span class="hljs-number">16</span> <span class="hljs-number">21</span>:<span class="hljs-number">54</span>:<span class="hljs-number">30</span><span class="hljs-string">&quot;,
+        &quot;</span>bidde<span class="hljs-string">r&quot;: &quot;</span>Skrillex<span class="hljs-string">&quot;
+      }
+    &quot;</span>#;
+
+    <span class="hljs-keyword">let</span> data: StructWithCustomDate = serde_json::from_str(json_str).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:#?}&quot;</span>, data);
+
+    <span class="hljs-keyword">let</span> serialized = serde_json::to_string_pretty(&amp;data).unwrap();
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, serialized);
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="string-or-struct.html" class="navigation navigation-prev " aria-label="Previous page: Either string or struct">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="feature-flags.html" class="navigation navigation-next " aria-label="Next page: Feature flags">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Custom date format","level":"1.6.15","depth":2,"next":{"title":"Feature flags","level":"1.7","depth":1,"path":"feature-flags.md","ref":"feature-flags.md","articles":[]},"previous":{"title":"Either string or struct","level":"1.6.14","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"custom-date-format.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T03:55:46.211Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-sane-sidebar/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

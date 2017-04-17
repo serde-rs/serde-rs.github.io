@@ -1,0 +1,716 @@
+
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Either string or struct · Serde</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-codeblock-rust/block.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="custom-date-format.html" />
+    
+    
+    <link rel="prev" href="transcode.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book with-summary font-size-2">
+    <div class="book-summary">
+        
+            
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="help.html">
+            
+                <a href="help.html">
+            
+                    
+                    Help
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="codegen.html">
+            
+                <a href="codegen.html">
+            
+                    
+                    Using derive
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="attributes.html">
+            
+                <a href="attributes.html">
+            
+                    
+                    Attributes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="attributes.html">
+            
+                <a href="attributes.html#container-attributes">
+            
+                    
+                    Container attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="attributes.html">
+            
+                <a href="attributes.html#variant-attributes">
+            
+                    
+                    Variant attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="attributes.html">
+            
+                <a href="attributes.html#field-attributes">
+            
+                    
+                    Field attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="custom-serialization.html">
+            
+                <a href="custom-serialization.html">
+            
+                    
+                    Custom serialization
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="impl-serialize.html">
+            
+                <a href="impl-serialize.html">
+            
+                    
+                    Implementing Serialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="impl-deserialize.html">
+            
+                <a href="impl-deserialize.html">
+            
+                    
+                    Implementing Deserialize
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="unit-testing.html">
+            
+                <a href="unit-testing.html">
+            
+                    
+                    Unit testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="examples.html">
+            
+                <a href="examples.html">
+            
+                    
+                    Examples
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="json.html">
+            
+                <a href="json.html">
+            
+                    
+                    Structs and enums in JSON
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="enum-representations.html">
+            
+                <a href="enum-representations.html">
+            
+                    
+                    Enum representations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="attr-default.html">
+            
+                <a href="attr-default.html">
+            
+                    
+                    Default value for a field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="attr-bound.html">
+            
+                <a href="attr-bound.html">
+            
+                    
+                    Handwritten generic type bounds
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="deserialize-map.html">
+            
+                <a href="deserialize-map.html">
+            
+                    
+                    Deserialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="serialize-map.html">
+            
+                <a href="serialize-map.html">
+            
+                    
+                    Serialize for custom map type
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.7" data-path="stream-array.html">
+            
+                <a href="stream-array.html">
+            
+                    
+                    Array of values without buffering
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.8" data-path="enum-number.html">
+            
+                <a href="enum-number.html">
+            
+                    
+                    Serialize enum as number
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.9" data-path="attr-rename.html">
+            
+                <a href="attr-rename.html">
+            
+                    
+                    Serialize fields as camelCase
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.10" data-path="attr-skip-serializing.html">
+            
+                <a href="attr-skip-serializing.html">
+            
+                    
+                    Skip serializing field
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.11" data-path="newtype-wrapper.html">
+            
+                <a href="newtype-wrapper.html">
+            
+                    
+                    De/Serialize for other crate
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.12" data-path="deserialize-struct.html">
+            
+                <a href="deserialize-struct.html">
+            
+                    
+                    Manually deserialize struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.13" data-path="transcode.html">
+            
+                <a href="transcode.html">
+            
+                    
+                    Transcode into another format
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.14" data-path="string-or-struct.html">
+            
+                <a href="string-or-struct.html">
+            
+                    
+                    Either string or struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.15" data-path="custom-date-format.html">
+            
+                <a href="custom-date-format.html">
+            
+                    
+                    Custom date format
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="feature-flags.html">
+            
+                <a href="feature-flags.html">
+            
+                    
+                    Feature flags
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Either string or struct</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="deserialize-either-a-string-or-a-struct">Deserialize either a string or a struct</h1>
+<p>The <a href="https://docs.docker.com/compose/compose-file/#/build" target="_blank"><code>docker-compose.yml</code></a>
+configuration file has a &quot;build&quot; key which can be either a string or a struct.</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">build:</span> ./dir
+
+<span class="hljs-comment"># --- or ---</span>
+
+<span class="hljs-attr">build:</span>
+<span class="hljs-attr">  context:</span> ./dir
+<span class="hljs-attr">  dockerfile:</span> Dockerfile-alternate
+<span class="hljs-attr">  args:</span>
+<span class="hljs-attr">    buildno:</span> <span class="hljs-number">1</span>
+</code></pre>
+<p>The configuration file uses the same pattern in other places as well, typically
+where a previously existing string field has been expanded to handle more
+complex data.</p>
+<p>We can use Rust&apos;s
+<a href="https://doc.rust-lang.org/std/str/trait.FromStr.html" target="_blank"><code>FromStr</code></a> trait and
+Serde&apos;s <code>deserialize_with</code> attribute to handle this pattern in a general way.</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_yaml;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> void;
+
+<span class="hljs-keyword">use</span> std::collections::BTreeMap <span class="hljs-keyword">as</span> Map;
+<span class="hljs-keyword">use</span> std::fmt;
+<span class="hljs-keyword">use</span> std::marker::PhantomData;
+<span class="hljs-keyword">use</span> std::str::FromStr;
+
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, Deserializer};
+<span class="hljs-keyword">use</span> void::Void;
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> build_string = <span class="hljs-string">&quot;
+        build: ./dir
+    &quot;</span>;
+    <span class="hljs-keyword">let</span> service: Service = serde_yaml::from_str(build_string).unwrap();
+
+    <span class="hljs-comment">// context=&quot;./dir&quot;</span>
+    <span class="hljs-comment">// dockerfile=None</span>
+    <span class="hljs-comment">// args={}</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, service);
+
+    <span class="hljs-keyword">let</span> build_struct = <span class="hljs-string">&quot;
+        build:
+          context: ./dir
+          dockerfile: Dockerfile-alternate
+          args:
+            buildno: &apos;1&apos;
+    &quot;</span>;
+    <span class="hljs-keyword">let</span> service: Service = serde_yaml::from_str(build_struct).unwrap();
+
+    <span class="hljs-comment">// context=&quot;./dir&quot;</span>
+    <span class="hljs-comment">// dockerfile=Some(&quot;Dockerfile-alternate&quot;)</span>
+    <span class="hljs-comment">// args={&quot;buildno&quot;: &quot;1&quot;}</span>
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, service);
+}
+
+<span class="hljs-meta">#[derive(Debug, Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Service</span></span> {
+    <span class="hljs-comment">// The `string_or_struct` function delegates deserialization to a type&apos;s</span>
+    <span class="hljs-comment">// `FromStr` impl if given a string, and to the type&apos;s `Deserialize` impl if</span>
+    <span class="hljs-comment">// given a struct. The function is generic over the field type T (here T is</span>
+    <span class="hljs-comment">// `Build`) so it can be reused for any field that implements both `FromStr`</span>
+    <span class="hljs-comment">// and `Deserialize`.</span>
+    <span class="hljs-meta">#[serde(deserialize_with = <span class="hljs-meta-string">&quot;string_or_struct&quot;</span>)]</span>
+    build: Build,
+}
+
+<span class="hljs-meta">#[derive(Debug, Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Build</span></span> {
+    <span class="hljs-comment">// This is the only required field.</span>
+    context: <span class="hljs-built_in">String</span>,
+
+    dockerfile: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">String</span>&gt;,
+
+    <span class="hljs-comment">// When `args` is not present in the input, this attribute tells Serde to</span>
+    <span class="hljs-comment">// use `Default::default()` which in this case is an empty map. See the</span>
+    <span class="hljs-comment">// &quot;default value for a field&quot; example for more about `#[serde(default)]`.</span>
+    <span class="hljs-meta">#[serde(default)]</span>
+    args: Map&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">String</span>&gt;,
+}
+
+<span class="hljs-comment">// The `string_or_struct` function uses this impl to instantiate a `Build` if</span>
+<span class="hljs-comment">// the input file contains a string and not a struct. According to the</span>
+<span class="hljs-comment">// docker-compose.yml documentation, a string by itself represents a `Build`</span>
+<span class="hljs-comment">// with just the `context` field set.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// &gt; `build` can be specified either as a string containing a path to the build</span>
+<span class="hljs-comment">// &gt; context, or an object with the path specified under context and optionally</span>
+<span class="hljs-comment">// &gt; dockerfile and args.</span>
+<span class="hljs-keyword">impl</span> FromStr <span class="hljs-keyword">for</span> Build {
+    <span class="hljs-comment">// This implementation of `from_str` can never fail, so use the impossible</span>
+    <span class="hljs-comment">// `Void` type as the error type.</span>
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Err</span></span> = Void;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">from_str</span></span>(s: &amp;<span class="hljs-keyword">str</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, Self::<span class="hljs-literal">Err</span>&gt; {
+        <span class="hljs-literal">Ok</span>(Build {
+            context: s.to_string(),
+            dockerfile: <span class="hljs-literal">None</span>,
+            args: Map::new(),
+        })
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">string_or_struct</span></span>&lt;T, D&gt;(d: D) -&gt; <span class="hljs-built_in">Result</span>&lt;T, D::Error&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize + FromStr&lt;<span class="hljs-literal">Err</span> = Void&gt;,
+          D: Deserializer
+{
+    <span class="hljs-comment">// This is a Visitor that forwards string types to T&apos;s `FromStr` impl and</span>
+    <span class="hljs-comment">// forwards map types to T&apos;s `Deserialize` impl. The `PhantomData` is to</span>
+    <span class="hljs-comment">// keep the compiler from complaining about T being an unused generic type</span>
+    <span class="hljs-comment">// parameter. We need T in order to know the Value type for the Visitor</span>
+    <span class="hljs-comment">// impl.</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StringOrStruct</span></span>&lt;T&gt;(PhantomData&lt;T&gt;);
+
+    <span class="hljs-keyword">impl</span>&lt;T&gt; de::Visitor <span class="hljs-keyword">for</span> StringOrStruct&lt;T&gt;
+        <span class="hljs-keyword">where</span> T: Deserialize + FromStr&lt;<span class="hljs-literal">Err</span> = Void&gt;
+    {
+        <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
+
+        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
+            formatter.write_str(<span class="hljs-string">&quot;string or map&quot;</span>)
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_str</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: &amp;<span class="hljs-keyword">str</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;T, E&gt;
+            <span class="hljs-keyword">where</span> E: de::Error
+        {
+            <span class="hljs-literal">Ok</span>(FromStr::from_str(value).unwrap())
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;M&gt;(<span class="hljs-keyword">self</span>, visitor: M) -&gt; <span class="hljs-built_in">Result</span>&lt;T, M::Error&gt;
+            <span class="hljs-keyword">where</span> M: de::MapVisitor
+        {
+            <span class="hljs-comment">// `MapVisitorDeserializer` is a wrapper that turns a `MapVisitor`</span>
+            <span class="hljs-comment">// into a `Deserializer`, allowing it to be used as the input to T&apos;s</span>
+            <span class="hljs-comment">// `Deserialize` implementation. T then deserializes itself using</span>
+            <span class="hljs-comment">// the entries from the map visitor.</span>
+            Deserialize::deserialize(de::value::MapVisitorDeserializer::new(visitor))
+        }
+    }
+
+    d.deserialize(StringOrStruct(PhantomData))
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="transcode.html" class="navigation navigation-prev " aria-label="Previous page: Transcode into another format">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="custom-date-format.html" class="navigation navigation-next " aria-label="Next page: Custom date format">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Either string or struct","level":"1.6.14","depth":2,"next":{"title":"Custom date format","level":"1.6.15","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]},"previous":{"title":"Transcode into another format","level":"1.6.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"string-or-struct.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T03:55:46.211Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-sane-sidebar/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
