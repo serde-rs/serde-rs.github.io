@@ -1,4 +1,15 @@
-<span style="float:right">[![github](/img/github.svg)](https://github.com/serde-rs/serde) [![rustdoc](/img/rustdoc.svg)](https://docs.serde.rs/serde/) [![Latest Version](https://img.shields.io/crates/v/serde.svg?style=social)](https://crates.io/crates/serde)</span>
+<span style="float:right">
+  [![GitHub]][repo]
+  [![rustdoc]][docs]
+  [![Latest Version]][crates.io]
+</span>
+
+[GitHub]: /img/github.svg
+[repo]: https://github.com/serde-rs/serde
+[rustdoc]: /img/rustdoc.svg
+[docs]: https://docs.serde.rs/serde/
+[Latest Version]: https://img.shields.io/crates/v/serde.svg?style=social
+[crates.io]: https://crates.io/crates/serde
 
 # Serde
 
