@@ -80,9 +80,9 @@ Serde by the community.
 
 Out of the box, Serde is able to serialize and deserialize common Rust data
 types in any of the above formats. For example `String`, `&str`, `usize`,
-`Vec<T>`, `HashMap<K,V>` are all supported. In addition, Serde provides code
-generation to `#[derive]` serialization implementations for structs in your own
-program. Using the code generation goes like this:
+`Vec<T>`, `HashMap<K,V>` are all supported. In addition, Serde provides a derive
+macro to generate serialization implementations for structs in your own program.
+Using the derive macro goes like this:
 
 !PLAYGROUND a58fc361e02c4c0a08fd99cacd9567d1
 ```rust
