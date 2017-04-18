@@ -182,11 +182,12 @@ sequence or map. [Newtype structs] and [unit structs] are more like primitives.
 [unit structs]: https://doc.rust-lang.org/book/structs.html#unit-like-structs
 
 ```rust
+# #![allow(dead_code)]
+#
 // An ordinary struct. Use three-step process:
 //   1. serialize_struct
 //   2. serialize_field
 //   3. end
-# #[allow(dead_code)]
 struct Color {
     r: u8,
     g: u8,
@@ -197,15 +198,12 @@ struct Color {
 //   1. serialize_tuple_struct
 //   2. serialize_field
 //   3. end
-# #[allow(dead_code)]
 struct Point2D(f64, f64);
 
 // A newtype struct. Use serialize_newtype_struct.
-# #[allow(dead_code)]
 struct Inches(u64);
 
 // A unit struct. Use serialize_unit_struct.
-# #[allow(dead_code)]
 struct Instance;
 #
 # fn main() {}
@@ -224,6 +222,8 @@ around the inner value, serializing just the inner value. See for example
 [JSON's treatment of newtype structs]: json.md
 
 ```rust
+# #![allow(dead_code)]
+#
 # extern crate serde;
 #
 use serde::ser::{Serialize, Serializer, SerializeStruct};
