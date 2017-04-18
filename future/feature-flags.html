@@ -302,7 +302,7 @@
                 <a href="impl-serializer.html">
             
                     
-                    Serializer
+                    Implementing a Serializer
             
                 </a>
             
@@ -315,7 +315,7 @@
                 <a href="impl-deserializer.html">
             
                     
-                    Deserializer
+                    Implementing a Deserializer
             
                 </a>
             
@@ -603,18 +603,40 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="feature-flags">Feature flags</h1>
-<h3 id="using-in-nostd-crates">Using in <code>no_std</code> crates</h3>
-<p>The core <code>serde</code> package defines a number of <a href="http://doc.crates.io/manifest.html#the-features-section" target="_blank">Cargo
-features</a> to enable
-usage in a variety of freestanding environments. Enable any or none of the
-following features, and use <code>default-features = false</code> in your <code>Cargo.toml</code>:</p>
-<ul>
-<li><code>alloc</code> (implies <code>nightly</code>)</li>
-<li><code>collections</code> (implies <code>alloc</code> and <code>nightly</code>)</li>
-<li><code>std</code> (default)</li>
-</ul>
-<p>If you only use <code>default-features = false</code>, you will receive a stock <code>no_std</code>
-Serde with no support for any of the collection types.</p>
+<p>The <code>serde</code> crate defines some <a href="http://doc.crates.io/manifest.html#the-features-section" target="_blank">Cargo features</a> to enable using Serde in a
+variety of freestanding environments.</p>
+<p>Building Serde with <code>default-features = false</code>, you will receive a stock
+<code>no_std</code> Serde with no support for any of the collection types.</p>
+<h4 id="-feature-derive">--feature derive</h4>
+<p>Re-export the derive(Serialize, Deserialize) macros. This is specifically
+intended for library crates that provide optional Serde impls behind a Cargo cfg
+of their own. All other crates should depend on serde_derive directly.</p>
+<p>Please refer to the long comment above the line <code>pub use serde_derive::*</code> in
+src/lib.rs before enabling this feature. If you think you need this feature and
+your use case does not precisely match the one described in the comment, please
+open an issue to let us know about your use case.</p>
+<h4 id="-feature-std">--feature std</h4>
+<p><em>This feature is enabled by default.</em></p>
+<p>Provide impls for common standard library types like Vec&lt;T&gt; and
+HashMap&lt;K, V&gt;. Requires a dependency on the Rust standard library.</p>
+<h4 id="-feature-unstable">--feature unstable</h4>
+<p>Provide impls for types that require unstable functionality. For tracking and
+discussion of unstable functionality please refer to <a href="https://github.com/serde-rs/serde/issues/812" target="_blank">this issue</a>.</p>
+<h4 id="-features-alloc">--features alloc</h4>
+<p><em>Implies unstable.</em></p>
+<p>Provide impls for types that require memory allocation like Box&lt;T&gt; and
+Rc&lt;T&gt;. This is a subset of std but may be enabled without depending on all
+of std.</p>
+<p>Requires a dependency on the unstable <a href="https://doc.rust-lang.org/alloc/" target="_blank">core allocation library</a>.</p>
+<h4 id="-features-collections">--features collections</h4>
+<p><em>Implies alloc and unstable.</em></p>
+<p>Provide impls for collection types like String and Cow&lt;T&gt;. This is a
+subset of std but may be enabled without depending on all of std.</p>
+<p>Requires a dependency on the unstable <a href="https://doc.rust-lang.org/collections/" target="_blank">collections library</a>.</p>
+<h4 id="-features-rc">--features rc</h4>
+<p>Opt into impls for Rc&lt;T&gt; and Arc&lt;T&gt;. Serializing and deserializing
+these types does not preserve identity and may result in multiple copies of the
+same data. Be sure that this is what you want before enabling this feature.</p>
 
                                 
                                 </section>
@@ -638,7 +660,7 @@ Serde with no support for any of the collection types.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Feature flags","level":"1.10","depth":1,"previous":{"title":"Custom date format","level":"1.9.15","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"feature-flags.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T01:33:45.820Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Feature flags","level":"1.10","depth":1,"previous":{"title":"Custom date format","level":"1.9.15","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"feature-flags.md","mtime":"2017-04-18T01:47:22.918Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T04:36:00.522Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
