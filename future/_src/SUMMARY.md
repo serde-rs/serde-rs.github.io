@@ -24,7 +24,6 @@
     * [Default value for a field](attr-default.md)
     * [Handwritten generic type bounds](attr-bound.md)
     * [Deserialize for custom map type](deserialize-map.md)
-    * [Serialize for custom map type](serialize-map.md)
     * [Array of values without buffering](stream-array.md)
     * [Serialize enum as number](enum-number.md)
     * [Serialize fields as camelCase](attr-rename.md)

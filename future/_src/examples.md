@@ -14,9 +14,6 @@ be replaced with handwritten ones using the `#[serde(bound)]` attribute.
 **[Deserialize for custom map type](deserialize-map.md)**: Detailed explanation
 of each step involved in deserializing a map.
 
-**[Serialize for custom map type](serialize-map.md)**: Other complex types
-(sequences, structs, tuple structs) are very similar to this as well.
-
 **[Array of values without buffering](stream-array.md)**: Deserialize the
 maximum value of an array of integers without holding the whole array in memory
 at once. This approach can be adapted to handle a variety of other situations in
