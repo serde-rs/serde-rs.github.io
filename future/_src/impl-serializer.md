@@ -35,9 +35,9 @@ pub struct Serializer {
     output: String,
 }
 
-// By convention, the public API of a Serializer is one or more `to_abc` methods
-// such as `to_string`, `to_bytes`, or `to_reader` depending on what Rust types
-// the serializer is able to produce as output.
+// By convention, the public API of a Serde deserializer is one or more `to_abc`
+// functions such as `to_string`, `to_bytes`, or `to_writer` depending on what
+// Rust types the serializer is able to produce as output.
 //
 // This basic serializer supports only `to_string`.
 pub fn to_string<T>(value: &T) -> Result<String>
@@ -247,7 +247,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
 
     // Tuples look just like sequences in JSON. Some formats may be able to
     // represent tuples more efficiently by omitting the length, since tuple
-    // means that the corresponding Deserialize implementation will know the
+    // means that the corresponding `Deserialize implementation will know the
     // length without needing to look at the serialized data.
     fn serialize_tuple(self, len: usize) -> Result<Self::SerializeTuple> {
         self.serialize_seq(Some(len))
@@ -439,8 +439,8 @@ impl<'a> ser::SerializeMap for &'a mut Serializer {
         key.serialize(&mut **self)
     }
 
-    // It doesn't make a difference whether the colon is serialized at the end
-    // of `serialize_key` or at the beginning of `serialize_value`. In this case
+    // It doesn't make a difference whether the colon is printed at the end of
+    // `serialize_key` or at the beginning of `serialize_value`. In this case
     // the code is a bit simpler having it here.
     fn serialize_value<T>(&mut self, value: &T) -> Result<()>
         where T: ?Sized + Serialize
