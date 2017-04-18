@@ -605,6 +605,509 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="implementing-a-deserializer">Implementing a Deserializer</h1>
+<p>This page gives a basic but functional implementation of a JSON deserializer
+using Serde. As with the serializer, let&apos;s start with tests and then walk
+through the implementation.</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[test]</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">test_struct</span></span>() {
+    <span class="hljs-meta">#[derive(Deserialize, PartialEq, Debug)]</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Test</span></span> {
+        <span class="hljs-keyword">int</span>: <span class="hljs-keyword">u32</span>,
+        seq: <span class="hljs-built_in">Vec</span>&lt;<span class="hljs-built_in">String</span>&gt;,
+    }
+
+    <span class="hljs-keyword">let</span> j = <span class="hljs-string">r#&quot;{&quot;int&quot;:1,&quot;seq&quot;:[&quot;a&quot;,&quot;b&quot;]}&quot;#</span>;
+    <span class="hljs-keyword">let</span> expected = Test { <span class="hljs-keyword">int</span>: <span class="hljs-number">1</span>, seq: <span class="hljs-built_in">vec!</span>[<span class="hljs-string">&quot;a&quot;</span>.to_owned(), <span class="hljs-string">&quot;b&quot;</span>.to_owned()] };
+    <span class="hljs-built_in">assert_eq!</span>(expected, from_str(j).unwrap());
+}
+
+<span class="hljs-meta">#[test]</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">test_enum</span></span>() {
+    <span class="hljs-meta">#[derive(Deserialize, PartialEq, Debug)]</span>
+    <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
+        Unit,
+        Newtype(<span class="hljs-keyword">u32</span>),
+        Tuple(<span class="hljs-keyword">u32</span>, <span class="hljs-keyword">u32</span>),
+        Struct { a: <span class="hljs-keyword">u32</span> },
+    }
+
+    <span class="hljs-keyword">let</span> j = <span class="hljs-string">r#&quot;&quot;Unit&quot;&quot;#</span>;
+    <span class="hljs-keyword">let</span> expected = E::Unit;
+    <span class="hljs-built_in">assert_eq!</span>(expected, from_str(j).unwrap());
+
+    <span class="hljs-keyword">let</span> j = <span class="hljs-string">r#&quot;{&quot;Newtype&quot;:1}&quot;#</span>;
+    <span class="hljs-keyword">let</span> expected = E::Newtype(<span class="hljs-number">1</span>);
+    <span class="hljs-built_in">assert_eq!</span>(expected, from_str(j).unwrap());
+
+    <span class="hljs-keyword">let</span> j = <span class="hljs-string">r#&quot;{&quot;Tuple&quot;:[1,2]}&quot;#</span>;
+    <span class="hljs-keyword">let</span> expected = E::Tuple(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+    <span class="hljs-built_in">assert_eq!</span>(expected, from_str(j).unwrap());
+
+    <span class="hljs-keyword">let</span> j = <span class="hljs-string">r#&quot;{&quot;Struct&quot;:{&quot;a&quot;:1}}&quot;#</span>;
+    <span class="hljs-keyword">let</span> expected = E::Struct { a: <span class="hljs-number">1</span> };
+    <span class="hljs-built_in">assert_eq!</span>(expected, from_str(j).unwrap());
+}
+</code></pre>
+<div><p class="code-filename">src/de.rs</p></div>
+<pre><code class="lang-rust"><span class="hljs-keyword">use</span> std::ops::{Neg, AddAssign, MulAssign};
+
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, DeserializeSeed, Visitor, SeqAccess,
+                MapAccess, EnumAccess, VariantAccess, IntoDeserializer};
+
+<span class="hljs-keyword">use</span> error::{Error, <span class="hljs-built_in">Result</span>};
+
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Deserializer</span></span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; {
+    input: &amp;<span class="hljs-symbol">&apos;de</span> <span class="hljs-keyword">str</span>,
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">from_str</span></span>(input: &amp;<span class="hljs-symbol">&apos;de</span> <span class="hljs-keyword">str</span>) -&gt; <span class="hljs-keyword">Self</span> {
+        Deserializer { input: input }
+    }
+}
+
+<span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">from_str</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, T&gt;(s: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;T&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;a</span>&gt;
+{
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> deserializer = Deserializer::from_str(s);
+    <span class="hljs-keyword">let</span> t = T::deserialize(&amp;<span class="hljs-keyword">mut</span> deserializer)?;
+    <span class="hljs-keyword">if</span> deserializer.input.is_empty() {
+        <span class="hljs-literal">Ok</span>(t)
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-literal">Err</span>(Error::TrailingCharacters)
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">peek_char</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">char</span>&gt; {
+        <span class="hljs-keyword">self</span>.input.chars().next().ok_or(Error::Eof)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">next_char</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">char</span>&gt; {
+        <span class="hljs-keyword">let</span> ch = <span class="hljs-keyword">self</span>.peek_char()?;
+        <span class="hljs-keyword">self</span>.input = &amp;<span class="hljs-keyword">self</span>.input[ch.len_utf8()..];
+        <span class="hljs-literal">Ok</span>(ch)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">parse_unsigned</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;T&gt;
+        <span class="hljs-keyword">where</span> T: AddAssign&lt;T&gt; + MulAssign&lt;T&gt; + <span class="hljs-built_in">From</span>&lt;<span class="hljs-keyword">u8</span>&gt;
+    {
+        <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> <span class="hljs-keyword">int</span> = <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span>.next_char()? {
+            ch @ <span class="hljs-string">&apos;0&apos;</span>...<span class="hljs-string">&apos;9&apos;</span> =&gt; T::from(ch <span class="hljs-keyword">as</span> <span class="hljs-keyword">u8</span> - <span class="hljs-string">b&apos;0&apos;</span>),
+            _ =&gt; {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::ExpectedInteger);
+            }
+        };
+        <span class="hljs-keyword">loop</span> {
+            <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span>.input.chars().next() {
+                <span class="hljs-literal">Some</span>(ch @ <span class="hljs-string">&apos;0&apos;</span>...<span class="hljs-string">&apos;9&apos;</span>) =&gt; {
+                    <span class="hljs-keyword">self</span>.input = &amp;<span class="hljs-keyword">self</span>.input[<span class="hljs-number">1</span>..];
+                    <span class="hljs-keyword">int</span> *= T::from(<span class="hljs-number">10</span>);
+                    <span class="hljs-keyword">int</span> += T::from(ch <span class="hljs-keyword">as</span> <span class="hljs-keyword">u8</span> - <span class="hljs-string">b&apos;0&apos;</span>);
+                }
+                _ =&gt; {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">Ok</span>(<span class="hljs-keyword">int</span>);
+                }
+            }
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">parse_signed</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;T&gt;
+        <span class="hljs-keyword">where</span> T: Neg&lt;Output = T&gt; + AddAssign&lt;T&gt; + MulAssign&lt;T&gt; + <span class="hljs-built_in">From</span>&lt;<span class="hljs-keyword">i8</span>&gt;
+    {
+        <span class="hljs-comment">// Parse a minus sign, delegate to `parse_unsigned`, negate if negative.</span>
+        <span class="hljs-built_in">unimplemented!</span>()
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">parse_string</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;&amp;<span class="hljs-symbol">&apos;de</span> <span class="hljs-keyword">str</span>&gt; {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? != <span class="hljs-string">&apos;&quot;&apos;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::ExpectedString);
+        }
+        <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span>.input.find(<span class="hljs-string">&apos;&quot;&apos;</span>) {
+            <span class="hljs-literal">Some</span>(len) =&gt; {
+                <span class="hljs-keyword">let</span> s = &amp;<span class="hljs-keyword">self</span>.input[..len];
+                <span class="hljs-keyword">self</span>.input = &amp;<span class="hljs-keyword">self</span>.input[len + <span class="hljs-number">1</span>..];
+                <span class="hljs-literal">Ok</span>(s)
+            }
+            <span class="hljs-literal">None</span> =&gt; <span class="hljs-literal">Err</span>(Error::Eof),
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, <span class="hljs-symbol">&apos;a</span>&gt; de::Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">mut</span> Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_any</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">match</span> <span class="hljs-keyword">self</span>.peek_char()? {
+            <span class="hljs-string">&apos;n&apos;</span> =&gt; <span class="hljs-keyword">self</span>.deserialize_unit(visitor),
+            <span class="hljs-string">&apos;t&apos;</span> | <span class="hljs-string">&apos;f&apos;</span> =&gt; <span class="hljs-keyword">self</span>.deserialize_bool(visitor),
+            <span class="hljs-string">&apos;&quot;&apos;</span> =&gt; <span class="hljs-keyword">self</span>.deserialize_str(visitor),
+            <span class="hljs-string">&apos;0&apos;</span>...<span class="hljs-string">&apos;9&apos;</span> =&gt; <span class="hljs-keyword">self</span>.deserialize_u64(visitor),
+            <span class="hljs-string">&apos;-&apos;</span> =&gt; <span class="hljs-keyword">self</span>.deserialize_i64(visitor),
+            <span class="hljs-string">&apos;[&apos;</span> =&gt; <span class="hljs-keyword">self</span>.deserialize_seq(visitor),
+            <span class="hljs-string">&apos;{&apos;</span> =&gt; <span class="hljs-keyword">self</span>.deserialize_map(visitor),
+            _ =&gt; <span class="hljs-literal">Err</span>(Error::Syntax),
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_bool</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.input.starts_with(<span class="hljs-string">&quot;true&quot;</span>) {
+            visitor.visit_bool(<span class="hljs-literal">true</span>)
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.input.starts_with(<span class="hljs-string">&quot;false&quot;</span>) {
+            visitor.visit_bool(<span class="hljs-literal">false</span>)
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">Err</span>(Error::ExpectedBoolean)
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_i8</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_i8(<span class="hljs-keyword">self</span>.parse_signed()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_i16</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_i16(<span class="hljs-keyword">self</span>.parse_signed()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_i32</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_i32(<span class="hljs-keyword">self</span>.parse_signed()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_i64</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_i64(<span class="hljs-keyword">self</span>.parse_signed()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_u8</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_u8(<span class="hljs-keyword">self</span>.parse_unsigned()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_u16</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_u16(<span class="hljs-keyword">self</span>.parse_unsigned()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_u32</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_u32(<span class="hljs-keyword">self</span>.parse_unsigned()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_u64</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_u64(<span class="hljs-keyword">self</span>.parse_unsigned()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_f32</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-comment">// Float parsing is hard.</span>
+        <span class="hljs-built_in">unimplemented!</span>()
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_f64</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-comment">// Float parsing is hard.</span>
+        <span class="hljs-built_in">unimplemented!</span>()
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_char</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-comment">// Parse a string, check that it is one character, call `visit_char`.</span>
+        <span class="hljs-built_in">unimplemented!</span>()
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_str</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_borrowed_str(<span class="hljs-keyword">self</span>.parse_string()?)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_string</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">self</span>.deserialize_str(visitor)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_bytes</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-built_in">unimplemented!</span>()
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_byte_buf</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-built_in">unimplemented!</span>()
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_option</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.input.starts_with(<span class="hljs-string">&quot;null&quot;</span>) {
+            <span class="hljs-keyword">self</span>.input = &amp;<span class="hljs-keyword">self</span>.input[<span class="hljs-string">&quot;null&quot;</span>.len()..];
+            visitor.visit_none()
+        } <span class="hljs-keyword">else</span> {
+            visitor.visit_some(<span class="hljs-keyword">self</span>)
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_unit</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.input.starts_with(<span class="hljs-string">&quot;null&quot;</span>) {
+            <span class="hljs-keyword">self</span>.input = &amp;<span class="hljs-keyword">self</span>.input[<span class="hljs-string">&quot;null&quot;</span>.len()..];
+            visitor.visit_unit()
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">Err</span>(Error::ExpectedNull)
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_unit_struct</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">self</span>.deserialize_unit(visitor)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_newtype_struct</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        visitor.visit_newtype_struct(<span class="hljs-keyword">self</span>)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;[&apos;</span> {
+            <span class="hljs-keyword">let</span> value = visitor.visit_seq(CommaSeparated::new(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>))?;
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;]&apos;</span> {
+                <span class="hljs-literal">Ok</span>(value)
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-literal">Err</span>(Error::ExpectedArrayEnd)
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">Err</span>(Error::ExpectedArray)
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_tuple</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        _len: usize,
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">self</span>.deserialize_seq(visitor)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_tuple_struct</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
+        _len: usize,
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">self</span>.deserialize_seq(visitor)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_map</span></span>&lt;V&gt;(<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;{&apos;</span> {
+            <span class="hljs-keyword">let</span> value = visitor.visit_map(CommaSeparated::new(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>))?;
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;}&apos;</span> {
+                <span class="hljs-literal">Ok</span>(value)
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-literal">Err</span>(Error::ExpectedMapEnd)
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">Err</span>(Error::ExpectedMap)
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_struct</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
+        _fields: &amp;<span class="hljs-symbol">&apos;static</span> [&amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>],
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">self</span>.deserialize_map(visitor)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_enum</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
+        _variants: &amp;<span class="hljs-symbol">&apos;static</span> [&amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>],
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.peek_char()? == <span class="hljs-string">&apos;&quot;&apos;</span> {
+            visitor.visit_enum(<span class="hljs-keyword">self</span>.parse_string()?.into_deserializer())
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;{&apos;</span> {
+            <span class="hljs-keyword">let</span> value = visitor.visit_enum(Enum::new(<span class="hljs-keyword">self</span>))?;
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;}&apos;</span> {
+                <span class="hljs-literal">Ok</span>(value)
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-literal">Err</span>(Error::ExpectedMapEnd)
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">Err</span>(Error::ExpectedEnum)
+        }
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_identifier</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">self</span>.deserialize_str(visitor)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_ignored_any</span></span>&lt;V&gt;(
+        <span class="hljs-keyword">self</span>,
+        visitor: V
+    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">self</span>.deserialize_any(visitor)
+    }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CommaSeparated</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>: <span class="hljs-symbol">&apos;a</span>&gt; {
+    de: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">mut</span> Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
+    first: <span class="hljs-keyword">bool</span>,
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; CommaSeparated&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new</span></span>(de: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">mut</span> Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;) -&gt; <span class="hljs-keyword">Self</span> {
+        CommaSeparated { de: de, first: <span class="hljs-literal">true</span> }
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, <span class="hljs-symbol">&apos;a</span>&gt; SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> CommaSeparated&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">next_element_seed</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, seed: T) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">Option</span>&lt;T::Value&gt;&gt;
+        <span class="hljs-keyword">where</span> T: DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.de.peek_char()? == <span class="hljs-string">&apos;]&apos;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">Ok</span>(<span class="hljs-literal">None</span>);
+        }
+        <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.first &amp;&amp; <span class="hljs-keyword">self</span>.de.next_char()? != <span class="hljs-string">&apos;,&apos;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::ExpectedArrayComma);
+        }
+        <span class="hljs-keyword">self</span>.first = <span class="hljs-literal">false</span>;
+        seed.deserialize(&amp;<span class="hljs-keyword">mut</span> *<span class="hljs-keyword">self</span>.de).map(<span class="hljs-literal">Some</span>)
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, <span class="hljs-symbol">&apos;a</span>&gt; MapAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> CommaSeparated&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">next_key_seed</span></span>&lt;K&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, seed: K) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">Option</span>&lt;K::Value&gt;&gt;
+        <span class="hljs-keyword">where</span> K: DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.de.peek_char()? == <span class="hljs-string">&apos;}&apos;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">Ok</span>(<span class="hljs-literal">None</span>);
+        }
+        <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.first &amp;&amp; <span class="hljs-keyword">self</span>.de.next_char()? != <span class="hljs-string">&apos;,&apos;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::ExpectedMapComma);
+        }
+        <span class="hljs-keyword">self</span>.first = <span class="hljs-literal">false</span>;
+        seed.deserialize(&amp;<span class="hljs-keyword">mut</span> *<span class="hljs-keyword">self</span>.de).map(<span class="hljs-literal">Some</span>)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">next_value_seed</span></span>&lt;V&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, seed: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.de.next_char()? != <span class="hljs-string">&apos;:&apos;</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(Error::ExpectedMapColon);
+        }
+        seed.deserialize(&amp;<span class="hljs-keyword">mut</span> *<span class="hljs-keyword">self</span>.de)
+    }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Enum</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>: <span class="hljs-symbol">&apos;a</span>&gt; {
+    de: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">mut</span> Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; Enum&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new</span></span>(de: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">mut</span> Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;) -&gt; <span class="hljs-keyword">Self</span> {
+        Enum { de: de }
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, <span class="hljs-symbol">&apos;a</span>&gt; EnumAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Enum&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Variant</span></span> = <span class="hljs-keyword">Self</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">variant_seed</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, seed: V) -&gt; <span class="hljs-built_in">Result</span>&lt;(V::Value, Self::Variant)&gt;
+        <span class="hljs-keyword">where</span> V: DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-keyword">let</span> val = seed.deserialize(&amp;<span class="hljs-keyword">mut</span> *<span class="hljs-keyword">self</span>.de)?;
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.de.next_char()? == <span class="hljs-string">&apos;:&apos;</span> {
+            <span class="hljs-literal">Ok</span>((val, <span class="hljs-keyword">self</span>))
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">Err</span>(Error::ExpectedMapColon)
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, <span class="hljs-symbol">&apos;a</span>&gt; VariantAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Enum&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">unit_variant</span></span>(<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
+        <span class="hljs-literal">Err</span>(Error::ExpectedString)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">newtype_variant_seed</span></span>&lt;T&gt;(<span class="hljs-keyword">self</span>, seed: T) -&gt; <span class="hljs-built_in">Result</span>&lt;T::Value&gt;
+        <span class="hljs-keyword">where</span> T: DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        seed.deserialize(<span class="hljs-keyword">self</span>.de)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">tuple_variant</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _len: usize, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        de::Deserializer::deserialize_seq(<span class="hljs-keyword">self</span>.de, visitor)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">struct_variant</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _fields: &amp;<span class="hljs-symbol">&apos;static</span> [&amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>], visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+        <span class="hljs-keyword">where</span> V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        de::Deserializer::deserialize_map(<span class="hljs-keyword">self</span>.de, visitor)
+    }
+}
+</code></pre>
 
                                 
                                 </section>
@@ -632,7 +1135,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2017-04-17T20:27:10.743Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T20:52:51.630Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2017-04-18T01:32:59.482Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T01:33:45.820Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

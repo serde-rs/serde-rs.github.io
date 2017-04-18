@@ -639,17 +639,17 @@ programmer.</p>
     <span class="hljs-comment">// stricter condition than is necessary. In fact, the `main` function below</span>
     <span class="hljs-comment">// uses T=str which does not implement Deserialize. We override the</span>
     <span class="hljs-comment">// automatically generated bound by a looser one.</span>
-    <span class="hljs-meta">#[serde(bound(deserialize = <span class="hljs-meta-string">&quot;Ptr&lt;&apos;a, T&gt;: Deserialize&quot;</span>))]</span>
+    <span class="hljs-meta">#[serde(bound(deserialize = <span class="hljs-meta-string">&quot;Ptr&lt;&apos;a, T&gt;: Deserialize&lt;&apos;de&gt;&quot;</span>))]</span>
     ptr: Ptr&lt;<span class="hljs-symbol">&apos;a</span>, T&gt;,
 }
 
 <span class="hljs-comment">/// Deserialize a type `S` by deserializing a string, then using the `FromStr`</span>
 <span class="hljs-comment">/// impl of `S` to create the result. The generic type `S` is not required to</span>
 <span class="hljs-comment">/// implement `Deserialize`.</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_from_str</span></span>&lt;S, D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;S, D::Error&gt;
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_from_str</span></span>&lt;<span class="hljs-symbol">&apos;de</span>, S, D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;S, D::Error&gt;
     <span class="hljs-keyword">where</span> S: FromStr,
           S::<span class="hljs-literal">Err</span>: Display,
-          D: Deserializer
+          D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
 {
     <span class="hljs-keyword">let</span> s: <span class="hljs-built_in">String</span> = Deserialize::deserialize(deserializer)?;
     S::from_str(&amp;s).map_err(de::Error::custom)
@@ -663,11 +663,11 @@ programmer.</p>
     Owned(<span class="hljs-built_in">Box</span>&lt;T&gt;),
 }
 
-<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;a</span>, T: <span class="hljs-symbol">&apos;a</span> + ?<span class="hljs-built_in">Sized</span>&gt; Deserialize <span class="hljs-keyword">for</span> Ptr&lt;<span class="hljs-symbol">&apos;a</span>, T&gt;
-    <span class="hljs-keyword">where</span> <span class="hljs-built_in">Box</span>&lt;T&gt;: Deserialize
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, <span class="hljs-symbol">&apos;a</span>, T: <span class="hljs-symbol">&apos;a</span> + ?<span class="hljs-built_in">Sized</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Ptr&lt;<span class="hljs-symbol">&apos;a</span>, T&gt;
+    <span class="hljs-keyword">where</span> <span class="hljs-built_in">Box</span>&lt;T&gt;: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
 {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer
+        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
     {
         Deserialize::deserialize(deserializer).map(Ptr::Owned)
     }
@@ -714,7 +714,7 @@ programmer.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Handwritten generic type bounds","level":"1.9.4","depth":2,"next":{"title":"Deserialize for custom map type","level":"1.9.5","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"previous":{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-bound.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T20:52:51.630Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Handwritten generic type bounds","level":"1.9.4","depth":2,"next":{"title":"Deserialize for custom map type","level":"1.9.5","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"previous":{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-bound.md","mtime":"2017-04-18T00:48:25.888Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T01:33:45.820Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

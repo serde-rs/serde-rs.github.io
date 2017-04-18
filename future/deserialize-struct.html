@@ -619,21 +619,26 @@ names. Instead there is a <code>Field</code> enum which is deserialized from a <
 by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
 <pre><a class="playground-link" target="_blank" href="https://play.integer32.com/?gist=96955b69e2415ba3c3b7359a3c9cbf02"></a><code class="lang-rust"><span class="hljs-keyword">use</span> std::fmt;
 
-<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, Deserializer, Visitor, SeqVisitor, MapVisitor};
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
 
-<span class="hljs-keyword">impl</span> Deserialize <span class="hljs-keyword">for</span> Duration {
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Duration {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer
+        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
     {
         <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Field</span></span> { Secs, Nanos };
 
-        <span class="hljs-keyword">impl</span> Deserialize <span class="hljs-keyword">for</span> Field {
+        <span class="hljs-comment">// This part could also be generated independently by:</span>
+        <span class="hljs-comment">//</span>
+        <span class="hljs-comment">//    #[derive(Deserialize)]</span>
+        <span class="hljs-comment">//    #[serde(field_identifier, rename_all = &quot;lowercase&quot;)]</span>
+        <span class="hljs-comment">//    enum Field { Secs, Nanos }</span>
+        <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Field {
             <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;Field, D::Error&gt;
-                <span class="hljs-keyword">where</span> D: Deserializer
+                <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
             {
                 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">FieldVisitor</span></span>;
 
-                <span class="hljs-keyword">impl</span> Visitor <span class="hljs-keyword">for</span> FieldVisitor {
+                <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> FieldVisitor {
                     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = Field;
 
                     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
@@ -651,29 +656,29 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
                     }
                 }
 
-                deserializer.deserialize_struct_field(FieldVisitor)
+                deserializer.deserialize_identifier(FieldVisitor)
             }
         }
 
         <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">DurationVisitor</span></span>;
 
-        <span class="hljs-keyword">impl</span> Visitor <span class="hljs-keyword">for</span> DurationVisitor {
+        <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> DurationVisitor {
             <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = Duration;
 
             <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
                 formatter.write_str(<span class="hljs-string">&quot;struct Duration&quot;</span>)
             }
 
-            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
-                <span class="hljs-keyword">where</span> V: SeqVisitor
+            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> seq: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
+                <span class="hljs-keyword">where</span> V: SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
             {
-                <span class="hljs-keyword">let</span> secs: <span class="hljs-keyword">u64</span> = <span class="hljs-keyword">match</span> visitor.visit()? {
+                <span class="hljs-keyword">let</span> secs: <span class="hljs-keyword">u64</span> = <span class="hljs-keyword">match</span> seq.next_element()? {
                     <span class="hljs-literal">Some</span>(value) =&gt; value,
                     <span class="hljs-literal">None</span> =&gt; {
                         <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::invalid_length(<span class="hljs-number">0</span>, &amp;<span class="hljs-keyword">self</span>));
                     }
                 };
-                <span class="hljs-keyword">let</span> nanos: <span class="hljs-keyword">u32</span> = <span class="hljs-keyword">match</span> visitor.visit()? {
+                <span class="hljs-keyword">let</span> nanos: <span class="hljs-keyword">u32</span> = <span class="hljs-keyword">match</span> seq.next_element()? {
                     <span class="hljs-literal">Some</span>(value) =&gt; value,
                     <span class="hljs-literal">None</span> =&gt; {
                         <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::invalid_length(<span class="hljs-number">1</span>, &amp;<span class="hljs-keyword">self</span>));
@@ -682,24 +687,24 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
                 <span class="hljs-literal">Ok</span>(Duration::new(secs, nanos))
             }
 
-            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
-                <span class="hljs-keyword">where</span> V: MapVisitor
+            <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> map: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
+                <span class="hljs-keyword">where</span> V: MapAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
             {
                 <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> secs = <span class="hljs-literal">None</span>;
                 <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> nanos = <span class="hljs-literal">None</span>;
-                <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(key) = visitor.visit_key()? {
+                <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(key) = map.next_key()? {
                     <span class="hljs-keyword">match</span> key {
                         Field::Secs =&gt; {
                             <span class="hljs-keyword">if</span> secs.is_some() {
                                 <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::duplicate_field(<span class="hljs-string">&quot;secs&quot;</span>));
                             }
-                            secs = <span class="hljs-literal">Some</span>(visitor.visit_value()?);
+                            secs = <span class="hljs-literal">Some</span>(map.next_value()?);
                         }
                         Field::Nanos =&gt; {
                             <span class="hljs-keyword">if</span> nanos.is_some() {
                                 <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::duplicate_field(<span class="hljs-string">&quot;nanos&quot;</span>));
                             }
-                            nanos = <span class="hljs-literal">Some</span>(visitor.visit_value()?);
+                            nanos = <span class="hljs-literal">Some</span>(map.next_value()?);
                         }
                     }
                 }
@@ -747,7 +752,7 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"next":{"title":"Transcode into another format","level":"1.9.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"De/Serialize for other crate","level":"1.9.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-struct.md","mtime":"2017-04-17T19:24:00.669Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T20:52:51.630Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"next":{"title":"Transcode into another format","level":"1.9.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"De/Serialize for other crate","level":"1.9.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-struct.md","mtime":"2017-04-18T00:48:25.888Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T01:33:45.820Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
