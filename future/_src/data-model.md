@@ -42,7 +42,7 @@ the following 27 types:
   - f32, f64
   - char
 - **string**
-  - UTF-8 bytes with a length and no null terminator.
+  - UTF-8 bytes with a length and no null terminator. May contain 0-bytes.
   - When serializing, all strings are handled equally. When deserializing, there
     are three flavors of strings: transient, owned, and borrowed. This
     distinction is explained in [Understanding deserializer lifetimes] and is a
@@ -91,3 +91,51 @@ the following 27 types:
   - For example the `E::S` in `enum E { S { r: u8, g: u8, b: u8 } }`.
 
 [Understanding deserializer lifetimes]: lifetimes.md
+
+## Mapping into the data model
+
+In the case of most Rust types, their mapping into the Serde data model is
+straightforward. For example the Rust `bool` type corresponds to Serde's bool
+type. The Rust tuple struct `Rgb(u8, u8, u8)` corresponds to Serde's tuple
+struct type.
+
+But there is no fundamental reason that these mappings need to be
+straightforward. The [`Serialize`] and [`Deserialize`] traits can perform *any*
+mapping between Rust type and Serde data model that is appropriate for the use
+case.
+
+As an example, consider Rust's [`std::ffi::OsString`] type. This type represents
+a platform-native string. On Unix systems they are arbitrary non-zero bytes and
+on Windows systems they are arbitrary non-zero 16-bit values. It may seem
+natural to map `OsString` into the Serde data model as one of the following
+types:
+
+- As a Serde **string**. Unfortunately serialization would be brittle because an
+  `OsString` is not guaranteed to be representable in UTF-8 and deserialization
+  would be brittle because Serde strings are allowed to contain 0-bytes.
+- As a Serde **byte array**. This fixes both problem with using string, but now
+  if we serialize an `OsString` on Unix and deserialize it on Windows we end up
+  with [the wrong string].
+
+Instead the `Serialize` and `Deserialize` impls for `OsString` map into the
+Serde data model by treating `OsString` as a Serde **enum**. Effectively it acts
+as though `OsString` were defined as the following type, even though this does
+not match its definition on any individual platform.
+
+```rust
+enum OsString {
+    Unix(Vec<u8>),
+    Windows(Vec<u16>),
+    // and other platforms
+}
+#
+# fn main() {}
+```
+
+The flexibility around mapping into the Serde data model is profound and
+powerful. When implementing `Serialize` and `Deserialize`, be aware of the
+broader context of your type that may make the most instinctive mapping not the
+best choice.
+
+[`std::ffi::OsString`]: https://doc.rust-lang.org/std/ffi/struct.OsString.html
+[the wrong string]: https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/
