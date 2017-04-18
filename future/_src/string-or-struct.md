@@ -112,9 +112,9 @@ impl FromStr for Build {
     }
 }
 
-fn string_or_struct<T, D>(d: D) -> Result<T, D::Error>
-    where T: Deserialize + FromStr<Err = Void>,
-          D: Deserializer
+fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
+    where T: Deserialize<'de> + FromStr<Err = Void>,
+          D: Deserializer<'de>
 {
     // This is a Visitor that forwards string types to T's `FromStr` impl and
     // forwards map types to T's `Deserialize` impl. The `PhantomData` is to
@@ -123,8 +123,8 @@ fn string_or_struct<T, D>(d: D) -> Result<T, D::Error>
     // impl.
     struct StringOrStruct<T>(PhantomData<T>);
 
-    impl<T> de::Visitor for StringOrStruct<T>
-        where T: Deserialize + FromStr<Err = Void>
+    impl<'de, T> de::Visitor<'de> for StringOrStruct<T>
+        where T: Deserialize<'de> + FromStr<Err = Void>
     {
         type Value = T;
 
@@ -139,16 +139,16 @@ fn string_or_struct<T, D>(d: D) -> Result<T, D::Error>
         }
 
         fn visit_map<M>(self, visitor: M) -> Result<T, M::Error>
-            where M: de::MapVisitor
+            where M: de::MapAccess<'de>
         {
-            // `MapVisitorDeserializer` is a wrapper that turns a `MapVisitor`
+            // `MapAccessDeserializer` is a wrapper that turns a `MapAccess`
             // into a `Deserializer`, allowing it to be used as the input to T's
             // `Deserialize` implementation. T then deserializes itself using
             // the entries from the map visitor.
-            Deserialize::deserialize(de::value::MapVisitorDeserializer::new(visitor))
+            Deserialize::deserialize(de::value::MapAccessDeserializer::new(visitor))
         }
     }
 
-    d.deserialize(StringOrStruct(PhantomData))
+    deserializer.deserialize_any(StringOrStruct(PhantomData))
 }
 ```

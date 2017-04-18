@@ -40,9 +40,9 @@ impl Serialize for Data {
     }
 }
 
-impl Deserialize for Data {
+impl<'de> Deserialize<'de> for Data {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer
+        where D: Deserializer<'de>
     {
         // Any implementation of Deserialize.
 #         let _ = deserializer;

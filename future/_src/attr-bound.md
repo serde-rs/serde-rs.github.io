@@ -37,17 +37,17 @@ struct Outer<'a, S, T: 'a + ?Sized> {
     // stricter condition than is necessary. In fact, the `main` function below
     // uses T=str which does not implement Deserialize. We override the
     // automatically generated bound by a looser one.
-    #[serde(bound(deserialize = "Ptr<'a, T>: Deserialize"))]
+    #[serde(bound(deserialize = "Ptr<'a, T>: Deserialize<'de>"))]
     ptr: Ptr<'a, T>,
 }
 
 /// Deserialize a type `S` by deserializing a string, then using the `FromStr`
 /// impl of `S` to create the result. The generic type `S` is not required to
 /// implement `Deserialize`.
-fn deserialize_from_str<S, D>(deserializer: D) -> Result<S, D::Error>
+fn deserialize_from_str<'de, S, D>(deserializer: D) -> Result<S, D::Error>
     where S: FromStr,
           S::Err: Display,
-          D: Deserializer
+          D: Deserializer<'de>
 {
     let s: String = Deserialize::deserialize(deserializer)?;
     S::from_str(&s).map_err(de::Error::custom)
@@ -62,11 +62,11 @@ enum Ptr<'a, T: 'a + ?Sized> {
     Owned(Box<T>),
 }
 
-impl<'a, T: 'a + ?Sized> Deserialize for Ptr<'a, T>
-    where Box<T>: Deserialize
+impl<'de, 'a, T: 'a + ?Sized> Deserialize<'de> for Ptr<'a, T>
+    where Box<T>: Deserialize<'de>
 {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer
+        where D: Deserializer<'de>
     {
         Deserialize::deserialize(deserializer).map(Ptr::Owned)
     }

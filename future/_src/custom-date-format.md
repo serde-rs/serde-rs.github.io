@@ -49,8 +49,8 @@ mod my_date_format {
     //    fn deserialize<D>(D) -> Result<T, D::Error> where D: Deserializer
     //
     // although it may also be generic over the output types T.
-    pub fn deserialize<D>(deserializer: D) -> Result<DateTime<UTC>, D::Error>
-        where D: Deserializer
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<UTC>, D::Error>
+        where D: Deserializer<'de>
     {
         let s = String::deserialize(deserializer)?;
         UTC.datetime_from_str(&s, FORMAT).map_err(serde::de::Error::custom)

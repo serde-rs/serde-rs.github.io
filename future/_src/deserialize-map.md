@@ -7,15 +7,11 @@ extern crate serde;
 use std::fmt;
 use std::marker::PhantomData;
 
-use serde::de::{self, Deserialize, Deserializer, Visitor, MapVisitor};
+use serde::de::{Deserialize, Deserializer, Visitor, MapAccess};
 #
 # struct MyMap<K, V>(PhantomData<K>, PhantomData<V>);
 #
 # impl<K, V> MyMap<K, V> {
-#     fn new() -> Self {
-#         unimplemented!()
-#     }
-#
 #     fn with_capacity(_: usize) -> Self {
 #         unimplemented!()
 #     }
@@ -51,9 +47,9 @@ impl<K, V> MyMapVisitor<K, V> {
 // implemented here, for example deserializing from integers or strings.
 // By default those methods will return an error, which makes sense
 // because we cannot deserialize a MyMap from an integer or string.
-impl<K, V> Visitor for MyMapVisitor<K, V>
-    where K: Deserialize,
-          V: Deserialize
+impl<'de, K, V> Visitor<'de> for MyMapVisitor<K, V>
+    where K: Deserialize<'de>,
+          V: Deserialize<'de>
 {
     // The type that our Visitor is going to produce.
     type Value = MyMap<K, V>;
@@ -64,40 +60,30 @@ impl<K, V> Visitor for MyMapVisitor<K, V>
     }
 
     // Deserialize MyMap from an abstract "map" provided by the
-    // Deserializer. The MapVisitor input is a callback provided by
+    // Deserializer. The MapAccess input is a callback provided by
     // the Deserializer to let us see each entry in the map.
     fn visit_map<M>(self, mut visitor: M) -> Result<Self::Value, M::Error>
-        where M: MapVisitor
+        where M: MapAccess<'de>
     {
-        let mut values = MyMap::with_capacity(visitor.size_hint().0);
+        let mut values = MyMap::with_capacity(visitor.size_hint().unwrap_or(0));
 
         // While there are entries remaining in the input, add them
         // into our map.
-        while let Some((key, value)) = visitor.visit()? {
+        while let Some((key, value)) = visitor.next_entry()? {
             values.insert(key, value);
         }
 
         Ok(values)
     }
-
-    // As a convenience, provide a way to deserialize MyMap from
-    // the abstract "unit" type. This corresponds to `null` in JSON.
-    // If your JSON contains `null` for a field that is supposed to
-    // be a MyMap, we interpret that as an empty map.
-    fn visit_unit<E>(self) -> Result<Self::Value, E>
-        where E: de::Error
-    {
-        Ok(MyMap::new())
-    }
 }
 
 // This is the trait that informs Serde how to deserialize MyMap.
-impl<K, V> Deserialize for MyMap<K, V>
-    where K: Deserialize,
-          V: Deserialize
+impl<'de, K, V> Deserialize<'de> for MyMap<K, V>
+    where K: Deserialize<'de>,
+          V: Deserialize<'de>
 {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer
+        where D: Deserializer<'de>
     {
         // Instantiate our Visitor and ask the Deserializer to drive
         // it over the input data, resulting in an instance of MyMap.

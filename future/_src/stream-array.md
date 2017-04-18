@@ -37,14 +37,14 @@ struct Outer {
 ///
 /// This function is generic over T which can be any type that implements
 /// Ord. Above, it is used with T=u64.
-fn deserialize_max<T, D>(deserializer: D) -> Result<T, D::Error>
-    where T: Deserialize + Ord,
-          D: Deserializer
+fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
+    where T: Deserialize<'de> + Ord,
+          D: Deserializer<'de>
 {
     struct MaxVisitor<T>(PhantomData<T>);
 
-    impl<T> de::Visitor for MaxVisitor<T>
-        where T: Deserialize + Ord
+    impl<'de, T> de::Visitor<'de> for MaxVisitor<T>
+        where T: Deserialize<'de> + Ord
     {
         /// Return type of this visitor. This visitor computes the max of a
         /// sequence of values of type T, so the type of the maximum is T.
@@ -55,10 +55,10 @@ fn deserialize_max<T, D>(deserializer: D) -> Result<T, D::Error>
         }
 
         fn visit_seq<V>(self, mut visitor: V) -> Result<T, V::Error>
-            where V: de::SeqVisitor
+            where V: de::SeqAccess<'de>
         {
             // Start with max equal to the first value in the seq.
-            let mut max = match visitor.visit()? {
+            let mut max = match visitor.next_element()? {
                 Some(value) => value,
                 None => {
                     // Cannot take the maximum of an empty seq.
@@ -68,7 +68,7 @@ fn deserialize_max<T, D>(deserializer: D) -> Result<T, D::Error>
             };
 
             // Update the max while there are additional values.
-            while let Some(value) = visitor.visit()? {
+            while let Some(value) = visitor.next_element()? {
                 max = cmp::max(max, value);
             }
 

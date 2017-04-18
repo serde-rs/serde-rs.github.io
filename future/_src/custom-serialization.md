@@ -20,9 +20,9 @@ pub trait Serialize {
         where S: Serializer;
 }
 
-pub trait Deserialize: Sized {
+pub trait Deserialize<'de>: Sized {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer;
+        where D: Deserializer<'de>;
 }
 #
 # fn main() {}

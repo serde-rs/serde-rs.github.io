@@ -32,7 +32,7 @@ extern crate serde_test;
 #     use std::marker::PhantomData;
 #
 #     use serde::ser::{Serialize, Serializer, SerializeMap};
-#     use serde::de::{Deserialize, Deserializer, Visitor, MapVisitor};
+#     use serde::de::{Deserialize, Deserializer, Visitor, MapAccess};
 #
 use serde_test::{Token, assert_tokens};
 #
@@ -69,9 +69,9 @@ use serde_test::{Token, assert_tokens};
 #
 #     struct LinkedHashMapVisitor<K, V>(PhantomData<(K, V)>);
 #
-#     impl<K, V> Visitor for LinkedHashMapVisitor<K, V>
-#         where K: Deserialize,
-#               V: Deserialize
+#     impl<'de, K, V> Visitor<'de> for LinkedHashMapVisitor<K, V>
+#         where K: Deserialize<'de>,
+#               V: Deserialize<'de>
 #     {
 #         type Value = LinkedHashMap<K, V>;
 #
@@ -79,23 +79,23 @@ use serde_test::{Token, assert_tokens};
 #             unimplemented!()
 #         }
 #
-#         fn visit_map<M>(self, mut visitor: M) -> Result<Self::Value, M::Error>
-#             where M: MapVisitor
+#         fn visit_map<M>(self, mut access: M) -> Result<Self::Value, M::Error>
+#             where M: MapAccess<'de>
 #         {
 #             let mut map = LinkedHashMap::new();
-#             while let Some((key, value)) = visitor.visit()? {
+#             while let Some((key, value)) = access.next_entry()? {
 #                 map.insert(key, value);
 #             }
 #             Ok(map)
 #         }
 #     }
 #
-#     impl<K, V> Deserialize for LinkedHashMap<K, V>
-#         where K: Deserialize,
-#               V: Deserialize
+#     impl<'de, K, V> Deserialize<'de> for LinkedHashMap<K, V>
+#         where K: Deserialize<'de>,
+#               V: Deserialize<'de>
 #     {
 #         fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-#             where D: Deserializer
+#             where D: Deserializer<'de>
 #         {
 #             deserializer.deserialize_map(LinkedHashMapVisitor(PhantomData))
 #         }
@@ -107,7 +107,7 @@ fn test_ser_de_empty() {
     let map = LinkedHashMap::<char, u32>::new();
 
     assert_tokens(&map, &[
-        Token::MapStart(Some(0)),
+        Token::Map(Some(0)),
         Token::MapEnd,
     ]);
 }
@@ -121,18 +121,15 @@ fn test_ser_de() {
     map.insert('c', 30);
 
     assert_tokens(&map, &[
-        Token::MapStart(Some(3)),
-            Token::MapSep,
-            Token::Char('b'),
-            Token::I32(20),
+        Token::Map(Some(3)),
+        Token::Char('b'),
+        Token::I32(20),
 
-            Token::MapSep,
-            Token::Char('a'),
-            Token::I32(10),
+        Token::Char('a'),
+        Token::I32(10),
 
-            Token::MapSep,
-            Token::Char('c'),
-            Token::I32(30),
+        Token::Char('c'),
+        Token::I32(30),
         Token::MapEnd,
     ]);
 }

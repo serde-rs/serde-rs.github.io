@@ -8,9 +8,9 @@ looks like this:
 #
 # use serde::Deserializer;
 #
-pub trait Deserialize: Sized {
+pub trait Deserialize<'de>: Sized {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer;
+        where D: Deserializer<'de>;
 }
 #
 # fn main() {}
@@ -73,7 +73,7 @@ use serde::de::{self, Visitor};
 # #[allow(dead_code)]
 struct I32Visitor;
 
-impl Visitor for I32Visitor {
+impl<'de> Visitor<'de> for I32Visitor {
     type Value = i32;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
@@ -138,7 +138,7 @@ data, which is known as "driving" the `Visitor`.
 # struct i32;
 # struct I32Visitor;
 #
-# impl Visitor for I32Visitor {
+# impl<'de> Visitor<'de> for I32Visitor {
 #     type Value = i32;
 #
 #     fn expecting(&self, _: &mut fmt::Formatter) -> fmt::Result {
@@ -146,9 +146,9 @@ data, which is known as "driving" the `Visitor`.
 #     }
 # }
 #
-impl Deserialize for i32 {
+impl<'de> Deserialize<'de> for i32 {
     fn deserialize<D>(deserializer: D) -> Result<i32, D::Error>
-        where D: Deserializer
+        where D: Deserializer<'de>
     {
         deserializer.deserialize_i32(I32Visitor)
     }

@@ -39,21 +39,26 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.
 #
 use std::fmt;
 
-use serde::de::{self, Deserialize, Deserializer, Visitor, SeqVisitor, MapVisitor};
+use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
 
-impl Deserialize for Duration {
+impl<'de> Deserialize<'de> for Duration {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer
+        where D: Deserializer<'de>
     {
         enum Field { Secs, Nanos };
 
-        impl Deserialize for Field {
+        // This part could also be generated independently by:
+        //
+        //    #[derive(Deserialize)]
+        //    #[serde(field_identifier, rename_all = "lowercase")]
+        //    enum Field { Secs, Nanos }
+        impl<'de> Deserialize<'de> for Field {
             fn deserialize<D>(deserializer: D) -> Result<Field, D::Error>
-                where D: Deserializer
+                where D: Deserializer<'de>
             {
                 struct FieldVisitor;
 
-                impl Visitor for FieldVisitor {
+                impl<'de> Visitor<'de> for FieldVisitor {
                     type Value = Field;
 
                     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
@@ -71,29 +76,29 @@ impl Deserialize for Duration {
                     }
                 }
 
-                deserializer.deserialize_struct_field(FieldVisitor)
+                deserializer.deserialize_identifier(FieldVisitor)
             }
         }
 
         struct DurationVisitor;
 
-        impl Visitor for DurationVisitor {
+        impl<'de> Visitor<'de> for DurationVisitor {
             type Value = Duration;
 
             fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
                 formatter.write_str("struct Duration")
             }
 
-            fn visit_seq<V>(self, mut visitor: V) -> Result<Duration, V::Error>
-                where V: SeqVisitor
+            fn visit_seq<V>(self, mut seq: V) -> Result<Duration, V::Error>
+                where V: SeqAccess<'de>
             {
-                let secs: u64 = match visitor.visit()? {
+                let secs: u64 = match seq.next_element()? {
                     Some(value) => value,
                     None => {
                         return Err(de::Error::invalid_length(0, &self));
                     }
                 };
-                let nanos: u32 = match visitor.visit()? {
+                let nanos: u32 = match seq.next_element()? {
                     Some(value) => value,
                     None => {
                         return Err(de::Error::invalid_length(1, &self));
@@ -102,24 +107,24 @@ impl Deserialize for Duration {
                 Ok(Duration::new(secs, nanos))
             }
 
-            fn visit_map<V>(self, mut visitor: V) -> Result<Duration, V::Error>
-                where V: MapVisitor
+            fn visit_map<V>(self, mut map: V) -> Result<Duration, V::Error>
+                where V: MapAccess<'de>
             {
                 let mut secs = None;
                 let mut nanos = None;
-                while let Some(key) = visitor.visit_key()? {
+                while let Some(key) = map.next_key()? {
                     match key {
                         Field::Secs => {
                             if secs.is_some() {
                                 return Err(de::Error::duplicate_field("secs"));
                             }
-                            secs = Some(visitor.visit_value()?);
+                            secs = Some(map.next_value()?);
                         }
                         Field::Nanos => {
                             if nanos.is_some() {
                                 return Err(de::Error::duplicate_field("nanos"));
                             }
-                            nanos = Some(visitor.visit_value()?);
+                            nanos = Some(map.next_value()?);
                         }
                     }
                 }
