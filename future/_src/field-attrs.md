@@ -38,16 +38,16 @@
   Serialize this field using a function that is different from its
   implementation of `Serialize`. The given function must be callable as
   `fn<S>(&T, S) -> Result<S::Ok, S::Error> where S: Serializer`, although it
-  may also be generic over `T`. Fields used with `serialize_with` do not need to
-  implement `Serialize`.
+  may also be generic over `T`. Fields used with `serialize_with` are not
+  required to implement `Serialize`.
 
 - ##### `#[serde(deserialize_with = "path")]`
 
   Deserialize this field using a function that is different from its
   implementation of `Deserialize`. The given function must be callable as
   `fn<D>(D) -> Result<T, D::Error> where D: Deserializer`, although it may
-  also be generic over `T`. Fields used with `deserialize_with` do not need to
-  implement `Deserialize`.
+  also be generic over `T`. Fields used with `deserialize_with` are not required
+  to implement `Deserialize`.
 
 - ##### `#[serde(with = "module")]`
 
