@@ -51,7 +51,7 @@ use serde::{ser, de};
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-// This is a bere-bones implementation. A real library would provide additional
+// This is a bare-bones implementation. A real library would provide additional
 // information in its error type, for example the line and column at which the
 // error occurred, the byte offset into the input, or the current key being
 // processed.
