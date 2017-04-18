@@ -123,6 +123,8 @@ as though `OsString` were defined as the following type, even though this does
 not match its definition on any individual platform.
 
 ```rust
+# #![allow(dead_code)]
+#
 enum OsString {
     Unix(Vec<u8>),
     Windows(Vec<u16>),

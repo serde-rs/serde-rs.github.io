@@ -24,6 +24,8 @@ process. At compile time, Serde will check that all the fields in the definition
 you provided match the fields in the remote type.
 
 ```rust
+# #![allow(dead_code)]
+#
 // Pretend that this is somebody else's crate, not a module.
 mod other_crate {
     // Neither Serde nor the other crate provides Serialize and Deserialize
