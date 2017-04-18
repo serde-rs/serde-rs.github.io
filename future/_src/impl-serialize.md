@@ -181,18 +181,6 @@ sequence or map. [Newtype structs] and [unit structs] are more like primitives.
 [Newtype structs]: https://doc.rust-lang.org/book/structs.html#tuple-structs
 [unit structs]: https://doc.rust-lang.org/book/structs.html#unit-like-structs
 
-Structs and maps may look similar in some formats, including JSON. The
-distinction Serde makes is that structs have keys that are compile-time constant
-strings and will be known at deserialization time without looking at the
-serialized data. This condition enables some data formats to handle structs much
-more efficiently and compactly than maps.
-
-Data formats are encouraged to treat newtype structs as insignificant wrappers
-around the inner value, serializing just the inner value. See for example
-[JSON's treatment of newtype structs].
-
-[JSON's treatment of newtype structs]: json.md
-
 ```rust
 // An ordinary struct. Use three-step process:
 //   1. serialize_struct
@@ -219,6 +207,45 @@ struct Inches(u64);
 // A unit struct. Use serialize_unit_struct.
 # #[allow(dead_code)]
 struct Instance;
+#
+# fn main() {}
+```
+
+Structs and maps may look similar in some formats, including JSON. The
+distinction Serde makes is that structs have keys that are compile-time constant
+strings and will be known at deserialization time without looking at the
+serialized data. This condition enables some data formats to handle structs much
+more efficiently and compactly than maps.
+
+Data formats are encouraged to treat newtype structs as insignificant wrappers
+around the inner value, serializing just the inner value. See for example
+[JSON's treatment of newtype structs].
+
+[JSON's treatment of newtype structs]: json.md
+
+```rust
+# extern crate serde;
+#
+use serde::ser::{Serialize, Serializer, SerializeStruct};
+
+struct Color {
+    r: u8,
+    g: u8,
+    b: u8,
+}
+
+impl Serialize for Color {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where S: Serializer
+    {
+        // 3 is the number of fields in the struct.
+        let mut state = serializer.serialize_struct("Color", 3)?;
+        state.serialize_field("r", &self.r)?;
+        state.serialize_field("g", &self.g)?;
+        state.serialize_field("b", &self.b)?;
+        state.end()
+    }
+}
 #
 # fn main() {}
 ```
