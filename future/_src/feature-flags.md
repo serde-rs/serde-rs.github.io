@@ -1,15 +1,63 @@
 # Feature flags
 
-### Using in `no_std` crates
+The `serde` crate defines some [Cargo features] to enable using Serde in a
+variety of freestanding environments.
 
-The core `serde` package defines a number of [Cargo
-features](http://doc.crates.io/manifest.html#the-features-section) to enable
-usage in a variety of freestanding environments. Enable any or none of the
-following features, and use `default-features = false` in your `Cargo.toml`:
+Building Serde with `default-features = false`, you will receive a stock
+`no_std` Serde with no support for any of the collection types.
 
-- `alloc` (implies `nightly`)
-- `collections` (implies `alloc` and `nightly`)
-- `std` (default)
+[Cargo features]: http://doc.crates.io/manifest.html#the-features-section
 
-If you only use `default-features = false`, you will receive a stock `no_std`
-Serde with no support for any of the collection types.
+#### --feature derive
+
+Re-export the derive(Serialize, Deserialize) macros. This is specifically
+intended for library crates that provide optional Serde impls behind a Cargo cfg
+of their own. All other crates should depend on serde_derive directly.
+
+Please refer to the long comment above the line `pub use serde_derive::*` in
+src/lib.rs before enabling this feature. If you think you need this feature and
+your use case does not precisely match the one described in the comment, please
+open an issue to let us know about your use case.
+
+#### --feature std
+
+*This feature is enabled by default.*
+
+Provide impls for common standard library types like Vec&lt;T&gt; and
+HashMap&lt;K, V&gt;. Requires a dependency on the Rust standard library.
+
+#### --feature unstable
+
+Provide impls for types that require unstable functionality. For tracking and
+discussion of unstable functionality please refer to [this issue].
+
+[this issue]: https://github.com/serde-rs/serde/issues/812
+
+#### --features alloc
+
+*Implies unstable.*
+
+Provide impls for types that require memory allocation like Box&lt;T&gt; and
+Rc&lt;T&gt;. This is a subset of std but may be enabled without depending on all
+of std.
+
+Requires a dependency on the unstable [core allocation library].
+
+[core allocation library]: https://doc.rust-lang.org/alloc/
+
+#### --features collections
+
+*Implies alloc and unstable.*
+
+Provide impls for collection types like String and Cow&lt;T&gt;. This is a
+subset of std but may be enabled without depending on all of std.
+
+Requires a dependency on the unstable [collections library].
+
+[collections library]: https://doc.rust-lang.org/collections/
+
+#### --features rc
+
+Opt into impls for Rc&lt;T&gt; and Arc&lt;T&gt;. Serializing and deserializing
+these types does not preserve identity and may result in multiple copies of the
+same data. Be sure that this is what you want before enabling this feature.
