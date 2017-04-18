@@ -2,7 +2,8 @@
 
 **[Structs and enums in JSON](json.md)**: The representation chosen by
 [`serde_json`](https://github.com/serde-rs/json) for structs and enums. Other
-data formats are encouraged to follow an analogous approach where possible.
+human-readable data formats are encouraged to follow an analogous approach where
+possible.
 
 **[Default value for a field](attr-default.md)**: Some examples of the
 `#[serde(default)]` attribute.

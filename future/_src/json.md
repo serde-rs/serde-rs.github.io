@@ -3,8 +3,8 @@
 A Serde `Serializer` is responsible for selecting the convention by which Rust
 structs and enums are represented in that format. Here are the conventions
 selected by the [`serde_json`](https://github.com/serde-rs/json) data format.
-For consistency other formats are encouraged to develop analogous conventions
-where possible.
+For consistency, other human-readable formats are encouraged to develop
+analogous conventions where possible.
 
 ```rust
 # #![allow(dead_code, unused_variables)]
@@ -37,7 +37,6 @@ let x = E::X(0, 0);          // Represented as `{"X":[0,0]}`
 let y = E::Y(0);             // Represented as `{"Y":0}`
 let z = E::Z;                // Represented as `"Z"`
                              // but can also be deserialized from `{"Z":null}`
-                             //                               and `{"Z":[]}`
 #
 # }
 ```
