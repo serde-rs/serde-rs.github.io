@@ -157,9 +157,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.1" data-path="container-attrs.html">
             
-                <a href="attributes.html#container-attributes">
+                <a href="container-attrs.html">
             
                     
                     Container attributes
@@ -170,9 +170,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.2" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
             
-                <a href="attributes.html#variant-attributes">
+                <a href="variant-attrs.html">
             
                     
                     Variant attributes
@@ -183,9 +183,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.3" data-path="field-attrs.html">
             
-                <a href="attributes.html#field-attributes">
+                <a href="field-attrs.html">
             
                     
                     Field attributes
@@ -422,20 +422,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.6" data-path="serialize-map.html">
-            
-                <a href="serialize-map.html">
-            
-                    
-                    Serialize for custom map type
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.9.7" data-path="stream-array.html">
+        <li class="chapter " data-level="1.9.6" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -448,7 +435,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.7" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -461,7 +448,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.8" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -474,7 +461,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.9" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -487,12 +474,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.11" data-path="newtype-wrapper.html">
+        <li class="chapter " data-level="1.9.10" data-path="remote-derive.html">
             
-                <a href="newtype-wrapper.html">
+                <a href="remote-derive.html">
             
                     
-                    De/Serialize for other crate
+                    Derive for remote crate
             
                 </a>
             
@@ -500,12 +487,25 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.11" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
                     
                     Manually deserialize struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.12" data-path="ignored-any.html">
+            
+                <a href="ignored-any.html">
+            
+                    
+                    Discarding data
             
                 </a>
             
@@ -539,7 +539,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.15" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.15" data-path="convert-error.html">
+            
+                <a href="convert-error.html">
+            
+                    
+                    Convert error types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.16" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -608,8 +621,8 @@
 <p>A Serde <code>Serializer</code> is responsible for selecting the convention by which Rust
 structs and enums are represented in that format. Here are the conventions
 selected by the <a href="https://github.com/serde-rs/json" target="_blank"><code>serde_json</code></a> data format.
-For consistency other formats are encouraged to develop analogous conventions
-where possible.</p>
+For consistency, other human-readable formats are encouraged to develop
+analogous conventions where possible.</p>
 <pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">W</span></span> {
     a: <span class="hljs-keyword">i32</span>,
     b: <span class="hljs-keyword">i32</span>,
@@ -636,7 +649,6 @@ where possible.</p>
 <span class="hljs-keyword">let</span> y = E::Y(<span class="hljs-number">0</span>);             <span class="hljs-comment">// Represented as `{&quot;Y&quot;:0}`</span>
 <span class="hljs-keyword">let</span> z = E::Z;                <span class="hljs-comment">// Represented as `&quot;Z&quot;`</span>
                              <span class="hljs-comment">// but can also be deserialized from `{&quot;Z&quot;:null}`</span>
-                             <span class="hljs-comment">//                               and `{&quot;Z&quot;:[]}`</span>
 </code></pre>
 
                                 
@@ -665,7 +677,7 @@ where possible.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"next":{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},"previous":{"title":"Examples","level":"1.9","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.9.4","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.9.5","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Serialize for custom map type","level":"1.9.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.9.7","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as number","level":"1.9.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.9.9","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.9.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"De/Serialize for other crate","level":"1.9.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Transcode into another format","level":"1.9.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},{"title":"Either string or struct","level":"1.9.14","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},{"title":"Custom date format","level":"1.9.15","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"json.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T17:19:07.888Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"next":{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},"previous":{"title":"Examples","level":"1.9","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.9.4","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.9.5","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.9.6","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as number","level":"1.9.7","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.9.8","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.9.9","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"Derive for remote crate","level":"1.9.10","depth":2,"path":"remote-derive.md","ref":"remote-derive.md","articles":[]},{"title":"Manually deserialize struct","level":"1.9.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Discarding data","level":"1.9.12","depth":2,"path":"ignored-any.md","ref":"ignored-any.md","articles":[]},{"title":"Transcode into another format","level":"1.9.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},{"title":"Either string or struct","level":"1.9.14","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},{"title":"Convert error types","level":"1.9.15","depth":2,"path":"convert-error.md","ref":"convert-error.md","articles":[]},{"title":"Custom date format","level":"1.9.16","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"json.md","mtime":"2017-04-18T19:16:22.364Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T21:57:11.628Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

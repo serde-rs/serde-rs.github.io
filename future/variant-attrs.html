@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Overview · Serde</title>
+        <title>Variant attributes · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,8 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="help.html" />
+    <link rel="next" href="field-attrs.html" />
     
+    
+    <link rel="prev" href="container-attrs.html" />
     
 
     </head>
@@ -89,7 +91,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -168,7 +170,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
+        <li class="chapter active" data-level="1.5.2" data-path="variant-attrs.html">
             
                 <a href="variant-attrs.html">
             
@@ -603,7 +605,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Overview</a>
+        <a href="." >Variant attributes</a>
     </h1>
 </div>
 
@@ -615,88 +617,25 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <p><span style="float:right">
-  <a href="https://github.com/serde-rs/serde" target="_blank"><img src="img/github.svg" alt="GitHub"></a>
-  <a href="https://docs.serde.rs/serde/" target="_blank"><img src="img/rustdoc.svg" alt="rustdoc"></a>
-  <a href="https://crates.io/crates/serde" target="_blank"><img src="https://img.shields.io/crates/v/serde.svg?style=social" alt="Latest Version"></a>
-</span></p>
-<h1 id="serde">Serde</h1>
-<p>Serde is a framework for <strong><em>ser</em></strong>ializing and <strong><em>de</em></strong>serializing Rust data
-structures efficiently and generically.</p>
-<p>The Serde ecosystem consists of data structures that know how to serialize and
-deserialize themselves along with data formats that know how to serialize and
-deserialize other things. Serde provides the layer by which these two groups
-interact with each other, allowing any supported data structure to be serialized
-and deserialized using any supported data format.</p>
-<h3 id="design">Design</h3>
-<p>Where many other languages rely on runtime reflection for serializing data,
-Serde is instead built on Rust&apos;s powerful trait system. A data structure that
-knows how to serialize and deserialize itself is one that implements Serde&apos;s
-<code>Serialize</code> and <code>Deserialize</code> traits (or uses Serde&apos;s derive attribute to
-automatically generate implementations at compile time). This avoids any
-overhead of reflection or runtime type information. In fact in many situations
-the interaction between data structure and data format can be completely
-optimized away by the Rust compiler, leaving Serde serialization to perform
-the same speed as a handwritten serializer for the specific selection of data
-structure and data format.</p>
-<h3 id="data-formats">Data formats</h3>
-<p>The following is a partial list of data formats that have been implemented for
-Serde by the community.</p>
+                                <h1 id="variant-attributes">Variant attributes</h1>
 <ul>
-<li><a href="https://github.com/serde-rs/json" target="_blank">JSON</a>, the ubiquitous JavaScript Object Notation used by many HTTP APIs.</li>
-<li><a href="https://github.com/TyOverby/bincode" target="_blank">Bincode</a>, a compact binary format used for IPC within the Servo rendering
-engine.</li>
-<li><a href="https://github.com/pyfisch/cbor" target="_blank">CBOR</a>, a Concise Binary Object Representation designed for small message size
-without the need for version negotiation.</li>
-<li><a href="https://github.com/dtolnay/serde-yaml" target="_blank">YAML</a>, a popular human-friendly configuration language that ain&apos;t markup
-language.</li>
-<li><a href="https://github.com/3Hren/msgpack-rust" target="_blank">MessagePack</a>, an efficient binary format that resembles a compact JSON.</li>
-<li><a href="https://github.com/alexcrichton/toml-rs" target="_blank">TOML</a>, a minimal configuration format used by <a href="http://doc.crates.io/manifest.html" target="_blank">Cargo</a>.</li>
-<li><a href="https://github.com/birkenfeld/serde-pickle" target="_blank">Pickle</a>, a format common in the Python world.</li>
-<li><a href="https://github.com/laktak/hjson-rust" target="_blank">Hjson</a>, a variant of JSON designed to be readable and writable by humans.</li>
-<li><a href="https://github.com/zonyitoo/bson-rs" target="_blank">BSON</a>, the data storage and network transfer format used by MongoDB.</li>
-<li><a href="https://github.com/nox/serde_urlencoded" target="_blank">URL</a>, the x-www-form-urlencoded format.</li>
-<li><a href="https://github.com/RReverser/serde-xml-rs" target="_blank">XML</a>, the flexible machine-friendly W3C standard.
-<em>(deserialization only)</em></li>
-<li><a href="https://github.com/softprops/envy" target="_blank">Envy</a>, a way to deserialize environment variables into Rust structs.
-<em>(deserialization only)</em></li>
-<li><a href="https://github.com/OneSignal/serde-redis" target="_blank">Redis</a>, deserialize values from Redis when using <a href="https://crates.io/crates/redis" target="_blank">redis-rs</a>.
-<em>(deserialization only)</em></li>
+<li><h5 id="serderename--name"><code>#[serde(rename = &quot;name&quot;)]</code></h5>
+<p>Serialize and deserialize this variant with the given name instead of its Rust
+name.</p>
+</li>
+<li><h5 id="serderenameall--"><code>#[serde(rename_all = &quot;...&quot;)]</code></h5>
+<p>Rename all the fields of this struct variant according to the given case
+convention. The possible values are <code>&quot;lowercase&quot;</code>, <code>&quot;PascalCase&quot;</code>,
+<code>&quot;camelCase&quot;</code>, <code>&quot;snake_case&quot;</code>, <code>&quot;SCREAMING_SNAKE_CASE&quot;</code>, <code>&quot;kebab-case&quot;</code>.</p>
+</li>
+<li><h5 id="serdeskipserializing"><code>#[serde(skip_serializing)]</code></h5>
+<p>Never serialize this variant. Trying to serialize this variant is treated as
+an error.</p>
+</li>
+<li><h5 id="serdeskipdeserializing"><code>#[serde(skip_deserializing)]</code></h5>
+<p>Never deserialize this variant.</p>
+</li>
 </ul>
-<h3 id="data-structures">Data structures</h3>
-<p>Out of the box, Serde is able to serialize and deserialize common Rust data
-types in any of the above formats. For example <code>String</code>, <code>&amp;str</code>, <code>usize</code>,
-<code>Vec&lt;T&gt;</code>, <code>HashMap&lt;K,V&gt;</code> are all supported. In addition, Serde provides a derive
-macro to generate serialization implementations for structs in your own program.
-Using the derive macro goes like this:</p>
-<pre><a class="playground-link" target="_blank" href="https://play.integer32.com/?gist=a58fc361e02c4c0a08fd99cacd9567d1"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
-
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
-
-<span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
-    x: <span class="hljs-keyword">i32</span>,
-    y: <span class="hljs-keyword">i32</span>,
-}
-
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> point = Point { x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span> };
-
-    <span class="hljs-comment">// Convert the Point to a JSON string.</span>
-    <span class="hljs-keyword">let</span> serialized = serde_json::to_string(&amp;point).unwrap();
-
-    <span class="hljs-comment">// Prints serialized = {&quot;x&quot;:1,&quot;y&quot;:2}</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;serialized = {}&quot;</span>, serialized);
-
-    <span class="hljs-comment">// Convert the JSON string back to a Point.</span>
-    <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
-
-    <span class="hljs-comment">// Prints deserialized = Point { x: 1, y: 2 }</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
-}
-</code></pre>
 
                                 
                                 </section>
@@ -708,8 +647,12 @@ Using the derive macro goes like this:</p>
 
             
                 
+                <a href="container-attrs.html" class="navigation navigation-prev " aria-label="Previous page: Container attributes">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="help.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Help">
+                
+                <a href="field-attrs.html" class="navigation navigation-next " aria-label="Next page: Field attributes">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -720,7 +663,7 @@ Using the derive macro goes like this:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2017-04-17T04:09:59.351Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T21:57:11.628Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Variant attributes","level":"1.5.2","depth":2,"next":{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]},"previous":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"variant-attrs.md","mtime":"2017-04-18T17:36:35.978Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T21:57:11.628Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

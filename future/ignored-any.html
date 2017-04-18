@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Overview · Serde</title>
+        <title>Discarding data · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,8 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="help.html" />
+    <link rel="next" href="transcode.html" />
     
+    
+    <link rel="prev" href="deserialize-struct.html" />
     
 
     </head>
@@ -89,7 +91,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -498,7 +500,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.12" data-path="ignored-any.html">
+        <li class="chapter active" data-level="1.9.12" data-path="ignored-any.html">
             
                 <a href="ignored-any.html">
             
@@ -603,7 +605,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Overview</a>
+        <a href="." >Discarding data</a>
     </h1>
 </div>
 
@@ -615,86 +617,98 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <p><span style="float:right">
-  <a href="https://github.com/serde-rs/serde" target="_blank"><img src="img/github.svg" alt="GitHub"></a>
-  <a href="https://docs.serde.rs/serde/" target="_blank"><img src="img/rustdoc.svg" alt="rustdoc"></a>
-  <a href="https://crates.io/crates/serde" target="_blank"><img src="https://img.shields.io/crates/v/serde.svg?style=social" alt="Latest Version"></a>
-</span></p>
-<h1 id="serde">Serde</h1>
-<p>Serde is a framework for <strong><em>ser</em></strong>ializing and <strong><em>de</em></strong>serializing Rust data
-structures efficiently and generically.</p>
-<p>The Serde ecosystem consists of data structures that know how to serialize and
-deserialize themselves along with data formats that know how to serialize and
-deserialize other things. Serde provides the layer by which these two groups
-interact with each other, allowing any supported data structure to be serialized
-and deserialized using any supported data format.</p>
-<h3 id="design">Design</h3>
-<p>Where many other languages rely on runtime reflection for serializing data,
-Serde is instead built on Rust&apos;s powerful trait system. A data structure that
-knows how to serialize and deserialize itself is one that implements Serde&apos;s
-<code>Serialize</code> and <code>Deserialize</code> traits (or uses Serde&apos;s derive attribute to
-automatically generate implementations at compile time). This avoids any
-overhead of reflection or runtime type information. In fact in many situations
-the interaction between data structure and data format can be completely
-optimized away by the Rust compiler, leaving Serde serialization to perform
-the same speed as a handwritten serializer for the specific selection of data
-structure and data format.</p>
-<h3 id="data-formats">Data formats</h3>
-<p>The following is a partial list of data formats that have been implemented for
-Serde by the community.</p>
-<ul>
-<li><a href="https://github.com/serde-rs/json" target="_blank">JSON</a>, the ubiquitous JavaScript Object Notation used by many HTTP APIs.</li>
-<li><a href="https://github.com/TyOverby/bincode" target="_blank">Bincode</a>, a compact binary format used for IPC within the Servo rendering
-engine.</li>
-<li><a href="https://github.com/pyfisch/cbor" target="_blank">CBOR</a>, a Concise Binary Object Representation designed for small message size
-without the need for version negotiation.</li>
-<li><a href="https://github.com/dtolnay/serde-yaml" target="_blank">YAML</a>, a popular human-friendly configuration language that ain&apos;t markup
-language.</li>
-<li><a href="https://github.com/3Hren/msgpack-rust" target="_blank">MessagePack</a>, an efficient binary format that resembles a compact JSON.</li>
-<li><a href="https://github.com/alexcrichton/toml-rs" target="_blank">TOML</a>, a minimal configuration format used by <a href="http://doc.crates.io/manifest.html" target="_blank">Cargo</a>.</li>
-<li><a href="https://github.com/birkenfeld/serde-pickle" target="_blank">Pickle</a>, a format common in the Python world.</li>
-<li><a href="https://github.com/laktak/hjson-rust" target="_blank">Hjson</a>, a variant of JSON designed to be readable and writable by humans.</li>
-<li><a href="https://github.com/zonyitoo/bson-rs" target="_blank">BSON</a>, the data storage and network transfer format used by MongoDB.</li>
-<li><a href="https://github.com/nox/serde_urlencoded" target="_blank">URL</a>, the x-www-form-urlencoded format.</li>
-<li><a href="https://github.com/RReverser/serde-xml-rs" target="_blank">XML</a>, the flexible machine-friendly W3C standard.
-<em>(deserialization only)</em></li>
-<li><a href="https://github.com/softprops/envy" target="_blank">Envy</a>, a way to deserialize environment variables into Rust structs.
-<em>(deserialization only)</em></li>
-<li><a href="https://github.com/OneSignal/serde-redis" target="_blank">Redis</a>, deserialize values from Redis when using <a href="https://crates.io/crates/redis" target="_blank">redis-rs</a>.
-<em>(deserialization only)</em></li>
-</ul>
-<h3 id="data-structures">Data structures</h3>
-<p>Out of the box, Serde is able to serialize and deserialize common Rust data
-types in any of the above formats. For example <code>String</code>, <code>&amp;str</code>, <code>usize</code>,
-<code>Vec&lt;T&gt;</code>, <code>HashMap&lt;K,V&gt;</code> are all supported. In addition, Serde provides a derive
-macro to generate serialization implementations for structs in your own program.
-Using the derive macro goes like this:</p>
-<pre><a class="playground-link" target="_blank" href="https://play.integer32.com/?gist=a58fc361e02c4c0a08fd99cacd9567d1"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+                                <h1 id="discarding-data">Discarding data</h1>
+<p>The <a href="https://docs.serde.rs/serde/de/enum.Unexpected.html" target="_blank"><code>IgnoredAny</code></a> types gives an efficient way of discarding data from a
+deserializer.</p>
+<p>Think of this like <code>serde_json::Value</code> in that it can be deserialized from
+any type, except that it does not store any information about the data that
+gets deserialized.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+<span class="hljs-meta">#[macro_use]</span>
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
 
-<span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
-    x: <span class="hljs-keyword">i32</span>,
-    y: <span class="hljs-keyword">i32</span>,
+<span class="hljs-keyword">use</span> std::fmt;
+<span class="hljs-keyword">use</span> std::marker::PhantomData;
+
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, DeserializeSeed, Deserializer, Visitor, SeqAccess, IgnoredAny};
+
+<span class="hljs-comment">// A seed that can be used to deserialize only the `n`th element of a sequence</span>
+<span class="hljs-comment">// while efficiently discarding elements of any type before or after index `n`.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// For example to deserialize only the element at index 3:</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//    NthElement::new(3).deserialize(deserializer)</span>
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">NthElement</span></span>&lt;T&gt; {
+    n: usize,
+    marker: PhantomData&lt;T&gt;,
+}
+
+<span class="hljs-keyword">impl</span>&lt;T&gt; NthElement&lt;T&gt; {
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new</span></span>(n: usize) -&gt; <span class="hljs-keyword">Self</span> {
+        NthElement {
+            n: n,
+            marker: PhantomData,
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, T&gt; Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> NthElement&lt;T&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+{
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
+        <span class="hljs-built_in">write!</span>(formatter, <span class="hljs-string">&quot;a sequence in which we care about element {}&quot;</span>, <span class="hljs-keyword">self</span>.n)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> seq: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, V::Error&gt;
+        <span class="hljs-keyword">where</span> V: SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-comment">// Skip over the first `n` elements.</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..<span class="hljs-keyword">self</span>.n {
+            <span class="hljs-comment">// It is an error if the sequence ends before we get to element `n`.</span>
+            <span class="hljs-keyword">if</span> seq.next_element::&lt;IgnoredAny&gt;()?.is_none() {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::invalid_length(i, &amp;<span class="hljs-keyword">self</span>));
+            }
+        }
+
+        <span class="hljs-comment">// Deserialize the one we care about.</span>
+        <span class="hljs-keyword">let</span> nth = <span class="hljs-keyword">match</span> seq.next_element()? {
+            <span class="hljs-literal">Some</span>(nth) =&gt; nth,
+            <span class="hljs-literal">None</span> =&gt; {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::invalid_length(<span class="hljs-keyword">self</span>.n, &amp;<span class="hljs-keyword">self</span>));
+            }
+        };
+
+        <span class="hljs-comment">// Skip over any remaining elements in the sequence after `n`.</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(IgnoredAny) = seq.next_element()? {
+            <span class="hljs-comment">// ignore</span>
+        }
+
+        <span class="hljs-literal">Ok</span>(nth)
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, T&gt; DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> NthElement&lt;T&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+{
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(<span class="hljs-keyword">self</span>, deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, D::Error&gt;
+        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        deserializer.deserialize_seq(<span class="hljs-keyword">self</span>)
+    }
 }
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> point = Point { x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span> };
+    <span class="hljs-keyword">let</span> array = json!([<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;d&quot;</span>, <span class="hljs-string">&quot;e&quot;</span>]);
 
-    <span class="hljs-comment">// Convert the Point to a JSON string.</span>
-    <span class="hljs-keyword">let</span> serialized = serde_json::to_string(&amp;point).unwrap();
+    <span class="hljs-keyword">let</span> nth: <span class="hljs-built_in">String</span> = NthElement::new(<span class="hljs-number">3</span>).deserialize(&amp;array).unwrap();
 
-    <span class="hljs-comment">// Prints serialized = {&quot;x&quot;:1,&quot;y&quot;:2}</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;serialized = {}&quot;</span>, serialized);
-
-    <span class="hljs-comment">// Convert the JSON string back to a Point.</span>
-    <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
-
-    <span class="hljs-comment">// Prints deserialized = Point { x: 1, y: 2 }</span>
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, nth);
+    <span class="hljs-built_in">assert_eq!</span>(nth, array[<span class="hljs-number">3</span>]);
 }
 </code></pre>
 
@@ -708,8 +722,12 @@ Using the derive macro goes like this:</p>
 
             
                 
+                <a href="deserialize-struct.html" class="navigation navigation-prev " aria-label="Previous page: Manually deserialize struct">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="help.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Help">
+                
+                <a href="transcode.html" class="navigation navigation-next " aria-label="Next page: Transcode into another format">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -720,7 +738,7 @@ Using the derive macro goes like this:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2017-04-17T04:09:59.351Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T21:57:11.628Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Discarding data","level":"1.9.12","depth":2,"next":{"title":"Transcode into another format","level":"1.9.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.9.11","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"ignored-any.md","mtime":"2017-04-18T21:50:37.614Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T21:57:11.628Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

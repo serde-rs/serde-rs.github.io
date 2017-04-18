@@ -63,7 +63,7 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="attributes.html" />
+    <link rel="next" href="container-attrs.html" />
     
     
     <link rel="prev" href="derive.html" />
@@ -157,9 +157,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.1" data-path="container-attrs.html">
             
-                <a href="attributes.html#container-attributes">
+                <a href="container-attrs.html">
             
                     
                     Container attributes
@@ -170,9 +170,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.2" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
             
-                <a href="attributes.html#variant-attributes">
+                <a href="variant-attrs.html">
             
                     
                     Variant attributes
@@ -183,9 +183,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.3" data-path="field-attrs.html">
             
-                <a href="attributes.html#field-attributes">
+                <a href="field-attrs.html">
             
                     
                     Field attributes
@@ -422,20 +422,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.6" data-path="serialize-map.html">
-            
-                <a href="serialize-map.html">
-            
-                    
-                    Serialize for custom map type
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.9.7" data-path="stream-array.html">
+        <li class="chapter " data-level="1.9.6" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -448,7 +435,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.7" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -461,7 +448,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.8" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -474,7 +461,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.9" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -487,12 +474,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.11" data-path="newtype-wrapper.html">
+        <li class="chapter " data-level="1.9.10" data-path="remote-derive.html">
             
-                <a href="newtype-wrapper.html">
+                <a href="remote-derive.html">
             
                     
-                    De/Serialize for other crate
+                    Derive for remote crate
             
                 </a>
             
@@ -500,12 +487,25 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.11" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
                     
                     Manually deserialize struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.12" data-path="ignored-any.html">
+            
+                <a href="ignored-any.html">
+            
+                    
+                    Discarding data
             
                 </a>
             
@@ -539,7 +539,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.15" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.15" data-path="convert-error.html">
+            
+                <a href="convert-error.html">
+            
+                    
+                    Convert error types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.16" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -605,15 +618,14 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="attributes">Attributes</h1>
-<p><a href="https://doc.rust-lang.org/book/attributes.html" target="_blank">Attributes</a> are used to
-customize the <code>Serialize</code> and <code>Deserialize</code> implementations produced by Serde&apos;s
-derive.</p>
+<p><a href="https://doc.rust-lang.org/book/attributes.html" target="_blank">Attributes</a> are used to customize the <code>Serialize</code> and <code>Deserialize</code>
+implementations produced by Serde&apos;s derive. They require a Rust compiler version
+1.15 or newer.</p>
 <p>There are three categories of attributes:</p>
 <ul>
-<li><em>Container attributes</em> apply to a struct or enum declaration.</li>
-<li><em>Variant attributes</em> apply to a variant of an enum, as in <code>Option::None</code> or
-<code>Option::Some</code>.</li>
-<li><em>Field attributes</em> apply to one field in a struct or in an enum variant.</li>
+<li><a href="container-attrs.html"><strong>Container attributes</strong></a> &#x2014; apply to a struct or enum declaration.</li>
+<li><a href="variant-attrs.html"><strong>Variant attributes</strong></a> &#x2014; apply to a variant of an enum.</li>
+<li><a href="field-attrs.html"><strong>Field attributes</strong></a> &#x2014; apply to one field in a struct or in an enum variant.</li>
 </ul>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-meta">#[serde(deny_unknown_fields)]</span>  <span class="hljs-comment">// &lt;-- this is a container attribute</span>
@@ -631,136 +643,6 @@ derive.</p>
 </code></pre>
 <p>Note that a single struct, enum, variant, or field may have multiple attributes
 on it.</p>
-<h2 id="container-attributes">Container attributes</h2>
-<ul>
-<li><h5 id="serderename--name"><code>#[serde(rename = &quot;name&quot;)]</code></h5>
-<p>Serialize and deserialize this struct or enum with the given name instead of
-its Rust name.</p>
-</li>
-<li><h5 id="serderenameall--"><code>#[serde(rename_all = &quot;...&quot;)]</code></h5>
-<p>Rename all the fields (if this is a struct) or variants (if this is an enum)
-according to the given case convention. The possible values are
-<code>&quot;PascalCase&quot;</code>, <code>&quot;camelCase&quot;</code>, <code>&quot;snake_case&quot;</code>, <code>&quot;SCREAMING_SNAKE_CASE&quot;</code>,
-<code>&quot;kebab-case&quot;</code>.</p>
-</li>
-<li><h5 id="serdedenyunknownfields"><code>#[serde(deny_unknown_fields)]</code></h5>
-<p>Always error during deserialization when encountering unknown fields. When this
-attribute is not present, by default unknown fields are ignored for
-self-describing formats like JSON.</p>
-</li>
-<li><h5 id="serdetag--type"><code>#[serde(tag = &quot;type&quot;)]</code></h5>
-<p>Use the internally tagged enum representation for this enum, with the given
-tag. See <a href="enum-representations.html">enum representations</a> for details on this
-representation.</p>
-</li>
-<li><h5 id="serdetag--t-content--c"><code>#[serde(tag = &quot;t&quot;, content = &quot;c&quot;)]</code></h5>
-<p>Use the adjacently tagged enum representation for this enum, with the given
-field names for the tag and content. See <a href="enum-representations.html">enum
-representations</a> for details on this representation.</p>
-</li>
-<li><h5 id="serdeuntagged"><code>#[serde(untagged)]</code></h5>
-<p>Use the untagged enum representation for this enum. See <a href="enum-representations.html">enum
-representations</a> for details on this representation.</p>
-</li>
-<li><h5 id="serdebound--t-mytrait"><code>#[serde(bound = &quot;T: MyTrait&quot;)]</code></h5>
-<p>Where-clause for the <code>Serialize</code> and <code>Deserialize</code> impls. This replaces any
-trait bounds inferred by Serde.</p>
-</li>
-<li><h5 id="serdeboundserialize--t-mytrait"><code>#[serde(bound(serialize = &quot;T: MyTrait&quot;))]</code></h5>
-<p>Where-clause for the <code>Serialize</code> impl.</p>
-</li>
-<li><h5 id="serdebounddeserialize---t-mytrait"><code>#[serde(bound(deserialize  = &quot;T: MyTrait&quot;))]</code></h5>
-<p>Where-clause for the <code>Deserialize</code> impl.</p>
-</li>
-<li><h5 id="serdedefault"><code>#[serde(default)]</code></h5>
-<p>When deserializing, any missing fields should be filled in from the struct&apos;s
-implementation of <code>Default</code>. Only allowed on structs.</p>
-</li>
-<li><h5 id="serdedefault--path"><code>#[serde(default = &quot;path&quot;)]</code></h5>
-<p>When deserializing, any missing fields should be filled in from the object
-returned by the given function or method. The function must be callable as
-<code>fn() -&gt; T</code>. For example <code>default = &quot;my_default&quot;</code> would invoke <code>my_default()</code>
-and <code>default = &quot;SomeTrait::some_default&quot;</code> would invoke
-<code>SomeTrait::some_default()</code>. Only allowed on structs.</p>
-</li>
-</ul>
-<h2 id="variant-attributes">Variant attributes</h2>
-<ul>
-<li><h5 id="serderename--name"><code>#[serde(rename = &quot;name&quot;)]</code></h5>
-<p>Serialize and deserialize this variant with the given name instead of its Rust
-name.</p>
-</li>
-<li><h5 id="serderenameall--"><code>#[serde(rename_all = &quot;...&quot;)]</code></h5>
-<p>Rename all the fields of this struct variant according to the given case
-convention. The possible values are <code>&quot;PascalCase&quot;</code>, <code>&quot;camelCase&quot;</code>,
-<code>&quot;snake_case&quot;</code>, <code>&quot;SCREAMING_SNAKE_CASE&quot;</code>, <code>&quot;kebab-case&quot;</code>.</p>
-</li>
-<li><h5 id="serdeskipserializing"><code>#[serde(skip_serializing)]</code></h5>
-<p>Never serialize this variant, fail if it tries to be serialized.</p>
-</li>
-<li><h5 id="serdeskipdeserializing"><code>#[serde(skip_deserializing)]</code></h5>
-<p>Never deserialize this variant.</p>
-</li>
-</ul>
-<h2 id="field-attributes">Field attributes</h2>
-<ul>
-<li><h5 id="serderename--name"><code>#[serde(rename = &quot;name&quot;)]</code></h5>
-<p>Serialize and deserialize this field with the given name instead of its Rust
-name. This is useful for <a href="attr-rename.html">serializing fields as camelCase</a> or
-serializing fields with names that are reserved Rust keywords.</p>
-</li>
-<li><h5 id="serdedefault"><code>#[serde(default)]</code></h5>
-<p>If the value is not present when deserializing, use the <code>Default::default()</code>.</p>
-</li>
-<li><h5 id="serdedefault--path"><code>#[serde(default = &quot;path&quot;)]</code></h5>
-<p>If the value is not present when deserializing, call a function to get a
-default value. The given function must be callable as <code>fn() -&gt; T</code>. For example
-<code>default = &quot;empty_value&quot;</code> would invoke <code>empty_value()</code> and <code>default =
-&quot;SomeTrait::some_default&quot;</code> would invoke <code>SomeTrait::some_default()</code>.</p>
-</li>
-<li><h5 id="serdeskipserializing"><code>#[serde(skip_serializing)]</code></h5>
-<p>Do not serialize this value.</p>
-</li>
-<li><h5 id="serdeskipdeserializing"><code>#[serde(skip_deserializing)]</code></h5>
-<p>Always use <code>Default::default()</code> or the function given by <code>default = &quot;...&quot;</code>
-instead of ever deserializing this value.</p>
-</li>
-<li><h5 id="serdeskipserializingif--path"><code>#[serde(skip_serializing_if = &quot;path&quot;)]</code></h5>
-<p>Call a function to determine whether to skip serializing this field. The given
-function must be callable as <code>fn(&amp;T) -&gt; bool</code>, although it may be generic over
-<code>T</code>. For example <code>skip_serializing_if = &quot;Option::is_none&quot;</code> would skip an
-Option that is None.</p>
-</li>
-<li><h5 id="serdeserializewith--path"><code>#[serde(serialize_with = &quot;path&quot;)]</code></h5>
-<p>Serialize this field using a function that is different from its
-implementation of <code>Serialize</code>. The given function must be callable as
-<code>fn&lt;S&gt;(&amp;T, S) -&gt; Result&lt;S::Ok, S::Error&gt; where S: Serializer</code>, although it
-may also be generic over <code>T</code>. Fields used with <code>serialize_with</code> do not need to
-implement <code>Serialize</code>.</p>
-</li>
-<li><h5 id="serdedeserializewith--path"><code>#[serde(deserialize_with = &quot;path&quot;)]</code></h5>
-<p>Deserialize this field using a function that is different from its
-implementation of <code>Deserialize</code>. The given function must be callable as
-<code>fn&lt;D&gt;(D) -&gt; Result&lt;T, D::Error&gt; where D: Deserializer</code>, although it may
-also be generic over <code>T</code>. Fields used with <code>deserialize_with</code> do not need to
-implement <code>Deserialize</code>.</p>
-</li>
-<li><h5 id="serdewith--module"><code>#[serde(with = &quot;module&quot;)]</code></h5>
-<p>Combination of <code>serialize_with</code> and <code>deserialize_with</code>. Serde will use
-<code>$module::serialize</code> as the <code>serialize_with</code> function and
-<code>$module::deserialize</code> as the <code>deserialize_with</code> function.</p>
-</li>
-<li><h5 id="serdebound--t-mytrait"><code>#[serde(bound = &quot;T: MyTrait&quot;)]</code></h5>
-<p>Where-clause for the <code>Serialize</code> and <code>Deserialize</code> impls. This replaces any
-trait bounds inferred by Serde for the current field.</p>
-</li>
-<li><h5 id="serdeboundserialize--t-mytrait"><code>#[serde(bound(serialize = &quot;T: MyTrait&quot;))]</code></h5>
-<p>Where-clause for the <code>Serialize</code> impl.</p>
-</li>
-<li><h5 id="serdebounddeserialize---t-mytrait"><code>#[serde(bound(deserialize  = &quot;T: MyTrait&quot;))]</code></h5>
-<p>Where-clause for the <code>Deserialize</code> impl.</p>
-</li>
-</ul>
 
                                 
                                 </section>
@@ -777,7 +659,7 @@ trait bounds inferred by Serde for the current field.</p>
                 </a>
                 
                 
-                <a href="attributes.html#container-attributes" class="navigation navigation-next " aria-label="Next page: Container attributes">
+                <a href="container-attrs.html" class="navigation navigation-next " aria-label="Next page: Container attributes">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -788,7 +670,7 @@ trait bounds inferred by Serde for the current field.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.5","depth":1,"next":{"title":"Container attributes","level":"1.5.1","depth":2,"anchor":"#container-attributes","path":"attributes.md","ref":"attributes.md#container-attributes","articles":[]},"previous":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-04-17T19:24:11.717Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T17:19:07.888Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.5","depth":1,"next":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"previous":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-04-18T17:29:44.102Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T21:57:11.628Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

@@ -157,9 +157,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.1" data-path="container-attrs.html">
             
-                <a href="attributes.html#container-attributes">
+                <a href="container-attrs.html">
             
                     
                     Container attributes
@@ -170,9 +170,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.2" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
             
-                <a href="attributes.html#variant-attributes">
+                <a href="variant-attrs.html">
             
                     
                     Variant attributes
@@ -183,9 +183,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.3" data-path="field-attrs.html">
             
-                <a href="attributes.html#field-attributes">
+                <a href="field-attrs.html">
             
                     
                     Field attributes
@@ -422,20 +422,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.6" data-path="serialize-map.html">
-            
-                <a href="serialize-map.html">
-            
-                    
-                    Serialize for custom map type
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.9.7" data-path="stream-array.html">
+        <li class="chapter " data-level="1.9.6" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -448,7 +435,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.7" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -461,7 +448,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.8" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -474,7 +461,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.9" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -487,12 +474,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.11" data-path="newtype-wrapper.html">
+        <li class="chapter " data-level="1.9.10" data-path="remote-derive.html">
             
-                <a href="newtype-wrapper.html">
+                <a href="remote-derive.html">
             
                     
-                    De/Serialize for other crate
+                    Derive for remote crate
             
                 </a>
             
@@ -500,12 +487,25 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.11" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
                     
                     Manually deserialize struct
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.12" data-path="ignored-any.html">
+            
+                <a href="ignored-any.html">
+            
+                    
+                    Discarding data
             
                 </a>
             
@@ -539,7 +539,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.15" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.15" data-path="convert-error.html">
+            
+                <a href="convert-error.html">
+            
+                    
+                    Convert error types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.16" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -1307,7 +1320,7 @@ there is no advantage to that.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2017-04-18T04:33:15.917Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T17:19:07.888Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2017-04-18T04:33:15.917Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T21:57:11.628Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
