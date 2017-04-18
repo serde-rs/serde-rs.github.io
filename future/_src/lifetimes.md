@@ -49,6 +49,42 @@ period during which the output data structure is in scope, meaning it is
 impossible to have dangling pointer errors as a result of losing the input data
 while the output data structure still refers to it.
 
+### Transient, borrowed, and owned data
+
+The Serde data model has three flavors of strings and byte arrays during
+deserialization. They correspond to different methods on the [`Visitor`] trait.
+
+[`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
+
+- **Transient** — [`visit_str`] accepts a `&str`.
+- **Borrowed** — [`visit_borrowed_str`] accepts a `&'de str`.
+- **Owned** — [`visit_string`] accepts a `String`.
+
+[`visit_str`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_str
+[`visit_borrowed_str`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_str
+[`visit_string`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_string
+
+Transient data is not guaranteed to last beyond the method call it is passed to.
+Often this is sufficient, for example when deserializing something like an IP
+address from a Serde string using the [`FromStr`] trait. When it is not
+sufficient, the data can be copied by calling [`to_owned()`]. Deserializers
+commonly use transient data when input from an IO stream is being buffered in
+memory before being passed to the `Visitor`, or when escape sequences are being
+processed so the resulting string is not present verbatim in the input.
+
+[`FromStr`]: https://doc.rust-lang.org/std/str/trait.FromStr.html
+[`to_owned()`]: https://doc.rust-lang.org/std/borrow/trait.ToOwned.html
+
+Borrowed data is guaranteed to live at least as long as the `'de` lifetime
+parameter of the `Deserializer`. Not all deserializers support handing out
+borrowed data. For example when deserializing from an IO stream no data can be
+borrowed.
+
+Owned data is guaranteed to live as long as the [`Visitor`] wants it to. Some
+visitors benefit from receiving owned data. For example the `Deserialize` impl
+for Rust's `String` type benefits from being given ownership of the Serde string
+data that has been deserialized.
+
 ### The Deserialize&lt;'de&gt; lifetime
 
 This lifetime records the constraints on how long data borrowed by this type
