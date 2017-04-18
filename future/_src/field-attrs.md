@@ -67,3 +67,8 @@
 - ##### `#[serde(bound(deserialize  = "T: MyTrait"))]`
 
   Where-clause for the `Deserialize` impl.
+
+- ##### `#[serde(getter = "...")]`
+
+  This is used when deriving `Serialize` for a [remote type](remote-derive.md)
+  that has one or more private fields.

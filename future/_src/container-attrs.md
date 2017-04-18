@@ -60,3 +60,8 @@
   `fn() -> T`. For example `default = "my_default"` would invoke `my_default()`
   and `default = "SomeTrait::some_default"` would invoke
   `SomeTrait::some_default()`. Only allowed on structs.
+
+- ##### `#[serde(remote = "...")]`
+
+  This is used for deriving `Serialize` and `Deserialize` for [remote
+  types](remote-derive.md).
