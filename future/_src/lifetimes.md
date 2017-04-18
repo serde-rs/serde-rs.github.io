@@ -1,1 +1,161 @@
 # Understanding deserializer lifetimes
+
+The [`Deserialize`] and [`Deserializer`] traits both have a lifetime called
+`'de`, as do some of the other deserialization-related traits.
+
+[`Deserialize`]: https://docs.serde.rs/serde/trait.Deserialize.html
+[`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
+
+```rust
+# extern crate serde;
+#
+# use serde::Deserializer;
+#
+trait Deserialize<'de>: Sized {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where D: Deserializer<'de>;
+}
+#
+# fn main() {}
+```
+
+This lifetime is what enables Serde to safely perform efficient zero-copy
+deserialization across a variety of data formats, something that would be
+impossible or recklessly unsafe in languages other than Rust.
+
+```rust
+# #![allow(dead_code)]
+#
+# #[macro_use]
+# extern crate serde_derive;
+#
+#[derive(Deserialize)]
+struct User<'a> {
+    id: u32,
+    name: &'a str,
+    screen_name: &'a str,
+    location: &'a str,
+}
+#
+# fn main() {}
+```
+
+Zero-copy deserialization means deserializing into a data structure, like the
+`User` struct above, that borrows string or byte array data from the string or
+byte array holding the input. This avoids allocating memory to store a string
+for each individual field and then copying string data out of the input over to
+the newly allocated field. Rust guarantees that the input data outlives the
+period during which the output data structure is in scope, meaning it is
+impossible to have dangling pointer errors as a result of losing the input data
+while the output data structure still refers to it.
+
+### The Deserialize&lt;'de&gt; lifetime
+
+This lifetime records the constraints on how long data borrowed by this type
+must be valid.
+
+Every lifetime of data borrowed by this type must be a bound on the `'de`
+lifetime of its `Deserialize` impl. If this type borrows data with lifetime
+`'a`, then `'de` must be constrained to outlive `'a`.
+
+```rust
+# #![allow(dead_code)]
+#
+# trait Deserialize<'de> {}
+#
+struct S<'a, 'b, T> {
+    a: &'a str,
+    b: &'b str,
+    bb: &'b str,
+    t: T,
+}
+
+impl<'de: 'a + 'b, 'a, 'b, T> Deserialize<'de> for S<'a, 'b, T>
+    where T: Deserialize<'de>
+{
+    /* ... */
+}
+#
+# fn main() {}
+```
+
+If this type does not borrow any data from the `Deserializer`, there are simply
+no bounds on the `'de` lifetime. Such types automatically implement the
+[`DeserializeOwned`] trait.
+
+[`DeserializeOwned`]: https://docs.serde.rs/serde/de/trait.DeserializeOwned.html
+
+```rust
+# #![allow(dead_code)]
+#
+# pub trait Deserialize<'de> {}
+#
+struct S {
+    owned: String,
+}
+
+impl<'de> Deserialize<'de> for S {
+    /* ... */
+}
+#
+# fn main() {}
+```
+
+The `'de` lifetime **should not** appear in the type to which the `Deserialize`
+impl applies.
+
+```diff
+- // Do not do this. Sooner or later you will be sad.
+- impl<'de> Deserialize<'de> for Q<'de> {
+
++ // Do this instead.
++ impl<'de: 'a, 'a> Deserialize<'de> for Q<'a> {
+```
+
+### The Deserializer&lt;'de&gt; lifetime
+
+This is the lifetime of data that can be borrowed from the `Deserializer`.
+
+```rust
+# #![allow(dead_code)]
+#
+# pub trait Deserializer<'de> {}
+#
+struct MyDeserializer<'de> {
+    input_data: &'de [u8],
+    pos: usize,
+}
+
+impl<'de> Deserializer<'de> for MyDeserializer<'de> {
+    /* ... */
+}
+#
+# fn main() {}
+```
+
+If the `Deserializer` never invokes [`visit_borrowed_str`] or
+[`visit_borrowed_bytes`], the `'de` lifetime should be unconstrained and should
+be named `'x`.
+
+[`visit_borrowed_str`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_str
+[`visit_borrowed_bytes`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_bytes
+
+```rust
+# #![allow(dead_code)]
+#
+# use std::io;
+#
+# pub trait Deserializer<'de> {}
+#
+struct MyDeserializer<R> {
+    read: R,
+}
+
+impl<'x, R> Deserializer<'x> for MyDeserializer<R>
+    where R: io::Read
+{
+    /* ... */
+}
+#
+# fn main() {}
+```
