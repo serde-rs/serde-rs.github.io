@@ -210,7 +210,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
 
     // Note that newtype variant (and all of the other variant serialization
     // methods) refer exclusively to the "externally tagged" enum
-    // representation. This is explained in more detail on the data model page.
+    // representation.
     //
     // Serialize this to JSON in externally tagged form as `{ NAME: VALUE }`.
     fn serialize_newtype_variant<T>(

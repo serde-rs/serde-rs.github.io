@@ -647,8 +647,7 @@ impl<'a, 'de> Enum<'a, 'de> {
 // which variant of the enum is supposed to be deserialized.
 //
 // Note that all enum deserialization methods in Serde refer exclusively to the
-// "externally tagged" enum representation. This is explained in more detail on
-// the data model page.
+// "externally tagged" enum representation.
 impl<'de, 'a> EnumAccess<'de> for Enum<'a, 'de> {
     type Error = Error;
     type Variant = Self;
