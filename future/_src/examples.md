@@ -5,6 +5,10 @@
 human-readable data formats are encouraged to follow an analogous approach where
 possible.
 
+**[Enum representations](enum-representations.md)**: Externally tagged,
+internally tagged, adjacently tagged, and untagged ways of representing an enum
+in self-describing formats.
+
 **[Default value for a field](attr-default.md)**: Some examples of the
 `#[serde(default)]` attribute.
 
