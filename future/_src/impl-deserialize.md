@@ -17,9 +17,11 @@ pub trait Deserialize<'de>: Sized {
 # fn main() {}
 ```
 
-This method's job is to provide the [`Deserializer`] with a [`Visitor`] that can
-be driven by the Deserializer to construct an instance of your type.
+This method's job is to map the type into the [Serde data model] by providing
+the [`Deserializer`] with a [`Visitor`] that can be driven by the `Deserializer`
+to construct an instance of your type.
 
+[Serde data model]: data-model.md
 [`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
 [`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
 
