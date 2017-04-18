@@ -36,28 +36,28 @@ for a type tends to be more complicated than implementing `Serialize`.
 The `Deserializer` trait supports two entry point styles which enables different
 kinds of deserialization.
 
-1. The `deserialize` method. Self-describing data formats like JSON are able to
-   look at the serialized data and tell what it represents. For example the JSON
-   deserializer may see an opening curly brace (`{`) and know that it is seeing
-   a map. If the data format supports `Deserializer::deserialize`, it will drive
-   the Visitor using whatever type it sees in the input. JSON uses this approach
-   when deserializing `serde_json::Value` which is an enum that can represent
-   any JSON document. Without knowing what is in a JSON document, we can
-   deserialize it to `serde_json::Value` by going through
-   `Deserializer::deserialize`.
+1. The `deserialize_any` method. Self-describing data formats like JSON are able
+   to look at the serialized data and tell what it represents. For example the
+   JSON deserializer may see an opening curly brace (`{`) and know that it is
+   seeing a map. If the data format supports `Deserializer::deserialize_any`, it
+   will drive the Visitor using whatever type it sees in the input. JSON uses
+   this approach when deserializing `serde_json::Value` which is an enum that
+   can represent any JSON document. Without knowing what is in a JSON document,
+   we can deserialize it to `serde_json::Value` by going through
+   `Deserializer::deserialize_any`.
 
-2. The various `deserialize_*` methods. Non-self-describing formats like Bincode
-   need to be told what is in the input in order to deserialize it. The
+2. The various other `deserialize_*` methods. Non-self-describing formats like
+   Bincode need to be told what is in the input in order to deserialize it. The
    `deserialize_*` methods are hints to the deserializer for how to interpret
    the next piece of input. Non-self-describing formats are not able to
    deserialize something like `serde_json::Value` which relies on
-   `Deserializer::deserialize`.
+   `Deserializer::deserialize_any`.
 
 When implementing `Deserialize`, you should avoid relying on
-`Deserializer::deserialize` unless you need to be told by the Deserializer what
-type is in the input. Know that relying on `Deserializer::deserialize` means
-your data type will be able to deserialize from self-describing formats only,
-ruling out Bincode and many others.
+`Deserializer::deserialize_any` unless you need to be told by the Deserializer
+what type is in the input. Know that relying on `Deserializer::deserialize_any`
+means your data type will be able to deserialize from self-describing formats
+only, ruling out Bincode and many others.
 
 ## The Visitor trait
 
