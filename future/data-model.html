@@ -638,7 +638,7 @@ the following 27 types:</p>
 </ul>
 </li>
 <li><strong>string</strong><ul>
-<li>UTF-8 bytes with a length and no null terminator.</li>
+<li>UTF-8 bytes with a length and no null terminator. May contain 0-bytes.</li>
 <li>When serializing, all strings are handled equally. When deserializing, there
 are three flavors of strings: transient, owned, and borrowed. This
 distinction is explained in <a href="lifetimes.html">Understanding deserializer lifetimes</a> and is a
@@ -716,6 +716,42 @@ u8, b: u8 }</code>.</li>
 </ul>
 </li>
 </ul>
+<h2 id="mapping-into-the-data-model">Mapping into the data model</h2>
+<p>In the case of most Rust types, their mapping into the Serde data model is
+straightforward. For example the Rust <code>bool</code> type corresponds to Serde&apos;s bool
+type. The Rust tuple struct <code>Rgb(u8, u8, u8)</code> corresponds to Serde&apos;s tuple
+struct type.</p>
+<p>But there is no fundamental reason that these mappings need to be
+straightforward. The <a href="https://docs.serde.rs/serde/trait.Serialize.html" target="_blank"><code>Serialize</code></a> and <a href="https://docs.serde.rs/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> traits can perform <em>any</em>
+mapping between Rust type and Serde data model that is appropriate for the use
+case.</p>
+<p>As an example, consider Rust&apos;s <a href="https://doc.rust-lang.org/std/ffi/struct.OsString.html" target="_blank"><code>std::ffi::OsString</code></a> type. This type represents
+a platform-native string. On Unix systems they are arbitrary non-zero bytes and
+on Windows systems they are arbitrary non-zero 16-bit values. It may seem
+natural to map <code>OsString</code> into the Serde data model as one of the following
+types:</p>
+<ul>
+<li>As a Serde <strong>string</strong>. Unfortunately serialization would be brittle because an
+<code>OsString</code> is not guaranteed to be representable in UTF-8 and deserialization
+would be brittle because Serde strings are allowed to contain 0-bytes.</li>
+<li>As a Serde <strong>byte array</strong>. This fixes both problem with using string, but now
+if we serialize an <code>OsString</code> on Unix and deserialize it on Windows we end up
+with <a href="https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/" target="_blank">the wrong string</a>.</li>
+</ul>
+<p>Instead the <code>Serialize</code> and <code>Deserialize</code> impls for <code>OsString</code> map into the
+Serde data model by treating <code>OsString</code> as a Serde <strong>enum</strong>. Effectively it acts
+as though <code>OsString</code> were defined as the following type, even though this does
+not match its definition on any individual platform.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">OsString</span></span> {
+    Unix(<span class="hljs-built_in">Vec</span>&lt;<span class="hljs-keyword">u8</span>&gt;),
+    Windows(<span class="hljs-built_in">Vec</span>&lt;u16&gt;),
+    <span class="hljs-comment">// and other platforms</span>
+}
+</code></pre>
+<p>The flexibility around mapping into the Serde data model is profound and
+powerful. When implementing <code>Serialize</code> and <code>Deserialize</code>, be aware of the
+broader context of your type that may make the most instinctive mapping not the
+best choice.</p>
 
                                 
                                 </section>
@@ -743,7 +779,7 @@ u8, b: u8 }</code>.</li>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Serde data model","level":"1.3","depth":1,"next":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"previous":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"data-model.md","mtime":"2017-04-17T19:14:51.580Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T06:43:49.593Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Serde data model","level":"1.3","depth":1,"next":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"previous":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"data-model.md","mtime":"2017-04-18T17:17:46.971Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T17:19:07.888Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
