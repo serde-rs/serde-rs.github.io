@@ -32,5 +32,6 @@
     * [Manually deserialize struct](deserialize-struct.md)
     * [Transcode into another format](transcode.md)
     * [Either string or struct](string-or-struct.md)
+    * [Convert error types](convert-error.md)
     * [Custom date format](custom-date-format.md)
 * [Feature flags](feature-flags.md)

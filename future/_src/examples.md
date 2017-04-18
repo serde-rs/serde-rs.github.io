@@ -48,6 +48,9 @@ input in one format to output in another format efficiently.
 [`docker-compose.yml`](https://docs.docker.com/compose/compose-file/#/build)
 configuration file has a "build" key which can be either a string or a struct.
 
+**[Convert error types](convert-error.md)**: Map a Serde error from some format
+into a Serde error for some other format using `Error::custom`.
+
 **[Date in a custom format](custom-date-format.md)**: Handle a
 [`chrono`](https://github.com/chronotope/chrono) `DateTime` formatted with a
 custom string representation.
