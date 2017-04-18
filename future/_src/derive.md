@@ -79,3 +79,26 @@ $ cargo run
 serialized = {"x":1,"y":2}
 deserialized = Point { x: 1, y: 2 }
 ```
+
+### Troubleshooting
+
+Sometimes you may see compile-time errors that tell you:
+
+```
+the trait `serde::de::Deserialize` is not implemented for `...`
+```
+
+even though the struct or enum clearly has `#[derive(Deserialize)]` on it.
+
+This almost always means that you are using libraries that depend on
+incompatible versions of Serde. You may be depending on serde 1.0 and
+serde_derive 1.0 in your Cargo.toml but using some other library that depends on
+serde 0.9. So the `Deserialize` trait from serde 1.0 may be implemented, but the
+library expects an implementation of the `Deserialize` trait from serde 0.9.
+From the Rust compiler's perspective these are totally different traits.
+
+The fix is to upgrade or downgrade libraries as appropriate until the Serde
+versions match. The [`cargo tree -d`] command is helpful for finding all the
+places that duplicate dependencies are being pulled in.
+
+[`cargo tree -d`]: https://github.com/sfackler/cargo-tree
