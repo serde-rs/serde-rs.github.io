@@ -1,7 +1,8 @@
 # Implementing Deserialize
 
-The [`Deserialize`](https://docs.serde.rs/serde/de/trait.Deserialize.html) trait
-looks like this:
+The [`Deserialize`] trait looks like this:
+
+[`Deserialize`]: https://docs.serde.rs/serde/de/trait.Deserialize.html
 
 ```rust
 # extern crate serde;
@@ -16,17 +17,19 @@ pub trait Deserialize<'de>: Sized {
 # fn main() {}
 ```
 
-This method's job is to provide the
-[`Deserializer`](https://docs.serde.rs/serde/de/trait.Deserializer.html) with a
-[`Visitor`](https://docs.serde.rs/serde/de/trait.Visitor.html) that can be
-driven by the Deserializer to construct an instance of your type.
+This method's job is to provide the [`Deserializer`] with a [`Visitor`] that can
+be driven by the Deserializer to construct an instance of your type.
 
-In most cases Serde's [derive](derive.md) is able to generate an appropriate
-implementation of `Deserialize` for structs and enums defined in your crate.
-Should you need to customize the deserialization behavior for a type in a way
-that derive does not support, you can implement `Deserialize` yourself.
-Implementing `Deserialize` for a type tends to be more complicated than
-implementing `Serialize`.
+[`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
+[`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
+
+In most cases Serde's [derive] is able to generate an appropriate implementation
+of `Deserialize` for structs and enums defined in your crate. Should you need to
+customize the deserialization behavior for a type in a way that derive does not
+support, you can implement `Deserialize` yourself. Implementing `Deserialize`
+for a type tends to be more complicated than implementing `Serialize`.
+
+[derive]: derive.md
 
 The `Deserializer` trait supports two entry point styles which enables different
 kinds of deserialization.
@@ -56,9 +59,9 @@ ruling out Bincode and many others.
 
 ## The Visitor trait
 
-A [`Visitor`](https://docs.serde.rs/serde/de/trait.Visitor.html) is instantiated
-by a `Deserialize` impl and passed to a `Deserializer`. The `Deserializer` then
-calls a method on the `Visitor` in order to construct the desired type.
+A [`Visitor`] is instantiated by a `Deserialize` impl and passed to a
+`Deserializer`. The `Deserializer` then calls a method on the `Visitor` in order
+to construct the desired type.
 
 Here is a `Visitor` that is able to deserialize a primitive `i32` from a variety
 of types.
@@ -115,11 +118,12 @@ impl<'de> Visitor<'de> for I32Visitor {
 ```
 
 The `Visitor` trait has lots more methods that are not implemented for
-`I32Visitor`. Leaving them unimplemented means a [type
-error](https://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type) is
-returned if they get called. For example `I32Visitor` does not implement
+`I32Visitor`. Leaving them unimplemented means a [type error] is returned if
+they get called. For example `I32Visitor` does not implement
 `Visitor::visit_map`, so trying to deserialize an i32 when the input contains a
 map is a type error.
+
+[type error]: https://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type
 
 ## Driving a Visitor
 
