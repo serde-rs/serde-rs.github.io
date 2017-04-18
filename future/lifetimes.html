@@ -605,6 +605,94 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="understanding-deserializer-lifetimes">Understanding deserializer lifetimes</h1>
+<p>The <a href="https://docs.serde.rs/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> and <a href="https://docs.serde.rs/serde/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> traits both have a lifetime called
+<code>&apos;de</code>, as do some of the other deserialization-related traits.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Deserialize</span></span>&lt;<span class="hljs-symbol">&apos;de</span>&gt;: <span class="hljs-built_in">Sized</span> {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
+        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;;
+}
+</code></pre>
+<p>This lifetime is what enables Serde to safely perform efficient zero-copy
+deserialization across a variety of data formats, something that would be
+impossible or recklessly unsafe in languages other than Rust.</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">User</span></span>&lt;<span class="hljs-symbol">&apos;a</span>&gt; {
+    id: <span class="hljs-keyword">u32</span>,
+    name: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+    screen_name: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+    location: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+}
+</code></pre>
+<p>Zero-copy deserialization means deserializing into a data structure, like the
+<code>User</code> struct above, that borrows string or byte array data from the string or
+byte array holding the input. This avoids allocating memory to store a string
+for each individual field and then copying string data out of the input over to
+the newly allocated field. Rust guarantees that the input data outlives the
+period during which the output data structure is in scope, meaning it is
+impossible to have dangling pointer errors as a result of losing the input data
+while the output data structure still refers to it.</p>
+<h3 id="the-deserializede-lifetime">The Deserialize&lt;&apos;de&gt; lifetime</h3>
+<p>This lifetime records the constraints on how long data borrowed by this type
+must be valid.</p>
+<p>Every lifetime of data borrowed by this type must be a bound on the <code>&apos;de</code>
+lifetime of its <code>Deserialize</code> impl. If this type borrows data with lifetime
+<code>&apos;a</code>, then <code>&apos;de</code> must be constrained to outlive <code>&apos;a</code>.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, T&gt; {
+    a: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+    b: &amp;<span class="hljs-symbol">&apos;b</span> <span class="hljs-keyword">str</span>,
+    bb: &amp;<span class="hljs-symbol">&apos;b</span> <span class="hljs-keyword">str</span>,
+    t: T,
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>: <span class="hljs-symbol">&apos;a</span> + <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, T&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> S&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, T&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+{
+    <span class="hljs-comment">/* ... */</span>
+}
+</code></pre>
+<p>If this type does not borrow any data from the <code>Deserializer</code>, there are simply
+no bounds on the <code>&apos;de</code> lifetime. Such types automatically implement the
+<a href="https://docs.serde.rs/serde/de/trait.DeserializeOwned.html" target="_blank"><code>DeserializeOwned</code></a> trait.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span></span> {
+    owned: <span class="hljs-built_in">String</span>,
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> S {
+    <span class="hljs-comment">/* ... */</span>
+}
+</code></pre>
+<p>The <code>&apos;de</code> lifetime <strong>should not</strong> appear in the type to which the <code>Deserialize</code>
+impl applies.</p>
+<pre><code class="lang-diff"><span class="hljs-deletion">- // Do not do this. Sooner or later you will be sad.</span>
+<span class="hljs-deletion">- impl&lt;&apos;de&gt; Deserialize&lt;&apos;de&gt; for Q&lt;&apos;de&gt; {</span>
+
+<span class="hljs-addition">+ // Do this instead.</span>
+<span class="hljs-addition">+ impl&lt;&apos;de: &apos;a, &apos;a&gt; Deserialize&lt;&apos;de&gt; for Q&lt;&apos;a&gt; {</span>
+</code></pre>
+<h3 id="the-deserializerde-lifetime">The Deserializer&lt;&apos;de&gt; lifetime</h3>
+<p>This is the lifetime of data that can be borrowed from the <code>Deserializer</code>.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MyDeserializer</span></span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; {
+    input_data: &amp;<span class="hljs-symbol">&apos;de</span> [<span class="hljs-keyword">u8</span>],
+    pos: usize,
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> MyDeserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt; {
+    <span class="hljs-comment">/* ... */</span>
+}
+</code></pre>
+<p>If the <code>Deserializer</code> never invokes <a href="https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_str" target="_blank"><code>visit_borrowed_str</code></a> or
+<a href="https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_bytes" target="_blank"><code>visit_borrowed_bytes</code></a>, the <code>&apos;de</code> lifetime should be unconstrained and should
+be named <code>&apos;x</code>.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MyDeserializer</span></span>&lt;R&gt; {
+    read: R,
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;x</span>, R&gt; Deserializer&lt;<span class="hljs-symbol">&apos;x</span>&gt; <span class="hljs-keyword">for</span> MyDeserializer&lt;R&gt;
+    <span class="hljs-keyword">where</span> R: io::Read
+{
+    <span class="hljs-comment">/* ... */</span>
+}
+</code></pre>
 
                                 
                                 </section>
@@ -632,7 +720,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"next":{"title":"Examples","level":"1.9","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.9.4","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.9.5","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Serialize for custom map type","level":"1.9.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.9.7","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as number","level":"1.9.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.9.9","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.9.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"De/Serialize for other crate","level":"1.9.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Transcode into another format","level":"1.9.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},{"title":"Either string or struct","level":"1.9.14","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},{"title":"Custom date format","level":"1.9.15","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]}]},"previous":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"lifetimes.md","mtime":"2017-04-17T18:44:35.177Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T04:36:00.522Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"next":{"title":"Examples","level":"1.9","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.9.4","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.9.5","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Serialize for custom map type","level":"1.9.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.9.7","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as number","level":"1.9.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.9.9","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.9.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"De/Serialize for other crate","level":"1.9.11","depth":2,"path":"newtype-wrapper.md","ref":"newtype-wrapper.md","articles":[]},{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Transcode into another format","level":"1.9.13","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},{"title":"Either string or struct","level":"1.9.14","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},{"title":"Custom date format","level":"1.9.15","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]}]},"previous":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"lifetimes.md","mtime":"2017-04-18T06:43:13.890Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-18T06:43:49.593Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
