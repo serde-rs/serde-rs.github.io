@@ -13,7 +13,8 @@
 
 - ##### `#[serde(skip_serializing)]`
 
-  Never serialize this variant, fail if it tries to be serialized.
+  Never serialize this variant. Trying to serialize this variant is treated as
+  an error.
 
 - ##### `#[serde(skip_deserializing)]`
 
