@@ -28,7 +28,7 @@
     * [Serialize enum as number](enum-number.md)
     * [Serialize fields as camelCase](attr-rename.md)
     * [Skip serializing field](attr-skip-serializing.md)
-    * [De/Serialize for other crate](newtype-wrapper.md)
+    * [Derive for remote crate](remote-derive.md)
     * [Manually deserialize struct](deserialize-struct.md)
     * [Transcode into another format](transcode.md)
     * [Either string or struct](string-or-struct.md)
