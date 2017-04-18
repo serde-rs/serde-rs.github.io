@@ -30,6 +30,7 @@
     * [Skip serializing field](attr-skip-serializing.md)
     * [Derive for remote crate](remote-derive.md)
     * [Manually deserialize struct](deserialize-struct.md)
+    * [Discarding data](ignored-any.md)
     * [Transcode into another format](transcode.md)
     * [Either string or struct](string-or-struct.md)
     * [Convert error types](convert-error.md)
