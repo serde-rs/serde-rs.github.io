@@ -8,7 +8,7 @@
 - ##### `#[serde(rename_all = "...")]`
 
   Rename all the fields (if this is a struct) or variants (if this is an enum)
-  according to the given case convention. The possible values are
+  according to the given case convention. The possible values are `"lowercase"`,
   `"PascalCase"`, `"camelCase"`, `"snake_case"`, `"SCREAMING_SNAKE_CASE"`,
   `"kebab-case"`.
 
