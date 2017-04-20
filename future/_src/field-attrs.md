@@ -55,6 +55,11 @@
   `$module::serialize` as the `serialize_with` function and
   `$module::deserialize` as the `deserialize_with` function.
 
+- ##### `#[serde(borrow)]`
+
+  Borrow data for this field from the deserializer by using zero-copy
+  deserialization. See [this example](borrow.md).
+
 - ##### `#[serde(bound = "T: MyTrait")]`
 
   Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
