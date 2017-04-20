@@ -36,7 +36,6 @@ let w = E::W { a: 0, b: 0 }; // Represented as `{"W":{"a":0,"b":0}}`
 let x = E::X(0, 0);          // Represented as `{"X":[0,0]}`
 let y = E::Y(0);             // Represented as `{"Y":0}`
 let z = E::Z;                // Represented as `"Z"`
-                             // but can also be deserialized from `{"Z":null}`
 #
 # }
 ```
