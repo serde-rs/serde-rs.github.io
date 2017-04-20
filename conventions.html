@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Attributes · Serde</title>
+        <title>Conventions · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="container-attrs.html" />
+    <link rel="next" href="error-handling.html" />
     
     
-    <link rel="prev" href="derive.html" />
+    <link rel="prev" href="data-format.html" />
     
 
     </head>
@@ -143,7 +143,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="attributes.html">
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -273,7 +273,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.7.1" data-path="conventions.html">
+        <li class="chapter active" data-level="1.7.1" data-path="conventions.html">
             
                 <a href="conventions.html">
             
@@ -618,7 +618,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Attributes</a>
+        <a href="." >Conventions</a>
     </h1>
 </div>
 
@@ -630,32 +630,45 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="attributes">Attributes</h1>
-<p><a href="https://doc.rust-lang.org/book/attributes.html" target="_blank">Attributes</a> are used to customize the <code>Serialize</code> and <code>Deserialize</code>
-implementations produced by Serde&apos;s derive. They require a Rust compiler version
-1.15 or newer.</p>
-<p>There are three categories of attributes:</p>
+                                <h1 id="conventions">Conventions</h1>
+<p>By convention a Serde data format crate provides the following in the root
+module or re-exported from the root module:</p>
 <ul>
-<li><a href="container-attrs.html"><strong>Container attributes</strong></a> &#x2014; apply to a struct or enum declaration.</li>
-<li><a href="variant-attrs.html"><strong>Variant attributes</strong></a> &#x2014; apply to a variant of an enum.</li>
-<li><a href="field-attrs.html"><strong>Field attributes</strong></a> &#x2014; apply to one field in a struct or in an enum variant.</li>
+<li>An Error type common to both serialization and deserialization.</li>
+<li>A Result typedef which is equivalent to std::result::Result&lt;T, Error&gt;.</li>
+<li>A Serializer type which implements serde::Serializer.</li>
+<li>A Deserializer type which implements serde::Deserializer.</li>
+<li>One or more to_abc functions depending on what types the format supports
+serializing to. For example to_string which returns a String, to_bytes which
+returns a Vec&lt;u8&gt;, or to_writer which writes into an <a href="https://doc.rust-lang.org/std/io/trait.Write.html" target="_blank"><code>io::Write</code></a>.</li>
+<li>One or more from_xyz functions depending on what types the format supports
+deserializing from. For example from_str which takes a &amp;str, from_bytes
+which takes a &amp;[u8], or from_reader which takes an <a href="https://doc.rust-lang.org/std/io/trait.Read.html" target="_blank"><code>io::Read</code></a>.</li>
 </ul>
-<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(deny_unknown_fields)]</span>  <span class="hljs-comment">// &lt;-- this is a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span></span> {
-    <span class="hljs-meta">#[serde(default)]</span>  <span class="hljs-comment">// &lt;-- this is a field attribute</span>
-    f: <span class="hljs-keyword">i32</span>,
-}
+<p>In addition, formats that provide serialization-specific or
+deserialization-specific APIs beyond Serializer and Deserializer should expose
+those under top-level <code>ser</code> and <code>de</code> modules. For example serde_json provides a
+pluggable pretty-printer trait as <a href="https://docs.serde.rs/serde_json/ser/trait.Formatter.html" target="_blank"><code>serde_json::ser::Formatter</code></a>.</p>
+<p>A basic data format begins like this. The three modules are discussed in more
+detail on the following pages.</p>
+<div><p class="code-filename">src/lib.rs</p></div>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 
-<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;e&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is also a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
-    <span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;a&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is a variant attribute</span>
-    A(<span class="hljs-built_in">String</span>),
-}
+<span class="hljs-comment">// The serde_derive crate provides the macros for #[derive(Serialize)] and</span>
+<span class="hljs-comment">// #[derive(Deserialize)]. You won&apos;t need these for implementing a data format</span>
+<span class="hljs-comment">// but your unit tests will probably use them - hence #[cfg(test)].</span>
+<span class="hljs-meta">#[cfg(test)]</span>
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-keyword">mod</span> error;
+<span class="hljs-keyword">mod</span> ser;
+<span class="hljs-keyword">mod</span> de;
+
+<span class="hljs-keyword">pub</span> <span class="hljs-keyword">use</span> error::{Error, <span class="hljs-built_in">Result</span>};
+<span class="hljs-keyword">pub</span> <span class="hljs-keyword">use</span> ser::{to_string, Serializer};
+<span class="hljs-keyword">pub</span> <span class="hljs-keyword">use</span> de::{from_str, Deserializer};
 </code></pre>
-<p>Note that a single struct, enum, variant, or field may have multiple attributes
-on it.</p>
 
                                 
                                 </section>
@@ -667,12 +680,12 @@ on it.</p>
 
             
                 
-                <a href="derive.html" class="navigation navigation-prev " aria-label="Previous page: Using derive">
+                <a href="data-format.html" class="navigation navigation-prev " aria-label="Previous page: Writing a data format">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="container-attrs.html" class="navigation navigation-next " aria-label="Next page: Container attributes">
+                <a href="error-handling.html" class="navigation navigation-next " aria-label="Next page: Error handling">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -683,7 +696,7 @@ on it.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.5","depth":1,"next":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"previous":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-04-18T17:29:44.102Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Conventions","level":"1.7.1","depth":2,"next":{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"previous":{"title":"Writing a data format","level":"1.7","depth":1,"path":"data-format.md","ref":"data-format.md","articles":[{"title":"Conventions","level":"1.7.1","depth":2,"path":"conventions.md","ref":"conventions.md","articles":[]},{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"conventions.md","mtime":"2017-04-17T21:10:52.499Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

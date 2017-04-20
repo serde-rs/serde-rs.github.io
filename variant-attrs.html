@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Attributes · Serde</title>
+        <title>Variant attributes · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="container-attrs.html" />
+    <link rel="next" href="field-attrs.html" />
     
     
-    <link rel="prev" href="derive.html" />
+    <link rel="prev" href="container-attrs.html" />
     
 
     </head>
@@ -143,7 +143,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="attributes.html">
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -170,7 +170,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
+        <li class="chapter active" data-level="1.5.2" data-path="variant-attrs.html">
             
                 <a href="variant-attrs.html">
             
@@ -618,7 +618,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Attributes</a>
+        <a href="." >Variant attributes</a>
     </h1>
 </div>
 
@@ -630,32 +630,25 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="attributes">Attributes</h1>
-<p><a href="https://doc.rust-lang.org/book/attributes.html" target="_blank">Attributes</a> are used to customize the <code>Serialize</code> and <code>Deserialize</code>
-implementations produced by Serde&apos;s derive. They require a Rust compiler version
-1.15 or newer.</p>
-<p>There are three categories of attributes:</p>
+                                <h1 id="variant-attributes">Variant attributes</h1>
 <ul>
-<li><a href="container-attrs.html"><strong>Container attributes</strong></a> &#x2014; apply to a struct or enum declaration.</li>
-<li><a href="variant-attrs.html"><strong>Variant attributes</strong></a> &#x2014; apply to a variant of an enum.</li>
-<li><a href="field-attrs.html"><strong>Field attributes</strong></a> &#x2014; apply to one field in a struct or in an enum variant.</li>
+<li><h5 id="serderename--name"><code>#[serde(rename = &quot;name&quot;)]</code></h5>
+<p>Serialize and deserialize this variant with the given name instead of its Rust
+name.</p>
+</li>
+<li><h5 id="serderenameall--"><code>#[serde(rename_all = &quot;...&quot;)]</code></h5>
+<p>Rename all the fields of this struct variant according to the given case
+convention. The possible values are <code>&quot;lowercase&quot;</code>, <code>&quot;PascalCase&quot;</code>,
+<code>&quot;camelCase&quot;</code>, <code>&quot;snake_case&quot;</code>, <code>&quot;SCREAMING_SNAKE_CASE&quot;</code>, <code>&quot;kebab-case&quot;</code>.</p>
+</li>
+<li><h5 id="serdeskipserializing"><code>#[serde(skip_serializing)]</code></h5>
+<p>Never serialize this variant. Trying to serialize this variant is treated as
+an error.</p>
+</li>
+<li><h5 id="serdeskipdeserializing"><code>#[serde(skip_deserializing)]</code></h5>
+<p>Never deserialize this variant.</p>
+</li>
 </ul>
-<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(deny_unknown_fields)]</span>  <span class="hljs-comment">// &lt;-- this is a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span></span> {
-    <span class="hljs-meta">#[serde(default)]</span>  <span class="hljs-comment">// &lt;-- this is a field attribute</span>
-    f: <span class="hljs-keyword">i32</span>,
-}
-
-<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;e&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is also a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
-    <span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;a&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is a variant attribute</span>
-    A(<span class="hljs-built_in">String</span>),
-}
-</code></pre>
-<p>Note that a single struct, enum, variant, or field may have multiple attributes
-on it.</p>
 
                                 
                                 </section>
@@ -667,12 +660,12 @@ on it.</p>
 
             
                 
-                <a href="derive.html" class="navigation navigation-prev " aria-label="Previous page: Using derive">
+                <a href="container-attrs.html" class="navigation navigation-prev " aria-label="Previous page: Container attributes">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="container-attrs.html" class="navigation navigation-next " aria-label="Next page: Container attributes">
+                <a href="field-attrs.html" class="navigation navigation-next " aria-label="Next page: Field attributes">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -683,7 +676,7 @@ on it.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.5","depth":1,"next":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"previous":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-04-18T17:29:44.102Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Variant attributes","level":"1.5.2","depth":2,"next":{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]},"previous":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"variant-attrs.md","mtime":"2017-04-18T17:36:35.978Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

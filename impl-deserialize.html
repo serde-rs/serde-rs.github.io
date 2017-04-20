@@ -21,6 +21,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-checklist/checklist.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -113,12 +117,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="codegen.html">
+        <li class="chapter " data-level="1.3" data-path="data-model.html">
             
-                <a href="codegen.html">
+                <a href="data-model.html">
             
                     
-                    Setting up codegen
+                    Serde data model
             
                 </a>
             
@@ -126,7 +130,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="attributes.html">
+        <li class="chapter " data-level="1.4" data-path="derive.html">
+            
+                <a href="derive.html">
+            
+                    
+                    Using derive
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -140,9 +157,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.1" data-path="container-attrs.html">
             
-                <a href="attributes.html#container-attributes">
+                <a href="container-attrs.html">
             
                     
                     Container attributes
@@ -153,9 +170,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
             
-                <a href="attributes.html#variant-attributes">
+                <a href="variant-attrs.html">
             
                     
                     Variant attributes
@@ -166,9 +183,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.3" data-path="field-attrs.html">
             
-                <a href="attributes.html#field-attributes">
+                <a href="field-attrs.html">
             
                     
                     Field attributes
@@ -184,7 +201,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="custom-serialization.html">
+        <li class="chapter " data-level="1.6" data-path="custom-serialization.html">
             
                 <a href="custom-serialization.html">
             
@@ -198,7 +215,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="impl-serialize.html">
+        <li class="chapter " data-level="1.6.1" data-path="impl-serialize.html">
             
                 <a href="impl-serialize.html">
             
@@ -211,7 +228,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5.2" data-path="impl-deserialize.html">
+        <li class="chapter active" data-level="1.6.2" data-path="impl-deserialize.html">
             
                 <a href="impl-deserialize.html">
             
@@ -224,7 +241,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="unit-testing.html">
+        <li class="chapter " data-level="1.6.3" data-path="unit-testing.html">
             
                 <a href="unit-testing.html">
             
@@ -242,7 +259,91 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="examples.html">
+        <li class="chapter " data-level="1.7" data-path="data-format.html">
+            
+                <a href="data-format.html">
+            
+                    
+                    Writing a data format
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="conventions.html">
+            
+                <a href="conventions.html">
+            
+                    
+                    Conventions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="error-handling.html">
+            
+                <a href="error-handling.html">
+            
+                    
+                    Error handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="impl-serializer.html">
+            
+                <a href="impl-serializer.html">
+            
+                    
+                    Implementing a Serializer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="impl-deserializer.html">
+            
+                <a href="impl-deserializer.html">
+            
+                    
+                    Implementing a Deserializer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="lifetimes.html">
+            
+                <a href="lifetimes.html">
+            
+                    
+                    Deserializer lifetimes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="examples.html">
             
                 <a href="examples.html">
             
@@ -256,7 +357,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.6.1" data-path="json.html">
+        <li class="chapter " data-level="1.9.1" data-path="json.html">
             
                 <a href="json.html">
             
@@ -269,7 +370,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.2" data-path="enum-representations.html">
+        <li class="chapter " data-level="1.9.2" data-path="enum-representations.html">
             
                 <a href="enum-representations.html">
             
@@ -282,7 +383,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.3" data-path="attr-default.html">
+        <li class="chapter " data-level="1.9.3" data-path="borrow.html">
+            
+                <a href="borrow.html">
+            
+                    
+                    Borrowing data
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="attr-default.html">
             
                 <a href="attr-default.html">
             
@@ -295,7 +409,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.4" data-path="attr-bound.html">
+        <li class="chapter " data-level="1.9.5" data-path="attr-bound.html">
             
                 <a href="attr-bound.html">
             
@@ -308,7 +422,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.5" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.9.6" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -321,20 +435,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.6" data-path="serialize-map.html">
-            
-                <a href="serialize-map.html">
-            
-                    
-                    Serialize for custom map type
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.6.7" data-path="stream-array.html">
+        <li class="chapter " data-level="1.9.7" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -347,7 +448,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.8" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -360,7 +461,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.9" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -373,7 +474,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.10" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -386,12 +487,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.11" data-path="newtype-wrapper.html">
+        <li class="chapter " data-level="1.9.11" data-path="remote-derive.html">
             
-                <a href="newtype-wrapper.html">
+                <a href="remote-derive.html">
             
                     
-                    De/Serialize for other crate
+                    Derive for remote crate
             
                 </a>
             
@@ -399,7 +500,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.12" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
@@ -412,7 +513,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.13" data-path="transcode.html">
+        <li class="chapter " data-level="1.9.13" data-path="ignored-any.html">
+            
+                <a href="ignored-any.html">
+            
+                    
+                    Discarding data
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.14" data-path="transcode.html">
             
                 <a href="transcode.html">
             
@@ -425,7 +539,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.14" data-path="string-or-struct.html">
+        <li class="chapter " data-level="1.9.15" data-path="string-or-struct.html">
             
                 <a href="string-or-struct.html">
             
@@ -438,7 +552,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.15" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.16" data-path="convert-error.html">
+            
+                <a href="convert-error.html">
+            
+                    
+                    Convert error types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.17" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -456,7 +583,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="feature-flags.html">
+        <li class="chapter " data-level="1.10" data-path="feature-flags.html">
             
                 <a href="feature-flags.html">
             
@@ -504,61 +631,59 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="implementing-deserialize">Implementing Deserialize</h1>
-<p>The <a href="https://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> trait
-looks like this:</p>
-<pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Deserialize</span></span>: <span class="hljs-built_in">Sized</span> {
+<p>The <a href="https://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> trait looks like this:</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Deserialize</span></span>&lt;<span class="hljs-symbol">&apos;de</span>&gt;: <span class="hljs-built_in">Sized</span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer;
+        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;;
 }
 </code></pre>
-<p>This method&apos;s job is to provide the
-<a href="https://docs.serde.rs/serde/de/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> with a
-<a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> that can be
-driven by the Deserializer to construct an instance of your type.</p>
-<p>In most cases Serde&apos;s <a href="codegen.html">codegen</a> is able to generate an appropriate
-implementation of <code>Deserialize</code> for structs and enums defined in your crate.
-Should you need to customize the deserialization behavior for a type in a way
-that codegen does not support, you can implement <code>Deserialize</code> yourself.
-Implementing <code>Deserialize</code> for a type tends to be more complicated than
-implementing <code>Serialize</code>.</p>
+<p>This method&apos;s job is to map the type into the <a href="data-model.html">Serde data model</a> by providing
+the <a href="https://docs.serde.rs/serde/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> with a <a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> that can be driven by the <code>Deserializer</code>
+to construct an instance of your type.</p>
+<p>In most cases Serde&apos;s <a href="derive.html">derive</a> is able to generate an appropriate implementation
+of <code>Deserialize</code> for structs and enums defined in your crate. Should you need to
+customize the deserialization behavior for a type in a way that derive does not
+support, you can implement <code>Deserialize</code> yourself. Implementing <code>Deserialize</code>
+for a type tends to be more complicated than implementing <code>Serialize</code>.</p>
 <p>The <code>Deserializer</code> trait supports two entry point styles which enables different
 kinds of deserialization.</p>
 <ol>
-<li><p>The <code>deserialize</code> method. Self-describing data formats like JSON are able to
-look at the serialized data and tell what it represents. For example the JSON
-deserializer may see an opening curly brace (<code>{</code>) and know that it is seeing
-a map. If the data format supports <code>Deserializer::deserialize</code>, it will drive
-the Visitor using whatever type it sees in the input. JSON uses this approach
-when deserializing <code>serde_json::Value</code> which is an enum that can represent
-any JSON document. Without knowing what is in a JSON document, we can
-deserialize it to <code>serde_json::Value</code> by going through
-<code>Deserializer::deserialize</code>.</p>
+<li><p>The <code>deserialize_any</code> method. Self-describing data formats like JSON are able
+to look at the serialized data and tell what it represents. For example the
+JSON deserializer may see an opening curly brace (<code>{</code>) and know that it is
+seeing a map. If the data format supports <code>Deserializer::deserialize_any</code>, it
+will drive the Visitor using whatever type it sees in the input. JSON uses
+this approach when deserializing <code>serde_json::Value</code> which is an enum that
+can represent any JSON document. Without knowing what is in a JSON document,
+we can deserialize it to <code>serde_json::Value</code> by going through
+<code>Deserializer::deserialize_any</code>.</p>
 </li>
-<li><p>The various <code>deserialize_*</code> methods. Non-self-describing formats like Bincode
-need to be told what is in the input in order to deserialize it. The
+<li><p>The various other <code>deserialize_*</code> methods. Non-self-describing formats like
+Bincode need to be told what is in the input in order to deserialize it. The
 <code>deserialize_*</code> methods are hints to the deserializer for how to interpret
 the next piece of input. Non-self-describing formats are not able to
 deserialize something like <code>serde_json::Value</code> which relies on
-<code>Deserializer::deserialize</code>.</p>
+<code>Deserializer::deserialize_any</code>.</p>
 </li>
 </ol>
 <p>When implementing <code>Deserialize</code>, you should avoid relying on
-<code>Deserializer::deserialize</code> unless you need to be told by the Deserializer what
-type is in the input. Know that relying on <code>Deserializer::deserialize</code> means
-your data type will be able to deserialize from self-describing formats only,
-ruling out Bincode and many others.</p>
+<code>Deserializer::deserialize_any</code> unless you need to be told by the Deserializer
+what type is in the input. Know that relying on <code>Deserializer::deserialize_any</code>
+means your data type will be able to deserialize from self-describing formats
+only, ruling out Bincode and many others.</p>
 <h2 id="the-visitor-trait">The Visitor trait</h2>
-<p>A <a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> is instantiated
-by a <code>Deserialize</code> impl and passed to a <code>Deserializer</code>. The <code>Deserializer</code> then
-calls a method on the <code>Visitor</code> in order to construct the desired type.</p>
+<p>A <a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> is instantiated by a <code>Deserialize</code> impl and passed to a
+<code>Deserializer</code>. The <code>Deserializer</code> then calls a method on the <code>Visitor</code> in order
+to construct the desired type.</p>
 <p>Here is a <code>Visitor</code> that is able to deserialize a primitive <code>i32</code> from a variety
 of types.</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">use</span> std::fmt;
 
 <span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Visitor};
+
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">I32Visitor</span></span>;
 
-<span class="hljs-keyword">impl</span> Visitor <span class="hljs-keyword">for</span> I32Visitor {
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> I32Visitor {
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = <span class="hljs-keyword">i32</span>;
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
@@ -597,18 +722,17 @@ of types.</p>
 }
 </code></pre>
 <p>The <code>Visitor</code> trait has lots more methods that are not implemented for
-<code>I32Visitor</code>. Leaving them unimplemented means a <a href="https://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type" target="_blank">type
-error</a> is
-returned if they get called. For example <code>I32Visitor</code> does not implement
+<code>I32Visitor</code>. Leaving them unimplemented means a <a href="https://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type" target="_blank">type error</a> is returned if
+they get called. For example <code>I32Visitor</code> does not implement
 <code>Visitor::visit_map</code>, so trying to deserialize an i32 when the input contains a
 map is a type error.</p>
 <h2 id="driving-a-visitor">Driving a Visitor</h2>
 <p>Deserialize a value by passing a <code>Visitor</code> to the given <code>Deserializer</code>. The
 <code>Deserializer</code> will call one of the <code>Visitor</code> methods depending on the input
 data, which is known as &quot;driving&quot; the <code>Visitor</code>.</p>
-<pre><code class="lang-rust"><span class="hljs-keyword">impl</span> Deserialize <span class="hljs-keyword">for</span> <span class="hljs-keyword">i32</span> {
+<pre><code class="lang-rust"><span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> <span class="hljs-keyword">i32</span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">i32</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer
+        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
     {
         deserializer.deserialize_i32(I32Visitor)
     }
@@ -651,7 +775,7 @@ The JSON <code>Deserializer</code> will call <code>visit_i64</code> for any sign
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.5.2","depth":2,"next":{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.5.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2017-04-08T00:53:25.033Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T03:58:11.262Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"next":{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2017-04-18T18:26:30.961Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

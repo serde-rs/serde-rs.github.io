@@ -21,6 +21,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-checklist/checklist.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -62,7 +66,7 @@
     <link rel="next" href="enum-number.html" />
     
     
-    <link rel="prev" href="serialize-map.html" />
+    <link rel="prev" href="deserialize-map.html" />
     
 
     </head>
@@ -113,12 +117,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="codegen.html">
+        <li class="chapter " data-level="1.3" data-path="data-model.html">
             
-                <a href="codegen.html">
+                <a href="data-model.html">
             
                     
-                    Setting up codegen
+                    Serde data model
             
                 </a>
             
@@ -126,7 +130,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="attributes.html">
+        <li class="chapter " data-level="1.4" data-path="derive.html">
+            
+                <a href="derive.html">
+            
+                    
+                    Using derive
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -140,9 +157,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.1" data-path="container-attrs.html">
             
-                <a href="attributes.html#container-attributes">
+                <a href="container-attrs.html">
             
                     
                     Container attributes
@@ -153,9 +170,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
             
-                <a href="attributes.html#variant-attributes">
+                <a href="variant-attrs.html">
             
                     
                     Variant attributes
@@ -166,9 +183,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.3" data-path="field-attrs.html">
             
-                <a href="attributes.html#field-attributes">
+                <a href="field-attrs.html">
             
                     
                     Field attributes
@@ -184,7 +201,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="custom-serialization.html">
+        <li class="chapter " data-level="1.6" data-path="custom-serialization.html">
             
                 <a href="custom-serialization.html">
             
@@ -198,7 +215,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="impl-serialize.html">
+        <li class="chapter " data-level="1.6.1" data-path="impl-serialize.html">
             
                 <a href="impl-serialize.html">
             
@@ -211,7 +228,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.2" data-path="impl-deserialize.html">
+        <li class="chapter " data-level="1.6.2" data-path="impl-deserialize.html">
             
                 <a href="impl-deserialize.html">
             
@@ -224,7 +241,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="unit-testing.html">
+        <li class="chapter " data-level="1.6.3" data-path="unit-testing.html">
             
                 <a href="unit-testing.html">
             
@@ -242,7 +259,91 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="examples.html">
+        <li class="chapter " data-level="1.7" data-path="data-format.html">
+            
+                <a href="data-format.html">
+            
+                    
+                    Writing a data format
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="conventions.html">
+            
+                <a href="conventions.html">
+            
+                    
+                    Conventions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="error-handling.html">
+            
+                <a href="error-handling.html">
+            
+                    
+                    Error handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="impl-serializer.html">
+            
+                <a href="impl-serializer.html">
+            
+                    
+                    Implementing a Serializer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="impl-deserializer.html">
+            
+                <a href="impl-deserializer.html">
+            
+                    
+                    Implementing a Deserializer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="lifetimes.html">
+            
+                <a href="lifetimes.html">
+            
+                    
+                    Deserializer lifetimes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="examples.html">
             
                 <a href="examples.html">
             
@@ -256,7 +357,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.6.1" data-path="json.html">
+        <li class="chapter " data-level="1.9.1" data-path="json.html">
             
                 <a href="json.html">
             
@@ -269,7 +370,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.2" data-path="enum-representations.html">
+        <li class="chapter " data-level="1.9.2" data-path="enum-representations.html">
             
                 <a href="enum-representations.html">
             
@@ -282,7 +383,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.3" data-path="attr-default.html">
+        <li class="chapter " data-level="1.9.3" data-path="borrow.html">
+            
+                <a href="borrow.html">
+            
+                    
+                    Borrowing data
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="attr-default.html">
             
                 <a href="attr-default.html">
             
@@ -295,7 +409,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.4" data-path="attr-bound.html">
+        <li class="chapter " data-level="1.9.5" data-path="attr-bound.html">
             
                 <a href="attr-bound.html">
             
@@ -308,7 +422,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.5" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.9.6" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -321,20 +435,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.6" data-path="serialize-map.html">
-            
-                <a href="serialize-map.html">
-            
-                    
-                    Serialize for custom map type
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter active" data-level="1.6.7" data-path="stream-array.html">
+        <li class="chapter active" data-level="1.9.7" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -347,7 +448,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.8" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -360,7 +461,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.9" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -373,7 +474,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.10" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -386,12 +487,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.11" data-path="newtype-wrapper.html">
+        <li class="chapter " data-level="1.9.11" data-path="remote-derive.html">
             
-                <a href="newtype-wrapper.html">
+                <a href="remote-derive.html">
             
                     
-                    De/Serialize for other crate
+                    Derive for remote crate
             
                 </a>
             
@@ -399,7 +500,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.12" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
@@ -412,7 +513,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.13" data-path="transcode.html">
+        <li class="chapter " data-level="1.9.13" data-path="ignored-any.html">
+            
+                <a href="ignored-any.html">
+            
+                    
+                    Discarding data
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.14" data-path="transcode.html">
             
                 <a href="transcode.html">
             
@@ -425,7 +539,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.14" data-path="string-or-struct.html">
+        <li class="chapter " data-level="1.9.15" data-path="string-or-struct.html">
             
                 <a href="string-or-struct.html">
             
@@ -438,7 +552,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.15" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.16" data-path="convert-error.html">
+            
+                <a href="convert-error.html">
+            
+                    
+                    Convert error types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.17" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -456,7 +583,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="feature-flags.html">
+        <li class="chapter " data-level="1.10" data-path="feature-flags.html">
             
                 <a href="feature-flags.html">
             
@@ -537,14 +664,14 @@ processed while being deserialized instead of after.</p>
 <span class="hljs-comment">///</span>
 <span class="hljs-comment">/// This function is generic over T which can be any type that implements</span>
 <span class="hljs-comment">/// Ord. Above, it is used with T=u64.</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_max</span></span>&lt;T, D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;T, D::Error&gt;
-    <span class="hljs-keyword">where</span> T: Deserialize + <span class="hljs-built_in">Ord</span>,
-          D: Deserializer
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_max</span></span>&lt;<span class="hljs-symbol">&apos;de</span>, T, D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;T, D::Error&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; + <span class="hljs-built_in">Ord</span>,
+          D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
 {
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MaxVisitor</span></span>&lt;T&gt;(PhantomData&lt;T&gt;);
 
-    <span class="hljs-keyword">impl</span>&lt;T&gt; de::Visitor <span class="hljs-keyword">for</span> MaxVisitor&lt;T&gt;
-        <span class="hljs-keyword">where</span> T: Deserialize + <span class="hljs-built_in">Ord</span>
+    <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, T&gt; de::Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> MaxVisitor&lt;T&gt;
+        <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; + <span class="hljs-built_in">Ord</span>
     {
         <span class="hljs-comment">/// Return type of this visitor. This visitor computes the max of a</span>
         <span class="hljs-comment">/// sequence of values of type T, so the type of the maximum is T.</span>
@@ -555,10 +682,10 @@ processed while being deserialized instead of after.</p>
         }
 
         <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;T, V::Error&gt;
-            <span class="hljs-keyword">where</span> V: de::SeqVisitor
+            <span class="hljs-keyword">where</span> V: de::SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
         {
             <span class="hljs-comment">// Start with max equal to the first value in the seq.</span>
-            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = <span class="hljs-keyword">match</span> visitor.visit()? {
+            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = <span class="hljs-keyword">match</span> visitor.next_element()? {
                 <span class="hljs-literal">Some</span>(value) =&gt; value,
                 <span class="hljs-literal">None</span> =&gt; {
                     <span class="hljs-comment">// Cannot take the maximum of an empty seq.</span>
@@ -568,7 +695,7 @@ processed while being deserialized instead of after.</p>
             };
 
             <span class="hljs-comment">// Update the max while there are additional values.</span>
-            <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(value) = visitor.visit()? {
+            <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(value) = visitor.next_element()? {
                 max = cmp::max(max, value);
             }
 
@@ -614,7 +741,7 @@ processed while being deserialized instead of after.</p>
 
             
                 
-                <a href="serialize-map.html" class="navigation navigation-prev " aria-label="Previous page: Serialize for custom map type">
+                <a href="deserialize-map.html" class="navigation navigation-prev " aria-label="Previous page: Deserialize for custom map type">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -630,7 +757,7 @@ processed while being deserialized instead of after.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.6.7","depth":2,"next":{"title":"Serialize enum as number","level":"1.6.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"previous":{"title":"Serialize for custom map type","level":"1.6.6","depth":2,"path":"serialize-map.md","ref":"serialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2017-04-16T23:22:00.880Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T03:58:11.262Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.9.7","depth":2,"next":{"title":"Serialize enum as number","level":"1.9.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"previous":{"title":"Deserialize for custom map type","level":"1.9.6","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2017-04-18T00:48:25.888Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

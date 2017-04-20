@@ -21,6 +21,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-checklist/checklist.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -62,7 +66,7 @@
     <link rel="next" href="json.html" />
     
     
-    <link rel="prev" href="unit-testing.html" />
+    <link rel="prev" href="lifetimes.html" />
     
 
     </head>
@@ -113,12 +117,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="codegen.html">
+        <li class="chapter " data-level="1.3" data-path="data-model.html">
             
-                <a href="codegen.html">
+                <a href="data-model.html">
             
                     
-                    Setting up codegen
+                    Serde data model
             
                 </a>
             
@@ -126,7 +130,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="attributes.html">
+        <li class="chapter " data-level="1.4" data-path="derive.html">
+            
+                <a href="derive.html">
+            
+                    
+                    Using derive
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -140,9 +157,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.1" data-path="container-attrs.html">
             
-                <a href="attributes.html#container-attributes">
+                <a href="container-attrs.html">
             
                     
                     Container attributes
@@ -153,9 +170,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.2" data-path="variant-attrs.html">
             
-                <a href="attributes.html#variant-attributes">
+                <a href="variant-attrs.html">
             
                     
                     Variant attributes
@@ -166,9 +183,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="attributes.html">
+        <li class="chapter " data-level="1.5.3" data-path="field-attrs.html">
             
-                <a href="attributes.html#field-attributes">
+                <a href="field-attrs.html">
             
                     
                     Field attributes
@@ -184,7 +201,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="custom-serialization.html">
+        <li class="chapter " data-level="1.6" data-path="custom-serialization.html">
             
                 <a href="custom-serialization.html">
             
@@ -198,7 +215,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="impl-serialize.html">
+        <li class="chapter " data-level="1.6.1" data-path="impl-serialize.html">
             
                 <a href="impl-serialize.html">
             
@@ -211,7 +228,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.2" data-path="impl-deserialize.html">
+        <li class="chapter " data-level="1.6.2" data-path="impl-deserialize.html">
             
                 <a href="impl-deserialize.html">
             
@@ -224,7 +241,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="unit-testing.html">
+        <li class="chapter " data-level="1.6.3" data-path="unit-testing.html">
             
                 <a href="unit-testing.html">
             
@@ -242,7 +259,91 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.6" data-path="examples.html">
+        <li class="chapter " data-level="1.7" data-path="data-format.html">
+            
+                <a href="data-format.html">
+            
+                    
+                    Writing a data format
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="conventions.html">
+            
+                <a href="conventions.html">
+            
+                    
+                    Conventions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="error-handling.html">
+            
+                <a href="error-handling.html">
+            
+                    
+                    Error handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="impl-serializer.html">
+            
+                <a href="impl-serializer.html">
+            
+                    
+                    Implementing a Serializer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="impl-deserializer.html">
+            
+                <a href="impl-deserializer.html">
+            
+                    
+                    Implementing a Deserializer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="lifetimes.html">
+            
+                <a href="lifetimes.html">
+            
+                    
+                    Deserializer lifetimes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.9" data-path="examples.html">
             
                 <a href="examples.html">
             
@@ -256,7 +357,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.6.1" data-path="json.html">
+        <li class="chapter " data-level="1.9.1" data-path="json.html">
             
                 <a href="json.html">
             
@@ -269,7 +370,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.2" data-path="enum-representations.html">
+        <li class="chapter " data-level="1.9.2" data-path="enum-representations.html">
             
                 <a href="enum-representations.html">
             
@@ -282,7 +383,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.3" data-path="attr-default.html">
+        <li class="chapter " data-level="1.9.3" data-path="borrow.html">
+            
+                <a href="borrow.html">
+            
+                    
+                    Borrowing data
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="attr-default.html">
             
                 <a href="attr-default.html">
             
@@ -295,7 +409,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.4" data-path="attr-bound.html">
+        <li class="chapter " data-level="1.9.5" data-path="attr-bound.html">
             
                 <a href="attr-bound.html">
             
@@ -308,7 +422,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.5" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.9.6" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -321,20 +435,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.6" data-path="serialize-map.html">
-            
-                <a href="serialize-map.html">
-            
-                    
-                    Serialize for custom map type
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.6.7" data-path="stream-array.html">
+        <li class="chapter " data-level="1.9.7" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -347,7 +448,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.8" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -360,7 +461,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.9" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -373,7 +474,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.10" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -386,12 +487,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.11" data-path="newtype-wrapper.html">
+        <li class="chapter " data-level="1.9.11" data-path="remote-derive.html">
             
-                <a href="newtype-wrapper.html">
+                <a href="remote-derive.html">
             
                     
-                    De/Serialize for other crate
+                    Derive for remote crate
             
                 </a>
             
@@ -399,7 +500,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.12" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
@@ -412,7 +513,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.13" data-path="transcode.html">
+        <li class="chapter " data-level="1.9.13" data-path="ignored-any.html">
+            
+                <a href="ignored-any.html">
+            
+                    
+                    Discarding data
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.14" data-path="transcode.html">
             
                 <a href="transcode.html">
             
@@ -425,7 +539,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.14" data-path="string-or-struct.html">
+        <li class="chapter " data-level="1.9.15" data-path="string-or-struct.html">
             
                 <a href="string-or-struct.html">
             
@@ -438,7 +552,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6.15" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.16" data-path="convert-error.html">
+            
+                <a href="convert-error.html">
+            
+                    
+                    Convert error types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.17" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -456,7 +583,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="feature-flags.html">
+        <li class="chapter " data-level="1.10" data-path="feature-flags.html">
             
                 <a href="feature-flags.html">
             
@@ -506,16 +633,18 @@
                                 <h1 id="examples">Examples</h1>
 <p><strong><a href="json.html">Structs and enums in JSON</a></strong>: The representation chosen by
 <a href="https://github.com/serde-rs/json" target="_blank"><code>serde_json</code></a> for structs and enums. Other
-data formats are encouraged to follow an analogous approach where possible.</p>
+human-readable data formats are encouraged to follow an analogous approach where
+possible.</p>
+<p><strong><a href="enum-representations.html">Enum representations</a></strong>: Externally tagged,
+internally tagged, adjacently tagged, and untagged ways of representing an enum
+in self-describing formats.</p>
 <p><strong><a href="attr-default.html">Default value for a field</a></strong>: Some examples of the
 <code>#[serde(default)]</code> attribute.</p>
 <p><strong><a href="attr-bound.html">Handwritten generic type bounds</a></strong>: Some unusual scenarios in
-which Serde codegen infers the wrong generic type bounds. The impl bounds can be
-replaced with handwritten ones using the <code>#[serde(bound)]</code> attribute.</p>
+which Serde&apos;s derive infers the wrong generic type bounds. The impl bounds can
+be replaced with handwritten ones using the <code>#[serde(bound)]</code> attribute.</p>
 <p><strong><a href="deserialize-map.html">Deserialize for custom map type</a></strong>: Detailed explanation
 of each step involved in deserializing a map.</p>
-<p><strong><a href="serialize-map.html">Serialize for custom map type</a></strong>: Other complex types
-(sequences, structs, tuple structs) are very similar to this as well.</p>
 <p><strong><a href="stream-array.html">Array of values without buffering</a></strong>: Deserialize the
 maximum value of an array of integers without holding the whole array in memory
 at once. This approach can be adapted to handle a variety of other situations in
@@ -527,21 +656,20 @@ all data formats.</p>
 the <code>#[serde(rename)]</code> attribute.</p>
 <p><strong><a href="attr-skip-serializing.html">Skip serializing field</a></strong>: Some examples of the
 <code>#[serde(skip_serializing)]</code> and <code>#[serde(skip_serializing_if)]</code> attributes.</p>
-<p><strong><a href="newtype-wrapper.html">De/Serialize for other crate</a></strong>: Implementing <code>Serialize</code>
-and <code>Deserialize</code> for a type in a different crate by wrapping it in a newtype
-wrapper.</p>
+<p><strong><a href="remote-derive.html">Derive for remote crate</a></strong>: Deriving <code>Serialize</code> and
+<code>Deserialize</code> implementations for a type in somebody else&apos;s crate.</p>
 <p><strong><a href="deserialize-struct.html">Manually deserialize struct</a></strong>: The long form of the
-<code>Deserialize</code> impl generated by codegen for a simple struct.</p>
-<p><strong><a href="trait-objects.md">Using Serde trait objects</a></strong>: The
-<a href="https://github.com/dtolnay/erased-serde" target="_blank">erased-serde</a> crate provides
-type-erased Serde traits that can be used as <code>&amp;Serialize</code>/<code>&amp;Serializer</code> or
-<code>Box&lt;Serialize&gt;</code>/<code>Box&lt;Serializer&gt;</code>.</p>
+<code>Deserialize</code> impl generated by derive for a simple struct.</p>
+<p><strong><a href="ignored-any.html">Discarding data</a></strong>: Using <code>IgnoredAny</code> to efficiently discard
+data from a deserializer.</p>
 <p><strong><a href="transcode.html">Transcode one format into another</a></strong>: Use the
 <a href="https://github.com/sfackler/serde-transcode" target="_blank">serde-transcode</a> crate to stream
 input in one format to output in another format efficiently.</p>
 <p><strong><a href="string-or-struct.html">Deserialize either a string or a struct</a></strong>: The
 <a href="https://docs.docker.com/compose/compose-file/#/build" target="_blank"><code>docker-compose.yml</code></a>
 configuration file has a &quot;build&quot; key which can be either a string or a struct.</p>
+<p><strong><a href="convert-error.html">Convert error types</a></strong>: Map a Serde error from some format
+into a Serde error for some other format using <code>Error::custom</code>.</p>
 <p><strong><a href="custom-date-format.html">Date in a custom format</a></strong>: Handle a
 <a href="https://github.com/chronotope/chrono" target="_blank"><code>chrono</code></a> <code>DateTime</code> formatted with a
 custom string representation.</p>
@@ -556,7 +684,7 @@ custom string representation.</p>
 
             
                 
-                <a href="unit-testing.html" class="navigation navigation-prev " aria-label="Previous page: Unit testing">
+                <a href="lifetimes.html" class="navigation navigation-prev " aria-label="Previous page: Deserializer lifetimes">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -572,7 +700,7 @@ custom string representation.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.6","depth":1,"next":{"title":"Structs and enums in JSON","level":"1.6.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"previous":{"title":"Unit testing","level":"1.5.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga"],"root":"src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"examples.md","mtime":"2017-02-17T03:33:26.166Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-17T03:58:11.262Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.9","depth":1,"next":{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"previous":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"examples.md","mtime":"2017-04-18T21:51:34.463Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

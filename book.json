@@ -1,15 +1,18 @@
 {
-    "root": "src",
+    "root": "_src",
     "title": "Serde",
     "language": "en",
-    "plugins": ["-search", "-sharing", "sane-sidebar", "codeblock-omit", "codeblock-rust", "edit-link", "ga"],
+    "plugins": ["-search", "-sharing", "sane-sidebar", "codeblock-omit", "codeblock-rust", "edit-link", "ga", "bulk-redirect", "checklist"],
     "pluginsConfig": {
         "edit-link": {
-            "base": "https://github.com/serde-rs/serde-rs.github.io/edit/master/src",
+            "base": "https://github.com/serde-rs/serde-rs.github.io/edit/master/_src",
             "label": "Edit"
         },
         "ga": {
             "token": "UA-82804814-1"
+        },
+        "bulk-redirect": {
+            "redirectsFile": "redirects.json"
         }
     }
 }

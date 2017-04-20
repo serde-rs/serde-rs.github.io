@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Attributes · Serde</title>
+        <title>Serde data model · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="container-attrs.html" />
+    <link rel="next" href="derive.html" />
     
     
-    <link rel="prev" href="derive.html" />
+    <link rel="prev" href="help.html" />
     
 
     </head>
@@ -117,7 +117,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="data-model.html">
+        <li class="chapter active" data-level="1.3" data-path="data-model.html">
             
                 <a href="data-model.html">
             
@@ -143,7 +143,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="attributes.html">
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -618,7 +618,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Attributes</a>
+        <a href="." >Serde data model</a>
     </h1>
 </div>
 
@@ -630,32 +630,154 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="attributes">Attributes</h1>
-<p><a href="https://doc.rust-lang.org/book/attributes.html" target="_blank">Attributes</a> are used to customize the <code>Serialize</code> and <code>Deserialize</code>
-implementations produced by Serde&apos;s derive. They require a Rust compiler version
-1.15 or newer.</p>
-<p>There are three categories of attributes:</p>
+                                <h1 id="serde-data-model">Serde data model</h1>
+<p>The Serde data model is the API by which data structures and data formats
+interact. You can think of it as Serde&apos;s type system.</p>
+<p>In code, the serialization half of the Serde data model is defined by the
+<a href="https://docs.serde.rs/serde/trait.Serializer.html" target="_blank"><code>Serializer</code></a> trait and the deserialization half is defined by the
+<a href="https://docs.serde.rs/serde/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> trait. These are a way of mapping every Rust data structure
+into one of 27 possible types. Each method of the <code>Serializer</code> trait corresponds
+to one of the types of the data model.</p>
+<p>When serializing a data structure to some format, the <a href="https://docs.serde.rs/serde/trait.Serialize.html" target="_blank"><code>Serialize</code></a>
+implementation for the data structure is responsible for mapping the data
+structure into the Serde data model by invoking exactly one of the <code>Serializer</code>
+methods, while the <code>Serializer</code> implementation for the data format is
+responsible for mapping the Serde data model into the intended output
+representation.</p>
+<p>When deserializing a data structure from some format, the <a href="https://docs.serde.rs/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a>
+implementation for the data structure is responsible for mapping the data
+structure into the Serde data model by passing to the <code>Deserializer</code> a
+<a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> implementation that can receive the various types of the data model,
+while the <code>Deserializer</code> implementation for the data format is responsible for
+mapping the input data into the Serde data model by invoking exactly one of the
+<code>Visitor</code> methods.</p>
+<h2 id="types">Types</h2>
+<p>The Serde data model is a simplified form of Rust&apos;s type system. It consists of
+the following 27 types:</p>
 <ul>
-<li><a href="container-attrs.html"><strong>Container attributes</strong></a> &#x2014; apply to a struct or enum declaration.</li>
-<li><a href="variant-attrs.html"><strong>Variant attributes</strong></a> &#x2014; apply to a variant of an enum.</li>
-<li><a href="field-attrs.html"><strong>Field attributes</strong></a> &#x2014; apply to one field in a struct or in an enum variant.</li>
+<li><strong>12 primitive types</strong><ul>
+<li>bool</li>
+<li>i8, i16, i32, i64</li>
+<li>u8, u16, u32, u64</li>
+<li>f32, f64</li>
+<li>char</li>
 </ul>
-<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(deny_unknown_fields)]</span>  <span class="hljs-comment">// &lt;-- this is a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span></span> {
-    <span class="hljs-meta">#[serde(default)]</span>  <span class="hljs-comment">// &lt;-- this is a field attribute</span>
-    f: <span class="hljs-keyword">i32</span>,
-}
-
-<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;e&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is also a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
-    <span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;a&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is a variant attribute</span>
-    A(<span class="hljs-built_in">String</span>),
+</li>
+<li><strong>string</strong><ul>
+<li>UTF-8 bytes with a length and no null terminator. May contain 0-bytes.</li>
+<li>When serializing, all strings are handled equally. When deserializing, there
+are three flavors of strings: transient, owned, and borrowed. This
+distinction is explained in <a href="lifetimes.html">Understanding deserializer lifetimes</a> and is a
+key way that Serde enabled efficient zero-copy deserialization.</li>
+</ul>
+</li>
+<li><strong>byte array</strong> - [u8]<ul>
+<li>Similar to strings, during deserialization byte arrays can be transient,
+owned, or borrowed.</li>
+</ul>
+</li>
+<li><strong>option</strong><ul>
+<li>Either none or some value.</li>
+</ul>
+</li>
+<li><strong>unit</strong><ul>
+<li>The type of <code>()</code> in Rust. It represents an anonymous value containing no
+data.</li>
+</ul>
+</li>
+<li><strong>unit_struct</strong><ul>
+<li>For example <code>struct Unit</code> or <code>PhantomData&lt;T&gt;</code>. It represents a named value
+containing no data.</li>
+</ul>
+</li>
+<li><strong>unit_variant</strong><ul>
+<li>For example the <code>E::A</code> and <code>E::B</code> in <code>enum E { A, B }</code>.</li>
+</ul>
+</li>
+<li><strong>newtype_struct</strong><ul>
+<li>For example <code>struct Millimeters(u8)</code>.</li>
+</ul>
+</li>
+<li><strong>newtype_variant</strong><ul>
+<li>For example the <code>E::N</code> in <code>enum E { N(u8) }</code>.</li>
+</ul>
+</li>
+<li><strong>seq</strong><ul>
+<li>A variably sized heterogeneous sequence of values, for example <code>Vec&lt;T&gt;</code> or
+<code>HashSet&lt;T&gt;</code>. When serializing, the length may or may not be known before
+iterating through all the data. When deserializing, the length is determined
+by looking at the serialized data.</li>
+</ul>
+</li>
+<li><strong>tuple</strong><ul>
+<li>A statically sized heterogeneous sequence of values for which the length
+will be known at deserialization time without looking at the serialized
+data, for example <code>(u8,)</code> or <code>(String, u64, Vec&lt;T&gt;)</code> or <code>[u64; 10]</code>.</li>
+</ul>
+</li>
+<li><strong>tuple_struct</strong><ul>
+<li>A named tuple, for example <code>struct Rgb(u8, u8, u8)</code>.</li>
+</ul>
+</li>
+<li><strong>tuple_variant</strong><ul>
+<li>For example the <code>E::T</code> in <code>enum E { T(u8, u8) }</code>.</li>
+</ul>
+</li>
+<li><strong>map</strong><ul>
+<li>A variably sized heterogeneous key-value pairing, for example <code>BTreeMap&lt;K,
+V&gt;</code>. When serializing, the length may or may not be known before iterating
+through all the entries. When deserializing, the length is determined by
+looking at the serialized data.</li>
+</ul>
+</li>
+<li><strong>struct</strong><ul>
+<li>A statically sized heterogeneous key-value pairing in which the keys are
+compile-time constant strings and will be known at deserialization time
+without looking at the serialized data, for example <code>struct S { r: u8, g:
+u8, b: u8 }</code>.</li>
+</ul>
+</li>
+<li><strong>struct_variant</strong><ul>
+<li>For example the <code>E::S</code> in <code>enum E { S { r: u8, g: u8, b: u8 } }</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="mapping-into-the-data-model">Mapping into the data model</h2>
+<p>In the case of most Rust types, their mapping into the Serde data model is
+straightforward. For example the Rust <code>bool</code> type corresponds to Serde&apos;s bool
+type. The Rust tuple struct <code>Rgb(u8, u8, u8)</code> corresponds to Serde&apos;s tuple
+struct type.</p>
+<p>But there is no fundamental reason that these mappings need to be
+straightforward. The <a href="https://docs.serde.rs/serde/trait.Serialize.html" target="_blank"><code>Serialize</code></a> and <a href="https://docs.serde.rs/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> traits can perform <em>any</em>
+mapping between Rust type and Serde data model that is appropriate for the use
+case.</p>
+<p>As an example, consider Rust&apos;s <a href="https://doc.rust-lang.org/std/ffi/struct.OsString.html" target="_blank"><code>std::ffi::OsString</code></a> type. This type represents
+a platform-native string. On Unix systems they are arbitrary non-zero bytes and
+on Windows systems they are arbitrary non-zero 16-bit values. It may seem
+natural to map <code>OsString</code> into the Serde data model as one of the following
+types:</p>
+<ul>
+<li>As a Serde <strong>string</strong>. Unfortunately serialization would be brittle because an
+<code>OsString</code> is not guaranteed to be representable in UTF-8 and deserialization
+would be brittle because Serde strings are allowed to contain 0-bytes.</li>
+<li>As a Serde <strong>byte array</strong>. This fixes both problem with using string, but now
+if we serialize an <code>OsString</code> on Unix and deserialize it on Windows we end up
+with <a href="https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/" target="_blank">the wrong string</a>.</li>
+</ul>
+<p>Instead the <code>Serialize</code> and <code>Deserialize</code> impls for <code>OsString</code> map into the
+Serde data model by treating <code>OsString</code> as a Serde <strong>enum</strong>. Effectively it acts
+as though <code>OsString</code> were defined as the following type, even though this does
+not match its definition on any individual platform.</p>
+<pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">OsString</span></span> {
+    Unix(<span class="hljs-built_in">Vec</span>&lt;<span class="hljs-keyword">u8</span>&gt;),
+    Windows(<span class="hljs-built_in">Vec</span>&lt;u16&gt;),
+    <span class="hljs-comment">// and other platforms</span>
 }
 </code></pre>
-<p>Note that a single struct, enum, variant, or field may have multiple attributes
-on it.</p>
+<p>The flexibility around mapping into the Serde data model is profound and
+powerful. When implementing <code>Serialize</code> and <code>Deserialize</code>, be aware of the
+broader context of your type that may make the most instinctive mapping not the
+best choice.</p>
 
                                 
                                 </section>
@@ -667,12 +789,12 @@ on it.</p>
 
             
                 
-                <a href="derive.html" class="navigation navigation-prev " aria-label="Previous page: Using derive">
+                <a href="help.html" class="navigation navigation-prev " aria-label="Previous page: Help">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="container-attrs.html" class="navigation navigation-next " aria-label="Next page: Container attributes">
+                <a href="derive.html" class="navigation navigation-next " aria-label="Next page: Using derive">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -683,7 +805,7 @@ on it.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.5","depth":1,"next":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"previous":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-04-18T17:29:44.102Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Serde data model","level":"1.3","depth":1,"next":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"previous":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"data-model.md","mtime":"2017-04-18T20:18:19.568Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

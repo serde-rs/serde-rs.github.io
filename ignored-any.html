@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Attributes · Serde</title>
+        <title>Discarding data · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="container-attrs.html" />
+    <link rel="next" href="transcode.html" />
     
     
-    <link rel="prev" href="derive.html" />
+    <link rel="prev" href="deserialize-struct.html" />
     
 
     </head>
@@ -143,7 +143,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="attributes.html">
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -513,7 +513,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.13" data-path="ignored-any.html">
+        <li class="chapter active" data-level="1.9.13" data-path="ignored-any.html">
             
                 <a href="ignored-any.html">
             
@@ -618,7 +618,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Attributes</a>
+        <a href="." >Discarding data</a>
     </h1>
 </div>
 
@@ -630,32 +630,100 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="attributes">Attributes</h1>
-<p><a href="https://doc.rust-lang.org/book/attributes.html" target="_blank">Attributes</a> are used to customize the <code>Serialize</code> and <code>Deserialize</code>
-implementations produced by Serde&apos;s derive. They require a Rust compiler version
-1.15 or newer.</p>
-<p>There are three categories of attributes:</p>
-<ul>
-<li><a href="container-attrs.html"><strong>Container attributes</strong></a> &#x2014; apply to a struct or enum declaration.</li>
-<li><a href="variant-attrs.html"><strong>Variant attributes</strong></a> &#x2014; apply to a variant of an enum.</li>
-<li><a href="field-attrs.html"><strong>Field attributes</strong></a> &#x2014; apply to one field in a struct or in an enum variant.</li>
-</ul>
-<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(deny_unknown_fields)]</span>  <span class="hljs-comment">// &lt;-- this is a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span></span> {
-    <span class="hljs-meta">#[serde(default)]</span>  <span class="hljs-comment">// &lt;-- this is a field attribute</span>
-    f: <span class="hljs-keyword">i32</span>,
+                                <h1 id="discarding-data">Discarding data</h1>
+<p>The <a href="https://docs.serde.rs/serde/de/enum.Unexpected.html" target="_blank"><code>IgnoredAny</code></a> types gives an efficient way of discarding data from a
+deserializer.</p>
+<p>Think of this like <code>serde_json::Value</code> in that it can be deserialized from
+any type, except that it does not store any information about the data that
+gets deserialized.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+
+<span class="hljs-keyword">use</span> std::fmt;
+<span class="hljs-keyword">use</span> std::marker::PhantomData;
+
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, DeserializeSeed, Deserializer, Visitor, SeqAccess, IgnoredAny};
+
+<span class="hljs-comment">// A seed that can be used to deserialize only the `n`th element of a sequence</span>
+<span class="hljs-comment">// while efficiently discarding elements of any type before or after index `n`.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// For example to deserialize only the element at index 3:</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//    NthElement::new(3).deserialize(deserializer)</span>
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">NthElement</span></span>&lt;T&gt; {
+    n: usize,
+    marker: PhantomData&lt;T&gt;,
 }
 
-<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;e&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is also a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
-    <span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;a&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is a variant attribute</span>
-    A(<span class="hljs-built_in">String</span>),
+<span class="hljs-keyword">impl</span>&lt;T&gt; NthElement&lt;T&gt; {
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new</span></span>(n: usize) -&gt; <span class="hljs-keyword">Self</span> {
+        NthElement {
+            n: n,
+            marker: PhantomData,
+        }
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, T&gt; Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> NthElement&lt;T&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+{
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">expecting</span></span>(&amp;<span class="hljs-keyword">self</span>, formatter: &amp;<span class="hljs-keyword">mut</span> fmt::Formatter) -&gt; fmt::<span class="hljs-built_in">Result</span> {
+        <span class="hljs-built_in">write!</span>(formatter, <span class="hljs-string">&quot;a sequence in which we care about element {}&quot;</span>, <span class="hljs-keyword">self</span>.n)
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> seq: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, V::Error&gt;
+        <span class="hljs-keyword">where</span> V: SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        <span class="hljs-comment">// Skip over the first `n` elements.</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..<span class="hljs-keyword">self</span>.n {
+            <span class="hljs-comment">// It is an error if the sequence ends before we get to element `n`.</span>
+            <span class="hljs-keyword">if</span> seq.next_element::&lt;IgnoredAny&gt;()?.is_none() {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::invalid_length(i, &amp;<span class="hljs-keyword">self</span>));
+            }
+        }
+
+        <span class="hljs-comment">// Deserialize the one we care about.</span>
+        <span class="hljs-keyword">let</span> nth = <span class="hljs-keyword">match</span> seq.next_element()? {
+            <span class="hljs-literal">Some</span>(nth) =&gt; nth,
+            <span class="hljs-literal">None</span> =&gt; {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::invalid_length(<span class="hljs-keyword">self</span>.n, &amp;<span class="hljs-keyword">self</span>));
+            }
+        };
+
+        <span class="hljs-comment">// Skip over any remaining elements in the sequence after `n`.</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(IgnoredAny) = seq.next_element()? {
+            <span class="hljs-comment">// ignore</span>
+        }
+
+        <span class="hljs-literal">Ok</span>(nth)
+    }
+}
+
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, T&gt; DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> NthElement&lt;T&gt;
+    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+{
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(<span class="hljs-keyword">self</span>, deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, D::Error&gt;
+        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    {
+        deserializer.deserialize_seq(<span class="hljs-keyword">self</span>)
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> array = json!([<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;d&quot;</span>, <span class="hljs-string">&quot;e&quot;</span>]);
+
+    <span class="hljs-keyword">let</span> nth: <span class="hljs-built_in">String</span> = NthElement::new(<span class="hljs-number">3</span>).deserialize(&amp;array).unwrap();
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, nth);
+    <span class="hljs-built_in">assert_eq!</span>(nth, array[<span class="hljs-number">3</span>]);
 }
 </code></pre>
-<p>Note that a single struct, enum, variant, or field may have multiple attributes
-on it.</p>
 
                                 
                                 </section>
@@ -667,12 +735,12 @@ on it.</p>
 
             
                 
-                <a href="derive.html" class="navigation navigation-prev " aria-label="Previous page: Using derive">
+                <a href="deserialize-struct.html" class="navigation navigation-prev " aria-label="Previous page: Manually deserialize struct">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="container-attrs.html" class="navigation navigation-next " aria-label="Next page: Container attributes">
+                <a href="transcode.html" class="navigation navigation-next " aria-label="Next page: Transcode into another format">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -683,7 +751,7 @@ on it.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.5","depth":1,"next":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"previous":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-04-18T17:29:44.102Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Discarding data","level":"1.9.13","depth":2,"next":{"title":"Transcode into another format","level":"1.9.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"ignored-any.md","mtime":"2017-04-18T21:50:37.614Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

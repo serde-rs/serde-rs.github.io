@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Attributes · Serde</title>
+        <title>Derive for remote crate · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="container-attrs.html" />
+    <link rel="next" href="deserialize-struct.html" />
     
     
-    <link rel="prev" href="derive.html" />
+    <link rel="prev" href="attr-skip-serializing.html" />
     
 
     </head>
@@ -143,7 +143,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="attributes.html">
+        <li class="chapter " data-level="1.5" data-path="attributes.html">
             
                 <a href="attributes.html">
             
@@ -487,7 +487,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.11" data-path="remote-derive.html">
+        <li class="chapter active" data-level="1.9.11" data-path="remote-derive.html">
             
                 <a href="remote-derive.html">
             
@@ -618,7 +618,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Attributes</a>
+        <a href="." >Derive for remote crate</a>
     </h1>
 </div>
 
@@ -630,32 +630,127 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="attributes">Attributes</h1>
-<p><a href="https://doc.rust-lang.org/book/attributes.html" target="_blank">Attributes</a> are used to customize the <code>Serialize</code> and <code>Deserialize</code>
-implementations produced by Serde&apos;s derive. They require a Rust compiler version
-1.15 or newer.</p>
-<p>There are three categories of attributes:</p>
-<ul>
-<li><a href="container-attrs.html"><strong>Container attributes</strong></a> &#x2014; apply to a struct or enum declaration.</li>
-<li><a href="variant-attrs.html"><strong>Variant attributes</strong></a> &#x2014; apply to a variant of an enum.</li>
-<li><a href="field-attrs.html"><strong>Field attributes</strong></a> &#x2014; apply to one field in a struct or in an enum variant.</li>
-</ul>
-<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(deny_unknown_fields)]</span>  <span class="hljs-comment">// &lt;-- this is a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span></span> {
-    <span class="hljs-meta">#[serde(default)]</span>  <span class="hljs-comment">// &lt;-- this is a field attribute</span>
-    f: <span class="hljs-keyword">i32</span>,
+                                <h1 id="deriving-deserialize-for-type-in-a-different-crate">Deriving De/Serialize for type in a different crate</h1>
+<p>Rust&apos;s <a href="https://doc.rust-lang.org/book/traits.html#rules-for-implementing-traits" target="_blank">coherence rules</a> requires that either the trait or the type for which you
+are implementing the trait must be defined in the same crate as the impl, so it
+is not possible to implement <code>Serialize</code> and <code>Deserialize</code> for a type in a
+different crate directly.</p>
+<pre><code class="lang-diff"><span class="hljs-deletion">- use serde::Serialize;</span>
+<span class="hljs-deletion">- use other_crate::Duration;</span>
+<span class="hljs-deletion">-</span>
+<span class="hljs-deletion">- // Not allowed by coherence rules.</span>
+<span class="hljs-deletion">- impl Serialize for Duration {</span>
+<span class="hljs-deletion">-     /* ... */</span>
+<span class="hljs-deletion">- }</span>
+</code></pre>
+<p>To work around this, Serde provides a way of deriving <code>Serialize</code> and
+<code>Deserialize</code> implementations for types in other people&apos;s crates. The only catch
+is that you have to provide a definition of the type for Serde&apos;s derive to
+process. At compile time, Serde will check that all the fields in the definition
+you provided match the fields in the remote type.</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// Pretend that this is somebody else&apos;s crate, not a module.</span>
+<span class="hljs-keyword">mod</span> other_crate {
+    <span class="hljs-comment">// Neither Serde nor the other crate provides Serialize and Deserialize</span>
+    <span class="hljs-comment">// impls for this struct.</span>
+    <span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Duration</span></span> {
+        <span class="hljs-keyword">pub</span> secs: <span class="hljs-keyword">i64</span>,
+        <span class="hljs-keyword">pub</span> nanos: <span class="hljs-keyword">i32</span>,
+    }
+}
+
+<span class="hljs-comment">////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+
+<span class="hljs-keyword">use</span> other_crate::Duration;
+
+<span class="hljs-comment">// Serde calls this the definition of the remote type. It is just a copy of the</span>
+<span class="hljs-comment">// remote type. The `remote` attribute gives the path to the actual type.</span>
+<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
+<span class="hljs-meta">#[serde(remote = <span class="hljs-meta-string">&quot;Duration&quot;</span>)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">DurationDef</span></span> {
+    secs: <span class="hljs-keyword">i64</span>,
+    nanos: <span class="hljs-keyword">i32</span>,
+}
+
+<span class="hljs-comment">// Now the remote type can be used almost like it had its own Serialize and</span>
+<span class="hljs-comment">// Deserialize impls all along. The `with` attribute gives the path to the</span>
+<span class="hljs-comment">// definition for the remote type. Note that the real type of the field is the</span>
+<span class="hljs-comment">// remote type, not the definition type.</span>
+<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Process</span></span> {
+    command_line: <span class="hljs-built_in">String</span>,
+
+    <span class="hljs-meta">#[serde(with = <span class="hljs-meta-string">&quot;DurationDef&quot;</span>)]</span>
+    wall_time: Duration,
+}
+</code></pre>
+<p>If the remote type is a struct with all public fields or an enum, that&apos;s all
+there is to it. If the remote type is a struct with one or more private fields,
+getters must be provided for the private fields and a conversion must be
+provided to construct the remote type.</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// Pretend that this is somebody else&apos;s crate, not a module.</span>
+<span class="hljs-keyword">mod</span> other_crate {
+    <span class="hljs-comment">// Neither Serde nor the other crate provides Serialize and Deserialize</span>
+    <span class="hljs-comment">// impls for this struct. Oh, and the fields are private.</span>
+    <span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Duration</span></span> {
+        secs: <span class="hljs-keyword">i64</span>,
+        nanos: <span class="hljs-keyword">i32</span>,
+    }
+
+    <span class="hljs-keyword">impl</span> Duration {
+        <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">new</span></span>(secs: <span class="hljs-keyword">i64</span>, nanos: <span class="hljs-keyword">i32</span>) -&gt; <span class="hljs-keyword">Self</span> {
+            Duration { secs: secs, nanos: nanos }
+        }
+
+        <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">seconds</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-keyword">i64</span> {
+            <span class="hljs-keyword">self</span>.secs
+        }
+
+        <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">subsec_nanos</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-keyword">i32</span> {
+            <span class="hljs-keyword">self</span>.nanos
+        }
+    }
+}
+
+<span class="hljs-comment">////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+
+<span class="hljs-keyword">use</span> other_crate::Duration;
+
+<span class="hljs-comment">// Provide getters for every private field of the remote struct. The getter must</span>
+<span class="hljs-comment">// return either `T` or `&amp;T` where `T` is the type of the field.</span>
+<span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
+<span class="hljs-meta">#[serde(remote = <span class="hljs-meta-string">&quot;Duration&quot;</span>)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">DurationDef</span></span> {
+    <span class="hljs-meta">#[serde(getter = <span class="hljs-meta-string">&quot;Duration::seconds&quot;</span>)]</span>
+    secs: <span class="hljs-keyword">i64</span>,
+    <span class="hljs-meta">#[serde(getter = <span class="hljs-meta-string">&quot;Duration::subsec_nanos&quot;</span>)]</span>
+    nanos: <span class="hljs-keyword">i32</span>,
+}
+
+<span class="hljs-comment">// Provide a conversion to construct the remote type.</span>
+<span class="hljs-keyword">impl</span> <span class="hljs-built_in">From</span>&lt;DurationDef&gt; <span class="hljs-keyword">for</span> Duration {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">from</span></span>(def: DurationDef) -&gt; Duration {
+        Duration::new(def.secs, def.nanos)
+    }
 }
 
 <span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
-<span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;e&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is also a container attribute</span>
-<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">E</span></span> {
-    <span class="hljs-meta">#[serde(rename = <span class="hljs-meta-string">&quot;a&quot;</span>)]</span>  <span class="hljs-comment">// &lt;-- this is a variant attribute</span>
-    A(<span class="hljs-built_in">String</span>),
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Process</span></span> {
+    command_line: <span class="hljs-built_in">String</span>,
+
+    <span class="hljs-meta">#[serde(with = <span class="hljs-meta-string">&quot;DurationDef&quot;</span>)]</span>
+    wall_time: Duration,
 }
 </code></pre>
-<p>Note that a single struct, enum, variant, or field may have multiple attributes
-on it.</p>
 
                                 
                                 </section>
@@ -667,12 +762,12 @@ on it.</p>
 
             
                 
-                <a href="derive.html" class="navigation navigation-prev " aria-label="Previous page: Using derive">
+                <a href="attr-skip-serializing.html" class="navigation navigation-prev " aria-label="Previous page: Skip serializing field">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="container-attrs.html" class="navigation navigation-next " aria-label="Next page: Container attributes">
+                <a href="deserialize-struct.html" class="navigation navigation-next " aria-label="Next page: Manually deserialize struct">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -683,7 +778,7 @@ on it.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Attributes","level":"1.5","depth":1,"next":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"previous":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attributes.md","mtime":"2017-04-18T17:29:44.102Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Derive for remote crate","level":"1.9.11","depth":2,"next":{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"previous":{"title":"Skip serializing field","level":"1.9.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"remote-derive.md","mtime":"2017-04-18T20:18:25.224Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T15:02:08.559Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
