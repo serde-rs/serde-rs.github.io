@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Using derive · Serde</title>
+        <title>Borrowing data · Serde</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="attributes.html" />
+    <link rel="next" href="attr-default.html" />
     
     
-    <link rel="prev" href="data-model.html" />
+    <link rel="prev" href="enum-representations.html" />
     
 
     </head>
@@ -130,7 +130,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4" data-path="derive.html">
+        <li class="chapter " data-level="1.4" data-path="derive.html">
             
                 <a href="derive.html">
             
@@ -383,7 +383,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.3" data-path="borrow.html">
+        <li class="chapter active" data-level="1.9.3" data-path="borrow.html">
             
                 <a href="borrow.html">
             
@@ -618,7 +618,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Using derive</a>
+        <a href="." >Borrowing data</a>
     </h1>
 </div>
 
@@ -630,85 +630,64 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="using-derive">Using derive</h1>
-<p>Serde provides a derive macro to generate implementations of the <code>Serialize</code> and
-<code>Deserialize</code> traits for data structures defined in your crate, allowing them to
-be represented conveniently in all of Serde&apos;s data formats.</p>
-<p><strong>You only need to set this up if your code is using <code>#[derive(Serialize,
-Deserialize)]</code>.</strong></p>
-<p>This functionality is based on Rust&apos;s <code>#[derive]</code> mechanism, just like what you
-would use to automatically derive implementations of the built-in <code>Clone</code>,
-<code>Copy</code>, <code>Debug</code>, or other traits. It is able to generate implementations for
-most structs and enums including ones with elaborate generic types or trait
-bounds. On rare occasions, for an especially convoluted type you may need to
-<a href="custom-serialization.html">implement the traits manually</a>.</p>
-<p>These derives require a Rust compiler version 1.15 or newer.</p>
-<ul class="checklist">
-<li><label><div class="checkbox"><input type="checkbox"></div>Add <code>serde = &quot;1.0&quot;</code> as a dependency in Cargo.toml.</label></li>
-<li><label><div class="checkbox"><input type="checkbox"></div>Add <code>serde_derive = &quot;1.0&quot;</code> as a dependency in Cargo.toml.</label></li>
-<li><label><div class="checkbox"><input type="checkbox"></div>Ensure that all other Serde-based dependencies (for example serde_json) are on
-a version that is compatible with serde 1.0.</label></li>
-<li><label><div class="checkbox"><input type="checkbox"></div>If you have a main.rs, add <code>#[macro_use] extern crate serde_derive</code> there.</label></li>
-<li><label><div class="checkbox"><input type="checkbox"></div>If you have a lib.rs, add <code>#[macro_use] extern crate serde_derive</code> there.</label></li>
-<li><label><div class="checkbox"><input type="checkbox"></div>Use <code>#[derive(Serialize)]</code> on structs and enums that you want to serialize.</label></li>
-<li><label><div class="checkbox"><input type="checkbox"></div>Use <code>#[derive(Deserialize)]</code> on structs and enums that you want to
-deserialize.</label></li>
-</ul>
-<p>Here is the <code>Cargo.toml</code>:</p>
-<div><p class="code-filename">Cargo.toml</p></div>
-<pre><code class="lang-toml"><span class="hljs-section">[package]</span>
-<span class="hljs-attr">name</span> = <span class="hljs-string">&quot;my-crate&quot;</span>
-<span class="hljs-attr">version</span> = <span class="hljs-string">&quot;0.1.0&quot;</span>
-<span class="hljs-attr">authors</span> = [<span class="hljs-string">&quot;Me &lt;user@rust-lang.org&gt;&quot;</span>]
-<span class="hljs-section">
-[dependencies]</span>
-<span class="hljs-attr">serde</span> = <span class="hljs-string">&quot;1.0&quot;</span>
-<span class="hljs-attr">serde_derive</span> = <span class="hljs-string">&quot;1.0&quot;</span>
+                                <h1 id="borrowing-data">Borrowing data</h1>
+<p>Fields of type <code>&amp;str</code> and <code>&amp;[u8]</code> are implicitly borrowed from the input data by
+Serde. Any other type of field can opt in to borrowing by using the
+<code>#[serde(borrow)]</code> attribute.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
 
-<span class="hljs-comment"># serde_json is just for the example, not required in general</span>
-<span class="hljs-attr">serde_json</span> = <span class="hljs-string">&quot;1.0&quot;</span>
-</code></pre>
-<p>Now the <code>src/main.rs</code> which uses Serde&apos;s custom derives:</p>
-<div><p class="code-filename">src/main.rs</p></div>
-<pre><a class="playground-link" target="_blank" href="https://play.integer32.com/?gist=454091616f81d99a48e72d1c5a430f2a"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-meta">#[macro_use]</span>
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
 
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_json;
+<span class="hljs-keyword">use</span> std::borrow::Cow;
 
-<span class="hljs-meta">#[derive(Serialize, Deserialize, Debug)]</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point</span></span> {
-    x: <span class="hljs-keyword">i32</span>,
-    y: <span class="hljs-keyword">i32</span>,
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Inner</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>&gt; {
+    <span class="hljs-comment">// &amp;str and &amp;[u8] are implicitly borrowed.</span>
+    username: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+
+    <span class="hljs-comment">// Other types must be borrowed explicitly.</span>
+    <span class="hljs-meta">#[serde(borrow)]</span>
+    comment: Cow&lt;<span class="hljs-symbol">&apos;b</span>, <span class="hljs-keyword">str</span>&gt;,
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
-    <span class="hljs-keyword">let</span> point = Point { x: <span class="hljs-number">1</span>, y: <span class="hljs-number">2</span> };
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Outer</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    owned: <span class="hljs-built_in">String</span>,
 
-    <span class="hljs-keyword">let</span> serialized = serde_json::to_string(&amp;point).unwrap();
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;serialized = {}&quot;</span>, serialized);
+    <span class="hljs-meta">#[serde(borrow)]</span>
+    inner: Inner&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>&gt;,
 
-    <span class="hljs-keyword">let</span> deserialized: Point = serde_json::from_str(&amp;serialized).unwrap();
-    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;deserialized = {:?}&quot;</span>, deserialized);
+    <span class="hljs-comment">// This field is never borrowed.</span>
+    not_borrowed: Cow&lt;<span class="hljs-symbol">&apos;c</span>, <span class="hljs-keyword">str</span>&gt;,
 }
 </code></pre>
-<p>Here is the output:</p>
-<pre><code>$ cargo run
-serialized = {&quot;x&quot;:1,&quot;y&quot;:2}
-deserialized = Point { x: 1, y: 2 }
-</code></pre><h3 id="troubleshooting">Troubleshooting</h3>
-<p>Sometimes you may see compile-time errors that tell you:</p>
-<pre><code>the trait `serde::de::Deserialize` is not implemented for `...`
-</code></pre><p>even though the struct or enum clearly has <code>#[derive(Deserialize)]</code> on it.</p>
-<p>This almost always means that you are using libraries that depend on
-incompatible versions of Serde. You may be depending on serde 1.0 and
-serde_derive 1.0 in your Cargo.toml but using some other library that depends on
-serde 0.9. So the <code>Deserialize</code> trait from serde 1.0 may be implemented, but the
-library expects an implementation of the <code>Deserialize</code> trait from serde 0.9.
-From the Rust compiler&apos;s perspective these are totally different traits.</p>
-<p>The fix is to upgrade or downgrade libraries as appropriate until the Serde
-versions match. The <a href="https://github.com/sfackler/cargo-tree" target="_blank"><code>cargo tree -d</code></a> command is helpful for finding all the
-places that duplicate dependencies are being pulled in.</p>
+<p>This attribute works by placing bounds on the <a href="lifetimes.html"><code>&apos;de</code> lifetime</a> of the generated
+<code>Deserialize</code> impl. For example the impl for the struct <code>Outer</code> defined above
+looks like this:</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// The lifetimes &apos;a and &apos;b are borrowed while &apos;c is not.</span>
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>: <span class="hljs-symbol">&apos;a</span> + <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Outer&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    <span class="hljs-comment">/* ... */</span>
+}
+</code></pre>
+<p>The attribute may specify explicitly which lifetimes should be borrowed.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">use</span> std::marker::PhantomData;
+
+<span class="hljs-comment">// This struct borrows the first two lifetimes but not the third.</span>
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Three</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    a: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+    b: &amp;<span class="hljs-symbol">&apos;b</span> <span class="hljs-keyword">str</span>,
+    c: PhantomData&lt;&amp;<span class="hljs-symbol">&apos;c</span> <span class="hljs-keyword">str</span>&gt;,
+}
+
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Example</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    <span class="hljs-comment">// Borrow &apos;a and &apos;b only, not &apos;c.</span>
+    <span class="hljs-meta">#[serde(borrow = <span class="hljs-meta-string">&quot;&apos;a + &apos;b&quot;</span>)]</span>
+    three: Three&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt;,
+}
+</code></pre>
 
                                 
                                 </section>
@@ -720,12 +699,12 @@ places that duplicate dependencies are being pulled in.</p>
 
             
                 
-                <a href="data-model.html" class="navigation navigation-prev " aria-label="Previous page: Serde data model">
+                <a href="enum-representations.html" class="navigation navigation-prev " aria-label="Previous page: Enum representations">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="attributes.html" class="navigation navigation-next " aria-label="Next page: Attributes">
+                <a href="attr-default.html" class="navigation navigation-next " aria-label="Next page: Default value for a field">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -736,7 +715,7 @@ places that duplicate dependencies are being pulled in.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Using derive","level":"1.4","depth":1,"next":{"title":"Attributes","level":"1.5","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]}]},"previous":{"title":"Serde data model","level":"1.3","depth":1,"path":"data-model.md","ref":"data-model.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"derive.md","mtime":"2017-04-18T18:40:12.630Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T14:42:49.171Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Borrowing data","level":"1.9.3","depth":2,"next":{"title":"Default value for a field","level":"1.9.4","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"previous":{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"borrow.md","mtime":"2017-04-20T14:42:11.458Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-20T14:42:49.171Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
