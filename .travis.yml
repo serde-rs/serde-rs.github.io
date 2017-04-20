@@ -7,4 +7,4 @@ rust:
   - nightly
 
 script:
-  - cargo test --manifest-path skeptic/Cargo.toml
+  - cargo test --manifest-path _skeptic/Cargo.toml
