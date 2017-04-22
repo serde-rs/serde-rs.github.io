@@ -1,17 +1,17 @@
 # Deriving De/Serialize for type in a different crate
 
-Rust's [coherence rules] requires that either the trait or the type for which you
+Rust's [orphan rule] requires that either the trait or the type for which you
 are implementing the trait must be defined in the same crate as the impl, so it
 is not possible to implement `Serialize` and `Deserialize` for a type in a
 different crate directly.
 
-[coherence rules]: https://doc.rust-lang.org/book/traits.html#rules-for-implementing-traits
+[orphan rule]: https://doc.rust-lang.org/book/traits.html#rules-for-implementing-traits
 
 ```diff
 - use serde::Serialize;
 - use other_crate::Duration;
 -
-- // Not allowed by coherence rules.
+- // Not allowed by orphan rule.
 - impl Serialize for Duration {
 -     /* ... */
 - }
