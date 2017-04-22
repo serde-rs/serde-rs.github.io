@@ -49,7 +49,40 @@ period during which the output data structure is in scope, meaning it is
 impossible to have dangling pointer errors as a result of losing the input data
 while the output data structure still refers to it.
 
-### Transient, borrowed, and owned data
+## Trait bounds
+
+There are two main ways to write `Deserialize` trait bounds, whether on an impl
+block or a function or anywhere else.
+
+- **`<'de, T> where T: Deserialize<'de>`**
+
+    This means "T can be deserialized from **some** lifetime." The caller gets
+    to decide what lifetime that is. Typically this is used when the caller also
+    provides the data that is being deserialized from, for example in a function
+    like [`serde_json::from_str`]. In that case the input data must also have
+    lifetime `'de`, for example it could be `&'de str`.
+
+- **`<T> where T: DeserializeOwned`**
+
+    This means "T can be deserialized from **any** lifetime." The callee gets to
+    decide what lifetime. Usually this is because the data that is being
+    deserialized from is going to be thrown away before the function returns, so
+    T must not be allowed to borrow from it. For example a function that accepts
+    base64-encoded data as input, decodes it from base64, deserializes a value
+    of type T, then throws away the result of base64 decoding. Another common
+    use of this bound is functions that deserialize from an IO stream, such as
+    [`serde_json::from_reader`].
+
+    To say it more technically, the [`DeserializeOwned`] trait is equivalent to
+    the [higher-rank trait bound] `for<'de> Deserialize<'de>`. The only
+    difference is `DeserializeOwned` is more intuitive to read. It means T owns
+    all the data that gets deserialized.
+
+[`serde_json::from_str`]: https://docs.serde.rs/serde_json/fn.from_str.html
+[`serde_json::from_reader`]: https://docs.serde.rs/serde_json/fn.from_reader.html
+[higher-rank trait bound]: https://doc.rust-lang.org/nomicon/hrtb.html
+
+## Transient, borrowed, and owned data
 
 The Serde data model has three flavors of strings and byte arrays during
 deserialization. They correspond to different methods on the [`Visitor`] trait.
@@ -85,7 +118,7 @@ visitors benefit from receiving owned data. For example the `Deserialize` impl
 for Rust's `String` type benefits from being given ownership of the Serde string
 data that has been deserialized.
 
-### The Deserialize&lt;'de&gt; lifetime
+## The Deserialize&lt;'de&gt; lifetime
 
 This lifetime records the constraints on how long data borrowed by this type
 must be valid.
@@ -148,7 +181,7 @@ impl applies.
 + impl<'de: 'a, 'a> Deserialize<'de> for Q<'a> {
 ```
 
-### The Deserializer&lt;'de&gt; lifetime
+## The Deserializer&lt;'de&gt; lifetime
 
 This is the lifetime of data that can be borrowed from the `Deserializer`.
 
