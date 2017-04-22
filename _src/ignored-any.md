@@ -1,6 +1,6 @@
 # Discarding data
 
-The [`IgnoredAny`] types gives an efficient way of discarding data from a
+The [`IgnoredAny`] type gives an efficient way of discarding data from a
 deserializer.
 
 [`IgnoredAny`]: https://docs.serde.rs/serde/de/struct.IgnoredAny.html
