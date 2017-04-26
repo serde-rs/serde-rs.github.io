@@ -78,6 +78,8 @@ block or a function or anywhere else.
     difference is `DeserializeOwned` is more intuitive to read. It means T owns
     all the data that gets deserialized.
 
+Note that `<T> where T: Deserialize<'static>` is never what you want.
+
 [`serde_json::from_str`]: https://docs.serde.rs/serde_json/fn.from_str.html
 [`serde_json::from_reader`]: https://docs.serde.rs/serde_json/fn.from_reader.html
 [higher-rank trait bound]: https://doc.rust-lang.org/nomicon/hrtb.html
