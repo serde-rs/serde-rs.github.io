@@ -128,14 +128,8 @@ impl<'de> Deserialize<'de> for Duration {
                         }
                     }
                 }
-                let secs = match secs {
-                    Some(secs) => secs,
-                    None => return Err(de::Error::missing_field("secs")),
-                };
-                let nanos = match nanos {
-                    Some(nanos) => nanos,
-                    None => return Err(de::Error::missing_field("nanos")),
-                };
+                let secs = secs.ok_or_else(|| de::Error::missing_field("secs"))?;
+                let nanos = nanos.ok_or_else(|| de::Error::missing_field("nanos"))?;
                 Ok(Duration::new(secs, nanos))
             }
         }
