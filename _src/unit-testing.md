@@ -107,7 +107,7 @@ fn test_ser_de_empty() {
     let map = LinkedHashMap::<char, u32>::new();
 
     assert_tokens(&map, &[
-        Token::Map(Some(0)),
+        Token::Map { len: Some(0) },
         Token::MapEnd,
     ]);
 }
@@ -121,7 +121,7 @@ fn test_ser_de() {
     map.insert('c', 30);
 
     assert_tokens(&map, &[
-        Token::Map(Some(3)),
+        Token::Map { len: Some(3) },
         Token::Char('b'),
         Token::I32(20),
 
