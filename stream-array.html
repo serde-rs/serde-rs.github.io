@@ -685,14 +685,10 @@ processed while being deserialized instead of after.</p>
             <span class="hljs-keyword">where</span> V: de::SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
         {
             <span class="hljs-comment">// Start with max equal to the first value in the seq.</span>
-            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = <span class="hljs-keyword">match</span> visitor.next_element()? {
-                <span class="hljs-literal">Some</span>(value) =&gt; value,
-                <span class="hljs-literal">None</span> =&gt; {
-                    <span class="hljs-comment">// Cannot take the maximum of an empty seq.</span>
-                    <span class="hljs-keyword">let</span> msg = <span class="hljs-string">&quot;no values in seq when looking for maximum&quot;</span>;
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(de::Error::custom(msg));
-                }
-            };
+            <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> max = visitor.next_element()?.ok_or_else(||
+                <span class="hljs-comment">// Cannot take the maximum of an empty seq.</span>
+                de::Error::custom(<span class="hljs-string">&quot;no values in seq when looking for maximum&quot;</span>)
+            )?;
 
             <span class="hljs-comment">// Update the max while there are additional values.</span>
             <span class="hljs-keyword">while</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(value) = visitor.next_element()? {
@@ -704,7 +700,7 @@ processed while being deserialized instead of after.</p>
     }
 
     <span class="hljs-comment">// Create the visitor and ask the deserializer to drive it. The</span>
-    <span class="hljs-comment">// deserializer will call visitor.visit_seq if a seq is present in</span>
+    <span class="hljs-comment">// deserializer will call visitor.visit_seq() if a seq is present in</span>
     <span class="hljs-comment">// the input data.</span>
     <span class="hljs-keyword">let</span> visitor = MaxVisitor(PhantomData);
     deserializer.deserialize_seq(visitor)
@@ -757,7 +753,7 @@ processed while being deserialized instead of after.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.9.7","depth":2,"next":{"title":"Serialize enum as number","level":"1.9.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"previous":{"title":"Deserialize for custom map type","level":"1.9.6","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2017-04-29T15:43:40.610Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-29T17:11:25.267Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Array of values without buffering","level":"1.9.7","depth":2,"next":{"title":"Serialize enum as number","level":"1.9.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"previous":{"title":"Deserialize for custom map type","level":"1.9.6","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"stream-array.md","mtime":"2017-04-29T18:40:38.307Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-04-29T18:40:42.833Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
