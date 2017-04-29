@@ -92,18 +92,10 @@ impl<'de> Deserialize<'de> for Duration {
             fn visit_seq<V>(self, mut seq: V) -> Result<Duration, V::Error>
                 where V: SeqAccess<'de>
             {
-                let secs: u64 = match seq.next_element()? {
-                    Some(value) => value,
-                    None => {
-                        return Err(de::Error::invalid_length(0, &self));
-                    }
-                };
-                let nanos: u32 = match seq.next_element()? {
-                    Some(value) => value,
-                    None => {
-                        return Err(de::Error::invalid_length(1, &self));
-                    }
-                };
+                let secs = seq.next_element()?
+                              .ok_or_else(|| de::Error::invalid_length(0, &self))?;
+                let nanos = seq.next_element()?
+                               .ok_or_else(|| de::Error::invalid_length(1, &self))?;
                 Ok(Duration::new(secs, nanos))
             }
 

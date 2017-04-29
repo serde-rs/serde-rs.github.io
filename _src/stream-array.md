@@ -58,14 +58,10 @@ fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
             where V: de::SeqAccess<'de>
         {
             // Start with max equal to the first value in the seq.
-            let mut max = match visitor.next_element()? {
-                Some(value) => value,
-                None => {
-                    // Cannot take the maximum of an empty seq.
-                    let msg = "no values in seq when looking for maximum";
-                    return Err(de::Error::custom(msg));
-                }
-            };
+            let mut max = visitor.next_element()?.ok_or_else(||
+                // Cannot take the maximum of an empty seq.
+                de::Error::custom("no values in seq when looking for maximum")
+            )?;
 
             // Update the max while there are additional values.
             while let Some(value) = visitor.next_element()? {
@@ -77,7 +73,7 @@ fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     }
 
     // Create the visitor and ask the deserializer to drive it. The
-    // deserializer will call visitor.visit_seq if a seq is present in
+    // deserializer will call visitor.visit_seq() if a seq is present in
     // the input data.
     let visitor = MaxVisitor(PhantomData);
     deserializer.deserialize_seq(visitor)

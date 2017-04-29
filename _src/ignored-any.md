@@ -61,12 +61,8 @@ impl<'de, T> Visitor<'de> for NthElement<T>
         }
 
         // Deserialize the one we care about.
-        let nth = match seq.next_element()? {
-            Some(nth) => nth,
-            None => {
-                return Err(de::Error::invalid_length(self.n, &self));
-            }
-        };
+        let nth = seq.next_element()?
+                     .ok_or_else(|| de::Error::invalid_length(self.n, &self))?;
 
         // Skip over any remaining elements in the sequence after `n`.
         while let Some(IgnoredAny) = seq.next_element()? {
