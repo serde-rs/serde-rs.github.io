@@ -62,18 +62,18 @@ impl<'de, K, V> Visitor<'de> for MyMapVisitor<K, V>
     // Deserialize MyMap from an abstract "map" provided by the
     // Deserializer. The MapAccess input is a callback provided by
     // the Deserializer to let us see each entry in the map.
-    fn visit_map<M>(self, mut visitor: M) -> Result<Self::Value, M::Error>
+    fn visit_map<M>(self, mut access: M) -> Result<Self::Value, M::Error>
         where M: MapAccess<'de>
     {
-        let mut values = MyMap::with_capacity(visitor.size_hint().unwrap_or(0));
+        let mut map = MyMap::with_capacity(access.size_hint().unwrap_or(0));
 
         // While there are entries remaining in the input, add them
         // into our map.
-        while let Some((key, value)) = visitor.next_entry()? {
-            values.insert(key, value);
+        while let Some((key, value)) = access.next_entry()? {
+            map.insert(key, value);
         }
 
-        Ok(values)
+        Ok(map)
     }
 }
 

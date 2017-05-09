@@ -12,7 +12,7 @@ extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_json;
-use serde::{de, Deserialize, Deserializer};
+use serde::{self, Deserialize, Deserializer};
 
 use std::{cmp, fmt};
 use std::marker::PhantomData;
@@ -54,17 +54,17 @@ fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
             formatter.write_str("a nonempty sequence of numbers")
         }
 
-        fn visit_seq<V>(self, mut visitor: V) -> Result<T, V::Error>
-            where V: de::SeqAccess<'de>
+        fn visit_seq<S>(self, mut seq: S) -> Result<T, S::Error>
+            where S: de::SeqAccess<'de>
         {
             // Start with max equal to the first value in the seq.
-            let mut max = visitor.next_element()?.ok_or_else(||
+            let mut max = seq.next_element()?.ok_or_else(||
                 // Cannot take the maximum of an empty seq.
                 de::Error::custom("no values in seq when looking for maximum")
             )?;
 
             // Update the max while there are additional values.
-            while let Some(value) = visitor.next_element()? {
+            while let Some(value) = seq.next_element()? {
                 max = cmp::max(max, value);
             }
 
