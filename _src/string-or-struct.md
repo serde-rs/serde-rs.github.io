@@ -36,7 +36,7 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
 
-use serde::de::{self, Deserialize, Deserializer};
+use serde::de::{self, Deserialize, Deserializer, Visitor, MapAccess};
 use void::Void;
 
 fn main() {
@@ -123,7 +123,7 @@ fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     // impl.
     struct StringOrStruct<T>(PhantomData<T>);
 
-    impl<'de, T> de::Visitor<'de> for StringOrStruct<T>
+    impl<'de, T> Visitor<'de> for StringOrStruct<T>
         where T: Deserialize<'de> + FromStr<Err = Void>
     {
         type Value = T;
@@ -139,7 +139,7 @@ fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
         }
 
         fn visit_map<M>(self, visitor: M) -> Result<T, M::Error>
-            where M: de::MapAccess<'de>
+            where M: MapAccess<'de>
         {
             // `MapAccessDeserializer` is a wrapper that turns a `MapAccess`
             // into a `Deserializer`, allowing it to be used as the input to T's

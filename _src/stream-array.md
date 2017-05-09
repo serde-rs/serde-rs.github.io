@@ -12,7 +12,7 @@ extern crate serde_derive;
 
 extern crate serde;
 extern crate serde_json;
-use serde::{self, Deserialize, Deserializer};
+use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess};
 
 use std::{cmp, fmt};
 use std::marker::PhantomData;
@@ -43,7 +43,7 @@ fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
 {
     struct MaxVisitor<T>(PhantomData<T>);
 
-    impl<'de, T> de::Visitor<'de> for MaxVisitor<T>
+    impl<'de, T> Visitor<'de> for MaxVisitor<T>
         where T: Deserialize<'de> + Ord
     {
         /// Return type of this visitor. This visitor computes the max of a
@@ -55,7 +55,7 @@ fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
         }
 
         fn visit_seq<S>(self, mut seq: S) -> Result<T, S::Error>
-            where S: de::SeqAccess<'de>
+            where S: SeqAccess<'de>
         {
             // Start with max equal to the first value in the seq.
             let mut max = seq.next_element()?.ok_or_else(||
