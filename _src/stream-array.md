@@ -5,7 +5,7 @@ without holding the whole array in memory all at once. This approach can be
 adapted to handle a variety of other situations in which data needs to be
 processed while being deserialized instead of after.
 
-!PLAYGROUND d25a611608d089339dc83135e2d749e4
+!PLAYGROUND ebd5d571be4222b0526cf3a137184e72
 ```rust
 #[macro_use]
 extern crate serde_derive;

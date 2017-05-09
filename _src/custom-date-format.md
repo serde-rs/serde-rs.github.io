@@ -4,7 +4,7 @@ This uses the [`chrono`](https://github.com/chronotope/chrono) crate to
 serialize and deserialize JSON data containing a custom date format. The `with`
 attribute is used to provide the logic for handling the custom representation.
 
-!PLAYGROUND 09c801c9381f700940a8075500b24b8c
+!PLAYGROUND 0c9a0b6805f5c090abacc14cfe0e33d1
 ```rust
 #[macro_use]
 extern crate serde_derive;

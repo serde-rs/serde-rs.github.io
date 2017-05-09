@@ -21,7 +21,7 @@ names. Instead there is a `Field` enum which is deserialized from a `&str`.
 The implementation supports two possible ways that a struct may be represented
 by a data format: as a seq like in Bincode, and as a map like in JSON.
 
-!PLAYGROUND 96955b69e2415ba3c3b7359a3c9cbf02
+!PLAYGROUND 7ba6f7476f22e57e82238832dd740d6e
 ```rust
 # extern crate serde;
 #
