@@ -17,14 +17,23 @@
   `default = "empty_value"` would invoke `empty_value()` and `default =
   "SomeTrait::some_default"` would invoke `SomeTrait::some_default()`.
 
+- ##### `#[serde(skip)]`
+
+  Skip this field: do not serialize or deserialize it.
+
+  When deserializing, Serde will use `Default::default()` or the function
+  given by `default = "..."` to get a default value for this field.
+
 - ##### `#[serde(skip_serializing)]`
 
-  Do not serialize this value.
+  Skip this field when serializing, but not when deserializing.
 
 - ##### `#[serde(skip_deserializing)]`
 
-  Always use `Default::default()` or the function given by `default = "..."`
-  instead of ever deserializing this value.
+  Skip this field when deserializing, but not when serializing.
+
+  When deserializing, Serde will use `Default::default()` or the function
+  given by `default = "..."` to get a default value for this field.
 
 - ##### `#[serde(skip_serializing_if = "path")]`
 
