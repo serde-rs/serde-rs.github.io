@@ -21,10 +21,16 @@
 
   Do not serialize this value.
 
+  Use `#[serde(skip)]` instead if you want to skip this value during
+  deserialization too.
+
 - ##### `#[serde(skip_deserializing)]`
 
   Always use `Default::default()` or the function given by `default = "..."`
   instead of ever deserializing this value.
+
+  Use `#[serde(skip)]` instead if you want to skip this value during
+  serialization too.
 
 - ##### `#[serde(skip_serializing_if = "path")]`
 
