@@ -65,7 +65,7 @@ the following 27 types:
 - **newtype_variant**
   - For example the `E::N` in `enum E { N(u8) }`.
 - **seq**
-  - A variably sized heterogeneous sequence of values, for example `Vec<T>` or
+  - A variably sized homogeneous  sequence of values, for example `Vec<T>` or
     `HashSet<T>`. When serializing, the length may or may not be known before
     iterating through all the data. When deserializing, the length is determined
     by looking at the serialized data.
@@ -78,7 +78,7 @@ the following 27 types:
 - **tuple_variant**
   - For example the `E::T` in `enum E { T(u8, u8) }`.
 - **map**
-  - A variably sized heterogeneous key-value pairing, for example `BTreeMap<K,
+  - A variably sized homogeneous key-value pairing, for example `BTreeMap<K,
     V>`. When serializing, the length may or may not be known before iterating
     through all the entries. When deserializing, the length is determined by
     looking at the serialized data.
