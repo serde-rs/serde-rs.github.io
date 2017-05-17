@@ -33,6 +33,11 @@
   `T`. For example `skip_serializing_if = "Option::is_none"` would skip an
   Option that is None.
 
+- ##### `#[serde(skip)]`
+
+  Combination of `skip_serializing` and `skip_deserializing`. Do not serialize
+  or deserialize this value.
+
 - ##### `#[serde(serialize_with = "path")]`
 
   Serialize this field using a function that is different from its
