@@ -27,7 +27,9 @@ and deserialized using any supported data format.
 Where many other languages rely on runtime reflection for serializing data,
 Serde is instead built on Rust's powerful trait system. A data structure that
 knows how to serialize and deserialize itself is one that implements Serde's
-`Serialize` and `Deserialize` traits (or uses Serde's derive attribute to
+[`Serialize`](https://docs.serde.rs/serde/trait.Serialize.html) and 
+[`Deserialize`](https://docs.serde.rs/serde/trait.Deserialize.html)
+traits (or uses Serde's derive attribute to
 automatically generate implementations at compile time). This avoids any
 overhead of reflection or runtime type information. In fact in many situations
 the interaction between data structure and data format can be completely
