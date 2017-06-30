@@ -37,24 +37,13 @@ discussion of unstable functionality please refer to [this issue].
 
 *Implies unstable.*
 
-Provide impls for types that require memory allocation like Box&lt;T&gt; and
-Rc&lt;T&gt;. This is a subset of std but may be enabled without depending on all
-of std.
+Provide impls for types in the Rust core allocation and collections library
+including String, Box&lt;T&gt;, Vec&lt;T&gt;, and Cow&lt;T&gt;. This is a subset
+of std but may be enabled without depending on all of std.
 
 Requires a dependency on the unstable [core allocation library].
 
 [core allocation library]: https://doc.rust-lang.org/alloc/
-
-#### --features collections
-
-*Implies alloc and unstable.*
-
-Provide impls for collection types like String and Cow&lt;T&gt;. This is a
-subset of std but may be enabled without depending on all of std.
-
-Requires a dependency on the unstable [collections library].
-
-[collections library]: https://doc.rust-lang.org/collections/
 
 #### --features rc
 
