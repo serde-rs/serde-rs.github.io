@@ -121,7 +121,7 @@ fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     // keep the compiler from complaining about T being an unused generic type
     // parameter. We need T in order to know the Value type for the Visitor
     // impl.
-    struct StringOrStruct<T>(PhantomData<T>);
+    struct StringOrStruct<T>(PhantomData<fn() -> T>);
 
     impl<'de, T> Visitor<'de> for StringOrStruct<T>
         where T: Deserialize<'de> + FromStr<Err = Void>

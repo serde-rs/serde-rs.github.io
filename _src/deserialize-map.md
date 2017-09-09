@@ -30,7 +30,7 @@ use serde::de::{Deserialize, Deserializer, Visitor, MapAccess};
 // keeps the compiler from complaining about unused generic type
 // parameters.
 struct MyMapVisitor<K, V> {
-    marker: PhantomData<MyMap<K, V>>
+    marker: PhantomData<fn() -> MyMap<K, V>>
 }
 
 impl<K, V> MyMapVisitor<K, V> {

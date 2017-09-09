@@ -28,7 +28,7 @@ use serde::de::{self, Deserialize, DeserializeSeed, Deserializer, Visitor, SeqAc
 //    NthElement::new(3).deserialize(deserializer)
 pub struct NthElement<T> {
     n: usize,
-    marker: PhantomData<T>,
+    marker: PhantomData<fn() -> T>,
 }
 
 impl<T> NthElement<T> {

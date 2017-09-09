@@ -67,7 +67,7 @@ use serde_test::{Token, assert_tokens};
 #         }
 #     }
 #
-#     struct LinkedHashMapVisitor<K, V>(PhantomData<(K, V)>);
+#     struct LinkedHashMapVisitor<K, V>(PhantomData<fn() -> (K, V)>);
 #
 #     impl<'de, K, V> Visitor<'de> for LinkedHashMapVisitor<K, V>
 #         where K: Deserialize<'de>,
