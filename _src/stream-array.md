@@ -41,7 +41,7 @@ fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
     where T: Deserialize<'de> + Ord,
           D: Deserializer<'de>
 {
-    struct MaxVisitor<T>(PhantomData<T>);
+    struct MaxVisitor<T>(PhantomData<fn() -> T>);
 
     impl<'de, T> Visitor<'de> for MaxVisitor<T>
         where T: Deserialize<'de> + Ord
