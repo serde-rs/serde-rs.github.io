@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -630,75 +634,75 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="field-attributes">Field attributes</h1>
+                                <h1 id="field-attributes"><a name="field-attributes" class="plugin-anchor" href="#field-attributes"><i class="fa fa-link" aria-hidden="true"></i></a>Field attributes</h1>
 <ul>
-<li><h5 id="serderename--name"><code>#[serde(rename = &quot;name&quot;)]</code></h5>
+<li><h5 id="serderename--name"><a name="serderename--name" class="plugin-anchor" href="#serderename--name"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(rename = &quot;name&quot;)]</code></h5>
 <p>Serialize and deserialize this field with the given name instead of its Rust
 name. This is useful for <a href="attr-rename.html">serializing fields as camelCase</a> or
 serializing fields with names that are reserved Rust keywords.</p>
 </li>
-<li><h5 id="serdedefault"><code>#[serde(default)]</code></h5>
+<li><h5 id="serdedefault"><a name="serdedefault" class="plugin-anchor" href="#serdedefault"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(default)]</code></h5>
 <p>If the value is not present when deserializing, use the <code>Default::default()</code>.</p>
 </li>
-<li><h5 id="serdedefault--path"><code>#[serde(default = &quot;path&quot;)]</code></h5>
+<li><h5 id="serdedefault--path"><a name="serdedefault--path" class="plugin-anchor" href="#serdedefault--path"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(default = &quot;path&quot;)]</code></h5>
 <p>If the value is not present when deserializing, call a function to get a
 default value. The given function must be callable as <code>fn() -&gt; T</code>. For example
 <code>default = &quot;empty_value&quot;</code> would invoke <code>empty_value()</code> and <code>default =
 &quot;SomeTrait::some_default&quot;</code> would invoke <code>SomeTrait::some_default()</code>.</p>
 </li>
-<li><h5 id="serdeskip"><code>#[serde(skip)]</code></h5>
+<li><h5 id="serdeskip"><a name="serdeskip" class="plugin-anchor" href="#serdeskip"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip)]</code></h5>
 <p>Skip this field: do not serialize or deserialize it.</p>
 <p>When deserializing, Serde will use <code>Default::default()</code> or the function
 given by <code>default = &quot;...&quot;</code> to get a default value for this field.</p>
 </li>
-<li><h5 id="serdeskipserializing"><code>#[serde(skip_serializing)]</code></h5>
+<li><h5 id="serdeskipserializing"><a name="serdeskipserializing" class="plugin-anchor" href="#serdeskipserializing"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip_serializing)]</code></h5>
 <p>Skip this field when serializing, but not when deserializing.</p>
 </li>
-<li><h5 id="serdeskipdeserializing"><code>#[serde(skip_deserializing)]</code></h5>
+<li><h5 id="serdeskipdeserializing"><a name="serdeskipdeserializing" class="plugin-anchor" href="#serdeskipdeserializing"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip_deserializing)]</code></h5>
 <p>Skip this field when deserializing, but not when serializing.</p>
 <p>When deserializing, Serde will use <code>Default::default()</code> or the function
 given by <code>default = &quot;...&quot;</code> to get a default value for this field.</p>
 </li>
-<li><h5 id="serdeskipserializingif--path"><code>#[serde(skip_serializing_if = &quot;path&quot;)]</code></h5>
+<li><h5 id="serdeskipserializingif--path"><a name="serdeskipserializingif--path" class="plugin-anchor" href="#serdeskipserializingif--path"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip_serializing_if = &quot;path&quot;)]</code></h5>
 <p>Call a function to determine whether to skip serializing this field. The given
 function must be callable as <code>fn(&amp;T) -&gt; bool</code>, although it may be generic over
 <code>T</code>. For example <code>skip_serializing_if = &quot;Option::is_none&quot;</code> would skip an
 Option that is None.</p>
 </li>
-<li><h5 id="serdeserializewith--path"><code>#[serde(serialize_with = &quot;path&quot;)]</code></h5>
+<li><h5 id="serdeserializewith--path"><a name="serdeserializewith--path" class="plugin-anchor" href="#serdeserializewith--path"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(serialize_with = &quot;path&quot;)]</code></h5>
 <p>Serialize this field using a function that is different from its
 implementation of <code>Serialize</code>. The given function must be callable as
 <code>fn&lt;S&gt;(&amp;T, S) -&gt; Result&lt;S::Ok, S::Error&gt; where S: Serializer</code>, although it
 may also be generic over <code>T</code>. Fields used with <code>serialize_with</code> are not
 required to implement <code>Serialize</code>.</p>
 </li>
-<li><h5 id="serdedeserializewith--path"><code>#[serde(deserialize_with = &quot;path&quot;)]</code></h5>
+<li><h5 id="serdedeserializewith--path"><a name="serdedeserializewith--path" class="plugin-anchor" href="#serdedeserializewith--path"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(deserialize_with = &quot;path&quot;)]</code></h5>
 <p>Deserialize this field using a function that is different from its
 implementation of <code>Deserialize</code>. The given function must be callable as
 <code>fn&lt;&apos;de, D&gt;(D) -&gt; Result&lt;T, D::Error&gt; where D: Deserializer&lt;&apos;de&gt;</code>, although it
 may also be generic over <code>T</code>. Fields used with <code>deserialize_with</code> are not
 required to implement <code>Deserialize</code>.</p>
 </li>
-<li><h5 id="serdewith--module"><code>#[serde(with = &quot;module&quot;)]</code></h5>
+<li><h5 id="serdewith--module"><a name="serdewith--module" class="plugin-anchor" href="#serdewith--module"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(with = &quot;module&quot;)]</code></h5>
 <p>Combination of <code>serialize_with</code> and <code>deserialize_with</code>. Serde will use
 <code>$module::serialize</code> as the <code>serialize_with</code> function and
 <code>$module::deserialize</code> as the <code>deserialize_with</code> function.</p>
 </li>
-<li><h5 id="serdeborrow"><code>#[serde(borrow)]</code></h5>
+<li><h5 id="serdeborrow"><a name="serdeborrow" class="plugin-anchor" href="#serdeborrow"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(borrow)]</code></h5>
 <p>Borrow data for this field from the deserializer by using zero-copy
 deserialization. See <a href="borrow.html">this example</a>.</p>
 </li>
-<li><h5 id="serdebound--t-mytrait"><code>#[serde(bound = &quot;T: MyTrait&quot;)]</code></h5>
+<li><h5 id="serdebound--t-mytrait"><a name="serdebound--t-mytrait" class="plugin-anchor" href="#serdebound--t-mytrait"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(bound = &quot;T: MyTrait&quot;)]</code></h5>
 <p>Where-clause for the <code>Serialize</code> and <code>Deserialize</code> impls. This replaces any
 trait bounds inferred by Serde for the current field.</p>
 </li>
-<li><h5 id="serdeboundserialize--t-mytrait"><code>#[serde(bound(serialize = &quot;T: MyTrait&quot;))]</code></h5>
+<li><h5 id="serdeboundserialize--t-mytrait"><a name="serdeboundserialize--t-mytrait" class="plugin-anchor" href="#serdeboundserialize--t-mytrait"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(bound(serialize = &quot;T: MyTrait&quot;))]</code></h5>
 <p>Where-clause for the <code>Serialize</code> impl.</p>
 </li>
-<li><h5 id="serdebounddeserialize---t-mytrait"><code>#[serde(bound(deserialize  = &quot;T: MyTrait&quot;))]</code></h5>
+<li><h5 id="serdebounddeserialize---t-mytrait"><a name="serdebounddeserialize---t-mytrait" class="plugin-anchor" href="#serdebounddeserialize---t-mytrait"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(bound(deserialize  = &quot;T: MyTrait&quot;))]</code></h5>
 <p>Where-clause for the <code>Deserialize</code> impl.</p>
 </li>
-<li><h5 id="serdegetter--"><code>#[serde(getter = &quot;...&quot;)]</code></h5>
+<li><h5 id="serdegetter--"><a name="serdegetter--" class="plugin-anchor" href="#serdegetter--"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(getter = &quot;...&quot;)]</code></h5>
 <p>This is used when deriving <code>Serialize</code> for a <a href="remote-derive.html">remote type</a>
 that has one or more private fields.</p>
 </li>
@@ -730,7 +734,7 @@ that has one or more private fields.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Field attributes","level":"1.5.3","depth":2,"next":{"title":"Custom serialization","level":"1.6","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"previous":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"field-attrs.md","mtime":"2017-05-17T15:24:01.741Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-09T16:12:29.009Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Field attributes","level":"1.5.3","depth":2,"next":{"title":"Custom serialization","level":"1.6","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"previous":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"field-attrs.md","mtime":"2017-05-17T15:24:01.741Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-13T04:56:33.333Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

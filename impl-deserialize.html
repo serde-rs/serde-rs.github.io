@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -630,7 +634,7 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="implementing-deserialize">Implementing Deserialize</h1>
+                                <h1 id="implementing-deserialize"><a name="implementing-deserialize" class="plugin-anchor" href="#implementing-deserialize"><i class="fa fa-link" aria-hidden="true"></i></a>Implementing Deserialize</h1>
 <p>The <a href="https://docs.serde.rs/serde/de/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> trait looks like this:</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Deserialize</span></span>&lt;<span class="hljs-symbol">&apos;de</span>&gt;: <span class="hljs-built_in">Sized</span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
@@ -671,7 +675,7 @@ deserialize something like <code>serde_json::Value</code> which relies on
 what type is in the input. Know that relying on <code>Deserializer::deserialize_any</code>
 means your data type will be able to deserialize from self-describing formats
 only, ruling out Bincode and many others.</p>
-<h2 id="the-visitor-trait">The Visitor trait</h2>
+<h2 id="the-visitor-trait"><a name="the-visitor-trait" class="plugin-anchor" href="#the-visitor-trait"><i class="fa fa-link" aria-hidden="true"></i></a>The Visitor trait</h2>
 <p>A <a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> is instantiated by a <code>Deserialize</code> impl and passed to a
 <code>Deserializer</code>. The <code>Deserializer</code> then calls a method on the <code>Visitor</code> in order
 to construct the desired type.</p>
@@ -726,7 +730,7 @@ of types.</p>
 they get called. For example <code>I32Visitor</code> does not implement
 <code>Visitor::visit_map</code>, so trying to deserialize an i32 when the input contains a
 map is a type error.</p>
-<h2 id="driving-a-visitor">Driving a Visitor</h2>
+<h2 id="driving-a-visitor"><a name="driving-a-visitor" class="plugin-anchor" href="#driving-a-visitor"><i class="fa fa-link" aria-hidden="true"></i></a>Driving a Visitor</h2>
 <p>Deserialize a value by passing a <code>Visitor</code> to the given <code>Deserializer</code>. The
 <code>Deserializer</code> will call one of the <code>Visitor</code> methods depending on the input
 data, which is known as &quot;driving&quot; the <code>Visitor</code>.</p>
@@ -743,7 +747,7 @@ call to <code>deserialize_i32</code> does not necessarily mean the <code>Deseria
 <code>I32Visitor::visit_i32</code>. For example JSON treats all signed integer types alike.
 The JSON <code>Deserializer</code> will call <code>visit_i64</code> for any signed integer and
 <code>visit_u64</code> for any unsigned integer, even if hinted a different type.</p>
-<h2 id="other-examples">Other examples</h2>
+<h2 id="other-examples"><a name="other-examples" class="plugin-anchor" href="#other-examples"><i class="fa fa-link" aria-hidden="true"></i></a>Other examples</h2>
 <ul>
 <li><a href="deserialize-map.html">Deserializing a map</a></li>
 <li><a href="deserialize-struct.html">Deserializing a struct</a></li>
@@ -775,7 +779,7 @@ The JSON <code>Deserializer</code> will call <code>visit_i64</code> for any sign
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"next":{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2017-04-18T18:26:30.961Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-09T16:12:29.009Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"next":{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2017-04-18T18:26:30.961Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-13T04:56:33.333Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

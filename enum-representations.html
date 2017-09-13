@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -630,7 +634,7 @@
                             
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="enum-representations">Enum representations</h1>
+                                <h1 id="enum-representations"><a name="enum-representations" class="plugin-anchor" href="#enum-representations"><i class="fa fa-link" aria-hidden="true"></i></a>Enum representations</h1>
 <p>Consider the following enum type:</p>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Message</span></span> {
@@ -638,7 +642,7 @@
     Response { id: <span class="hljs-built_in">String</span>, result: Value },
 }
 </code></pre>
-<h2 id="externally-tagged">Externally tagged</h2>
+<h2 id="externally-tagged"><a name="externally-tagged" class="plugin-anchor" href="#externally-tagged"><i class="fa fa-link" aria-hidden="true"></i></a>Externally tagged</h2>
 <p>The default representation for this enum in Serde is called the externally
 tagged enum representation. Written in JSON syntax it looks like:</p>
 <pre><code class="lang-json">{<span class="hljs-string">&quot;Request&quot;</span>: {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;...&quot;</span>, <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;...&quot;</span>, <span class="hljs-string">&quot;params&quot;</span>: {...}}}
@@ -654,7 +658,7 @@ tuple variants, newtype variants, and unit variants.</p>
 <p>In JSON and other self-describing formats, the externally tagged representation
 is often not ideal for readability. Serde provides attributes to select two
 other possible representations.</p>
-<h2 id="internally-tagged">Internally tagged</h2>
+<h2 id="internally-tagged"><a name="internally-tagged" class="plugin-anchor" href="#internally-tagged"><i class="fa fa-link" aria-hidden="true"></i></a>Internally tagged</h2>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-meta">#[serde(tag = <span class="hljs-meta-string">&quot;type&quot;</span>)]</span>
 <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Message</span></span> {
@@ -672,7 +676,7 @@ in Java libraries.</p>
 structs or maps, and unit variants but does not work for enums containing tuple
 variants. Using a <code>#[serde(tag = &quot;...&quot;)]</code> attribute on an enum containing a
 tuple variant is an error at compile time.</p>
-<h2 id="adjacently-tagged">Adjacently tagged</h2>
+<h2 id="adjacently-tagged"><a name="adjacently-tagged" class="plugin-anchor" href="#adjacently-tagged"><i class="fa fa-link" aria-hidden="true"></i></a>Adjacently tagged</h2>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-meta">#[serde(tag = <span class="hljs-meta-string">&quot;t&quot;</span>, content = <span class="hljs-meta-string">&quot;c&quot;</span>)]</span>
 <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Block</span></span> {
@@ -686,7 +690,7 @@ tuple variant is an error at compile time.</p>
 </code></pre>
 <p>The tag and the content are adjacent to each other as two fields within the same
 object.</p>
-<h2 id="untagged">Untagged</h2>
+<h2 id="untagged"><a name="untagged" class="plugin-anchor" href="#untagged"><i class="fa fa-link" aria-hidden="true"></i></a>Untagged</h2>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-meta">#[serde(untagged)]</span>
 <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Message</span></span> {
@@ -737,7 +741,7 @@ either an integer or an array of two strings:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Enum representations","level":"1.9.2","depth":2,"next":{"title":"Borrowing data","level":"1.9.3","depth":2,"path":"borrow.md","ref":"borrow.md","articles":[]},"previous":{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"enum-representations.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-09T16:12:29.009Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Enum representations","level":"1.9.2","depth":2,"next":{"title":"Borrowing data","level":"1.9.3","depth":2,"path":"borrow.md","ref":"borrow.md","articles":[]},"previous":{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"enum-representations.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-13T04:56:33.333Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

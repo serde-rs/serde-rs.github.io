@@ -33,3 +33,13 @@
 .code-filename {
 	background-color: rgba(0,0,0,0.1);
 }
+
+a.plugin-anchor {
+    color: rgba(0,0,0,0.3) !important;
+    margin-left: -50px;
+    padding-left: 52px;
+}
+
+a.plugin-anchor i {
+    margin-left: -50px;
+}

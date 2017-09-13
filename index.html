@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
                 
             
@@ -633,7 +637,7 @@
   <a href="https://docs.serde.rs/serde/" target="_blank"><img src="img/rustdoc.svg" alt="rustdoc"></a>
   <a href="https://crates.io/crates/serde" target="_blank"><img src="https://img.shields.io/crates/v/serde.svg?style=social" alt="Latest Version"></a>
 </span></p>
-<h1 id="serde">Serde</h1>
+<h1 id="serde"><a name="serde" class="plugin-anchor" href="#serde"><i class="fa fa-link" aria-hidden="true"></i></a>Serde</h1>
 <p>Serde is a framework for <strong><em>ser</em></strong>ializing and <strong><em>de</em></strong>serializing Rust data
 structures efficiently and generically.</p>
 <p>The Serde ecosystem consists of data structures that know how to serialize and
@@ -641,7 +645,7 @@ deserialize themselves along with data formats that know how to serialize and
 deserialize other things. Serde provides the layer by which these two groups
 interact with each other, allowing any supported data structure to be serialized
 and deserialized using any supported data format.</p>
-<h3 id="design">Design</h3>
+<h3 id="design"><a name="design" class="plugin-anchor" href="#design"><i class="fa fa-link" aria-hidden="true"></i></a>Design</h3>
 <p>Where many other languages rely on runtime reflection for serializing data,
 Serde is instead built on Rust&apos;s powerful trait system. A data structure that
 knows how to serialize and deserialize itself is one that implements Serde&apos;s
@@ -652,7 +656,7 @@ the interaction between data structure and data format can be completely
 optimized away by the Rust compiler, leaving Serde serialization to perform
 the same speed as a handwritten serializer for the specific selection of data
 structure and data format.</p>
-<h3 id="data-formats">Data formats</h3>
+<h3 id="data-formats"><a name="data-formats" class="plugin-anchor" href="#data-formats"><i class="fa fa-link" aria-hidden="true"></i></a>Data formats</h3>
 <p>The following is a partial list of data formats that have been implemented for
 Serde by the community.</p>
 <ul>
@@ -676,7 +680,7 @@ language.</li>
 <li><a href="https://github.com/OneSignal/serde-redis" target="_blank">Redis</a>, deserialize values from Redis when using <a href="https://crates.io/crates/redis" target="_blank">redis-rs</a>.
 <em>(deserialization only)</em></li>
 </ul>
-<h3 id="data-structures">Data structures</h3>
+<h3 id="data-structures"><a name="data-structures" class="plugin-anchor" href="#data-structures"><i class="fa fa-link" aria-hidden="true"></i></a>Data structures</h3>
 <p>Out of the box, Serde is able to serialize and deserialize common Rust data
 types in any of the above formats. For example <code>String</code>, <code>&amp;str</code>, <code>usize</code>,
 <code>Vec&lt;T&gt;</code>, <code>HashMap&lt;K,V&gt;</code> are all supported. In addition, Serde provides a derive
@@ -733,7 +737,7 @@ Using the derive macro goes like this:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2017-08-05T22:17:31.417Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-09T16:12:29.009Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2017-08-05T22:17:31.417Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-09-13T04:56:33.333Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
