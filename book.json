@@ -2,7 +2,7 @@
     "root": "_src",
     "title": "Serde",
     "language": "en",
-    "plugins": ["-search", "-sharing", "sane-sidebar", "codeblock-omit", "codeblock-rust", "edit-link", "ga", "bulk-redirect", "checklist"],
+    "plugins": ["-search", "-sharing", "sane-sidebar", "codeblock-omit", "codeblock-rust", "edit-link", "ga", "bulk-redirect", "checklist", "anchors"],
     "pluginsConfig": {
         "edit-link": {
             "base": "https://github.com/serde-rs/serde-rs.github.io/edit/master/_src",
