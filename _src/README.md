@@ -11,6 +11,8 @@
 [Latest Version]: https://img.shields.io/crates/v/serde.svg?style=social
 [crates.io]: https://crates.io/crates/serde
 
+<div style="clear:both"></div>
+
 # Serde
 
 Serde is a framework for ***ser***ializing and ***de***serializing Rust data
