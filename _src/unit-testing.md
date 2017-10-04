@@ -9,7 +9,7 @@ The `Serialize` impl for a value can be characterized by the sequence of
 are made in the course of serializing the value, so `serde_test` provides a
 [`Token`](https://docs.serde.rs/serde_test/enum.Token.html) abstraction which
 corresponds roughly to `Serializer` method calls. It provides an
-`assert_ser_tokens` funtion to test that a value serializes into a particular
+`assert_ser_tokens` function to test that a value serializes into a particular
 sequence of method calls, an `assert_de_tokens` function to test that a value
 can be deserialized from a particular sequence of method calls, and an
 `assert_tokens` function to test both directions. It also provides functions to
