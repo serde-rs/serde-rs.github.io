@@ -40,3 +40,9 @@
   required be able to derive `Deserialize`.
   
   `FIELDS` is a tuple of all fields of the variant. A unit variant will have `()` as its `FIELDS` type.
+
+- ##### `#[serde(with = "module")]`
+
+  Combination of `serialize_with` and `deserialize_with`. Serde will use
+  `$module::serialize` as the `serialize_with` function and
+  `$module::deserialize` as the `deserialize_with` function.
