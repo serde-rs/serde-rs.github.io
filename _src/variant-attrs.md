@@ -24,7 +24,7 @@
 
   Serialize this variant using a function that is different from its
   implementation of `Serialize`. The given function must be callable as
-  `fn<S>(FIELD0, FIELD1, ..., S) -> Result<S::Ok, S::Error> where S: Serializer`, although it
+  `fn<S>(&FIELD0, &FIELD1, ..., S) -> Result<S::Ok, S::Error> where S: Serializer`, although it
   may also be generic over the `FIELD{n}` types. Variants used with `serialize_with` are not
   required to be able to derive `Serialize`.
   
