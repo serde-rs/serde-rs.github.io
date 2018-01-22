@@ -6,7 +6,7 @@ variety of freestanding environments.
 Building Serde with `default-features = false`, you will receive a stock
 `no_std` Serde with no support for any of the collection types.
 
-[Cargo features]: http://doc.crates.io/manifest.html#the-features-section
+[Cargo features]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
 
 #### --feature derive
 
