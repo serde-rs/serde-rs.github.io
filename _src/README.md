@@ -52,7 +52,7 @@ Serde by the community.
 - [MessagePack], an efficient binary format that resembles a compact JSON.
 - [TOML], a minimal configuration format used by [Cargo].
 - [Pickle], a format common in the Python world.
-- [RON], a Rusty Object Notation
+- [RON], a Rusty Object Notation.
 - [Hjson], a variant of JSON designed to be readable and writable by humans.
 - [BSON], the data storage and network transfer format used by MongoDB.
 - [URL], the x-www-form-urlencoded format.
