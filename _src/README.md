@@ -53,7 +53,6 @@ Serde by the community.
 - [TOML], a minimal configuration format used by [Cargo].
 - [Pickle], a format common in the Python world.
 - [RON], a Rusty Object Notation.
-- [Hjson], a variant of JSON designed to be readable and writable by humans.
 - [BSON], the data storage and network transfer format used by MongoDB.
 - [URL], the x-www-form-urlencoded format.
 - [XML], the flexible machine-friendly W3C standard.
@@ -71,7 +70,6 @@ Serde by the community.
 [TOML]: https://github.com/alexcrichton/toml-rs
 [Pickle]: https://github.com/birkenfeld/serde-pickle
 [RON]: https://github.com/ron-rs/ron
-[Hjson]: https://github.com/laktak/hjson-rust
 [BSON]: https://github.com/zonyitoo/bson-rs
 [URL]: https://github.com/nox/serde_urlencoded
 [XML]: https://github.com/RReverser/serde-xml-rs
