@@ -19,6 +19,3 @@ serde-transcode = "1.0"
 serde_yaml = "0.7"
 skeptic = "0.9"
 void = "1.0"
-
-[replace]
-'yaml-rust:0.3.5' = { git = "https://github.com/dtolnay/serde-yaml", branch = "yaml-rust" }
