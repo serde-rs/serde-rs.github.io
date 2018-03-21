@@ -23,6 +23,7 @@
     * [Enum representations](enum-representations.md)
     * [Borrowing data](borrow.md)
     * [Default value for a field](attr-default.md)
+    * [Struct flattening](attr-flatten.md)
     * [Handwritten generic type bounds](attr-bound.md)
     * [Deserialize for custom map type](deserialize-map.md)
     * [Array of values without buffering](stream-array.md)

@@ -17,6 +17,17 @@
   `default = "empty_value"` would invoke `empty_value()` and `default =
   "SomeTrait::some_default"` would invoke `SomeTrait::some_default()`.
 
+- #### `#[serde(flatten)]`
+
+  Flatten the contents of this field into the container it's defined in.
+
+  This removes one level of structure in a map or a value that serializes into
+  a map.  Structs are automatically converted into maps when flattening is
+  used.  This can for instance be used to capture the remaining fields in a
+  JSON object into a hash map or to move common keys into a separate object.
+
+  This feature currently cannot be used with internally or untagged enums.
+
 - ##### `#[serde(skip)]`
 
   Skip this field: do not serialize or deserialize it.
