@@ -1,66 +1,98 @@
 # Struct flattening
 
-Limited support for flattening of data is supported by serde through the `#[serde(flatten)]`
-attribute.  It can be used for a variety of common purposes when working with JSON data
-in particular.
+The `flatten` attribute serves the following two common use cases.
 
-## Refactor common elements
+It is supported only within structs that have named fields. It may be used any
+number of times within the same struct.
 
-For instance flatten can be used to move common
+### Factor out frequently grouped keys
+
+Consider a paginated API which returns a page of results along with pagination
+metadata that identifies how many results were requested, how far into the total
+set of results we are looking at, and how many results exist in total. If we are
+paging through a total of 1053 results 100 at a time, the third page may look
+like this.
+
+```json
+{
+  "limit": 100,
+  "offset": 200,
+  "total": 1053,
+  "users": [
+    {"id": "49824073-979f-4814-be10-5ea416ee1c2f", "username": "john_doe"},
+    ...
+  ]
+}
+```
+
+This same scheme with `"limit"` and `"offset"` and `"total"` fields may be
+shared across lots of different API queries. For example we may want paginated
+results when querying for users, for issues, for projects, etc.
+
+In this case it can be convient to factor the common pagination metadata fields
+into a shared struct that can be flattened into each API response object.
 
 ```rust
-#[derive(Serialize, Deserialize, Debug)]
-struct PaginatedResponse<U> {
-    #[serde(flatten)]
-    pagination: Pagination,
-    items: Vec<U>
-}
-
-#[derive(Serialize, Deserialize, Debug)]
+# #[macro_use]
+# extern crate serde_derive;
+#
+#[derive(Serialize, Deserialize)]
 struct Pagination {
     limit: u64,
     offset: u64,
     total: u64,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize)]
+struct Users {
+    users: Vec<User>,
+
+    #[serde(flatten)]
+    pagination: Pagination,
+}
+#
+# #[derive(Serialize, Deserialize)]
+# struct User;
+#
+# fn main() {}
+```
+
+### Capture additional fields
+
+A field of map type can be flattened to hold additional data that is not
+captured by any other fields of the struct.
+
+```rust
+# #[macro_use]
+# extern crate serde_derive;
+# extern crate serde_json;
+#
+use std::collections::HashMap;
+use serde_json::Value;
+
+#[derive(Serialize, Deserialize)]
 struct User {
     id: String,
     username: String,
-    email: Option<String>,
+
+    #[serde(flatten)]
+    extra: HashMap<String, Value>,
 }
+#
+# fn main() {}
 ```
 
-Then `PaginatedResponse<User>` can be deserialized from this data:
+For example if we fill the flattened `extra` field with the key `"mascot":
+"Ferris"`, it would serialize to the following JSON representation.
 
 ```json
 {
-  "limit": 100,
-  "offset": 200,
-  "total": 10553,
-  "items": [
-    {"id": "49824073-979f-4814-be10-5ea416ee1c2f", username": "john_doe"},
-    ...
-  ]
+  "id": "49824073-979f-4814-be10-5ea416ee1c2f",
+  "username": "john_doe",
+  "mascot": "Ferris"
 }
 ```
 
-## Capture additional data
-
-A second common usecase for flatten is to collect all remaining data in a struct
-into a hashmap:
-
-```rust
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Object {
-    id: String,
-    #[serde(rename = "type")]
-    ty: String,
-    #[serde(flatten)]
-    extra: HashMap<String, String>,
-}
-```
-
-This way additional data in an object can be collected into the `extra` hash map
-for later processing.
+Deserialization of this data would populate `"mascot"` back into the flattened
+`extra` field. This way additional data in an object can be collected for later
+processing.

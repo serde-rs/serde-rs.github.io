@@ -17,16 +17,15 @@
   `default = "empty_value"` would invoke `empty_value()` and `default =
   "SomeTrait::some_default"` would invoke `SomeTrait::some_default()`.
 
-- #### `#[serde(flatten)]`
+- ##### `#[serde(flatten)]`
 
-  Flatten the contents of this field into the container it's defined in.
+  Flatten the contents of this field into the container it is defined in.
 
-  This removes one level of structure in a map or a value that serializes into
-  a map.  Structs are automatically converted into maps when flattening is
-  used.  This can for instance be used to capture the remaining fields in a
-  JSON object into a hash map or to move common keys into a separate object.
-
-  This feature currently cannot be used with internally or untagged enums.
+  This removes one level of structure between the serialized representation and
+  the Rust data structure representation. It can be used for factoring common
+  keys into a shared structure, or for capturing remaining fields into a map
+  with arbitrary string keys. The [struct flattening](attr-flatten.md) page
+  provides some examples.
 
 - ##### `#[serde(skip)]`
 
