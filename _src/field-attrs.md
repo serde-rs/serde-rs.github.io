@@ -17,6 +17,16 @@
   `default = "empty_value"` would invoke `empty_value()` and `default =
   "SomeTrait::some_default"` would invoke `SomeTrait::some_default()`.
 
+- ##### `#[serde(flatten)]`
+
+  Flatten the contents of this field into the container it is defined in.
+
+  This removes one level of structure between the serialized representation and
+  the Rust data structure representation. It can be used for factoring common
+  keys into a shared structure, or for capturing remaining fields into a map
+  with arbitrary string keys. The [struct flattening](attr-flatten.md) page
+  provides some examples.
+
 - ##### `#[serde(skip)]`
 
   Skip this field: do not serialize or deserialize it.
