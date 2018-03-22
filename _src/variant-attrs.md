@@ -27,7 +27,7 @@
   `fn<S>(&FIELD0, &FIELD1, ..., S) -> Result<S::Ok, S::Error> where S: Serializer`, although it
   may also be generic over the `FIELD{n}` types. Variants used with `serialize_with` are not
   required to be able to derive `Serialize`.
-  
+
   `FIELD{n}` exists for every field of the variant. So a unit variant has just the `S` argument,
   and tuple/struct variants have an argument for every field.
 
@@ -38,7 +38,7 @@
   `fn<'de, D>(D) -> Result<FIELDS, D::Error> where D: Deserializer<'de>`, although it
   may also be generic over the elements of `FIELDS`. Variants used with `deserialize_with` are not
   required be able to derive `Deserialize`.
-  
+
   `FIELDS` is a tuple of all fields of the variant. A unit variant will have `()` as its `FIELDS` type.
 
 - ##### `#[serde(with = "module")]`
