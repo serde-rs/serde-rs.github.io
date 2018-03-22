@@ -413,7 +413,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.5" data-path="attr-bound.html">
+        <li class="chapter " data-level="1.9.5" data-path="attr-flatten.html">
+            
+                <a href="attr-flatten.html">
+            
+                    
+                    Struct flattening
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.6" data-path="attr-bound.html">
             
                 <a href="attr-bound.html">
             
@@ -426,7 +439,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.6" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.9.7" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -439,7 +452,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.7" data-path="stream-array.html">
+        <li class="chapter " data-level="1.9.8" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -452,7 +465,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.9" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -465,7 +478,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.10" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -478,7 +491,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.11" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -491,7 +504,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.11" data-path="remote-derive.html">
+        <li class="chapter " data-level="1.9.12" data-path="remote-derive.html">
             
                 <a href="remote-derive.html">
             
@@ -504,7 +517,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.13" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
@@ -517,7 +530,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.13" data-path="ignored-any.html">
+        <li class="chapter " data-level="1.9.14" data-path="ignored-any.html">
             
                 <a href="ignored-any.html">
             
@@ -530,7 +543,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.14" data-path="transcode.html">
+        <li class="chapter " data-level="1.9.15" data-path="transcode.html">
             
                 <a href="transcode.html">
             
@@ -543,7 +556,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.15" data-path="string-or-struct.html">
+        <li class="chapter " data-level="1.9.16" data-path="string-or-struct.html">
             
                 <a href="string-or-struct.html">
             
@@ -556,7 +569,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.16" data-path="convert-error.html">
+        <li class="chapter " data-level="1.9.17" data-path="convert-error.html">
             
                 <a href="convert-error.html">
             
@@ -569,7 +582,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.17" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.18" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -649,6 +662,14 @@ serializing fields with names that are reserved Rust keywords.</p>
 default value. The given function must be callable as <code>fn() -&gt; T</code>. For example
 <code>default = &quot;empty_value&quot;</code> would invoke <code>empty_value()</code> and <code>default =
 &quot;SomeTrait::some_default&quot;</code> would invoke <code>SomeTrait::some_default()</code>.</p>
+</li>
+<li><h5 id="serdeflatten"><a name="serdeflatten" class="plugin-anchor" href="#serdeflatten"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(flatten)]</code></h5>
+<p>Flatten the contents of this field into the container it is defined in.</p>
+<p>This removes one level of structure between the serialized representation and
+the Rust data structure representation. It can be used for factoring common
+keys into a shared structure, or for capturing remaining fields into a map
+with arbitrary string keys. The <a href="attr-flatten.html">struct flattening</a> page
+provides some examples.</p>
 </li>
 <li><h5 id="serdeskip"><a name="serdeskip" class="plugin-anchor" href="#serdeskip"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip)]</code></h5>
 <p>Skip this field: do not serialize or deserialize it.</p>
@@ -734,7 +755,7 @@ that has one or more private fields.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Field attributes","level":"1.5.3","depth":2,"next":{"title":"Custom serialization","level":"1.6","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"previous":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"field-attrs.md","mtime":"2017-05-17T15:24:01.741Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-24T18:28:41.472Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Field attributes","level":"1.5.3","depth":2,"next":{"title":"Custom serialization","level":"1.6","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"previous":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"field-attrs.md","mtime":"2018-03-22T22:21:55.028Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-22T22:51:03.656Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
