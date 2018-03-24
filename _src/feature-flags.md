@@ -26,6 +26,10 @@ open an issue to let us know about your use case.
 Provide impls for common standard library types like Vec&lt;T&gt; and
 HashMap&lt;K, V&gt;. Requires a dependency on the Rust standard library.
 
+See [no-std support] for details.
+
+[no-std support]: no-std.md
+
 #### --feature unstable
 
 Provide impls for types that require unstable functionality. For tracking and
@@ -42,6 +46,8 @@ including String, Box&lt;T&gt;, Vec&lt;T&gt;, and Cow&lt;T&gt;. This is a subset
 of std but may be enabled without depending on all of std.
 
 Requires a dependency on the unstable [core allocation library].
+
+See [no-std support] for details.
 
 [core allocation library]: https://doc.rust-lang.org/alloc/
 
