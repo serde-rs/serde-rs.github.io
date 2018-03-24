@@ -37,4 +37,5 @@
     * [Either string or struct](string-or-struct.md)
     * [Convert error types](convert-error.md)
     * [Custom date format](custom-date-format.md)
+* [No-std support](no-std.md)
 * [Feature flags](feature-flags.md)
