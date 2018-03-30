@@ -56,3 +56,12 @@ See [no-std support] for details.
 Opt into impls for Rc&lt;T&gt; and Arc&lt;T&gt;. Serializing and deserializing
 these types does not preserve identity and may result in multiple copies of the
 same data. Be sure that this is what you want before enabling this feature.
+
+Serializing a data structure containing reference-counted pointers will
+serialize a copy of the inner value of the pointer each time a pointer is
+referenced within the data structure. Serialization will not attempt to
+deduplicate these repeated data.
+
+Deserializing a data structure containing reference-counted pointers will not
+attempt to deduplicate references to the same data. Every deserialized pointer
+will end up with a strong count of 1.
