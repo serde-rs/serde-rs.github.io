@@ -68,7 +68,10 @@ the following 27 types:
   - A variably sized heterogeneous sequence of values, for example `Vec<T>` or
     `HashSet<T>`. When serializing, the length may or may not be known before
     iterating through all the data. When deserializing, the length is determined
-    by looking at the serialized data.
+    by looking at the serialized data. Note that a homogeneous Rust collection
+    like `vec![Value::Bool(true), Value::Char('c')]` may serialize as a
+    heterogeneous Serde seq, in this case containing a Serde bool followed by a
+    Serde char.
 - **tuple**
   - A statically sized heterogeneous sequence of values for which the length
     will be known at deserialization time without looking at the serialized
