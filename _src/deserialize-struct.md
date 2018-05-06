@@ -21,7 +21,7 @@ names. Instead there is a `Field` enum which is deserialized from a `&str`.
 The implementation supports two possible ways that a struct may be represented
 by a data format: as a seq like in Bincode, and as a map like in JSON.
 
-!PLAYGROUND 7ba6f7476f22e57e82238832dd740d6e
+!PLAYGROUND 29a53a6dfc923042ef39f1778dd12d5b
 ```rust
 # extern crate serde;
 #
@@ -97,9 +97,9 @@ impl<'de> Deserialize<'de> for Duration {
                 V: SeqAccess<'de>,
             {
                 let secs = seq.next_element()?
-                              .ok_or_else(|| de::Error::invalid_length(0, &self))?;
+                    .ok_or_else(|| de::Error::invalid_length(0, &self))?;
                 let nanos = seq.next_element()?
-                               .ok_or_else(|| de::Error::invalid_length(1, &self))?;
+                    .ok_or_else(|| de::Error::invalid_length(1, &self))?;
                 Ok(Duration::new(secs, nanos))
             }
 
