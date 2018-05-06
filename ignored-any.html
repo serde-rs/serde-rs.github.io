@@ -697,7 +697,8 @@ gets deserialized.</p>
 }
 
 <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, T&gt; Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> NthElement&lt;T&gt;
-    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+<span class="hljs-keyword">where</span>
+    T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
 {
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
 
@@ -706,7 +707,8 @@ gets deserialized.</p>
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> seq: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, V::Error&gt;
-        <span class="hljs-keyword">where</span> V: SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    <span class="hljs-keyword">where</span>
+        V: SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
         <span class="hljs-comment">// Skip over the first `n` elements.</span>
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..<span class="hljs-keyword">self</span>.n {
@@ -730,12 +732,14 @@ gets deserialized.</p>
 }
 
 <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, T&gt; DeserializeSeed&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> NthElement&lt;T&gt;
-    <span class="hljs-keyword">where</span> T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+<span class="hljs-keyword">where</span>
+    T: Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
 {
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Value</span></span> = T;
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(<span class="hljs-keyword">self</span>, deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    <span class="hljs-keyword">where</span>
+        D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
         deserializer.deserialize_seq(<span class="hljs-keyword">self</span>)
     }
@@ -777,7 +781,7 @@ gets deserialized.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Discarding data","level":"1.9.14","depth":2,"next":{"title":"Transcode into another format","level":"1.9.15","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.9.13","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"ignored-any.md","mtime":"2017-09-09T16:11:02.975Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-11T15:49:16.409Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Discarding data","level":"1.9.14","depth":2,"next":{"title":"Transcode into another format","level":"1.9.15","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"previous":{"title":"Manually deserialize struct","level":"1.9.13","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"ignored-any.md","mtime":"2018-05-06T01:45:06.488Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-06T02:29:40.933Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

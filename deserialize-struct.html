@@ -673,13 +673,14 @@ map</a> in order to avoid allocating a String to hold the field
 names. Instead there is a <code>Field</code> enum which is deserialized from a <code>&amp;str</code>.</p>
 <p>The implementation supports two possible ways that a struct may be represented
 by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
-<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=7ba6f7476f22e57e82238832dd740d6e"></a><code class="lang-rust"><span class="hljs-keyword">use</span> std::fmt;
+<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=29a53a6dfc923042ef39f1778dd12d5b"></a><code class="lang-rust"><span class="hljs-keyword">use</span> std::fmt;
 
 <span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
 
 <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Duration {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">Self</span>, D::Error&gt;
-        <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+    <span class="hljs-keyword">where</span>
+        D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
         <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Field</span></span> { Secs, Nanos };
 
@@ -690,7 +691,8 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
         <span class="hljs-comment">//    enum Field { Secs, Nanos }</span>
         <span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Field {
             <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize</span></span>&lt;D&gt;(deserializer: D) -&gt; <span class="hljs-built_in">Result</span>&lt;Field, D::Error&gt;
-                <span class="hljs-keyword">where</span> D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+            <span class="hljs-keyword">where</span>
+                D: Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
             {
                 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">FieldVisitor</span></span>;
 
@@ -702,7 +704,8 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
                     }
 
                     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_str</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: &amp;<span class="hljs-keyword">str</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Field, E&gt;
-                        <span class="hljs-keyword">where</span> E: de::Error
+                    <span class="hljs-keyword">where</span>
+                        E: de::Error,
                     {
                         <span class="hljs-keyword">match</span> value {
                             <span class="hljs-string">&quot;secs&quot;</span> =&gt; <span class="hljs-literal">Ok</span>(Field::Secs),
@@ -726,17 +729,19 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
             }
 
             <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> seq: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
-                <span class="hljs-keyword">where</span> V: SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+            <span class="hljs-keyword">where</span>
+                V: SeqAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
             {
                 <span class="hljs-keyword">let</span> secs = seq.next_element()?
-                              .ok_or_else(|| de::Error::invalid_length(<span class="hljs-number">0</span>, &amp;<span class="hljs-keyword">self</span>))?;
+                    .ok_or_else(|| de::Error::invalid_length(<span class="hljs-number">0</span>, &amp;<span class="hljs-keyword">self</span>))?;
                 <span class="hljs-keyword">let</span> nanos = seq.next_element()?
-                               .ok_or_else(|| de::Error::invalid_length(<span class="hljs-number">1</span>, &amp;<span class="hljs-keyword">self</span>))?;
+                    .ok_or_else(|| de::Error::invalid_length(<span class="hljs-number">1</span>, &amp;<span class="hljs-keyword">self</span>))?;
                 <span class="hljs-literal">Ok</span>(Duration::new(secs, nanos))
             }
 
             <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_map</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">mut</span> map: V) -&gt; <span class="hljs-built_in">Result</span>&lt;Duration, V::Error&gt;
-                <span class="hljs-keyword">where</span> V: MapAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;
+            <span class="hljs-keyword">where</span>
+                V: MapAccess&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
             {
                 <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> secs = <span class="hljs-literal">None</span>;
                 <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> nanos = <span class="hljs-literal">None</span>;
@@ -794,7 +799,7 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Manually deserialize struct","level":"1.9.13","depth":2,"next":{"title":"Discarding data","level":"1.9.14","depth":2,"path":"ignored-any.md","ref":"ignored-any.md","articles":[]},"previous":{"title":"Derive for remote crate","level":"1.9.12","depth":2,"path":"remote-derive.md","ref":"remote-derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-struct.md","mtime":"2017-05-09T21:08:28.187Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-11T15:49:16.409Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Manually deserialize struct","level":"1.9.13","depth":2,"next":{"title":"Discarding data","level":"1.9.14","depth":2,"path":"ignored-any.md","ref":"ignored-any.md","articles":[]},"previous":{"title":"Derive for remote crate","level":"1.9.12","depth":2,"path":"remote-derive.md","ref":"remote-derive.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"deserialize-struct.md","mtime":"2018-05-06T02:26:28.387Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-06T02:29:40.933Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

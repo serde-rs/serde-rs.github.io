@@ -664,7 +664,8 @@
 <p>The <a href="https://docs.serde.rs/serde/ser/trait.Serialize.html" target="_blank"><code>Serialize</code></a> trait looks like this:</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Serialize</span></span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
-        <span class="hljs-keyword">where</span> S: Serializer;
+    <span class="hljs-keyword">where</span>
+        S: Serializer;
 }
 </code></pre>
 <p>This method&apos;s job is to take your type (<code>&amp;self</code>) and map it into the <a href="data-model.html">Serde data
@@ -678,7 +679,8 @@ support, you can implement <code>Serialize</code> yourself.</p>
 <code>i32</code>.</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">impl</span> Serialize <span class="hljs-keyword">for</span> <span class="hljs-keyword">i32</span> {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
-        <span class="hljs-keyword">where</span> S: Serializer
+    <span class="hljs-keyword">where</span>
+        S: Serializer,
     {
         serializer.serialize_i32(*<span class="hljs-keyword">self</span>)
     }
@@ -694,10 +696,12 @@ as a primitive number</a>.</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">use</span> serde::ser::{Serialize, Serializer, SerializeSeq, SerializeMap};
 
 <span class="hljs-keyword">impl</span>&lt;T&gt; Serialize <span class="hljs-keyword">for</span> <span class="hljs-built_in">Vec</span>&lt;T&gt;
-    <span class="hljs-keyword">where</span> T: Serialize
+<span class="hljs-keyword">where</span>
+    T: Serialize,
 {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
-        <span class="hljs-keyword">where</span> S: Serializer
+    <span class="hljs-keyword">where</span>
+        S: Serializer,
     {
         <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> seq = serializer.serialize_seq(<span class="hljs-literal">Some</span>(<span class="hljs-keyword">self</span>.len()))?;
         <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span> {
@@ -708,11 +712,13 @@ as a primitive number</a>.</p>
 }
 
 <span class="hljs-keyword">impl</span>&lt;K, V&gt; Serialize <span class="hljs-keyword">for</span> MyMap&lt;K, V&gt;
-    <span class="hljs-keyword">where</span> K: Serialize,
-          V: Serialize
+<span class="hljs-keyword">where</span>
+    K: Serialize,
+    V: Serialize,
 {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
-        <span class="hljs-keyword">where</span> S: Serializer
+    <span class="hljs-keyword">where</span>
+        S: Serializer,
     {
         <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> map = serializer.serialize_map(<span class="hljs-literal">Some</span>(<span class="hljs-keyword">self</span>.len()))?;
         <span class="hljs-keyword">for</span> (k, v) <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span> {
@@ -775,7 +781,8 @@ around the inner value, serializing just the inner value. See for example
 
 <span class="hljs-keyword">impl</span> Serialize <span class="hljs-keyword">for</span> Color {
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize</span></span>&lt;S&gt;(&amp;<span class="hljs-keyword">self</span>, serializer: S) -&gt; <span class="hljs-built_in">Result</span>&lt;S::<span class="hljs-literal">Ok</span>, S::Error&gt;
-        <span class="hljs-keyword">where</span> S: Serializer
+    <span class="hljs-keyword">where</span>
+        S: Serializer,
     {
         <span class="hljs-comment">// 3 is the number of fields in the struct.</span>
         <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> state = serializer.serialize_struct(<span class="hljs-string">&quot;Color&quot;</span>, <span class="hljs-number">3</span>)?;
@@ -848,7 +855,7 @@ and <code>Option::Some</code> as just the contained value.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing Serialize","level":"1.6.1","depth":2,"next":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"previous":{"title":"Custom serialization","level":"1.6","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serialize.md","mtime":"2017-04-18T21:53:05.393Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-11T15:49:16.409Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing Serialize","level":"1.6.1","depth":2,"next":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},"previous":{"title":"Custom serialization","level":"1.6","depth":1,"path":"custom-serialization.md","ref":"custom-serialization.md","articles":[{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"path":"impl-deserialize.md","ref":"impl-deserialize.md","articles":[]},{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serialize.md","mtime":"2018-05-06T01:48:52.014Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-06T02:29:40.933Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

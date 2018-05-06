@@ -685,7 +685,8 @@ is used.</p>
 <span class="hljs-comment">//</span>
 <span class="hljs-comment">// This basic serializer supports only `to_string`.</span>
 <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">to_string</span></span>&lt;T&gt;(value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">String</span>&gt;
-    <span class="hljs-keyword">where</span> T: Serialize
+<span class="hljs-keyword">where</span>
+    T: Serialize,
 {
     <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> serializer = Serializer { output: <span class="hljs-built_in">String</span>::new() };
     value.serialize(&amp;<span class="hljs-keyword">mut</span> serializer)?;
@@ -812,7 +813,8 @@ is used.</p>
     <span class="hljs-comment">// what people expect when working with JSON. Other formats are encouraged</span>
     <span class="hljs-comment">// to behave more intelligently if possible.</span>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_some</span></span>&lt;T&gt;(<span class="hljs-keyword">self</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         value.serialize(<span class="hljs-keyword">self</span>)
     }
@@ -847,7 +849,8 @@ is used.</p>
     <span class="hljs-comment">// As is done here, serializers are encouraged to treat newtype structs as</span>
     <span class="hljs-comment">// insignificant wrappers around the data they contain.</span>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_newtype_struct</span></span>&lt;T&gt;(<span class="hljs-keyword">self</span>, _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         value.serialize(<span class="hljs-keyword">self</span>)
     }
@@ -864,7 +867,8 @@ is used.</p>
         variant: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
         value: &amp;T
     ) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;{&quot;</span>;
         variant.serialize(&amp;<span class="hljs-keyword">mut</span> *<span class="hljs-keyword">self</span>)?;
@@ -971,7 +975,8 @@ is used.</p>
 
     <span class="hljs-comment">// Serialize a single element of the sequence.</span>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_element</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.output.ends_with(<span class="hljs-string">&apos;[&apos;</span>) {
             <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;,&quot;</span>;
@@ -992,7 +997,8 @@ is used.</p>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_element</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.output.ends_with(<span class="hljs-string">&apos;[&apos;</span>) {
             <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;,&quot;</span>;
@@ -1012,7 +1018,8 @@ is used.</p>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_field</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.output.ends_with(<span class="hljs-string">&apos;[&apos;</span>) {
             <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;,&quot;</span>;
@@ -1040,7 +1047,8 @@ is used.</p>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_field</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.output.ends_with(<span class="hljs-string">&apos;[&apos;</span>) {
             <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;,&quot;</span>;
@@ -1075,7 +1083,8 @@ is used.</p>
     <span class="hljs-comment">// (instead of `&amp;mut **self`) and having that other serializer only</span>
     <span class="hljs-comment">// implement `serialize_str` and return an error on any other data type.</span>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_key</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, key: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.output.ends_with(<span class="hljs-string">&apos;{&apos;</span>) {
             <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;,&quot;</span>;
@@ -1087,7 +1096,8 @@ is used.</p>
     <span class="hljs-comment">// `serialize_key` or at the beginning of `serialize_value`. In this case</span>
     <span class="hljs-comment">// the code is a bit simpler having it here.</span>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_value</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;:&quot;</span>;
         value.serialize(&amp;<span class="hljs-keyword">mut</span> **<span class="hljs-keyword">self</span>)
@@ -1106,7 +1116,8 @@ is used.</p>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_field</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, key: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.output.ends_with(<span class="hljs-string">&apos;{&apos;</span>) {
             <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;,&quot;</span>;
@@ -1129,7 +1140,8 @@ is used.</p>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Error</span></span> = Error;
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_field</span></span>&lt;T&gt;(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, key: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>, value: &amp;T) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
-        <span class="hljs-keyword">where</span> T: ?<span class="hljs-built_in">Sized</span> + Serialize
+    <span class="hljs-keyword">where</span>
+        T: ?<span class="hljs-built_in">Sized</span> + Serialize,
     {
         <span class="hljs-keyword">if</span> !<span class="hljs-keyword">self</span>.output.ends_with(<span class="hljs-string">&apos;{&apos;</span>) {
             <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;,&quot;</span>;
@@ -1214,7 +1226,7 @@ is used.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"next":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"previous":{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serializer.md","mtime":"2017-04-29T20:53:10.283Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-11T15:49:16.409Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"next":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"previous":{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serializer.md","mtime":"2018-05-06T01:49:33.787Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-06T02:29:40.933Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

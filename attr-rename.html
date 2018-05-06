@@ -661,7 +661,7 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="serialize-fields-as-camelcase"><a name="serialize-fields-as-camelcase" class="plugin-anchor" href="#serialize-fields-as-camelcase"><i class="fa fa-link" aria-hidden="true"></i></a>Serialize fields as camelCase</h1>
-<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=8a0c3ef399d8d4a69a14dd823e5ca111"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
+<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=493cf44147f5bc3a0e68c074f7c552ec"></a><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
 
 <span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
@@ -676,8 +676,8 @@
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
     <span class="hljs-keyword">let</span> person = Person {
-        first_name: <span class="hljs-string">&quot;Joel&quot;</span>.to_string(),
-        last_name: <span class="hljs-string">&quot;Spolsky&quot;</span>.to_string(),
+        first_name: <span class="hljs-string">&quot;Graydon&quot;</span>.to_string(),
+        last_name: <span class="hljs-string">&quot;Hoare&quot;</span>.to_string(),
     };
 
     <span class="hljs-keyword">let</span> json = serde_json::to_string_pretty(&amp;person).unwrap();
@@ -685,8 +685,8 @@
     <span class="hljs-comment">// Prints:</span>
     <span class="hljs-comment">//</span>
     <span class="hljs-comment">//    {</span>
-    <span class="hljs-comment">//      &quot;firstName&quot;: &quot;Joel&quot;,</span>
-    <span class="hljs-comment">//      &quot;lastName&quot;: &quot;Spolsky&quot;</span>
+    <span class="hljs-comment">//      &quot;firstName&quot;: &quot;Graydon&quot;,</span>
+    <span class="hljs-comment">//      &quot;lastName&quot;: &quot;Hoare&quot;</span>
     <span class="hljs-comment">//    }</span>
     <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, json);
 }
@@ -718,7 +718,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Serialize fields as camelCase","level":"1.9.10","depth":2,"next":{"title":"Skip serializing field","level":"1.9.11","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"previous":{"title":"Serialize enum as number","level":"1.9.9","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-rename.md","mtime":"2017-04-17T03:55:06.774Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-11T15:49:16.409Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Serialize fields as camelCase","level":"1.9.10","depth":2,"next":{"title":"Skip serializing field","level":"1.9.11","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"previous":{"title":"Serialize enum as number","level":"1.9.9","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"attr-rename.md","mtime":"2018-05-06T02:29:18.441Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-06T02:29:40.933Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
