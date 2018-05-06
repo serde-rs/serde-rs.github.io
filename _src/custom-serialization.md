@@ -17,12 +17,14 @@ The traits each have a single method:
 #
 pub trait Serialize {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer;
+    where
+        S: Serializer;
 }
 
 pub trait Deserialize<'de>: Sized {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>;
+    where
+        D: Deserializer<'de>;
 }
 #
 # fn main() {}

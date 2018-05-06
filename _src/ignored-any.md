@@ -41,7 +41,8 @@ impl<T> NthElement<T> {
 }
 
 impl<'de, T> Visitor<'de> for NthElement<T>
-    where T: Deserialize<'de>
+where
+    T: Deserialize<'de>,
 {
     type Value = T;
 
@@ -50,7 +51,8 @@ impl<'de, T> Visitor<'de> for NthElement<T>
     }
 
     fn visit_seq<V>(self, mut seq: V) -> Result<Self::Value, V::Error>
-        where V: SeqAccess<'de>
+    where
+        V: SeqAccess<'de>,
     {
         // Skip over the first `n` elements.
         for i in 0..self.n {
@@ -74,12 +76,14 @@ impl<'de, T> Visitor<'de> for NthElement<T>
 }
 
 impl<'de, T> DeserializeSeed<'de> for NthElement<T>
-    where T: Deserialize<'de>
+where
+    T: Deserialize<'de>,
 {
     type Value = T;
 
     fn deserialize<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         deserializer.deserialize_seq(self)
     }

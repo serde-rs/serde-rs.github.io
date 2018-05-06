@@ -13,7 +13,8 @@ The [`Deserialize`] and [`Deserializer`] traits both have a lifetime called
 #
 trait Deserialize<'de>: Sized {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>;
+    where
+        D: Deserializer<'de>;
 }
 #
 # fn main() {}
@@ -145,7 +146,8 @@ struct S<'a, 'b, T> {
 }
 
 impl<'de: 'a + 'b, 'a, 'b, T> Deserialize<'de> for S<'a, 'b, T>
-    where T: Deserialize<'de>
+where
+    T: Deserialize<'de>,
 {
     /* ... */
 }
@@ -226,7 +228,8 @@ struct MyDeserializer<R> {
 }
 
 impl<'x, R> Deserializer<'x> for MyDeserializer<R>
-    where R: io::Read
+where
+    R: io::Read,
 {
     /* ... */
 }

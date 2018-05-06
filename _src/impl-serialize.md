@@ -11,7 +11,8 @@ The [`Serialize`] trait looks like this:
 #
 pub trait Serialize {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer;
+    where
+        S: Serializer;
 }
 #
 # fn main() {}
@@ -47,16 +48,19 @@ As the simplest example, here is the builtin `Serialize` impl for the primitive
 #
 # trait Serialize2 {
 #     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-#         where S: Serializer;
+#     where
+#         S: Serializer;
 # }
 #
 impl Serialize for i32 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
 #         impl Serialize2 for ActualI32 {
 #             fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-#                 where S: Serializer
+#             where
+#                 S: Serializer,
 #             {
         serializer.serialize_i32(*self)
 #             }
@@ -125,10 +129,12 @@ Compound types follow a three-step process of init, elements, end.
 use serde::ser::{Serialize, Serializer, SerializeSeq, SerializeMap};
 
 impl<T> Serialize for Vec<T>
-    where T: Serialize
+where
+    T: Serialize,
 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         let mut seq = serializer.serialize_seq(Some(self.len()))?;
         for e in self {
@@ -139,11 +145,13 @@ impl<T> Serialize for Vec<T>
 }
 
 impl<K, V> Serialize for MyMap<K, V>
-    where K: Serialize,
-          V: Serialize
+where
+    K: Serialize,
+    V: Serialize,
 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         let mut map = serializer.serialize_map(Some(self.len()))?;
         for (k, v) in self {
@@ -236,7 +244,8 @@ struct Color {
 
 impl Serialize for Color {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         // 3 is the number of fields in the struct.
         let mut state = serializer.serialize_struct("Color", 3)?;

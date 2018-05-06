@@ -43,7 +43,8 @@ use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
 
 impl<'de> Deserialize<'de> for Duration {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         enum Field { Secs, Nanos };
 
@@ -54,7 +55,8 @@ impl<'de> Deserialize<'de> for Duration {
         //    enum Field { Secs, Nanos }
         impl<'de> Deserialize<'de> for Field {
             fn deserialize<D>(deserializer: D) -> Result<Field, D::Error>
-                where D: Deserializer<'de>
+            where
+                D: Deserializer<'de>,
             {
                 struct FieldVisitor;
 
@@ -66,7 +68,8 @@ impl<'de> Deserialize<'de> for Duration {
                     }
 
                     fn visit_str<E>(self, value: &str) -> Result<Field, E>
-                        where E: de::Error
+                    where
+                        E: de::Error,
                     {
                         match value {
                             "secs" => Ok(Field::Secs),
@@ -90,7 +93,8 @@ impl<'de> Deserialize<'de> for Duration {
             }
 
             fn visit_seq<V>(self, mut seq: V) -> Result<Duration, V::Error>
-                where V: SeqAccess<'de>
+            where
+                V: SeqAccess<'de>,
             {
                 let secs = seq.next_element()?
                               .ok_or_else(|| de::Error::invalid_length(0, &self))?;
@@ -100,7 +104,8 @@ impl<'de> Deserialize<'de> for Duration {
             }
 
             fn visit_map<V>(self, mut map: V) -> Result<Duration, V::Error>
-                where V: MapAccess<'de>
+            where
+                V: MapAccess<'de>,
             {
                 let mut secs = None;
                 let mut nanos = None;

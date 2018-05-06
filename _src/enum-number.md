@@ -16,7 +16,8 @@ macro_rules! enum_number {
 
         impl ::serde::Serialize for $name {
             fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-                where S: ::serde::Serializer
+            where
+                S: ::serde::Serializer,
             {
                 // Serialize the enum as a u64.
                 serializer.serialize_u64(*self as u64)
@@ -25,7 +26,8 @@ macro_rules! enum_number {
 
         impl<'de> ::serde::Deserialize<'de> for $name {
             fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-                where D: ::serde::Deserializer<'de>
+            where
+                D: ::serde::Deserializer<'de>,
             {
                 struct Visitor;
 
@@ -37,7 +39,8 @@ macro_rules! enum_number {
                     }
 
                     fn visit_u64<E>(self, value: u64) -> Result<$name, E>
-                        where E: ::serde::de::Error
+                    where
+                        E: ::serde::de::Error,
                     {
                         // Rust does not come with a simple way of converting a
                         // number to an enum, so use a big `match`.

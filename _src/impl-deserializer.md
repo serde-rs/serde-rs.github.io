@@ -123,7 +123,8 @@ impl<'de> Deserializer<'de> {
 //
 // This basic deserializer supports only `from_str`.
 pub fn from_str<'a, T>(s: &'a str) -> Result<T>
-    where T: Deserialize<'a>
+where
+    T: Deserialize<'a>,
 {
     let mut deserializer = Deserializer::from_str(s);
     let t = T::deserialize(&mut deserializer)?;
@@ -169,7 +170,8 @@ impl<'de> Deserializer<'de> {
     // allowed in JSON. Also the various arithmetic operations can overflow and
     // panic or return bogus data. But it is good enough for example code!
     fn parse_unsigned<T>(&mut self) -> Result<T>
-        where T: AddAssign<T> + MulAssign<T> + From<u8>
+    where
+        T: AddAssign<T> + MulAssign<T> + From<u8>,
     {
         let mut int = match self.next_char()? {
             ch @ '0'...'9' => T::from(ch as u8 - b'0'),
@@ -194,7 +196,8 @@ impl<'de> Deserializer<'de> {
     // Parse a possible minus sign followed by a group of decimal digits as a
     // signed integer of type T.
     fn parse_signed<T>(&mut self) -> Result<T>
-        where T: Neg<Output = T> + AddAssign<T> + MulAssign<T> + From<i8>
+    where
+        T: Neg<Output = T> + AddAssign<T> + MulAssign<T> + From<i8>,
     {
         // Optional minus sign, delegate to `parse_unsigned`, negate if negative.
         unimplemented!()
@@ -226,7 +229,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // deserialize as. Not all data formats are able to support this operation.
     // Formats that support `deserialize_any` are known as self-describing.
     fn deserialize_any<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         match self.peek_char()? {
             'n' => self.deserialize_unit(visitor),
@@ -255,7 +259,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // mapping it to a Serde data model "struct" type with a special name and a
     // single field containing the Datetime represented as a string.
     fn deserialize_bool<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_bool(self.parse_bool()?)
     }
@@ -263,63 +268,73 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // The `parse_signed` function is generic over the integer type `T` so here
     // it is invoked with `T=i8`. The next 8 methods are similar.
     fn deserialize_i8<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_i8(self.parse_signed()?)
     }
 
     fn deserialize_i16<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_i16(self.parse_signed()?)
     }
 
     fn deserialize_i32<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_i32(self.parse_signed()?)
     }
 
     fn deserialize_i64<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_i64(self.parse_signed()?)
     }
 
     fn deserialize_u8<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_u8(self.parse_unsigned()?)
     }
 
     fn deserialize_u16<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_u16(self.parse_unsigned()?)
     }
 
     fn deserialize_u32<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_u32(self.parse_unsigned()?)
     }
 
     fn deserialize_u64<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_u64(self.parse_unsigned()?)
     }
 
     // Float parsing is stupidly hard.
     fn deserialize_f32<V>(self, _visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         unimplemented!()
     }
 
     // Float parsing is stupidly hard.
     fn deserialize_f64<V>(self, _visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         unimplemented!()
     }
@@ -327,7 +342,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // The `Serializer` implementation on the previous page serialized chars as
     // single-character strings so handle that representation here.
     fn deserialize_char<V>(self, _visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         // Parse a string, check that it is one character, call `visit_char`.
         unimplemented!()
@@ -336,13 +352,15 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // Refer to the "Understanding deserializer lifetimes" page for information
     // about the three deserialization flavors of strings in Serde.
     fn deserialize_str<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_borrowed_str(self.parse_string()?)
     }
 
     fn deserialize_string<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         self.deserialize_str(visitor)
     }
@@ -350,13 +368,15 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // The `Serializer` implementation on the previous page serialized byte
     // arrays as JSON arrays of bytes. Handle that representation here.
     fn deserialize_bytes<V>(self, _visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         unimplemented!()
     }
 
     fn deserialize_byte_buf<V>(self, _visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         unimplemented!()
     }
@@ -370,7 +390,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // expect when working with JSON. Other formats are encouraged to behave
     // more intelligently if possible.
     fn deserialize_option<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         if self.input.starts_with("null") {
             self.input = &self.input["null".len()..];
@@ -382,7 +403,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
 
     // In Serde, unit means an anonymous value containing no data.
     fn deserialize_unit<V>(self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         if self.input.starts_with("null") {
             self.input = &self.input["null".len()..];
@@ -398,7 +420,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         _name: &'static str,
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         self.deserialize_unit(visitor)
     }
@@ -411,7 +434,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         _name: &'static str,
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         visitor.visit_newtype_struct(self)
     }
@@ -420,7 +444,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // passing the visitor an "Access" object that gives it the ability to
     // iterate through the data contained in the sequence.
     fn deserialize_seq<V>(mut self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         // Parse the opening bracket of the sequence.
         if self.next_char()? == '[' {
@@ -448,7 +473,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         _len: usize,
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         self.deserialize_seq(visitor)
     }
@@ -460,7 +486,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         _len: usize,
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         self.deserialize_seq(visitor)
     }
@@ -469,7 +496,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // with a `MapAccess` implementation, rather than the visitor's `visit_seq`
     // method with a `SeqAccess` implementation.
     fn deserialize_map<V>(mut self, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         // Parse the opening brace of the map.
         if self.next_char()? == '{' {
@@ -498,7 +526,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         _fields: &'static [&'static str],
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         self.deserialize_map(visitor)
     }
@@ -509,7 +538,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         _variants: &'static [&'static str],
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         if self.peek_char()? == '"' {
             // Visit a unit variant.
@@ -536,7 +566,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         self,
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         self.deserialize_str(visitor)
     }
@@ -556,7 +587,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         self,
         visitor: V
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         self.deserialize_any(visitor)
     }
@@ -582,7 +614,8 @@ impl<'de, 'a> SeqAccess<'de> for CommaSeparated<'a, 'de> {
     type Error = Error;
 
     fn next_element_seed<T>(&mut self, seed: T) -> Result<Option<T::Value>>
-        where T: DeserializeSeed<'de>
+    where
+        T: DeserializeSeed<'de>,
     {
         // Check if there are no more elements.
         if self.de.peek_char()? == ']' {
@@ -604,7 +637,8 @@ impl<'de, 'a> MapAccess<'de> for CommaSeparated<'a, 'de> {
     type Error = Error;
 
     fn next_key_seed<K>(&mut self, seed: K) -> Result<Option<K::Value>>
-        where K: DeserializeSeed<'de>
+    where
+        K: DeserializeSeed<'de>,
     {
         // Check if there are no more entries.
         if self.de.peek_char()? == '}' {
@@ -620,7 +654,8 @@ impl<'de, 'a> MapAccess<'de> for CommaSeparated<'a, 'de> {
     }
 
     fn next_value_seed<V>(&mut self, seed: V) -> Result<V::Value>
-        where V: DeserializeSeed<'de>
+    where
+        V: DeserializeSeed<'de>,
     {
         // It doesn't make a difference whether the colon is parsed at the end
         // of `next_key_seed` or at the beginning of `next_value_seed`. In this
@@ -653,7 +688,8 @@ impl<'de, 'a> EnumAccess<'de> for Enum<'a, 'de> {
     type Variant = Self;
 
     fn variant_seed<V>(self, seed: V) -> Result<(V::Value, Self::Variant)>
-        where V: DeserializeSeed<'de>
+    where
+        V: DeserializeSeed<'de>,
     {
         // The `deserialize_enum` method parsed a `{` character so we are
         // currently inside of a map. The seed will be deserializing itself from
@@ -682,7 +718,8 @@ impl<'de, 'a> VariantAccess<'de> for Enum<'a, 'de> {
     // Newtype variants are represented in JSON as `{ NAME: VALUE }` so
     // deserialize the value here.
     fn newtype_variant_seed<T>(self, seed: T) -> Result<T::Value>
-        where T: DeserializeSeed<'de>
+    where
+        T: DeserializeSeed<'de>,
     {
         seed.deserialize(self.de)
     }
@@ -690,7 +727,8 @@ impl<'de, 'a> VariantAccess<'de> for Enum<'a, 'de> {
     // Tuple variants are represented in JSON as `{ NAME: [DATA...] }` so
     // deserialize the sequence of data here.
     fn tuple_variant<V>(self, _len: usize, visitor: V) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         de::Deserializer::deserialize_seq(self.de, visitor)
     }
@@ -702,7 +740,8 @@ impl<'de, 'a> VariantAccess<'de> for Enum<'a, 'de> {
         _fields: &'static [&'static str],
         visitor: V,
     ) -> Result<V::Value>
-        where V: Visitor<'de>
+    where
+        V: Visitor<'de>,
     {
         de::Deserializer::deserialize_map(self.de, visitor)
     }

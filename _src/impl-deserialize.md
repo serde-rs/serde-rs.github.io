@@ -11,7 +11,8 @@ The [`Deserialize`] trait looks like this:
 #
 pub trait Deserialize<'de>: Sized {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>;
+    where
+        D: Deserializer<'de>;
 }
 #
 # fn main() {}
@@ -86,19 +87,22 @@ impl<'de> Visitor<'de> for I32Visitor {
     }
 
     fn visit_i8<E>(self, value: i8) -> Result<i32, E>
-        where E: de::Error
+    where
+        E: de::Error,
     {
         Ok(value as i32)
     }
 
     fn visit_i32<E>(self, value: i32) -> Result<i32, E>
-        where E: de::Error
+    where
+        E: de::Error,
     {
         Ok(value)
     }
 
     fn visit_i64<E>(self, value: i64) -> Result<i32, E>
-        where E: de::Error
+    where
+        E: de::Error,
     {
         use std::i32;
         if value >= i32::MIN as i64 && value <= i32::MAX as i64 {
@@ -154,7 +158,8 @@ data, which is known as "driving" the `Visitor`.
 #
 impl<'de> Deserialize<'de> for i32 {
     fn deserialize<D>(deserializer: D) -> Result<i32, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         deserializer.deserialize_i32(I32Visitor)
     }

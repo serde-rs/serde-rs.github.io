@@ -48,8 +48,9 @@ impl<K, V> MyMapVisitor<K, V> {
 // By default those methods will return an error, which makes sense
 // because we cannot deserialize a MyMap from an integer or string.
 impl<'de, K, V> Visitor<'de> for MyMapVisitor<K, V>
-    where K: Deserialize<'de>,
-          V: Deserialize<'de>
+where
+    K: Deserialize<'de>,
+    V: Deserialize<'de>,
 {
     // The type that our Visitor is going to produce.
     type Value = MyMap<K, V>;
@@ -63,7 +64,8 @@ impl<'de, K, V> Visitor<'de> for MyMapVisitor<K, V>
     // Deserializer. The MapAccess input is a callback provided by
     // the Deserializer to let us see each entry in the map.
     fn visit_map<M>(self, mut access: M) -> Result<Self::Value, M::Error>
-        where M: MapAccess<'de>
+    where
+        M: MapAccess<'de>,
     {
         let mut map = MyMap::with_capacity(access.size_hint().unwrap_or(0));
 
@@ -79,11 +81,13 @@ impl<'de, K, V> Visitor<'de> for MyMapVisitor<K, V>
 
 // This is the trait that informs Serde how to deserialize MyMap.
 impl<'de, K, V> Deserialize<'de> for MyMap<K, V>
-    where K: Deserialize<'de>,
-          V: Deserialize<'de>
+where
+    K: Deserialize<'de>,
+    V: Deserialize<'de>,
 {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         // Instantiate our Visitor and ask the Deserializer to drive
         // it over the input data, resulting in an instance of MyMap.

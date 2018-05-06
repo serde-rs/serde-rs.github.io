@@ -38,13 +38,15 @@ struct Outer {
 /// This function is generic over T which can be any type that implements
 /// Ord. Above, it is used with T=u64.
 fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
-    where T: Deserialize<'de> + Ord,
-          D: Deserializer<'de>
+where
+    T: Deserialize<'de> + Ord,
+    D: Deserializer<'de>,
 {
     struct MaxVisitor<T>(PhantomData<fn() -> T>);
 
     impl<'de, T> Visitor<'de> for MaxVisitor<T>
-        where T: Deserialize<'de> + Ord
+    where
+        T: Deserialize<'de> + Ord,
     {
         /// Return type of this visitor. This visitor computes the max of a
         /// sequence of values of type T, so the type of the maximum is T.
@@ -55,7 +57,8 @@ fn deserialize_max<'de, T, D>(deserializer: D) -> Result<T, D::Error>
         }
 
         fn visit_seq<S>(self, mut seq: S) -> Result<T, S::Error>
-            where S: SeqAccess<'de>
+        where
+            S: SeqAccess<'de>,
         {
             // Start with max equal to the first value in the seq.
             let mut max = seq.next_element()?.ok_or_else(||

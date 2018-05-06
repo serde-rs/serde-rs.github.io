@@ -41,7 +41,8 @@ pub struct Serializer {
 //
 // This basic serializer supports only `to_string`.
 pub fn to_string<T>(value: &T) -> Result<String>
-    where T: Serialize
+where
+    T: Serialize,
 {
     let mut serializer = Serializer { output: String::new() };
     value.serialize(&mut serializer)?;
@@ -168,7 +169,8 @@ impl<'a> ser::Serializer for &'a mut Serializer {
     // what people expect when working with JSON. Other formats are encouraged
     // to behave more intelligently if possible.
     fn serialize_some<T>(self, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         value.serialize(self)
     }
@@ -203,7 +205,8 @@ impl<'a> ser::Serializer for &'a mut Serializer {
     // As is done here, serializers are encouraged to treat newtype structs as
     // insignificant wrappers around the data they contain.
     fn serialize_newtype_struct<T>(self, _name: &'static str, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         value.serialize(self)
     }
@@ -220,7 +223,8 @@ impl<'a> ser::Serializer for &'a mut Serializer {
         variant: &'static str,
         value: &T
     ) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         self.output += "{";
         variant.serialize(&mut *self)?;
@@ -327,7 +331,8 @@ impl<'a> ser::SerializeSeq for &'a mut Serializer {
 
     // Serialize a single element of the sequence.
     fn serialize_element<T>(&mut self, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         if !self.output.ends_with('[') {
             self.output += ",";
@@ -348,7 +353,8 @@ impl<'a> ser::SerializeTuple for &'a mut Serializer {
     type Error = Error;
 
     fn serialize_element<T>(&mut self, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         if !self.output.ends_with('[') {
             self.output += ",";
@@ -368,7 +374,8 @@ impl<'a> ser::SerializeTupleStruct for &'a mut Serializer {
     type Error = Error;
 
     fn serialize_field<T>(&mut self, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         if !self.output.ends_with('[') {
             self.output += ",";
@@ -396,7 +403,8 @@ impl<'a> ser::SerializeTupleVariant for &'a mut Serializer {
     type Error = Error;
 
     fn serialize_field<T>(&mut self, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         if !self.output.ends_with('[') {
             self.output += ",";
@@ -431,7 +439,8 @@ impl<'a> ser::SerializeMap for &'a mut Serializer {
     // (instead of `&mut **self`) and having that other serializer only
     // implement `serialize_str` and return an error on any other data type.
     fn serialize_key<T>(&mut self, key: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         if !self.output.ends_with('{') {
             self.output += ",";
@@ -443,7 +452,8 @@ impl<'a> ser::SerializeMap for &'a mut Serializer {
     // `serialize_key` or at the beginning of `serialize_value`. In this case
     // the code is a bit simpler having it here.
     fn serialize_value<T>(&mut self, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         self.output += ":";
         value.serialize(&mut **self)
@@ -462,7 +472,8 @@ impl<'a> ser::SerializeStruct for &'a mut Serializer {
     type Error = Error;
 
     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         if !self.output.ends_with('{') {
             self.output += ",";
@@ -485,7 +496,8 @@ impl<'a> ser::SerializeStructVariant for &'a mut Serializer {
     type Error = Error;
 
     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<()>
-        where T: ?Sized + Serialize
+    where
+        T: ?Sized + Serialize,
     {
         if !self.output.ends_with('{') {
             self.output += ",";
