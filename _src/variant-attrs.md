@@ -11,6 +11,10 @@
   convention. The possible values are `"lowercase"`, `"PascalCase"`,
   `"camelCase"`, `"snake_case"`, `"SCREAMING_SNAKE_CASE"`, `"kebab-case"`.
 
+- ##### `#[serde(skip)]`
+
+  Never serialize or deserialize this variant.
+
 - ##### `#[serde(skip_serializing)]`
 
   Never serialize this variant. Trying to serialize this variant is treated as
