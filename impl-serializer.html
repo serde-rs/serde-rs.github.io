@@ -732,15 +732,15 @@ is used.</p>
     <span class="hljs-comment">// will be serialized the same. Other formats, especially compact binary</span>
     <span class="hljs-comment">// formats, may need independent logic for the different sizes.</span>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_i8</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">i8</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
-        <span class="hljs-keyword">self</span>.serialize_i64(v <span class="hljs-keyword">as</span> <span class="hljs-keyword">i64</span>)
+        <span class="hljs-keyword">self</span>.serialize_i64(i64::from(v))
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_i16</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">i16</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
-        <span class="hljs-keyword">self</span>.serialize_i64(v <span class="hljs-keyword">as</span> <span class="hljs-keyword">i64</span>)
+        <span class="hljs-keyword">self</span>.serialize_i64(i64::from(v))
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_i32</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">i32</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
-        <span class="hljs-keyword">self</span>.serialize_i64(v <span class="hljs-keyword">as</span> <span class="hljs-keyword">i64</span>)
+        <span class="hljs-keyword">self</span>.serialize_i64(i64::from(v))
     }
 
     <span class="hljs-comment">// Not particularly efficient but this is example code anyway. A more</span>
@@ -751,15 +751,15 @@ is used.</p>
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_u8</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">u8</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
-        <span class="hljs-keyword">self</span>.serialize_u64(v <span class="hljs-keyword">as</span> <span class="hljs-keyword">u64</span>)
+        <span class="hljs-keyword">self</span>.serialize_u64(u64::from(v))
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_u16</span></span>(<span class="hljs-keyword">self</span>, v: u16) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
-        <span class="hljs-keyword">self</span>.serialize_u64(v <span class="hljs-keyword">as</span> <span class="hljs-keyword">u64</span>)
+        <span class="hljs-keyword">self</span>.serialize_u64(u64::from(v))
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_u32</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">u32</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
-        <span class="hljs-keyword">self</span>.serialize_u64(v <span class="hljs-keyword">as</span> <span class="hljs-keyword">u64</span>)
+        <span class="hljs-keyword">self</span>.serialize_u64(u64::from(v))
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_u64</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">u64</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
@@ -768,7 +768,7 @@ is used.</p>
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_f32</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">f32</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
-        <span class="hljs-keyword">self</span>.serialize_f64(v <span class="hljs-keyword">as</span> <span class="hljs-keyword">f64</span>)
+        <span class="hljs-keyword">self</span>.serialize_f64(f64::from(v))
     }
 
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_f64</span></span>(<span class="hljs-keyword">self</span>, v: <span class="hljs-keyword">f64</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
@@ -1231,7 +1231,7 @@ is used.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"next":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"previous":{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serializer.md","mtime":"2018-05-27T01:40:33.029Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T01:40:37.578Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"next":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"previous":{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serializer.md","mtime":"2018-05-27T01:40:49.249Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T01:40:52.392Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
