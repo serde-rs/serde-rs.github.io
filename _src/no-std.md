@@ -15,9 +15,9 @@ graph. That means if any other crate you depend on has not opted out of Serde's
 default features, you will build Serde with the std feature enabled whether or
 not your direct dependency on Serde has `default-features = false`.
 
-In particular, a dependency on `serde_json` always needs Serde built with std. If
-you need JSON support without a standard library, please use [`serde-json-core`]
-instead of `serde_json`.
+In particular, a dependency on `serde_json` always needs Serde built with std.
+If you need JSON support without a standard library, please use
+[`serde-json-core`] instead of `serde_json`.
 
 [`serde-json-core`]: https://japaric.github.io/serde-json-core/serde_json_core/
 

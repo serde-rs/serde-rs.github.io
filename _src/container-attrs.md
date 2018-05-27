@@ -14,8 +14,8 @@
 
 - ##### `#[serde(deny_unknown_fields)]`
 
-  Always error during deserialization when encountering unknown fields. When this
-  attribute is not present, by default unknown fields are ignored for
+  Always error during deserialization when encountering unknown fields. When
+  this attribute is not present, by default unknown fields are ignored for
   self-describing formats like JSON.
 
 - ##### `#[serde(tag = "type")]`
