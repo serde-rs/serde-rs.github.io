@@ -33,9 +33,9 @@ See [no-std support] for details.
 #### --feature unstable
 
 Provide impls for types that require unstable functionality. For tracking and
-discussion of unstable functionality please refer to [this issue].
+discussion of unstable functionality please refer to [serde-rs/serde#812].
 
-[this issue]: https://github.com/serde-rs/serde/issues/812
+[serde-rs/serde#812]: https://github.com/serde-rs/serde/issues/812
 
 #### --features alloc
 
