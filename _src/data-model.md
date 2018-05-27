@@ -6,7 +6,7 @@ interact. You can think of it as Serde's type system.
 In code, the serialization half of the Serde data model is defined by the
 [`Serializer`] trait and the deserialization half is defined by the
 [`Deserializer`] trait. These are a way of mapping every Rust data structure
-into one of 27 possible types. Each method of the `Serializer` trait corresponds
+into one of 29 possible types. Each method of the `Serializer` trait corresponds
 to one of the types of the data model.
 
 When serializing a data structure to some format, the [`Serialize`]
@@ -33,12 +33,12 @@ mapping the input data into the Serde data model by invoking exactly one of the
 ## Types
 
 The Serde data model is a simplified form of Rust's type system. It consists of
-the following 27 types:
+the following 29 types:
 
-- **12 primitive types**
+- **14 primitive types**
   - bool
-  - i8, i16, i32, i64
-  - u8, u16, u32, u64
+  - i8, i16, i32, i64, i128
+  - u8, u16, u32, u64, u128
   - f32, f64
   - char
 - **string**
