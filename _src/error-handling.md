@@ -47,7 +47,7 @@ use std;
 # }
 use std::fmt::{self, Display};
 
-use serde::{ser, de};
+use serde::{de, ser};
 
 pub type Result<T> = std::result::Result<T, Error>;
 

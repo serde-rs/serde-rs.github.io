@@ -94,7 +94,7 @@ there is no advantage to that.
 #     }
 # }
 #
-use std::ops::{Neg, AddAssign, MulAssign};
+use std::ops::{AddAssign, MulAssign, Neg};
 
 use serde::de::{self, Deserialize, DeserializeSeed, Visitor, SeqAccess,
                 MapAccess, EnumAccess, VariantAccess, IntoDeserializer};
@@ -418,7 +418,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     fn deserialize_unit_struct<V>(
         self,
         _name: &'static str,
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -432,7 +432,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     fn deserialize_newtype_struct<V>(
         self,
         _name: &'static str,
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -471,7 +471,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     fn deserialize_tuple<V>(
         self,
         _len: usize,
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -484,7 +484,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         self,
         _name: &'static str,
         _len: usize,
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -524,7 +524,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         self,
         _name: &'static str,
         _fields: &'static [&'static str],
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -536,7 +536,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         self,
         _name: &'static str,
         _variants: &'static [&'static str],
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -564,7 +564,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // numeric indices.
     fn deserialize_identifier<V>(
         self,
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -585,7 +585,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // self-describing.
     fn deserialize_ignored_any<V>(
         self,
-        visitor: V
+        visitor: V,
     ) -> Result<V::Value>
     where
         V: Visitor<'de>,
@@ -604,7 +604,10 @@ struct CommaSeparated<'a, 'de: 'a> {
 
 impl<'a, 'de> CommaSeparated<'a, 'de> {
     fn new(de: &'a mut Deserializer<'de>) -> Self {
-        CommaSeparated { de: de, first: true }
+        CommaSeparated {
+            de: de,
+            first: true,
+        }
     }
 }
 
@@ -765,7 +768,10 @@ fn test_struct() {
     }
 
     let j = r#"{"int":1,"seq":["a","b"]}"#;
-    let expected = Test { int: 1, seq: vec!["a".to_owned(), "b".to_owned()] };
+    let expected = Test {
+        int: 1,
+        seq: vec!["a".to_owned(), "b".to_owned()],
+    };
     assert_eq!(expected, from_str(j).unwrap());
 }
 

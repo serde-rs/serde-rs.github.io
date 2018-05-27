@@ -38,6 +38,12 @@ extern crate serde;
 extern crate serde_derive;
 
 # macro_rules! modules {
+#     (mod de) => {
+#         mod de {
+#             pub fn from_str() {}
+#             pub type Deserializer = ();
+#         }
+#     };
 #     (mod error) => {
 #         mod error {
 #             pub type Error = ();
@@ -50,12 +56,6 @@ extern crate serde_derive;
 #             pub type Serializer = ();
 #         }
 #     };
-#     (mod de) => {
-#         mod de {
-#             pub fn from_str() {}
-#             pub type Deserializer = ();
-#         }
-#     };
 #     ($(mod $n:ident;)+) => {
 #         $(
 #             modules!(mod $n);
@@ -64,14 +64,14 @@ extern crate serde_derive;
 # }
 #
 # modules! {
+mod de;
 mod error;
 mod ser;
-mod de;
 # }
 
+pub use de::{from_str, Deserializer};
 pub use error::{Error, Result};
 pub use ser::{to_string, Serializer};
-pub use de::{from_str, Deserializer};
 #
 # fn main() {}
 ```

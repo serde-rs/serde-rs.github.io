@@ -44,7 +44,9 @@ pub fn to_string<T>(value: &T) -> Result<String>
 where
     T: Serialize,
 {
-    let mut serializer = Serializer { output: String::new() };
+    let mut serializer = Serializer {
+        output: String::new(),
+    };
     value.serialize(&mut serializer)?;
     Ok(serializer.output)
 }
@@ -197,7 +199,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
         self,
         _name: &'static str,
         _variant_index: u32,
-        variant: &'static str
+        variant: &'static str,
     ) -> Result<()> {
         self.serialize_str(variant)
     }
@@ -221,7 +223,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
         _name: &'static str,
         _variant_index: u32,
         variant: &'static str,
-        value: &T
+        value: &T,
     ) -> Result<()>
     where
         T: ?Sized + Serialize,
@@ -261,7 +263,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
     fn serialize_tuple_struct(
         self,
         _name: &'static str,
-        len: usize
+        len: usize,
     ) -> Result<Self::SerializeTupleStruct> {
         self.serialize_seq(Some(len))
     }
@@ -273,7 +275,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
         _name: &'static str,
         _variant_index: u32,
         variant: &'static str,
-        _len: usize
+        _len: usize,
     ) -> Result<Self::SerializeTupleVariant> {
         self.output += "{";
         variant.serialize(&mut *self)?;
@@ -295,7 +297,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
     fn serialize_struct(
         self,
         _name: &'static str,
-        len: usize
+        len: usize,
     ) -> Result<Self::SerializeStruct> {
         self.serialize_map(Some(len))
     }
@@ -307,7 +309,7 @@ impl<'a> ser::Serializer for &'a mut Serializer {
         _name: &'static str,
         _variant_index: u32,
         variant: &'static str,
-        _len: usize
+        _len: usize,
     ) -> Result<Self::SerializeStructVariant> {
         self.output += "{";
         variant.serialize(&mut *self)?;
@@ -530,7 +532,10 @@ fn test_struct() {
         seq: Vec<&'static str>,
     }
 
-    let test = Test { int: 1, seq: vec!["a", "b"] };
+    let test = Test {
+        int: 1,
+        seq: vec!["a", "b"],
+    };
     let expected = r#"{"int":1,"seq":["a","b"]}"#;
     assert_eq!(to_string(&test).unwrap(), expected);
 }
