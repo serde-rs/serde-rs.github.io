@@ -387,20 +387,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.3" data-path="borrow.html">
-            
-                <a href="borrow.html">
-            
-                    
-                    Borrowing data
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.9.4" data-path="attr-default.html">
+        <li class="chapter " data-level="1.9.3" data-path="attr-default.html">
             
                 <a href="attr-default.html">
             
@@ -413,7 +400,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.5" data-path="attr-flatten.html">
+        <li class="chapter " data-level="1.9.4" data-path="attr-flatten.html">
             
                 <a href="attr-flatten.html">
             
@@ -426,7 +413,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.6" data-path="attr-bound.html">
+        <li class="chapter " data-level="1.9.5" data-path="attr-bound.html">
             
                 <a href="attr-bound.html">
             
@@ -439,7 +426,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.7" data-path="deserialize-map.html">
+        <li class="chapter " data-level="1.9.6" data-path="deserialize-map.html">
             
                 <a href="deserialize-map.html">
             
@@ -452,7 +439,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.8" data-path="stream-array.html">
+        <li class="chapter " data-level="1.9.7" data-path="stream-array.html">
             
                 <a href="stream-array.html">
             
@@ -465,7 +452,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.9" data-path="enum-number.html">
+        <li class="chapter " data-level="1.9.8" data-path="enum-number.html">
             
                 <a href="enum-number.html">
             
@@ -478,7 +465,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.10" data-path="attr-rename.html">
+        <li class="chapter " data-level="1.9.9" data-path="attr-rename.html">
             
                 <a href="attr-rename.html">
             
@@ -491,7 +478,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.11" data-path="attr-skip-serializing.html">
+        <li class="chapter " data-level="1.9.10" data-path="attr-skip-serializing.html">
             
                 <a href="attr-skip-serializing.html">
             
@@ -504,7 +491,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.12" data-path="remote-derive.html">
+        <li class="chapter " data-level="1.9.11" data-path="remote-derive.html">
             
                 <a href="remote-derive.html">
             
@@ -517,7 +504,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.13" data-path="deserialize-struct.html">
+        <li class="chapter " data-level="1.9.12" data-path="deserialize-struct.html">
             
                 <a href="deserialize-struct.html">
             
@@ -530,7 +517,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.14" data-path="ignored-any.html">
+        <li class="chapter " data-level="1.9.13" data-path="ignored-any.html">
             
                 <a href="ignored-any.html">
             
@@ -543,7 +530,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.15" data-path="transcode.html">
+        <li class="chapter " data-level="1.9.14" data-path="transcode.html">
             
                 <a href="transcode.html">
             
@@ -556,7 +543,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.16" data-path="string-or-struct.html">
+        <li class="chapter " data-level="1.9.15" data-path="string-or-struct.html">
             
                 <a href="string-or-struct.html">
             
@@ -569,7 +556,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.17" data-path="convert-error.html">
+        <li class="chapter " data-level="1.9.16" data-path="convert-error.html">
             
                 <a href="convert-error.html">
             
@@ -582,7 +569,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9.18" data-path="custom-date-format.html">
+        <li class="chapter " data-level="1.9.17" data-path="custom-date-format.html">
             
                 <a href="custom-date-format.html">
             
@@ -792,17 +779,75 @@ impl applies.</p>
 }
 </code></pre>
 <p>If the <code>Deserializer</code> never invokes <a href="https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_str" target="_blank"><code>visit_borrowed_str</code></a> or
-<a href="https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_bytes" target="_blank"><code>visit_borrowed_bytes</code></a>, the <code>&apos;de</code> lifetime should be unconstrained and should
-be named <code>&apos;x</code>.</p>
+<a href="https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_bytes" target="_blank"><code>visit_borrowed_bytes</code></a>, the <code>&apos;de</code> lifetime will be an unconstrained lifetime
+parameter.</p>
 <pre><code class="lang-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MyDeserializer</span></span>&lt;R&gt; {
     read: R,
 }
 
-<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;x</span>, R&gt; Deserializer&lt;<span class="hljs-symbol">&apos;x</span>&gt; <span class="hljs-keyword">for</span> MyDeserializer&lt;R&gt;
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>, R&gt; Deserializer&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> MyDeserializer&lt;R&gt;
 <span class="hljs-keyword">where</span>
     R: io::Read,
 {
     <span class="hljs-comment">/* ... */</span>
+}
+</code></pre>
+<h2 id="borrowing-data-in-a-derived-impl"><a name="borrowing-data-in-a-derived-impl" class="plugin-anchor" href="#borrowing-data-in-a-derived-impl"><i class="fa fa-link" aria-hidden="true"></i></a>Borrowing data in a derived impl</h2>
+<p>Fields of type <code>&amp;str</code> and <code>&amp;[u8]</code> are implicitly borrowed from the input data by
+Serde. Any other type of field can opt in to borrowing by using the
+<code>#[serde(borrow)]</code> attribute.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
+
+<span class="hljs-keyword">use</span> std::borrow::Cow;
+
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Inner</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>&gt; {
+    <span class="hljs-comment">// &amp;str and &amp;[u8] are implicitly borrowed.</span>
+    username: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+
+    <span class="hljs-comment">// Other types must be borrowed explicitly.</span>
+    <span class="hljs-meta">#[serde(borrow)]</span>
+    comment: Cow&lt;<span class="hljs-symbol">&apos;b</span>, <span class="hljs-keyword">str</span>&gt;,
+}
+
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Outer</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    owned: <span class="hljs-built_in">String</span>,
+
+    <span class="hljs-meta">#[serde(borrow)]</span>
+    inner: Inner&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>&gt;,
+
+    <span class="hljs-comment">// This field is never borrowed.</span>
+    not_borrowed: Cow&lt;<span class="hljs-symbol">&apos;c</span>, <span class="hljs-keyword">str</span>&gt;,
+}
+</code></pre>
+<p>This attribute works by placing bounds on the <code>&apos;de</code> lifetime of the generated
+<code>Deserialize</code> impl. For example the impl for the struct <code>Outer</code> defined above
+looks like this:</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// The lifetimes &apos;a and &apos;b are borrowed while &apos;c is not.</span>
+<span class="hljs-keyword">impl</span>&lt;<span class="hljs-symbol">&apos;de</span>: <span class="hljs-symbol">&apos;a</span> + <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; Deserialize&lt;<span class="hljs-symbol">&apos;de</span>&gt; <span class="hljs-keyword">for</span> Outer&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    <span class="hljs-comment">/* ... */</span>
+}
+</code></pre>
+<p>The attribute may specify explicitly which lifetimes should be borrowed.</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">use</span> std::marker::PhantomData;
+
+<span class="hljs-comment">// This struct borrows the first two lifetimes but not the third.</span>
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Three</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    a: &amp;<span class="hljs-symbol">&apos;a</span> <span class="hljs-keyword">str</span>,
+    b: &amp;<span class="hljs-symbol">&apos;b</span> <span class="hljs-keyword">str</span>,
+    c: PhantomData&lt;&amp;<span class="hljs-symbol">&apos;c</span> <span class="hljs-keyword">str</span>&gt;,
+}
+
+<span class="hljs-meta">#[derive(Deserialize)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Example</span></span>&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt; {
+    <span class="hljs-comment">// Borrow &apos;a and &apos;b only, not &apos;c.</span>
+    <span class="hljs-meta">#[serde(borrow = <span class="hljs-meta-string">&quot;&apos;a + &apos;b&quot;</span>)]</span>
+    three: Three&lt;<span class="hljs-symbol">&apos;a</span>, <span class="hljs-symbol">&apos;b</span>, <span class="hljs-symbol">&apos;c</span>&gt;,
 }
 </code></pre>
 
@@ -832,7 +877,7 @@ be named <code>&apos;x</code>.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"next":{"title":"Examples","level":"1.9","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},{"title":"Borrowing data","level":"1.9.3","depth":2,"path":"borrow.md","ref":"borrow.md","articles":[]},{"title":"Default value for a field","level":"1.9.4","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Struct flattening","level":"1.9.5","depth":2,"path":"attr-flatten.md","ref":"attr-flatten.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.9.6","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.9.7","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.9.8","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as number","level":"1.9.9","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.9.10","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.9.11","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"Derive for remote crate","level":"1.9.12","depth":2,"path":"remote-derive.md","ref":"remote-derive.md","articles":[]},{"title":"Manually deserialize struct","level":"1.9.13","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Discarding data","level":"1.9.14","depth":2,"path":"ignored-any.md","ref":"ignored-any.md","articles":[]},{"title":"Transcode into another format","level":"1.9.15","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},{"title":"Either string or struct","level":"1.9.16","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},{"title":"Convert error types","level":"1.9.17","depth":2,"path":"convert-error.md","ref":"convert-error.md","articles":[]},{"title":"Custom date format","level":"1.9.18","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]}]},"previous":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"lifetimes.md","mtime":"2018-05-06T01:49:54.155Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T21:08:44.291Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"next":{"title":"Examples","level":"1.9","depth":1,"path":"examples.md","ref":"examples.md","articles":[{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},{"title":"Enum representations","level":"1.9.2","depth":2,"path":"enum-representations.md","ref":"enum-representations.md","articles":[]},{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},{"title":"Struct flattening","level":"1.9.4","depth":2,"path":"attr-flatten.md","ref":"attr-flatten.md","articles":[]},{"title":"Handwritten generic type bounds","level":"1.9.5","depth":2,"path":"attr-bound.md","ref":"attr-bound.md","articles":[]},{"title":"Deserialize for custom map type","level":"1.9.6","depth":2,"path":"deserialize-map.md","ref":"deserialize-map.md","articles":[]},{"title":"Array of values without buffering","level":"1.9.7","depth":2,"path":"stream-array.md","ref":"stream-array.md","articles":[]},{"title":"Serialize enum as number","level":"1.9.8","depth":2,"path":"enum-number.md","ref":"enum-number.md","articles":[]},{"title":"Serialize fields as camelCase","level":"1.9.9","depth":2,"path":"attr-rename.md","ref":"attr-rename.md","articles":[]},{"title":"Skip serializing field","level":"1.9.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},{"title":"Derive for remote crate","level":"1.9.11","depth":2,"path":"remote-derive.md","ref":"remote-derive.md","articles":[]},{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},{"title":"Discarding data","level":"1.9.13","depth":2,"path":"ignored-any.md","ref":"ignored-any.md","articles":[]},{"title":"Transcode into another format","level":"1.9.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},{"title":"Either string or struct","level":"1.9.15","depth":2,"path":"string-or-struct.md","ref":"string-or-struct.md","articles":[]},{"title":"Convert error types","level":"1.9.16","depth":2,"path":"convert-error.md","ref":"convert-error.md","articles":[]},{"title":"Custom date format","level":"1.9.17","depth":2,"path":"custom-date-format.md","ref":"custom-date-format.md","articles":[]}]},"previous":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"lifetimes.md","mtime":"2018-05-27T21:27:52.848Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T21:28:02.516Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
