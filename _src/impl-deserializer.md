@@ -113,7 +113,7 @@ impl<'de> Deserializer<'de> {
     // `serde_json::from_str(...)` while advanced use cases that require a
     // deserializer can make one with `serde_json::Deserializer::from_str(...)`.
     pub fn from_str(input: &'de str) -> Self {
-        Deserializer { input: input }
+        Deserializer { input }
     }
 }
 
@@ -605,7 +605,7 @@ struct CommaSeparated<'a, 'de: 'a> {
 impl<'a, 'de> CommaSeparated<'a, 'de> {
     fn new(de: &'a mut Deserializer<'de>) -> Self {
         CommaSeparated {
-            de: de,
+            de,
             first: true,
         }
     }
@@ -677,7 +677,7 @@ struct Enum<'a, 'de: 'a> {
 
 impl<'a, 'de> Enum<'a, 'de> {
     fn new(de: &'a mut Deserializer<'de>) -> Self {
-        Enum { de: de }
+        Enum { de }
     }
 }
 
