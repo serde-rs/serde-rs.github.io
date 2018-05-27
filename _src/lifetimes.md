@@ -210,8 +210,8 @@ impl<'de> Deserializer<'de> for MyDeserializer<'de> {
 ```
 
 If the `Deserializer` never invokes [`visit_borrowed_str`] or
-[`visit_borrowed_bytes`], the `'de` lifetime should be unconstrained and should
-be named `'x`.
+[`visit_borrowed_bytes`], the `'de` lifetime will be an unconstrained lifetime
+parameter.
 
 [`visit_borrowed_str`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_str
 [`visit_borrowed_bytes`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_bytes
@@ -227,7 +227,7 @@ struct MyDeserializer<R> {
     read: R,
 }
 
-impl<'x, R> Deserializer<'x> for MyDeserializer<R>
+impl<'de, R> Deserializer<'de> for MyDeserializer<R>
 where
     R: io::Read,
 {
