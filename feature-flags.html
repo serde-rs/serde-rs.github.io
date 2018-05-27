@@ -664,13 +664,26 @@ variety of freestanding environments.</p>
 <p>Building Serde with <code>default-features = false</code>, you will receive a stock
 <code>no_std</code> Serde with no support for any of the collection types.</p>
 <h4 id="-feature-derive"><a name="-feature-derive" class="plugin-anchor" href="#-feature-derive"><i class="fa fa-link" aria-hidden="true"></i></a>--feature derive</h4>
-<p>Re-export the derive(Serialize, Deserialize) macros. This is specifically
-intended for library crates that provide optional Serde impls behind a Cargo cfg
-of their own. All other crates should depend on serde_derive directly.</p>
-<p>Please refer to the long comment above the line <code>pub use serde_derive::*</code> in
-src/lib.rs before enabling this feature. If you think you need this feature and
-your use case does not precisely match the one described in the comment, please
-open an issue to let us know about your use case.</p>
+<p>Re-export the derive(Serialize, Deserialize) macros. This is intended for
+library crates that provide optional Serde impls behind a Cargo cfg
+of their own.</p>
+<p>Mainly this is a workaround for limitations associated with
+<a href="https://github.com/rust-lang/cargo/issues/1286" target="_blank">rust-lang/cargo#1286</a> in which a library crate cannot use one <code>&quot;serde&quot;</code> cfg in
+Cargo to enable dependencies on both <code>serde</code> and <code>serde_derive</code> crates.</p>
+<p>The recommended way to provide optional Serde support that requires derive is as
+follows. In particular, please do not name your library&apos;s Serde feature anything
+other than <code>&quot;serde&quot;</code>.</p>
+<pre><code class="lang-toml"><span class="hljs-section">[dependencies]</span>
+<span class="hljs-attr">serde</span> = { version = <span class="hljs-string">&quot;1.0&quot;</span>, optional = <span class="hljs-literal">true</span>, features = [<span class="hljs-string">&quot;derive&quot;</span>] }
+</code></pre>
+<p>Within the library, these optional Serde derives would be written like this.</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[cfg(feature = <span class="hljs-meta-string">&quot;serde&quot;</span>)]</span>
+<span class="hljs-meta">#[macro_use]</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
+
+<span class="hljs-meta">#[cfg_attr(feature = <span class="hljs-meta-string">&quot;serde&quot;</span>, derive(Serialize, Deserialize))]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> ...
+</span></code></pre>
 <h4 id="-feature-std"><a name="-feature-std" class="plugin-anchor" href="#-feature-std"><i class="fa fa-link" aria-hidden="true"></i></a>--feature std</h4>
 <p><em>This feature is enabled by default.</em></p>
 <p>Provide impls for common standard library types like Vec&lt;T&gt; and
@@ -678,7 +691,7 @@ HashMap&lt;K, V&gt;. Requires a dependency on the Rust standard library.</p>
 <p>See <a href="no-std.html">no-std support</a> for details.</p>
 <h4 id="-feature-unstable"><a name="-feature-unstable" class="plugin-anchor" href="#-feature-unstable"><i class="fa fa-link" aria-hidden="true"></i></a>--feature unstable</h4>
 <p>Provide impls for types that require unstable functionality. For tracking and
-discussion of unstable functionality please refer to <a href="https://github.com/serde-rs/serde/issues/812" target="_blank">this issue</a>.</p>
+discussion of unstable functionality please refer to <a href="https://github.com/serde-rs/serde/issues/812" target="_blank">serde-rs/serde#812</a>.</p>
 <h4 id="-features-alloc"><a name="-features-alloc" class="plugin-anchor" href="#-features-alloc"><i class="fa fa-link" aria-hidden="true"></i></a>--features alloc</h4>
 <p><em>Implies unstable.</em></p>
 <p>Provide impls for types in the Rust core allocation and collections library
@@ -720,7 +733,7 @@ will end up with a strong count of 1.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Feature flags","level":"1.11","depth":1,"previous":{"title":"No-std support","level":"1.10","depth":1,"path":"no-std.md","ref":"no-std.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"feature-flags.md","mtime":"2018-03-30T08:28:00.353Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-08T04:31:39.931Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Feature flags","level":"1.11","depth":1,"previous":{"title":"No-std support","level":"1.10","depth":1,"path":"no-std.md","ref":"no-std.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"feature-flags.md","mtime":"2018-05-27T00:43:14.751Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T00:47:12.361Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
