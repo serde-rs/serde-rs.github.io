@@ -206,7 +206,11 @@ impl<'a> ser::Serializer for &'a mut Serializer {
 
     // As is done here, serializers are encouraged to treat newtype structs as
     // insignificant wrappers around the data they contain.
-    fn serialize_newtype_struct<T>(self, _name: &'static str, value: &T) -> Result<()>
+    fn serialize_newtype_struct<T>(
+        self,
+        _name: &'static str,
+        value: &T,
+    ) -> Result<()>
     where
         T: ?Sized + Serialize,
     {
