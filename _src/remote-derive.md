@@ -46,7 +46,8 @@ extern crate serde;
 use other_crate::Duration;
 
 // Serde calls this the definition of the remote type. It is just a copy of the
-// remote type. The `remote` attribute gives the path to the actual type.
+// remote data structure. The `remote` attribute gives the path to the actual
+// type we intend to derive code for.
 #[derive(Serialize, Deserialize)]
 #[serde(remote = "Duration")]
 struct DurationDef {
