@@ -21,7 +21,6 @@
 * [Examples](examples.md)
     * [Structs and enums in JSON](json.md)
     * [Enum representations](enum-representations.md)
-    * [Borrowing data](borrow.md)
     * [Default value for a field](attr-default.md)
     * [Struct flattening](attr-flatten.md)
     * [Handwritten generic type bounds](attr-bound.md)

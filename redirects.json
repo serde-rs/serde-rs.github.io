@@ -3,6 +3,10 @@
         {
             "from": "codegen.html",
             "to": "derive.html"
+        },
+        {
+            "from": "borrow.html",
+            "to": "lifetimes.html#borrowing-data-in-a-derived-impl"
         }
     ]
 }
