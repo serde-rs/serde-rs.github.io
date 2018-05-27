@@ -682,8 +682,10 @@ there is no advantage to that.</p>
 <div><p class="code-filename">src/de.rs</p></div>
 <pre><code class="lang-rust"><span class="hljs-keyword">use</span> std::ops::{AddAssign, MulAssign, Neg};
 
-<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, DeserializeSeed, Visitor, SeqAccess,
-                MapAccess, EnumAccess, VariantAccess, IntoDeserializer};
+<span class="hljs-keyword">use</span> serde::de::{
+    <span class="hljs-keyword">self</span>, Deserialize, DeserializeSeed, EnumAccess, IntoDeserializer,
+    MapAccess, SeqAccess, VariantAccess, Visitor,
+};
 
 <span class="hljs-keyword">use</span> error::{Error, <span class="hljs-built_in">Result</span>};
 
@@ -1054,11 +1056,7 @@ there is no advantage to that.</p>
     <span class="hljs-comment">// As indicated by the length parameter, the `Deserialize` implementation</span>
     <span class="hljs-comment">// for a tuple in the Serde data model is required to know the length of the</span>
     <span class="hljs-comment">// tuple before even looking at the input data.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_tuple</span></span>&lt;V&gt;(
-        <span class="hljs-keyword">self</span>,
-        _len: usize,
-        visitor: V,
-    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_tuple</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, _len: usize, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
     <span class="hljs-keyword">where</span>
         V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
@@ -1148,10 +1146,7 @@ there is no advantage to that.</p>
     <span class="hljs-comment">// the variant of an enum. In JSON, struct fields and enum variants are</span>
     <span class="hljs-comment">// represented as strings. In other formats they may be represented as</span>
     <span class="hljs-comment">// numeric indices.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_identifier</span></span>&lt;V&gt;(
-        <span class="hljs-keyword">self</span>,
-        visitor: V,
-    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_identifier</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
     <span class="hljs-keyword">where</span>
         V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
@@ -1169,10 +1164,7 @@ there is no advantage to that.</p>
     <span class="hljs-comment">// Some formats are not able to implement this at all. Formats that can</span>
     <span class="hljs-comment">// implement `deserialize_any` and `deserialize_ignored_any` are known as</span>
     <span class="hljs-comment">// self-describing.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_ignored_any</span></span>&lt;V&gt;(
-        <span class="hljs-keyword">self</span>,
-        visitor: V,
-    ) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_ignored_any</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
     <span class="hljs-keyword">where</span>
         V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
@@ -1408,7 +1400,7 @@ there is no advantage to that.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2018-05-27T01:40:49.245Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T01:40:52.392Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2018-05-27T01:44:36.515Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T01:45:02.955Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
