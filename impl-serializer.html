@@ -688,7 +688,9 @@ is used.</p>
 <span class="hljs-keyword">where</span>
     T: Serialize,
 {
-    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> serializer = Serializer { output: <span class="hljs-built_in">String</span>::new() };
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> serializer = Serializer {
+        output: <span class="hljs-built_in">String</span>::new(),
+    };
     value.serialize(&amp;<span class="hljs-keyword">mut</span> serializer)?;
     <span class="hljs-literal">Ok</span>(serializer.output)
 }
@@ -841,7 +843,7 @@ is used.</p>
         <span class="hljs-keyword">self</span>,
         _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
         _variant_index: <span class="hljs-keyword">u32</span>,
-        variant: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>
+        variant: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
     ) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt; {
         <span class="hljs-keyword">self</span>.serialize_str(variant)
     }
@@ -865,7 +867,7 @@ is used.</p>
         _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
         _variant_index: <span class="hljs-keyword">u32</span>,
         variant: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
-        value: &amp;T
+        value: &amp;T,
     ) -&gt; <span class="hljs-built_in">Result</span>&lt;()&gt;
     <span class="hljs-keyword">where</span>
         T: ?<span class="hljs-built_in">Sized</span> + Serialize,
@@ -905,7 +907,7 @@ is used.</p>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_tuple_struct</span></span>(
         <span class="hljs-keyword">self</span>,
         _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
-        len: usize
+        len: usize,
     ) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::SerializeTupleStruct&gt; {
         <span class="hljs-keyword">self</span>.serialize_seq(<span class="hljs-literal">Some</span>(len))
     }
@@ -917,7 +919,7 @@ is used.</p>
         _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
         _variant_index: <span class="hljs-keyword">u32</span>,
         variant: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
-        _len: usize
+        _len: usize,
     ) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::SerializeTupleVariant&gt; {
         <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;{&quot;</span>;
         variant.serialize(&amp;<span class="hljs-keyword">mut</span> *<span class="hljs-keyword">self</span>)?;
@@ -939,7 +941,7 @@ is used.</p>
     <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">serialize_struct</span></span>(
         <span class="hljs-keyword">self</span>,
         _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
-        len: usize
+        len: usize,
     ) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::SerializeStruct&gt; {
         <span class="hljs-keyword">self</span>.serialize_map(<span class="hljs-literal">Some</span>(len))
     }
@@ -951,7 +953,7 @@ is used.</p>
         _name: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
         _variant_index: <span class="hljs-keyword">u32</span>,
         variant: &amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>,
-        _len: usize
+        _len: usize,
     ) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::SerializeStructVariant&gt; {
         <span class="hljs-keyword">self</span>.output += <span class="hljs-string">&quot;{&quot;</span>;
         variant.serialize(&amp;<span class="hljs-keyword">mut</span> *<span class="hljs-keyword">self</span>)?;
@@ -1167,7 +1169,10 @@ is used.</p>
         seq: <span class="hljs-built_in">Vec</span>&lt;&amp;<span class="hljs-symbol">&apos;static</span> <span class="hljs-keyword">str</span>&gt;,
     }
 
-    <span class="hljs-keyword">let</span> test = Test { <span class="hljs-keyword">int</span>: <span class="hljs-number">1</span>, seq: <span class="hljs-built_in">vec!</span>[<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>] };
+    <span class="hljs-keyword">let</span> test = Test {
+        <span class="hljs-keyword">int</span>: <span class="hljs-number">1</span>,
+        seq: <span class="hljs-built_in">vec!</span>[<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>],
+    };
     <span class="hljs-keyword">let</span> expected = <span class="hljs-string">r#&quot;{&quot;int&quot;:1,&quot;seq&quot;:[&quot;a&quot;,&quot;b&quot;]}&quot;#</span>;
     <span class="hljs-built_in">assert_eq!</span>(to_string(&amp;test).unwrap(), expected);
 }
@@ -1226,7 +1231,7 @@ is used.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"next":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"previous":{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serializer.md","mtime":"2018-05-06T01:49:33.787Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T01:27:54.506Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"next":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"path":"impl-deserializer.md","ref":"impl-deserializer.md","articles":[]},"previous":{"title":"Error handling","level":"1.7.2","depth":2,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-serializer.md","mtime":"2018-05-27T01:40:33.029Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-27T01:40:37.578Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
