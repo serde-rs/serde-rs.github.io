@@ -5,7 +5,7 @@ using Serde.
 
 As with the serializer, the [`Deserializer`] trait has a lot of methods but none
 of them are complicated in this implementation. The deserializer is responsible
-for mapping the input data into Serde's data model by invoking exactly one of
+for mapping the input data into [Serde's data model] by invoking exactly one of
 the methods on the [`Visitor`] that it receives.
 
 The `Deserializer` methods are called by a `Deserialize` impl as a hint to
@@ -28,6 +28,7 @@ there is no advantage to that.
 [`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
 [`forward_to_deserialize_any!`]: https://docs.serde.rs/serde/macro.forward_to_deserialize_any.html
 [Deserializer lifetimes]: lifetimes.md
+[Serde's data model]: data-model.md
 
 !FILENAME src/de.rs
 ```rust
