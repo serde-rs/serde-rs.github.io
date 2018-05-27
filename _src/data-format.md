@@ -23,3 +23,8 @@ deserializer implemented using Serde.
 - [Serde error traits and error handling](error-handling.md)
 - [Implementing a Serializer](impl-serializer.md)
 - [Implementing a Deserializer](impl-deserializer.md)
+
+You can find these four source files all together as a buildable crate in [this
+GitHub repository].
+
+[this GitHub repository]: https://github.com/serde-rs/example-format
