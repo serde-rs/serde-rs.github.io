@@ -23,6 +23,7 @@ is that you have to provide a definition of the type for Serde's derive to
 process. At compile time, Serde will check that all the fields in the definition
 you provided match the fields in the remote type.
 
+!PLAYGROUND 55ea56cac4fd8610e50778bfa3a50d9f
 ```rust
 # #![allow(dead_code)]
 #
@@ -75,6 +76,7 @@ there is to it. If the remote type is a struct with one or more private fields,
 getters must be provided for the private fields and a conversion must be
 provided to construct the remote type.
 
+!PLAYGROUND 65af26e7f2c2c8984f27c2652a743de6
 ```rust
 // Pretend that this is somebody else's crate, not a module.
 mod other_crate {
@@ -179,6 +181,7 @@ struct DurationDef {
 Knowing this, the generated method can be invoked directly by passing a
 `Deserializer` implementation.
 
+!PLAYGROUND 344c68fd099818447c5289124a3ad331
 ```rust
 # #![allow(dead_code)]
 #
@@ -207,6 +210,7 @@ let dur = DurationDef::deserialize(&mut de)?;
 Alternatively we can write a top-level newtype wrapper as a private helper for
 deserializing the remote type.
 
+!PLAYGROUND 03bead78d2a3cf949dc6ba917c39b5df
 ```rust
 # #![allow(dead_code)]
 #
