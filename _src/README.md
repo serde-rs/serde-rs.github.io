@@ -54,6 +54,8 @@ Serde by the community.
 - [Pickle], a format common in the Python world.
 - [RON], a Rusty Object Notation.
 - [BSON], the data storage and network transfer format used by MongoDB.
+- [Avro], a binary format used within Apache Hadoop, with support for schema
+  definition.
 - [URL], the x-www-form-urlencoded format.
 - [XML], the flexible machine-friendly W3C standard.
   *(deserialization only)*
@@ -71,6 +73,7 @@ Serde by the community.
 [Pickle]: https://github.com/birkenfeld/serde-pickle
 [RON]: https://github.com/ron-rs/ron
 [BSON]: https://github.com/zonyitoo/bson-rs
+[Avro]: https://github.com/flavray/avro-rs
 [URL]: https://github.com/nox/serde_urlencoded
 [XML]: https://github.com/RReverser/serde-xml-rs
 [Envy]: https://github.com/softprops/envy
