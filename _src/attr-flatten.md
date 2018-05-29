@@ -1,9 +1,8 @@
 # Struct flattening
 
-The `flatten` attribute serves the following two common use cases.
+The `flatten` attribute inlines keys from a field into the parent struct. `flatten` may be used any number of times within the same struct. It is supported only within structs that have named fields, and the attribute can only be applied to a struct or map field.
 
-It is supported only within structs that have named fields. It may be used any
-number of times within the same struct.
+The `flatten` attribute serves the following two common use cases:
 
 ### Factor out frequently grouped keys
 
