@@ -86,21 +86,21 @@ impl<'de> Visitor<'de> for I32Visitor {
         formatter.write_str("an integer between -2^31 and 2^31")
     }
 
-    fn visit_i8<E>(self, value: i8) -> Result<i32, E>
+    fn visit_i8<E>(self, value: i8) -> Result<Self::Value, E>
     where
         E: de::Error,
     {
-        Ok(value as i32)
+        Ok(i32::from(value))
     }
 
-    fn visit_i32<E>(self, value: i32) -> Result<i32, E>
+    fn visit_i32<E>(self, value: i32) -> Result<Self::Value, E>
     where
         E: de::Error,
     {
         Ok(value)
     }
 
-    fn visit_i64<E>(self, value: i64) -> Result<i32, E>
+    fn visit_i64<E>(self, value: i64) -> Result<Self::Value, E>
     where
         E: de::Error,
     {
