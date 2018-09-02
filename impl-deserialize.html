@@ -708,26 +708,26 @@ of types.</p>
         formatter.write_str(<span class="hljs-string">&quot;an integer between -2^31 and 2^31&quot;</span>)
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_i8</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">i8</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">i32</span>, E&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_i8</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">i8</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, E&gt;
     <span class="hljs-keyword">where</span>
         E: de::Error,
     {
-        <span class="hljs-literal">Ok</span>(value <span class="hljs-keyword">as</span> <span class="hljs-keyword">i32</span>)
+        <span class="hljs-literal">Ok</span>(i32::from(value))
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_i32</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">i32</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">i32</span>, E&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_i32</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">i32</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, E&gt;
     <span class="hljs-keyword">where</span>
         E: de::Error,
     {
         <span class="hljs-literal">Ok</span>(value)
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_i64</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">i64</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-keyword">i32</span>, E&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">visit_i64</span></span>&lt;E&gt;(<span class="hljs-keyword">self</span>, value: <span class="hljs-keyword">i64</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Self::Value, E&gt;
     <span class="hljs-keyword">where</span>
         E: de::Error,
     {
         <span class="hljs-keyword">use</span> std::<span class="hljs-keyword">i32</span>;
-        <span class="hljs-keyword">if</span> value &gt;= i32::MIN <span class="hljs-keyword">as</span> <span class="hljs-keyword">i64</span> &amp;&amp; value &lt;= i32::MAX <span class="hljs-keyword">as</span> <span class="hljs-keyword">i64</span> {
+        <span class="hljs-keyword">if</span> value &gt;= i64::from(i32::MIN) &amp;&amp; value &lt;= i64::from(i32::MAX) {
             <span class="hljs-literal">Ok</span>(value <span class="hljs-keyword">as</span> <span class="hljs-keyword">i32</span>)
         } <span class="hljs-keyword">else</span> {
             <span class="hljs-literal">Err</span>(E::custom(<span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;i32 out of range: {}&quot;</span>, value)))
@@ -797,7 +797,7 @@ The JSON <code>Deserializer</code> will call <code>visit_i64</code> for any sign
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"next":{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2018-05-06T01:45:21.208Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-30T17:31:27.542Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing Deserialize","level":"1.6.2","depth":2,"next":{"title":"Unit testing","level":"1.6.3","depth":2,"path":"unit-testing.md","ref":"unit-testing.md","articles":[]},"previous":{"title":"Implementing Serialize","level":"1.6.1","depth":2,"path":"impl-serialize.md","ref":"impl-serialize.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserialize.md","mtime":"2018-09-02T13:24:15.239Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-02T13:24:19.268Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
