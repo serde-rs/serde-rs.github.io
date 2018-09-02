@@ -105,7 +105,7 @@ impl<'de> Visitor<'de> for I32Visitor {
         E: de::Error,
     {
         use std::i32;
-        if value >= i32::MIN as i64 && value <= i32::MAX as i64 {
+        if value >= i64::from(i32::MIN) && value <= i64::from(i32::MAX) {
             Ok(value as i32)
         } else {
             Err(E::custom(format!("i32 out of range: {}", value)))
