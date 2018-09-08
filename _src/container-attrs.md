@@ -65,3 +65,9 @@
 
   This is used for deriving `Serialize` and `Deserialize` for [remote
   types](remote-derive.md).
+
+- ##### `#[serde(transparent)]`
+
+  Serialize and deserialize a newtype struct or a braced struct with one fields
+  exactly the same as if its one field were serialized and deserialized by
+  itself. Analogous to `#[repr(transparent)]`.
