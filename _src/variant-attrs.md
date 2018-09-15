@@ -52,3 +52,14 @@
   Combination of `serialize_with` and `deserialize_with`. Serde will use
   `$module::serialize` as the `serialize_with` function and
   `$module::deserialize` as the `deserialize_with` function.
+
+- ##### `#[serde(other)]`
+
+  Deserialize this variant if the enum tag is anything other than the tag of one
+  of the other variants in this enum. Only allowed on a unit variant inside of
+  an internally tagged or adjacently tagged enum.
+
+  For example if we have an internally tagged enum with `serde(tag = "variant")`
+  containing variants `A`, `B`, and `Unknown` marked `serde(other)`, the
+  `Unknown` variant would be deserialized any time the `"variant"` field of the
+  input is neither `"A"` nor `"B"`.
