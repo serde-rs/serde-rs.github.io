@@ -77,7 +77,7 @@
 - ##### `#[serde(borrow)]`
 
   Borrow data for this field from the deserializer by using zero-copy
-  deserialization. See [this example](borrow.md).
+  deserialization. See [this example](lifetimes.md#borrowing-data-in-a-derived-impl).
 
 - ##### `#[serde(bound = "T: MyTrait")]`
 
