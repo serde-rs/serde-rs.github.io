@@ -1,6 +1,6 @@
 # Default value for a field
 
-!PLAYGROUND 26df8969cb9df94a7d4a0443dcfb712f
+!PLAYGROUND 7683f076daaf4a4f7d043bcb645c5442
 ```rust
 #[macro_use]
 extern crate serde_derive;
@@ -9,7 +9,12 @@ extern crate serde;
 extern crate serde_json;
 
 #[derive(Deserialize, Debug)]
+#[serde(default)]
 struct Request {
+    // Use the encapsulating structs default value if "method" is not
+    // included in the input
+    method: Method,
+
     // Use the result of a function as the default if "resource" is
     // not included in the input.
     #[serde(default = "default_resource")]
@@ -25,6 +30,20 @@ struct Request {
     #[serde(default = "Priority::lowest")]
     priority: Priority,
 }
+
+impl Default for Request {
+    fn default() -> Self {
+        Request {
+            timeout: Timeout(0),
+            priority: Priority::Normal,
+            resource: "/resource".to_string(),
+            method: Method::Get
+        }
+    }
+}
+
+#[derive(Deserialize, Debug)]
+enum Method { Post, Get, Update, Delete }
 
 fn default_resource() -> String {
     "/".to_string()
