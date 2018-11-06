@@ -1,6 +1,13 @@
 # Skip serializing field
 
-**NOTE:** Using `skip_serializing` does not skip **de**serializing the field. If you only add the `skip_serializing` attribute, and then attempt to deserialize the data, it will fail, as it will still attempt to deserialize the skipped field. Please use the `skip` attribute to skip **both** serializing and deserializing (See [Field Attributes: `skip`](https://serde.rs/field-attrs.html#serdeskip)). Likewise, use `skip_deserializing` to skip deserializing only.
+**NOTE:** Using `skip_serializing` does not skip **de**serializing the field. If
+you only add the `skip_serializing` attribute, and then attempt to deserialize
+the data, it will fail, as it will still attempt to deserialize the skipped
+field. Please use the `skip` attribute to skip **both** serializing and
+deserializing (see [Field Attributes: `skip`][attr-skip]). Likewise, use
+`skip_deserializing` to skip deserializing only.
+
+[attr-skip]: field-attrs.md#serdeskip
 
 !PLAYGROUND f69adf6a6856d32a13acaa23735feed3
 ```rust
