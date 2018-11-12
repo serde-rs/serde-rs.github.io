@@ -180,42 +180,16 @@ without looking at the serialized bytes.
 
 ## Serializing a struct
 
-Serde distinguishes between four types of structs. [Ordinary structs] and [tuple
-structs] follow the three-step process of init, elements, end just like a
-sequence or map. [Newtype structs] and [unit structs] are more like primitives.
+Serde distinguishes between four types of structs:
+
+1. [Ordinary structs] and [tuple structs] follow the three-step process of init, elements, end just like a
+sequence or map.
+2. [Newtype structs] and [unit structs] are more like primitives.
 
 [Ordinary structs]: https://doc.rust-lang.org/book/structs.html
 [tuple structs]: https://doc.rust-lang.org/book/structs.html#tuple-structs
 [Newtype structs]: https://doc.rust-lang.org/book/structs.html#tuple-structs
 [unit structs]: https://doc.rust-lang.org/book/structs.html#unit-like-structs
-
-```rust
-# #![allow(dead_code)]
-#
-// An ordinary struct. Use three-step process:
-//   1. serialize_struct
-//   2. serialize_field
-//   3. end
-struct Color {
-    r: u8,
-    g: u8,
-    b: u8,
-}
-
-// A tuple struct. Use three-step process:
-//   1. serialize_tuple_struct
-//   2. serialize_field
-//   3. end
-struct Point2D(f64, f64);
-
-// A newtype struct. Use serialize_newtype_struct.
-struct Inches(u64);
-
-// A unit struct. Use serialize_unit_struct.
-struct Instance;
-#
-# fn main() {}
-```
 
 Structs and maps may look similar in some formats, including JSON. The
 distinction Serde makes is that structs have keys that are compile-time constant
@@ -229,34 +203,295 @@ around the inner value, serializing just the inner value. See for example
 
 [JSON's treatment of newtype structs]: json.md
 
-```rust
-# #![allow(dead_code)]
-#
-# extern crate serde;
-#
-use serde::ser::{Serialize, Serializer, SerializeStruct};
+### Ordinary structs
 
+Regarding the following struct:
+
+```rust
 struct Color {
     r: u8,
     g: u8,
     b: u8,
 }
+```
 
+The equivalent of the automatic implementation for `Serialize` would be:
+
+```rust
 impl Serialize for Color {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
-        // 3 is the number of fields in the struct.
+        // 1. serialize_struct => 3 is the number of fields in the struct.
         let mut state = serializer.serialize_struct("Color", 3)?;
+
+        // 2. serialize_field is called for each field
         state.serialize_field("r", &self.r)?;
         state.serialize_field("g", &self.g)?;
         state.serialize_field("b", &self.b)?;
+
+        // 3. end is called to notify the end of the serialization process
         state.end()
     }
 }
-#
-# fn main() {}
+```
+
+### Tuple structs
+
+Regarding the following tuple struct:
+
+```rust
+struct Point2D(f64, f64);
+```
+
+The equivalent of the automatic implementation for `Serialize` would be:
+
+```rust
+impl Serialize for Point2D {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        // 1. serialize_tuple_struct => 2 is the number of fields in the tuple.
+        let mut state = serializer.serialize_tuple_struct("Point2D", 2)?;
+
+        // 2. serialize_field is called for each field
+        state.serialize_field(&self.0)?;
+        state.serialize_field(&self.1)?;
+
+        // 3. end is called to notify the end of the serialization process
+        state.end()
+    }
+}
+```
+
+### Newtype structs
+
+Regarding the following newtype struct:
+
+```rust
+struct Inches(u64);
+```
+
+The equivalent of the automatic implementation for `Serialize` would be:
+
+```rust
+impl Serialize for Inches {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        // Only a call to serialize_tuple_struct is required
+        serializer.serialize_newtype_struct("Inches", &self.0)?;
+    }
+}
+```
+
+### Unit structs
+
+Regarding the following unit struct:
+
+```rust
+struct Instance;
+```
+
+The equivalent of the automatic implementation for `Serialize` would be:
+
+```rust
+impl Serialize for Inches {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        // Only a call to serialize_unit_struct is required
+       serializer.serialize_unit_struct("Instance")
+    }
+}
+```
+
+### Nested structs types
+
+When a type implements the `Serialize` trait, it's responsability is to handle the serialization
+at **it's own level** only. This means that it is **impossible** to treat the serialization of
+different structs levels inside one implementation of `Serialize`.
+
+In the case of JSON serialization, let's imagine the following object representing a search query of an
+arbitrary API :
+
+```json
+{
+"limit": 100,
+"filters": {
+    "category": {
+        "id": "9"
+    },
+    "location": {
+        "city_zipcodes": [
+            {
+                "city": "London",
+            }
+        ],
+    },
+    "ranges": {
+        "price": {
+            "min": 0,
+            "max": 100000
+        },
+        "rooms": {
+            "min": 3,
+            "max": 5
+                }
+            }
+        }
+}
+```
+
+Handling the serialization manually will require as many `Serialize` implementations as the
+number of different types of JSON objects:
+
+```json
+{
+// Search object
+"limit": 100,
+"filters": { // Filters object
+    "category": { // Category Object
+        "id": "9"
+    },
+    "location": { // Location Object
+        "city_zipcodes": [ // Zip Codes object
+            {
+                "city": "London",
+            }
+        ],
+    },
+    "ranges": {
+        "price": { // PriceRange Object
+            "min": 0,
+            "max": 100000
+        },
+        "rooms": { // RoomRange Object
+            "min": 3,
+            "max": 5
+                }
+            }
+        }
+}
+```
+
+We can benefit from the ability of Rust to declare inline structs to split the objects that we want to keep hidden and those we may want to reuse somewhere else:
+
+```rust
+/// Main root object
+#[derive(Debug, Clone)]
+pub struct SearchBody {
+    limit: usize,
+    category_id: String,
+    keyword: Option<String>,
+    locations: Vec<Location>,
+    ranges: Vec<NamedRange>,
+}
+
+/// Location may be reused in the create
+#[derive(Debug, Clone)]
+pub struct Location {
+    name: String,
+    zip: Option<u32>,
+}
+
+/// Custom serialization for Location
+impl Serialize for Location {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let has_zip = self.zip.is_some();
+        let field_count = if has_zip { 2 } else { 3 };
+        let mut state = serializer.serialize_struct("Location", field_count)?;
+        state.serialize_field("city", &self.name)?;
+
+        if has_zip {
+            let str_zip = format!("{}", self.zip.unwrap());
+            state.serialize_field("zipcode", &str_zip)?;
+        }
+        state.end()
+    }
+}
+
+/// NamedRange may be reused in the crate
+#[derive(Debug, Clone, Serialize)]
+pub struct NamedRange {
+    name: String,
+    range: Range<usize>,
+}
+
+
+impl Serialize for SearchBody {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        /// Definition of the `Category`, `Loc`, `RangeLimits`,
+        /// `Filters` and `JSON` private helpers.
+
+        #[derive(Debug, Serialize)]
+        struct Category {
+            id: String,
+        }
+
+        #[derive(Debug, Serialize)]
+        struct Loc {
+            city_zipcodes: Vec<Location>,
+        }
+
+        #[derive(Debug, Serialize)]
+        struct RangeLimits {
+            min: usize,
+            max: usize,
+        }
+
+        #[derive(Debug, Serialize)]
+        struct Filters {
+            category: Category,
+            location: Loc,
+            ranges: Map<String, RangeLimits>,
+        }
+
+        #[derive(Debug, Serialize)]
+        struct JSON {
+            limit: usize,
+            filters: Filters,
+        }
+
+        let mut ranges_map = Map::new();
+        for r in &self.ranges {
+            ranges_map.insert(
+                r.name.clone(),
+                RangeLimits {
+                    min: r.range.start,
+                    max: r.range.end,
+                },
+            );
+        }
+
+        let filters = Filters {
+            category: Category {
+                id: self.category_id.clone(),
+            },
+            location: Loc {
+                city_zipcodes: self.locations.clone(),
+            },
+            ranges: ranges_map,
+        };
+
+        let js = JSON {
+            limit: self.limit,
+            filters: filters,
+        };
+
+        js.serialize(serializer)
+    }
+}
 ```
 
 ## Serializing an enum
