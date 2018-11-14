@@ -205,19 +205,21 @@ around the inner value, serializing just the inner value. See for example
 
 ### Ordinary structs
 
-Regarding the following struct:
+Regarding the following struct, the equivalent of the automatic implementation for `Serialize` would be:
 
 ```rust
+# #![allow(dead_code)]
+#
+# extern crate serde;
+#
+use serde::ser::{Serialize, Serializer, SerializeStruct};
+
 struct Color {
     r: u8,
     g: u8,
     b: u8,
 }
-```
 
-The equivalent of the automatic implementation for `Serialize` would be:
-
-```rust
 impl Serialize for Color {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -235,19 +237,23 @@ impl Serialize for Color {
         state.end()
     }
 }
+#
+# fn main() {}
 ```
 
 ### Tuple structs
 
-Regarding the following tuple struct:
+Regarding the following tuple struct, the equivalent of the automatic implementation for `Serialize` would be:
 
 ```rust
+# #![allow(dead_code)]
+#
+# extern crate serde;
+#
+use serde::ser::{Serialize, Serializer, SerializeTupleStruct};
+
 struct Point2D(f64, f64);
-```
 
-The equivalent of the automatic implementation for `Serialize` would be:
-
-```rust
 impl Serialize for Point2D {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -264,42 +270,48 @@ impl Serialize for Point2D {
         state.end()
     }
 }
+#
+# fn main() {}
 ```
 
 ### Newtype structs
 
-Regarding the following newtype struct:
+Regarding the following newtype struct, the equivalent of the automatic implementation for `Serialize` would be:
 
 ```rust
+# #![allow(dead_code)]
+#
+# extern crate serde;
+#
+use serde::ser::{Serialize, Serializer};
 struct Inches(u64);
-```
 
-The equivalent of the automatic implementation for `Serialize` would be:
-
-```rust
 impl Serialize for Inches {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
         // Only a call to serialize_tuple_struct is required
-        serializer.serialize_newtype_struct("Inches", &self.0)?;
+        serializer.serialize_newtype_struct("Inches", &self.0)
     }
 }
+#
+# fn main() {}
 ```
 
 ### Unit structs
 
-Regarding the following unit struct:
+Regarding the following unit struct, the equivalent of the automatic implementation for `Serialize` would be:
 
 ```rust
+# #![allow(dead_code)]
+#
+# extern crate serde;
+#
+use serde::ser::{Serialize, Serializer};
 struct Instance;
-```
 
-The equivalent of the automatic implementation for `Serialize` would be:
-
-```rust
-impl Serialize for Inches {
+impl Serialize for Instance {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
@@ -308,6 +320,8 @@ impl Serialize for Inches {
        serializer.serialize_unit_struct("Instance")
     }
 }
+#
+# fn main() {}
 ```
 
 ### Nested structs types
@@ -382,6 +396,14 @@ number of different types of JSON objects:
 We can benefit from the ability of Rust to declare inline structs to split the objects that we want to keep hidden and those we may want to reuse somewhere else:
 
 ```rust
+# #![allow(dead_code)]
+#
+# extern crate serde;
+# #[macro_use]
+# extern crate serde_derive;
+# use std::collections::HashMap as Map;
+# use std::ops::Range;
+# use serde::ser::{Serialize, SerializeStruct, Serializer};
 /// Main root object
 #[derive(Debug, Clone)]
 pub struct SearchBody {
@@ -492,6 +514,8 @@ impl Serialize for SearchBody {
         js.serialize(serializer)
     }
 }
+#
+# fn main() {}
 ```
 
 ## Serializing an enum
