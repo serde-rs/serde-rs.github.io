@@ -12,6 +12,11 @@
   `"PascalCase"`, `"camelCase"`, `"snake_case"`, `"SCREAMING_SNAKE_CASE"`,
   `"kebab-case"`.
 
+- ##### `#[serde(prefix_all = "...")]`
+
+  Add a prefix to all the fields (if this is a struct) or variants (if this is an
+  enum). It is applied after `rename_all`, and overrided by `rename`.
+
 - ##### `#[serde(deny_unknown_fields)]`
 
   Always error during deserialization when encountering unknown fields. When
