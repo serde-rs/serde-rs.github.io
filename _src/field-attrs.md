@@ -1,23 +1,23 @@
 # Field attributes
 
-- ##### `#[serde(rename = "name")]`
+- ##### `#[serde(rename = "name")]` {#rename}
 
   Serialize and deserialize this field with the given name instead of its Rust
   name. This is useful for [serializing fields as camelCase](attr-rename.md) or
   serializing fields with names that are reserved Rust keywords.
 
-- ##### `#[serde(default)]`
+- ##### `#[serde(default)]` {#default}
 
   If the value is not present when deserializing, use the `Default::default()`.
 
-- ##### `#[serde(default = "path")]`
+- ##### `#[serde(default = "path")]` {#default--path}
 
   If the value is not present when deserializing, call a function to get a
   default value. The given function must be callable as `fn() -> T`. For example
   `default = "empty_value"` would invoke `empty_value()` and `default =
   "SomeTrait::some_default"` would invoke `SomeTrait::some_default()`.
 
-- ##### `#[serde(flatten)]`
+- ##### `#[serde(flatten)]` {#flatten}
 
   Flatten the contents of this field into the container it is defined in.
 
@@ -27,32 +27,32 @@
   with arbitrary string keys. The [struct flattening](attr-flatten.md) page
   provides some examples.
 
-- ##### `#[serde(skip)]`
+- ##### `#[serde(skip)]` {#skip}
 
   Skip this field: do not serialize or deserialize it.
 
   When deserializing, Serde will use `Default::default()` or the function
   given by `default = "..."` to get a default value for this field.
 
-- ##### `#[serde(skip_serializing)]`
+- ##### `#[serde(skip_serializing)]` {#skip_serializing}
 
   Skip this field when serializing, but not when deserializing.
 
-- ##### `#[serde(skip_deserializing)]`
+- ##### `#[serde(skip_deserializing)]` {#skip_deserializing}
 
   Skip this field when deserializing, but not when serializing.
 
   When deserializing, Serde will use `Default::default()` or the function
   given by `default = "..."` to get a default value for this field.
 
-- ##### `#[serde(skip_serializing_if = "path")]`
+- ##### `#[serde(skip_serializing_if = "path")]` {#skip_serializing_if}
 
   Call a function to determine whether to skip serializing this field. The given
   function must be callable as `fn(&T) -> bool`, although it may be generic over
   `T`. For example `skip_serializing_if = "Option::is_none"` would skip an
   Option that is None.
 
-- ##### `#[serde(serialize_with = "path")]`
+- ##### `#[serde(serialize_with = "path")]` {#serialize_with}
 
   Serialize this field using a function that is different from its
   implementation of `Serialize`. The given function must be callable as
@@ -60,7 +60,7 @@
   may also be generic over `T`. Fields used with `serialize_with` are not
   required to implement `Serialize`.
 
-- ##### `#[serde(deserialize_with = "path")]`
+- ##### `#[serde(deserialize_with = "path")]` {#deserialize_with}
 
   Deserialize this field using a function that is different from its
   implementation of `Deserialize`. The given function must be callable as
