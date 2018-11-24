@@ -649,26 +649,26 @@
                                 
                                 <h1 id="variant-attributes"><a name="variant-attributes" class="plugin-anchor" href="#variant-attributes"><i class="fa fa-link" aria-hidden="true"></i></a>Variant attributes</h1>
 <ul>
-<li><h5 id="serderename--name"><a name="serderename--name" class="plugin-anchor" href="#serderename--name"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(rename = &quot;name&quot;)]</code></h5>
+<li><h5 id="rename"><a name="rename" class="plugin-anchor" href="#rename"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(rename = &quot;name&quot;)]</code> </h5>
 <p>Serialize and deserialize this variant with the given name instead of its Rust
 name.</p>
 </li>
-<li><h5 id="serderenameall--"><a name="serderenameall--" class="plugin-anchor" href="#serderenameall--"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(rename_all = &quot;...&quot;)]</code></h5>
+<li><h5 id="rename_all"><a name="rename_all" class="plugin-anchor" href="#rename_all"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(rename_all = &quot;...&quot;)]</code> </h5>
 <p>Rename all the fields of this struct variant according to the given case
 convention. The possible values are <code>&quot;lowercase&quot;</code>, <code>&quot;PascalCase&quot;</code>,
 <code>&quot;camelCase&quot;</code>, <code>&quot;snake_case&quot;</code>, <code>&quot;SCREAMING_SNAKE_CASE&quot;</code>, <code>&quot;kebab-case&quot;</code>.</p>
 </li>
-<li><h5 id="serdeskip"><a name="serdeskip" class="plugin-anchor" href="#serdeskip"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip)]</code></h5>
+<li><h5 id="skip"><a name="skip" class="plugin-anchor" href="#skip"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip)]</code> </h5>
 <p>Never serialize or deserialize this variant.</p>
 </li>
-<li><h5 id="serdeskipserializing"><a name="serdeskipserializing" class="plugin-anchor" href="#serdeskipserializing"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip_serializing)]</code></h5>
+<li><h5 id="skip_serializing"><a name="skip_serializing" class="plugin-anchor" href="#skip_serializing"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip_serializing)]</code> </h5>
 <p>Never serialize this variant. Trying to serialize this variant is treated as
 an error.</p>
 </li>
-<li><h5 id="serdeskipdeserializing"><a name="serdeskipdeserializing" class="plugin-anchor" href="#serdeskipdeserializing"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip_deserializing)]</code></h5>
+<li><h5 id="skip_deserializing"><a name="skip_deserializing" class="plugin-anchor" href="#skip_deserializing"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(skip_deserializing)]</code> </h5>
 <p>Never deserialize this variant.</p>
 </li>
-<li><h5 id="serdeserializewith--path"><a name="serdeserializewith--path" class="plugin-anchor" href="#serdeserializewith--path"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(serialize_with = &quot;path&quot;)]</code></h5>
+<li><h5 id="serialize_with"><a name="serialize_with" class="plugin-anchor" href="#serialize_with"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(serialize_with = &quot;path&quot;)]</code> </h5>
 <p>Serialize this variant using a function that is different from its
 implementation of <code>Serialize</code>. The given function must be callable as
 <code>fn&lt;S&gt;(&amp;FIELD0, &amp;FIELD1, ..., S) -&gt; Result&lt;S::Ok, S::Error&gt; where S:
@@ -678,7 +678,7 @@ Variants used with <code>serialize_with</code> are not required to be able to de
 <p><code>FIELD{n}</code> exists for every field of the variant. So a unit variant has just
 the <code>S</code> argument, and tuple/struct variants have an argument for every field.</p>
 </li>
-<li><h5 id="serdedeserializewith--path"><a name="serdedeserializewith--path" class="plugin-anchor" href="#serdedeserializewith--path"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(deserialize_with = &quot;path&quot;)]</code></h5>
+<li><h5 id="deserialize_with"><a name="deserialize_with" class="plugin-anchor" href="#deserialize_with"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(deserialize_with = &quot;path&quot;)]</code> </h5>
 <p>Deserialize this variant using a function that is different from its
 implementation of <code>Deserialize</code>. The given function must be callable as
 <code>fn&lt;&apos;de, D&gt;(D) -&gt; Result&lt;FIELDS, D::Error&gt; where D: Deserializer&lt;&apos;de&gt;</code>,
@@ -687,12 +687,12 @@ with <code>deserialize_with</code> are not required be able to derive <code>Dese
 <p><code>FIELDS</code> is a tuple of all fields of the variant. A unit variant will have
 <code>()</code> as its <code>FIELDS</code> type.</p>
 </li>
-<li><h5 id="serdewith--module"><a name="serdewith--module" class="plugin-anchor" href="#serdewith--module"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(with = &quot;module&quot;)]</code></h5>
+<li><h5 id="with"><a name="with" class="plugin-anchor" href="#with"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(with = &quot;module&quot;)]</code> </h5>
 <p>Combination of <code>serialize_with</code> and <code>deserialize_with</code>. Serde will use
 <code>$module::serialize</code> as the <code>serialize_with</code> function and
 <code>$module::deserialize</code> as the <code>deserialize_with</code> function.</p>
 </li>
-<li><h5 id="serdeother"><a name="serdeother" class="plugin-anchor" href="#serdeother"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(other)]</code></h5>
+<li><h5 id="other"><a name="other" class="plugin-anchor" href="#other"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(other)]</code> </h5>
 <p>Deserialize this variant if the enum tag is anything other than the tag of one
 of the other variants in this enum. Only allowed on a unit variant inside of
 an internally tagged or adjacently tagged enum.</p>
@@ -729,7 +729,7 @@ input is neither <code>&quot;A&quot;</code> nor <code>&quot;B&quot;</code>.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Variant attributes","level":"1.5.2","depth":2,"next":{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]},"previous":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"variant-attrs.md","mtime":"2018-09-15T22:07:30.730Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-11-06T18:00:43.775Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Variant attributes","level":"1.5.2","depth":2,"next":{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]},"previous":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"variant-attrs.md","mtime":"2018-11-24T06:37:11.221Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-11-24T06:39:00.873Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
