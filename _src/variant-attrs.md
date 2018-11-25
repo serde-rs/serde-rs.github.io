@@ -9,7 +9,8 @@
 
   Rename all the fields of this struct variant according to the given case
   convention. The possible values are `"lowercase"`, `"PascalCase"`,
-  `"camelCase"`, `"snake_case"`, `"SCREAMING_SNAKE_CASE"`, `"kebab-case"`.
+  `"camelCase"`, `"snake_case"`, `"SCREAMING_SNAKE_CASE"`, `"kebab-case"`,
+  `"SCREAMING-KEBAB-CASE"`.
 
 - ##### `#[serde(skip)]` {#skip}
 
