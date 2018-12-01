@@ -64,8 +64,6 @@ Serde by the community.
   *(deserialization only)*
 - [Envy Store], a way to deserialize [AWS Parameter Store] parameters into Rust structs.
   *(deserialization only)*
-- [Redis], deserialize values from Redis when using [redis-rs].
-  *(deserialization only)*
 
 [JSON]: https://github.com/serde-rs/json
 [Bincode]: https://github.com/TyOverby/bincode
@@ -81,9 +79,7 @@ Serde by the community.
 [JSON5]: https://github.com/callum-oakley/json5-rs
 [XML]: https://github.com/RReverser/serde-xml-rs
 [Envy]: https://github.com/softprops/envy
-[Redis]: https://github.com/OneSignal/serde-redis
 [Cargo]: http://doc.crates.io/manifest.html
-[redis-rs]: https://crates.io/crates/redis
 [Envy Store]: https://github.com/softprops/envy-store
 [AWS Parameter Store]: https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html
 
