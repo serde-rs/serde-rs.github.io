@@ -58,7 +58,6 @@ Serde by the community.
   definition.
 - [URL], the x-www-form-urlencoded format.
 - [JSON5], A superset of JSON including some productions from ES5.
-- [XML], the flexible machine-friendly W3C standard.
   *(deserialization only)*
 - [Envy], a way to deserialize environment variables into Rust structs.
   *(deserialization only)*
@@ -77,7 +76,6 @@ Serde by the community.
 [Avro]: https://github.com/flavray/avro-rs
 [URL]: https://github.com/nox/serde_urlencoded
 [JSON5]: https://github.com/callum-oakley/json5-rs
-[XML]: https://github.com/RReverser/serde-xml-rs
 [Envy]: https://github.com/softprops/envy
 [Cargo]: http://doc.crates.io/manifest.html
 [Envy Store]: https://github.com/softprops/envy-store
