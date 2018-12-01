@@ -57,6 +57,7 @@ Serde by the community.
 - [Avro], a binary format used within Apache Hadoop, with support for schema
   definition.
 - [URL], the x-www-form-urlencoded format.
+- [JSON5], A superset of JSON including some productions from ES5.
 - [XML], the flexible machine-friendly W3C standard.
   *(deserialization only)*
 - [Envy], a way to deserialize environment variables into Rust structs.
@@ -77,6 +78,7 @@ Serde by the community.
 [BSON]: https://github.com/zonyitoo/bson-rs
 [Avro]: https://github.com/flavray/avro-rs
 [URL]: https://github.com/nox/serde_urlencoded
+[JSON5]: https://github.com/callum-oakley/json5-rs
 [XML]: https://github.com/RReverser/serde-xml-rs
 [Envy]: https://github.com/softprops/envy
 [Redis]: https://github.com/OneSignal/serde-redis
