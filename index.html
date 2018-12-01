@@ -689,16 +689,13 @@ language.</li>
 <li><a href="https://github.com/zonyitoo/bson-rs" target="_blank">BSON</a>, the data storage and network transfer format used by MongoDB.</li>
 <li><a href="https://github.com/flavray/avro-rs" target="_blank">Avro</a>, a binary format used within Apache Hadoop, with support for schema
 definition.</li>
-<li><a href="https://github.com/nox/serde_urlencoded" target="_blank">URL</a>, the x-www-form-urlencoded format.</li>
+<li><a href="https://github.com/laktak/hjson-rust" target="_blank">Hjson</a>, a variant of JSON designed to be readable and writable by humans.</li>
 <li><a href="https://github.com/callum-oakley/json5-rs" target="_blank">JSON5</a>, A superset of JSON including some productions from ES5.</li>
-<li><a href="https://github.com/RReverser/serde-xml-rs" target="_blank">XML</a>, the flexible machine-friendly W3C standard.
-<em>(deserialization only)</em></li>
+<li><a href="https://github.com/nox/serde_urlencoded" target="_blank">URL</a>, the x-www-form-urlencoded format.</li>
 <li><a href="https://github.com/softprops/envy" target="_blank">Envy</a>, a way to deserialize environment variables into Rust structs.
 <em>(deserialization only)</em></li>
-<li><a href="https://github.com/softprops/envy-store" target="_blank">Envy Store</a>, a way to deserialize <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html" target="_blank">AWS Parameter Store</a> parameters into Rust structs.
-<em>(deserialization only)</em></li>
-<li><a href="https://github.com/OneSignal/serde-redis" target="_blank">Redis</a>, deserialize values from Redis when using <a href="https://crates.io/crates/redis" target="_blank">redis-rs</a>.
-<em>(deserialization only)</em></li>
+<li><a href="https://github.com/softprops/envy-store" target="_blank">Envy Store</a>, a way to deserialize <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html" target="_blank">AWS Parameter Store</a> parameters into Rust
+structs. <em>(deserialization only)</em></li>
 </ul>
 <h3 id="data-structures"><a name="data-structures" class="plugin-anchor" href="#data-structures"><i class="fa fa-link" aria-hidden="true"></i></a>Data structures</h3>
 <p>Out of the box, Serde is able to serialize and deserialize common Rust data
@@ -757,7 +754,7 @@ Using the derive macro goes like this:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2018-12-01T20:05:24.828Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-12-01T20:05:51.475Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2018-12-01T20:58:45.871Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-12-01T21:00:27.327Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
