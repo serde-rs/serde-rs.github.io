@@ -54,6 +54,12 @@
   `$module::serialize` as the `serialize_with` function and
   `$module::deserialize` as the `deserialize_with` function.
 
+- ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]
+
+  Borrow data for this field from the deserializer by using zero-copy
+  deserialization. See [this example](lifetimes.md#borrowing-data-in-a-derived-impl).
+  Only allowed on a newtype variant (a tuple variant with only one field).
+
 - ##### `#[serde(other)]` {#other}
 
   Deserialize this variant if the enum tag is anything other than the tag of one

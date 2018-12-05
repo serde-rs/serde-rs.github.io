@@ -334,3 +334,30 @@ struct Example<'a, 'b, 'c> {
 #
 # fn main() {}
 ```
+
+The borrow attribute can also be applied to a newtype variant (a tuple
+variant with only one field).
+
+```rust
+# #![allow(dead_code)]
+#
+extern crate serde;
+
+#[macro_use]
+extern crate serde_derive;
+
+use std::borrow::Cow;
+
+#[derive(Deserialize)]
+struct Inner<'a, 'b> {
+    // &str and &[u8] are implicitly borrowed.
+    SimpleString(&'a str),
+
+    // Other types must be borrowed explicitly.
+    #[serde(borrow)]
+    CowString(Cow<'b, str>),
+}
+#
+# fn main() {}
+```
+
