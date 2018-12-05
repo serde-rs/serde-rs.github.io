@@ -68,31 +68,31 @@
   may also be generic over `T`. Fields used with `deserialize_with` are not
   required to implement `Deserialize`.
 
-- ##### `#[serde(with = "module")]`
+- ##### `#[serde(with = "module")]` {#with}
 
   Combination of `serialize_with` and `deserialize_with`. Serde will use
   `$module::serialize` as the `serialize_with` function and
   `$module::deserialize` as the `deserialize_with` function.
 
-- ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]
+- ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")] {#borrow}
 
   Borrow data for this field from the deserializer by using zero-copy
   deserialization. See [this example](lifetimes.md#borrowing-data-in-a-derived-impl).
 
-- ##### `#[serde(bound = "T: MyTrait")]`
+- ##### `#[serde(bound = "T: MyTrait")]` {#bound}
 
   Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
   trait bounds inferred by Serde for the current field.
 
-- ##### `#[serde(bound(serialize = "T: MyTrait"))]`
+- ##### `#[serde(bound(serialize = "T: MyTrait"))]` {#bound--serialize}
 
   Where-clause for the `Serialize` impl.
 
-- ##### `#[serde(bound(deserialize  = "T: MyTrait"))]`
+- ##### `#[serde(bound(deserialize  = "T: MyTrait"))]` {#bound--deserialize}
 
   Where-clause for the `Deserialize` impl.
 
-- ##### `#[serde(getter = "...")]`
+- ##### `#[serde(getter = "...")]` {#getter}
 
   This is used when deriving `Serialize` for a [remote type](remote-derive.md)
   that has one or more private fields.
