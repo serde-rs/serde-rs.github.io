@@ -54,7 +54,7 @@
   `$module::serialize` as the `serialize_with` function and
   `$module::deserialize` as the `deserialize_with` function.
 
-- ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]`
+- ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]` {#borrow}
 
   Borrow data for this field from the deserializer by using zero-copy
   deserialization. See [this example](lifetimes.md#borrowing-data-in-a-derived-impl).
