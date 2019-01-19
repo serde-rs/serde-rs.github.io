@@ -6,6 +6,11 @@
   name. This is useful for [serializing fields as camelCase](attr-rename.md) or
   serializing fields with names that are reserved Rust keywords.
 
+- ##### `#[serde(alias = "name")]` {#alias}
+
+  Deserialize this field from the given name *or* from its Rust name. May be
+  repeated to specify multiple possible names for the same field.
+
 - ##### `#[serde(default)]` {#default}
 
   If the value is not present when deserializing, use the `Default::default()`.
