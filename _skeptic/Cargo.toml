@@ -1,8 +1,9 @@
 [package]
-name = "gitbook"
-version = "0.1.0"
+name = "serde-website"
+version = "0.0.0"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = "build.rs"
+publish = false
 
 [build-dependencies]
 glob = "0.2"
