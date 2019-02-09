@@ -7,7 +7,6 @@ build = "build.rs"
 publish = false
 
 [build-dependencies]
-glob = "0.2"
 skeptic = "0.13"
 
 [dev-dependencies]
