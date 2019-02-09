@@ -6,14 +6,8 @@ attribute is used to provide the logic for handling the custom representation.
 
 !PLAYGROUND a9fd380b0462494ba0c4fb0637e97c0d
 ```rust
-#[macro_use]
-extern crate serde_derive;
-
-extern crate chrono;
-extern crate serde;
-extern crate serde_json;
-
 use chrono::{DateTime, Utc};
+use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct StructWithCustomDate {

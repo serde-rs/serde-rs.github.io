@@ -10,11 +10,6 @@ any type, except that it does not store any information about the data that
 gets deserialized.
 
 ```rust
-extern crate serde;
-
-#[macro_use]
-extern crate serde_json;
-
 use std::fmt;
 use std::marker::PhantomData;
 
@@ -22,6 +17,7 @@ use serde::de::{
     self, Deserialize, DeserializeSeed, Deserializer, Visitor, SeqAccess,
     IgnoredAny,
 };
+use serde_json::json;
 
 // A seed that can be used to deserialize only the `n`th element of a sequence
 // while efficiently discarding elements of any type before or after index `n`.

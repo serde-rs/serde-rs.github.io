@@ -2,8 +2,6 @@
 
 !PLAYGROUND 7dc2383e7cb664657f4e016fa0528017
 ```rust
-extern crate serde;
-
 use std::fmt;
 use std::marker::PhantomData;
 

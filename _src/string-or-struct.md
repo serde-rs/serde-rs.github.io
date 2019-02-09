@@ -24,19 +24,13 @@ We can use Rust's
 Serde's `deserialize_with` attribute to handle this pattern in a general way.
 
 ```rust
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-extern crate serde_yaml;
-extern crate void;
-
 use std::collections::BTreeMap as Map;
 use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
 
-use serde::de::{self, Deserialize, Deserializer, Visitor, MapAccess};
+use serde::{Deserialize, Deserializer};
+use serde::de::{self, Visitor, MapAccess};
 use void::Void;
 
 fn main() {

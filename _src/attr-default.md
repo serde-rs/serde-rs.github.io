@@ -2,11 +2,7 @@
 
 !PLAYGROUND 26df8969cb9df94a7d4a0443dcfb712f
 ```rust
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-extern crate serde_json;
+use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 struct Request {

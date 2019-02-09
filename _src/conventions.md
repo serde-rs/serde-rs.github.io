@@ -28,15 +28,6 @@ detail on the following pages.
 
 !FILENAME src/lib.rs
 ```rust
-extern crate serde;
-
-// The serde_derive crate provides the macros for #[derive(Serialize)] and
-// #[derive(Deserialize)]. You won't need these for implementing a data format
-// but your unit tests will probably use them - hence #[cfg(test)].
-#[cfg(test)]
-#[macro_use]
-extern crate serde_derive;
-
 # macro_rules! modules {
 #     (mod de) => {
 #         mod de {

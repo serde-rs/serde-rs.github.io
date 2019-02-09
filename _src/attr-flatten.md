@@ -35,8 +35,7 @@ In this case it can be convient to factor the common pagination metadata fields
 into a shared struct that can be flattened into each API response object.
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::{Serialize, Deserialize};
 #
 #[derive(Serialize, Deserialize)]
 struct Pagination {
@@ -65,11 +64,8 @@ A field of map type can be flattened to hold additional data that is not
 captured by any other fields of the struct.
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
-# extern crate serde_json;
-#
 use std::collections::HashMap;
+use serde::{Serialize, Deserialize};
 use serde_json::Value;
 
 #[derive(Serialize, Deserialize)]

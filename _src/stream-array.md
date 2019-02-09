@@ -7,12 +7,8 @@ processed while being deserialized instead of after.
 
 !PLAYGROUND d35e2dd6160991bc2f1c80e3519ccf73
 ```rust
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-extern crate serde_json;
-use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess};
+use serde::{Deserialize, Deserializer};
+use serde::de::{self, Visitor, SeqAccess};
 
 use std::{cmp, fmt};
 use std::marker::PhantomData;

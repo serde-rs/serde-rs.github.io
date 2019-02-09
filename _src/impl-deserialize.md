@@ -5,8 +5,6 @@ The [`Deserialize`] trait looks like this:
 [`Deserialize`]: https://docs.serde.rs/serde/de/trait.Deserialize.html
 
 ```rust
-# extern crate serde;
-#
 # use serde::Deserializer;
 #
 pub trait Deserialize<'de>: Sized {
@@ -70,8 +68,6 @@ Here is a `Visitor` that is able to deserialize a primitive `i32` from a variety
 of types.
 
 ```rust
-# extern crate serde;
-#
 use std::fmt;
 
 use serde::de::{self, Visitor};
@@ -138,8 +134,6 @@ Deserialize a value by passing a `Visitor` to the given `Deserializer`. The
 data, which is known as "driving" the `Visitor`.
 
 ```rust
-# extern crate serde;
-#
 # use std::fmt;
 #
 # use serde::de::{Deserialize, Deserializer, Visitor};

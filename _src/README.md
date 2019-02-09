@@ -92,11 +92,7 @@ Using the derive macro goes like this:
 
 !PLAYGROUND a58fc361e02c4c0a08fd99cacd9567d1
 ```rust
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-extern crate serde_json;
+use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Point {

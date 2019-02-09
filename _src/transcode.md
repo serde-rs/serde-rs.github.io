@@ -15,9 +15,6 @@ This example implements the equivalent of Go's
 removes insignificant whitespace from a JSON string in a streaming way.
 
 ```rust
-extern crate serde_json;
-extern crate serde_transcode;
-
 use std::io;
 
 fn main() {

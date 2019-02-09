@@ -23,8 +23,6 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.
 
 !PLAYGROUND 29a53a6dfc923042ef39f1778dd12d5b
 ```rust
-# extern crate serde;
-#
 # #[allow(dead_code)]
 # struct Duration {
 #     secs: u64,

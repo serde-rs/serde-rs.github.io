@@ -18,12 +18,7 @@ This example shows a simplified HCL resource containing a simplified IAM policy.
 The policy document is represented as a JSON string when serialized.
 
 ```rust
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-extern crate serde_json;
-extern crate serde_yaml;
+use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
 struct Resource {

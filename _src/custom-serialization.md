@@ -11,8 +11,6 @@ traits for your type.
 The traits each have a single method:
 
 ```rust
-# extern crate serde;
-#
 # use serde::{Serializer, Deserializer};
 #
 pub trait Serialize {

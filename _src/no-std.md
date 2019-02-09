@@ -23,15 +23,12 @@ If you need JSON support without a standard library, please use
 
 ### Derive
 
-The `#[derive(Serialize, Deserialize)]` [derive macros] provided by the
-`serde_derive` crate may be used from a no-std crate without any special action.
-There are no Cargo features on `serde_derive` that would need to be set or unset
-for no-std support.
+The `#[derive(Serialize, Deserialize)]` [derive macros] work just the same in a
+no-std crate.
 
 ```toml
 [dependencies]
-serde = { version = "1.0", default-features = false }
-serde_derive = "1.0"
+serde = { version = "1.0", default-features = false, features = ["derive"] }
 ```
 
 Some deserialization features that require a heap-allocated temporary buffer

@@ -10,43 +10,10 @@ Building Serde with `default-features = false`, you will receive a stock
 
 #### --feature derive
 
-Re-export the derive(Serialize, Deserialize) macros. This is intended for
-library crates that provide optional Serde impls behind a Cargo cfg
-of their own.
+Provide derive macros for the Serialize and Deserialize traits.
 
-Mainly this is a workaround for limitations associated with
-[rust-lang/cargo#1286] in which a library crate cannot use one `"serde"` cfg in
-Cargo to enable dependencies on both `serde` and `serde_derive` crates.
-
-[rust-lang/cargo#1286]: https://github.com/rust-lang/cargo/issues/1286
-
-The recommended way to provide optional Serde support that requires derive is as
-follows. In particular, please do not name your library's Serde feature anything
-other than `"serde"`.
-
-```toml
-[dependencies]
-serde = { version = "1.0", optional = true, features = ["derive"] }
-```
-
-Within the library, these optional Serde derives would be written like this.
-
-```rust
-#[cfg(feature = "serde")]
-#[macro_use]
-extern crate serde;
-#
-# macro_rules! ignore {
-#     ($($tt:tt)*) => {}
-# }
-
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-# ignore! {
-struct ...
-# }
-#
-# fn main() {}
-```
+This is behind a feature because the derive macro implementation takes some
+extra time to compile.
 
 #### --feature std
 

@@ -19,13 +19,8 @@ Here is an example from the
 [`linked-hash-map`](https://github.com/contain-rs/linked-hash-map) crate.
 
 ```rust
-# extern crate serde;
-#
-extern crate linked_hash_map;
 # #[allow(unused_imports)]
 use linked_hash_map::LinkedHashMap;
-
-extern crate serde_test;
 #
 # mod test {
 #     use std::fmt;

@@ -1,6 +1,3 @@
-extern crate glob;
-extern crate skeptic;
-
 use glob::glob;
 
 fn main() {

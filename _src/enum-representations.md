@@ -3,8 +3,7 @@
 Consider the following enum type:
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::{Serialize, Deserialize};
 #
 # type Params = ();
 # type Value = ();
@@ -44,8 +43,7 @@ other possible representations.
 ## Internally tagged
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::{Serialize, Deserialize};
 #
 # type Params = ();
 # type Value = ();
@@ -78,8 +76,7 @@ tuple variant is an error at compile time.
 ## Adjacently tagged
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::{Serialize, Deserialize};
 #
 # type Inline = ();
 #
@@ -106,8 +103,7 @@ object.
 ## Untagged
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::{Serialize, Deserialize};
 #
 # type Params = ();
 # type Value = ();
@@ -138,8 +134,7 @@ As another example of an untagged enum, this enum can be deserialized from
 either an integer or an array of two strings:
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::{Serialize, Deserialize};
 #
 #[derive(Serialize, Deserialize)]
 #[serde(untagged)]

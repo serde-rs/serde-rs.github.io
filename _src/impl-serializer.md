@@ -16,17 +16,12 @@ is used.
 
 !FILENAME src/ser.rs
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
-#
-# extern crate serde;
-#
 # mod error {
 #     pub use serde::de::value::Error;
 #     pub type Result<T> = ::std::result::Result<T, Error>;
 # }
 #
-use serde::ser::{self, Serialize};
+use serde::{ser, Serialize};
 
 use error::{Error, Result};
 

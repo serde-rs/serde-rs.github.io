@@ -39,12 +39,8 @@ mod other_crate {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-
 use other_crate::Duration;
+use serde::{Serialize, Deserialize};
 
 // Serde calls this the definition of the remote type. It is just a copy of the
 // remote data structure. The `remote` attribute gives the path to the actual
@@ -104,12 +100,8 @@ mod other_crate {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-
 use other_crate::Duration;
+use serde::{Serialize, Deserialize};
 
 // Provide getters for every private field of the remote struct. The getter must
 // return either `T` or `&T` where `T` is the type of the field.
@@ -154,8 +146,7 @@ signature.
 ```rust
 # #![allow(dead_code)]
 #
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::Deserialize;
 #
 # struct Duration {
 #     secs: i64,
@@ -185,10 +176,7 @@ Knowing this, the generated method can be invoked directly by passing a
 ```rust
 # #![allow(dead_code)]
 #
-# #[macro_use]
-# extern crate serde_derive;
-#
-# extern crate serde_json;
+# use serde::Deserialize;
 #
 # struct Duration;
 #
@@ -196,7 +184,7 @@ Knowing this, the generated method can be invoked directly by passing a
 # #[serde(remote = "Duration")]
 # struct DurationDef;
 #
-# fn try(j: &str) -> Result<Duration, serde_json::Error> {
+# fn try_main(j: &str) -> Result<Duration, serde_json::Error> {
 let mut de = serde_json::Deserializer::from_str(j);
 let dur = DurationDef::deserialize(&mut de)?;
 
@@ -214,10 +202,7 @@ deserializing the remote type.
 ```rust
 # #![allow(dead_code)]
 #
-# #[macro_use]
-# extern crate serde_derive;
-#
-# extern crate serde_json;
+# use serde::Deserialize;
 #
 # struct Duration;
 #
@@ -225,7 +210,7 @@ deserializing the remote type.
 # #[serde(remote = "Duration")]
 # struct DurationDef;
 #
-# fn try(j: &str) -> Result<Duration, serde_json::Error> {
+# fn try_main(j: &str) -> Result<Duration, serde_json::Error> {
 #[derive(Deserialize)]
 struct Helper(#[serde(with = "DurationDef")] Duration);
 

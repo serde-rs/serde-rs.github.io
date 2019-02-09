@@ -17,8 +17,7 @@ There are three categories of attributes:
 [**Field attributes**]: field-attrs.md
 
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::{Serialize, Deserialize};
 #
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]  // <-- this is a container attribute

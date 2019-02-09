@@ -2,9 +2,6 @@
 
 !PLAYGROUND c25220723092f68882199a383af07d95
 ```rust
-extern crate serde;
-extern crate serde_json;
-
 use std::fmt;
 
 macro_rules! enum_number {

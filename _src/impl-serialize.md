@@ -5,8 +5,6 @@ The [`Serialize`] trait looks like this:
 [`Serialize`]: https://docs.serde.rs/serde/ser/trait.Serialize.html
 
 ```rust
-# extern crate serde;
-#
 # use serde::Serializer;
 #
 pub trait Serialize {
@@ -37,8 +35,6 @@ As the simplest example, here is the builtin `Serialize` impl for the primitive
 `i32`.
 
 ```rust
-# extern crate serde;
-#
 # use std::os::raw::c_int as ActualI32;
 #
 # use serde::{Serialize, Serializer};
@@ -88,8 +84,6 @@ as a primitive number].
 Compound types follow a three-step process of init, elements, end.
 
 ```rust
-# extern crate serde;
-#
 # use std::marker::PhantomData;
 #
 # struct Vec<T>(PhantomData<T>);
@@ -231,8 +225,6 @@ around the inner value, serializing just the inner value. See for example
 
 ```rust
 # #![allow(dead_code)]
-#
-# extern crate serde;
 #
 use serde::ser::{Serialize, Serializer, SerializeStruct};
 

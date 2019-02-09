@@ -36,8 +36,6 @@ for its error type for the data structure to use in various situations.
 
 !FILENAME src/error.rs
 ```rust
-# extern crate serde;
-#
 # macro_rules! ignore {
 #     ($($tt:tt)*) => {}
 # }

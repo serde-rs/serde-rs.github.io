@@ -7,8 +7,6 @@ The [`Deserialize`] and [`Deserializer`] traits both have a lifetime called
 [`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
 
 ```rust
-# extern crate serde;
-#
 # use serde::Deserializer;
 #
 trait Deserialize<'de>: Sized {
@@ -27,8 +25,7 @@ impossible or recklessly unsafe in languages other than Rust.
 ```rust
 # #![allow(dead_code)]
 #
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::Deserialize;
 #
 #[derive(Deserialize)]
 struct User<'a> {
@@ -246,10 +243,7 @@ Serde. Any other type of field can opt in to borrowing by using the
 ```rust
 # #![allow(dead_code)]
 #
-extern crate serde;
-
-#[macro_use]
-extern crate serde_derive;
+use serde::Deserialize;
 
 use std::borrow::Cow;
 
@@ -312,8 +306,7 @@ The attribute may specify explicitly which lifetimes should be borrowed.
 ```rust
 # #![allow(dead_code)]
 #
-# #[macro_use]
-# extern crate serde_derive;
+# use serde::Deserialize;
 #
 use std::marker::PhantomData;
 

@@ -11,11 +11,7 @@ deserializing (see [Field Attributes: `skip`][attr-skip]). Likewise, use
 
 !PLAYGROUND f69adf6a6856d32a13acaa23735feed3
 ```rust
-#[macro_use]
-extern crate serde_derive;
-
-extern crate serde;
-extern crate serde_json;
+use serde::Serialize;
 
 use std::collections::BTreeMap as Map;
 

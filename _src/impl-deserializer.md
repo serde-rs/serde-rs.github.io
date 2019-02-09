@@ -32,11 +32,6 @@ there is no advantage to that.
 
 !FILENAME src/de.rs
 ```rust
-# #[macro_use]
-# extern crate serde_derive;
-#
-# extern crate serde;
-#
 # mod error {
 #     use std;
 #     use std::fmt::{self, Display};
@@ -97,9 +92,10 @@ there is no advantage to that.
 #
 use std::ops::{AddAssign, MulAssign, Neg};
 
+use serde::Deserialize;
 use serde::de::{
-    self, Deserialize, DeserializeSeed, EnumAccess, IntoDeserializer,
-    MapAccess, SeqAccess, VariantAccess, Visitor,
+    self, DeserializeSeed, EnumAccess, IntoDeserializer, MapAccess, SeqAccess,
+    VariantAccess, Visitor,
 };
 
 use error::{Error, Result};
