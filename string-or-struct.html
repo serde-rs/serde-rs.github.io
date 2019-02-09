@@ -666,19 +666,13 @@ complex data.</p>
 <p>We can use Rust&apos;s
 <a href="https://doc.rust-lang.org/std/str/trait.FromStr.html" target="_blank"><code>FromStr</code></a> trait and
 Serde&apos;s <code>deserialize_with</code> attribute to handle this pattern in a general way.</p>
-<pre><code class="lang-rust"><span class="hljs-meta">#[macro_use]</span>
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_derive;
-
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> serde_yaml;
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">crate</span> void;
-
-<span class="hljs-keyword">use</span> std::collections::BTreeMap <span class="hljs-keyword">as</span> Map;
+<pre><code class="lang-rust"><span class="hljs-keyword">use</span> std::collections::BTreeMap <span class="hljs-keyword">as</span> Map;
 <span class="hljs-keyword">use</span> std::fmt;
 <span class="hljs-keyword">use</span> std::marker::PhantomData;
 <span class="hljs-keyword">use</span> std::str::FromStr;
 
-<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Deserialize, Deserializer, Visitor, MapAccess};
+<span class="hljs-keyword">use</span> serde::{Deserialize, Deserializer};
+<span class="hljs-keyword">use</span> serde::de::{<span class="hljs-keyword">self</span>, Visitor, MapAccess};
 <span class="hljs-keyword">use</span> void::Void;
 
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
@@ -825,7 +819,7 @@ Serde&apos;s <code>deserialize_with</code> attribute to handle this pattern in a
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Either string or struct","level":"1.9.15","depth":2,"next":{"title":"Convert error types","level":"1.9.16","depth":2,"path":"convert-error.md","ref":"convert-error.md","articles":[]},"previous":{"title":"Transcode into another format","level":"1.9.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"string-or-struct.md","mtime":"2018-05-06T01:50:26.371Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-19T06:47:28.627Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Either string or struct","level":"1.9.15","depth":2,"next":{"title":"Convert error types","level":"1.9.16","depth":2,"path":"convert-error.md","ref":"convert-error.md","articles":[]},"previous":{"title":"Transcode into another format","level":"1.9.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"string-or-struct.md","mtime":"2019-02-09T19:38:46.746Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-09T19:47:17.791Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
