@@ -90,7 +90,7 @@ types in any of the above formats. For example `String`, `&str`, `usize`,
 macro to generate serialization implementations for structs in your own program.
 Using the derive macro goes like this:
 
-!PLAYGROUND a58fc361e02c4c0a08fd99cacd9567d1
+!PLAYGROUND 72755f28f99afc95e01d63174b28c1f5
 ```rust
 use serde::{Serialize, Deserialize};
 

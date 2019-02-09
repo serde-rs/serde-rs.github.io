@@ -10,7 +10,7 @@ As with most heuristics, this is not always right and Serde provides an escape
 hatch to replace the automatically generated bound by one written by the
 programmer.
 
-!PLAYGROUND 5bd0d8d29a9e468fbe96002c0f347565
+!PLAYGROUND d2a50878ab69a5786f5a3a11a9de71ea
 ```rust
 use serde::{de, Deserialize, Deserializer};
 
@@ -73,8 +73,8 @@ where
 fn main() {
     let j = r#"
         {
-          "s": "1234567890",
-          "ptr": "owned"
+            "s": "1234567890",
+            "ptr": "owned"
         }
     "#;
 

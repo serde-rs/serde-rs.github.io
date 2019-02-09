@@ -1,6 +1,6 @@
 # Serialize enum as number
 
-!PLAYGROUND c25220723092f68882199a383af07d95
+!PLAYGROUND 034165a99d28bac22dce153b15ad4395
 ```rust
 use std::fmt;
 

@@ -5,7 +5,7 @@ without holding the whole array in memory all at once. This approach can be
 adapted to handle a variety of other situations in which data needs to be
 processed while being deserialized instead of after.
 
-!PLAYGROUND d35e2dd6160991bc2f1c80e3519ccf73
+!PLAYGROUND 270186a56b8321704dc45001fdfa3c92
 ```rust
 use serde::{Deserialize, Deserializer};
 use serde::de::{self, Visitor, SeqAccess};

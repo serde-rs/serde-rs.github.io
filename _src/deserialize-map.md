@@ -1,6 +1,6 @@
 # Implement Deserialize for a custom map type
 
-!PLAYGROUND 7dc2383e7cb664657f4e016fa0528017
+!PLAYGROUND 72f10ca685c08f8afeb618efdabfed6a
 ```rust
 use std::fmt;
 use std::marker::PhantomData;

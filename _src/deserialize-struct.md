@@ -21,8 +21,12 @@ names. Instead there is a `Field` enum which is deserialized from a `&str`.
 The implementation supports two possible ways that a struct may be represented
 by a data format: as a seq like in Bincode, and as a map like in JSON.
 
-!PLAYGROUND 29a53a6dfc923042ef39f1778dd12d5b
+!PLAYGROUND 2e212d29e38110fc3d8f22ff920712be
 ```rust
+use std::fmt;
+
+use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
+
 # #[allow(dead_code)]
 # struct Duration {
 #     secs: u64,
@@ -35,10 +39,6 @@ by a data format: as a seq like in Bincode, and as a map like in JSON.
 #     }
 # }
 #
-use std::fmt;
-
-use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
-
 impl<'de> Deserialize<'de> for Duration {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
