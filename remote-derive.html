@@ -665,7 +665,7 @@ different crate directly.</p>
 is that you have to provide a definition of the type for Serde&apos;s derive to
 process. At compile time, Serde will check that all the fields in the definition
 you provided match the fields in the remote type.</p>
-<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=55ea56cac4fd8610e50778bfa3a50d9f"></a><code class="lang-rust"><span class="hljs-comment">// Pretend that this is somebody else&apos;s crate, not a module.</span>
+<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?edition=2018&amp;gist=0a344c9dfc4cf965e66125ebdfbc48b8"></a><code class="lang-rust"><span class="hljs-comment">// Pretend that this is somebody else&apos;s crate, not a module.</span>
 <span class="hljs-keyword">mod</span> other_crate {
     <span class="hljs-comment">// Neither Serde nor the other crate provides Serialize and Deserialize</span>
     <span class="hljs-comment">// impls for this struct.</span>
@@ -706,7 +706,7 @@ you provided match the fields in the remote type.</p>
 there is to it. If the remote type is a struct with one or more private fields,
 getters must be provided for the private fields and a conversion must be
 provided to construct the remote type.</p>
-<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=65af26e7f2c2c8984f27c2652a743de6"></a><code class="lang-rust"><span class="hljs-comment">// Pretend that this is somebody else&apos;s crate, not a module.</span>
+<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?edition=2018&amp;gist=02b8513dfb060b6580f998bac5a04a1a"></a><code class="lang-rust"><span class="hljs-comment">// Pretend that this is somebody else&apos;s crate, not a module.</span>
 <span class="hljs-keyword">mod</span> other_crate {
     <span class="hljs-comment">// Neither Serde nor the other crate provides Serialize and Deserialize</span>
     <span class="hljs-comment">// impls for this struct. Oh, and the fields are private.</span>
@@ -784,14 +784,14 @@ signature.</p>
 </code></pre>
 <p>Knowing this, the generated method can be invoked directly by passing a
 <code>Deserializer</code> implementation.</p>
-<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=344c68fd099818447c5289124a3ad331"></a><code class="lang-rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> de = serde_json::Deserializer::from_str(j);
+<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?edition=2018&amp;gist=29cadbd640a231d5703564a666b0bc85"></a><code class="lang-rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> de = serde_json::Deserializer::from_str(j);
 <span class="hljs-keyword">let</span> dur = DurationDef::deserialize(&amp;<span class="hljs-keyword">mut</span> de)?;
 
 <span class="hljs-comment">// `dur` has type Duration</span>
 </code></pre>
 <p>Alternatively we can write a top-level newtype wrapper as a private helper for
 deserializing the remote type.</p>
-<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?gist=03bead78d2a3cf949dc6ba917c39b5df"></a><code class="lang-rust"><span class="hljs-meta">#[derive(Deserialize)]</span>
+<pre><a class="playground-link" target="_blank" href="https://play.rust-lang.org/?edition=2018&amp;gist=159da6ebf3a3573b8bd7f3bc2246026c"></a><code class="lang-rust"><span class="hljs-meta">#[derive(Deserialize)]</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Helper</span></span>(<span class="hljs-meta">#[serde(with = <span class="hljs-meta-string">&quot;DurationDef&quot;</span>)]</span> Duration);
 
 <span class="hljs-keyword">let</span> dur = serde_json::from_str(j).map(|Helper(dur)| dur)?;
@@ -825,7 +825,7 @@ deserializing the remote type.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Derive for remote crate","level":"1.9.11","depth":2,"next":{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"previous":{"title":"Skip serializing field","level":"1.9.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"remote-derive.md","mtime":"2019-02-09T19:44:41.621Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-09T19:47:17.791Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Derive for remote crate","level":"1.9.11","depth":2,"next":{"title":"Manually deserialize struct","level":"1.9.12","depth":2,"path":"deserialize-struct.md","ref":"deserialize-struct.md","articles":[]},"previous":{"title":"Skip serializing field","level":"1.9.10","depth":2,"path":"attr-skip-serializing.md","ref":"attr-skip-serializing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"remote-derive.md","mtime":"2019-02-09T20:13:31.506Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-09T20:17:10.853Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
