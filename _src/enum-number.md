@@ -1,74 +1,29 @@
 # Serialize enum as number
 
-!PLAYGROUND 034165a99d28bac22dce153b15ad4395
+The [serde\_repr] crate provides alternative derive macros that derive the same
+Serialize and Deserialize traits but delegate to the underlying representation
+of a C-like enum. This allows C-like enums to be formatted as integers rather
+than strings in JSON, for example.
+
+[serde\_repr]: https://github.com/dtolnay/serde-repr
+
 ```rust
-use std::fmt;
+use serde_repr::*;
 
-macro_rules! enum_number {
-    ($name:ident { $($variant:ident = $value:expr, )* }) => {
-        #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-        pub enum $name {
-            $($variant = $value,)*
-        }
-
-        impl ::serde::Serialize for $name {
-            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-            where
-                S: ::serde::Serializer,
-            {
-                // Serialize the enum as a u64.
-                serializer.serialize_u64(*self as u64)
-            }
-        }
-
-        impl<'de> ::serde::Deserialize<'de> for $name {
-            fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-            where
-                D: ::serde::Deserializer<'de>,
-            {
-                struct Visitor;
-
-                impl<'de> ::serde::de::Visitor<'de> for Visitor {
-                    type Value = $name;
-
-                    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-                        formatter.write_str("positive integer")
-                    }
-
-                    fn visit_u64<E>(self, value: u64) -> Result<$name, E>
-                    where
-                        E: ::serde::de::Error,
-                    {
-                        // Rust does not come with a simple way of converting a
-                        // number to an enum, so use a big `match`.
-                        match value {
-                            $( $value => Ok($name::$variant), )*
-                            _ => Err(E::custom(
-                                format!("unknown {} value: {}",
-                                stringify!($name), value))),
-                        }
-                    }
-                }
-
-                // Deserialize the enum from a u64.
-                deserializer.deserialize_u64(Visitor)
-            }
-        }
-    }
-}
-
-enum_number!(SmallNumber {
-    Zero = 0,
-    One = 1,
+#[derive(Serialize_repr, Deserialize_repr, PartialEq, Debug)]
+#[repr(u8)]
+enum SmallPrime {
     Two = 2,
     Three = 3,
-});
+    Five = 5,
+    Seven = 7,
+}
 
 fn main() {
-    use SmallNumber::*;
-    let nums = vec![Zero, One, Two, Three];
+    use SmallPrime::*;
+    let nums = vec![Two, Three, Five, Seven];
 
-    // Prints [0,1,2,3]
+    // Prints [2,3,5,7]
     println!("{}", serde_json::to_string(&nums).unwrap());
 
     assert_eq!(Two, serde_json::from_str("2").unwrap());
