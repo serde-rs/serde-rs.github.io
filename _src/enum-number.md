@@ -7,6 +7,12 @@ than strings in JSON, for example.
 
 [serde\_repr]: https://github.com/dtolnay/serde-repr
 
+```toml
+[dependencies]
+serde = "1.0"
+serde_repr = "0.1"
+```
+
 ```rust
 use serde_repr::*;
 
