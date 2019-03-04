@@ -135,7 +135,7 @@ where
             Ok(FromStr::from_str(value).unwrap())
         }
 
-        fn visit_map<M>(self, visitor: M) -> Result<T, M::Error>
+        fn visit_map<M>(self, map: M) -> Result<T, M::Error>
         where
             M: MapAccess<'de>,
         {
@@ -143,7 +143,7 @@ where
             // into a `Deserializer`, allowing it to be used as the input to T's
             // `Deserialize` implementation. T then deserializes itself using
             // the entries from the map visitor.
-            Deserialize::deserialize(de::value::MapAccessDeserializer::new(visitor))
+            Deserialize::deserialize(de::value::MapAccessDeserializer::new(map))
         }
     }
 
