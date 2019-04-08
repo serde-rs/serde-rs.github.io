@@ -56,7 +56,6 @@ Serde by the community.
 - [BSON], the data storage and network transfer format used by MongoDB.
 - [Avro], a binary format used within Apache Hadoop, with support for schema
   definition.
-- [Hjson], a variant of JSON designed to be readable and writable by humans.
 - [JSON5], A superset of JSON including some productions from ES5.
 - [URL], the x-www-form-urlencoded format.
 - [Envy], a way to deserialize environment variables into Rust structs.
@@ -74,7 +73,6 @@ Serde by the community.
 [RON]: https://github.com/ron-rs/ron
 [BSON]: https://github.com/zonyitoo/bson-rs
 [Avro]: https://github.com/flavray/avro-rs
-[Hjson]: https://github.com/laktak/hjson-rust
 [JSON5]: https://github.com/callum-oakley/json5-rs
 [URL]: https://github.com/nox/serde_urlencoded
 [Envy]: https://github.com/softprops/envy
