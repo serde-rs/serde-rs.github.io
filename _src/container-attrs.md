@@ -84,8 +84,9 @@
 
 - ##### `#[serde(crate = "...")]` {#crate}
 
-  Specify a path to the `serde` crate instance to use when deriving `Serialize`
-  and/or `Deserialize` for this type.
+  Specify a path to the `serde` crate instance to use when referring to Serde
+  APIs from generated code. This is normally only applicable when invoking
+  re-exported Serde derives from a public macro in a different crate.
 
 - ##### `#[serde(from = "FromType")]` {#from}
 
