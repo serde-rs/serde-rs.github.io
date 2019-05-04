@@ -1,16 +1,29 @@
 # Container attributes
 
 - ##### `#[serde(rename = "name")]` {#rename}
+-- `#[serde(rename(serialize = "ser_name"))]`
+-- `#[serde(rename(deserialize = "de_name"))]`
+-- `#[serde(rename(serialize = "ser_name", deserialize = "de_name"))]`
 
   Serialize and deserialize this struct or enum with the given name instead of
   its Rust name.
 
+  Also allows specifying an alternate name only when serializing, or only when
+  deserializing, or different alternate names for serializing and deserializing.
+
 - ##### `#[serde(rename_all = "...")]` {#rename_all}
+-- `#[serde(rename_all(serialize = "..."))]`
+-- `#[serde(rename_all(deserialize = "..."))]`
+-- `#[serde(rename_all(serialize = "...", deserialize = "..."))]`
 
   Rename all the fields (if this is a struct) or variants (if this is an enum)
   according to the given case convention. The possible values are `"lowercase"`,
   `"UPPERCASE"`, `"PascalCase"`, `"camelCase"`, `"snake_case"`,
   `"SCREAMING_SNAKE_CASE"`, `"kebab-case"`, `"SCREAMING-KEBAB-CASE"`.
+
+  Also allows specifying a case convention only when serializing, or only when
+  deserializing, or different case conventions for serializing and
+  deserializing.
 
 - ##### `#[serde(deny_unknown_fields)]` {#deny_unknown_fields}
 
@@ -36,17 +49,16 @@
   representations](enum-representations.md) for details on this representation.
 
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
+-- `#[serde(bound(serialize = "T: MySerTrait"))]` {#bound--serialize}
+-- `#[serde(bound(deserialize = "T: MyDeTrait"))]` {#bound--deserialize}
+-- `#[serde(bound(serialize = "T: MySerTrait", deserialize = "T: MyDeTrait"))]`
 
-  Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
+  Where-clause for the `Serialize` and/or `Deserialize` impls. This replaces any
   trait bounds inferred by Serde.
 
-- ##### `#[serde(bound(serialize = "T: MyTrait"))]` {#bound--serialize}
-
-  Where-clause for the `Serialize` impl.
-
-- ##### `#[serde(bound(deserialize  = "T: MyTrait"))]` {#bound--deserialize}
-
-  Where-clause for the `Deserialize` impl.
+  Allows specifying the same where-clause for serializing and deserializing; or
+  only specifying a where-clause for serializing, or deserializing; or
+  specifying different clauses for serializing and deserializing.
 
 - ##### `#[serde(default)]` {#default}
 
@@ -71,3 +83,45 @@
   Serialize and deserialize a newtype struct or a braced struct with one field
   exactly the same as if its one field were serialized and deserialized by
   itself. Analogous to `#[repr(transparent)]`.
+
+- ##### `#[serde(crate = "...")]` {#crate}
+
+  Specify a path to the `serde` crate instance to use when deriving `Serialize`
+  and/or `Deserialize` for this type.
+
+- ##### `#[serde(from = "FromType")]` {#from}
+
+  Deserialize this type by deserializing into `FromType`, then converting. This
+  type must implement `From<FromType>`, and `FromType` must implement
+  `Deserialize`.
+
+- ##### `#[serde(into = "IntoType")]` {#into}
+
+  Serialize this type by converting it into the specified `IntoType` and
+  serializing that. This type must implement `Clone` and `Into<IntoType>`, and
+  `IntoType` must implement `Serialize`.
+
+- ##### `#[serde(field_identifier)]` {#field_identifier}
+
+  Denotes that this enum represents the field names of a struct type. Used when
+  [manually implementing `Deserialize` for the struct
+  type.](deserialize_struct.md)
+
+  This attribute is probably not useful if you are automatically deriving your
+  own types.
+
+  Variants for the field_identifier enum may either all be units, or the last
+  variant may be a newtype struct, which is selected when an unlisted field name
+  is encountered during deserialization. Cannot be set if
+  `#[serde(variant_identifier)]` is also set.
+
+- ##### `#[serde(variant_identifier)]` {#variant_identifier}
+
+  Denotes that this enum represents the variant names of another enum type.
+  Used when manually implementing `Deserialize` for the other enum type.
+
+  This attribute is probably not useful if you are automatically deriving your
+  own types.
+
+  Only valid for enums where all variants are units. Cannot be set if
+  `#[serde(field_identifier)]` is also set.
