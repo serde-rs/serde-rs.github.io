@@ -1,9 +1,15 @@
 # Variant attributes
 
 - ##### `#[serde(rename = "name")]` {#rename}
+-- `#[serde(rename(serialize = "ser_name"))]`
+-- `#[serde(rename(deserialize = "de_name"))]`
+-- `#[serde(rename(serialize = "ser_name", deserialize = "de_name"))]`
 
   Serialize and deserialize this variant with the given name instead of its Rust
   name.
+
+  Also allows specifying an alternate name only when serializing, or only when
+  deserializing, or different alternate names for serializing and deserializing.
 
 - ##### `#[serde(alias = "name")]` {#alias}
 
@@ -11,11 +17,18 @@
   repeated to specify multiple possible names for the same variant.
 
 - ##### `#[serde(rename_all = "...")]` {#rename_all}
+-- `#[serde(rename_all(serialize = "..."))]`
+-- `#[serde(rename_all(deserialize = "..."))]`
+-- `#[serde(rename_all(serialize = "...", deserialize = "..."))]`
 
   Rename all the fields of this struct variant according to the given case
   convention. The possible values are `"lowercase"`, `"UPPERCASE"`,
   `"PascalCase"`, `"camelCase"`, `"snake_case"`, `"SCREAMING_SNAKE_CASE"`,
   `"kebab-case"`, `"SCREAMING-KEBAB-CASE"`.
+
+  Also allows specifying a case convention only when serializing, or only when
+  deserializing, or different case conventions for serializing and
+  deserializing.
 
 - ##### `#[serde(skip)]` {#skip}
 
@@ -58,6 +71,18 @@
   Combination of `serialize_with` and `deserialize_with`. Serde will use
   `$module::serialize` as the `serialize_with` function and
   `$module::deserialize` as the `deserialize_with` function.
+
+- ##### `#[serde(bound = "T: MyTrait")]` {#bound}
+-- `#[serde(bound(serialize = "T: MySerTrait"))]` {#bound--serialize}
+-- `#[serde(bound(deserialize = "T: MyDeTrait"))]` {#bound--deserialize}
+-- `#[serde(bound(serialize = "T: MySerTrait", deserialize = "T: MyDeTrait"))]`
+
+  Where-clause for the `Serialize` and/or `Deserialize` impls. This replaces any
+  trait bounds inferred by Serde for the current variant.
+
+  Allows specifying the same where-clause for serializing and deserializing; or
+  only specifying a where-clause for serializing, or for deserializing; or
+  specifying different clauses for serializing and deserializing.
 
 - ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]` {#borrow}
 
