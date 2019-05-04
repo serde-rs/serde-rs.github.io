@@ -82,12 +82,6 @@
   exactly the same as if its one field were serialized and deserialized by
   itself. Analogous to `#[repr(transparent)]`.
 
-- ##### `#[serde(crate = "...")]` {#crate}
-
-  Specify a path to the `serde` crate instance to use when referring to Serde
-  APIs from generated code. This is normally only applicable when invoking
-  re-exported Serde derives from a public macro in a different crate.
-
 - ##### `#[serde(from = "FromType")]` {#from}
 
   Deserialize this type by deserializing into `FromType`, then converting. This
@@ -99,3 +93,9 @@
   Serialize this type by converting it into the specified `IntoType` and
   serializing that. This type must implement `Clone` and `Into<IntoType>`, and
   `IntoType` must implement `Serialize`.
+
+- ##### `#[serde(crate = "...")]` {#crate}
+
+  Specify a path to the `serde` crate instance to use when referring to Serde
+  APIs from generated code. This is normally only applicable when invoking
+  re-exported Serde derives from a public macro in a different crate.
