@@ -1,18 +1,16 @@
 # Field attributes
 
 - ##### `#[serde(rename = "name")]` {#rename}
--- `#[serde(rename(serialize = "ser_name"))]`
--- `#[serde(rename(deserialize = "de_name"))]`
--- `#[serde(rename(serialize = "ser_name", deserialize = "de_name"))]`
 
-  Serialize and/or deserialize this field with the given name instead of its
-  Rust name. This is useful for
-  [serializing fields as camelCase](attr-rename.md) or serializing fields with
-  names that are reserved Rust keywords.
+  Serialize and deserialize this field with the given name instead of its Rust
+  name. This is useful for [serializing fields as camelCase](attr-rename.md) or
+  serializing fields with names that are reserved Rust keywords.
 
-  Allows specifying the same given name for serializing and deserializing; or
-  only specifying a given name for serializing, or for deserializing; or
-  specifying different given names for serializing and deserializing.
+  Allows specifying independent names for serialization vs deserialization:
+
+  - `#[serde(rename(serialize = "ser_name"))]`
+  - `#[serde(rename(deserialize = "de_name"))]`
+  - `#[serde(rename(serialize = "ser_name", deserialize = "de_name"))]`
 
 - ##### `#[serde(alias = "name")]` {#alias}
 
@@ -93,16 +91,15 @@
   deserialization. See [this example](lifetimes.md#borrowing-data-in-a-derived-impl).
 
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
--- `#[serde(bound(serialize = "T: MySerTrait"))]` {#bound--serialize}
--- `#[serde(bound(deserialize = "T: MyDeTrait"))]` {#bound--deserialize}
--- `#[serde(bound(serialize = "T: MySerTrait", deserialize = "T: MyDeTrait"))]`
 
-  Where-clause for the `Serialize` and/or `Deserialize` impls. This replaces any
+  Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
   trait bounds inferred by Serde for the current field.
 
-  Allows specifying the same where-clause for serializing and deserializing; or
-  only specifying a where-clause for serializing, or for deserializing; or
-  specifying different clauses for serializing and deserializing.
+  Allows specifying independent bounds for serialization vs deserialization:
+
+  - `#[serde(bound(serialize = "T: MySerTrait"))]`
+  - `#[serde(bound(deserialize = "T: MyDeTrait"))]`
+  - `#[serde(bound(serialize = "T: MySerTrait", deserialize = "T: MyDeTrait"))]`
 
 - ##### `#[serde(getter = "...")]` {#getter}
 

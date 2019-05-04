@@ -1,29 +1,28 @@
 # Container attributes
 
 - ##### `#[serde(rename = "name")]` {#rename}
--- `#[serde(rename(serialize = "ser_name"))]`
--- `#[serde(rename(deserialize = "de_name"))]`
--- `#[serde(rename(serialize = "ser_name", deserialize = "de_name"))]`
 
   Serialize and deserialize this struct or enum with the given name instead of
   its Rust name.
 
-  Also allows specifying an alternate name only when serializing, or only when
-  deserializing, or different alternate names for serializing and deserializing.
+  Allows specifying independent names for serialization vs deserialization:
+
+  - `#[serde(rename(serialize = "ser_name"))]`
+  - `#[serde(rename(deserialize = "de_name"))]`
+  - `#[serde(rename(serialize = "ser_name", deserialize = "de_name"))]`
 
 - ##### `#[serde(rename_all = "...")]` {#rename_all}
--- `#[serde(rename_all(serialize = "..."))]`
--- `#[serde(rename_all(deserialize = "..."))]`
--- `#[serde(rename_all(serialize = "...", deserialize = "..."))]`
 
   Rename all the fields (if this is a struct) or variants (if this is an enum)
   according to the given case convention. The possible values are `"lowercase"`,
   `"UPPERCASE"`, `"PascalCase"`, `"camelCase"`, `"snake_case"`,
   `"SCREAMING_SNAKE_CASE"`, `"kebab-case"`, `"SCREAMING-KEBAB-CASE"`.
 
-  Also allows specifying a case convention only when serializing, or only when
-  deserializing, or different case conventions for serializing and
-  deserializing.
+  Allows specifying independent cases for serialization vs deserialization:
+
+  - `#[serde(rename_all(serialize = "..."))]`
+  - `#[serde(rename_all(deserialize = "..."))]`
+  - `#[serde(rename_all(serialize = "...", deserialize = "..."))]`
 
 - ##### `#[serde(deny_unknown_fields)]` {#deny_unknown_fields}
 
@@ -49,16 +48,15 @@
   representations](enum-representations.md) for details on this representation.
 
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
--- `#[serde(bound(serialize = "T: MySerTrait"))]` {#bound--serialize}
--- `#[serde(bound(deserialize = "T: MyDeTrait"))]` {#bound--deserialize}
--- `#[serde(bound(serialize = "T: MySerTrait", deserialize = "T: MyDeTrait"))]`
 
-  Where-clause for the `Serialize` and/or `Deserialize` impls. This replaces any
+  Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
   trait bounds inferred by Serde.
 
-  Allows specifying the same where-clause for serializing and deserializing; or
-  only specifying a where-clause for serializing, or deserializing; or
-  specifying different clauses for serializing and deserializing.
+  Allows specifying independent bounds for serialization vs deserialization:
+
+  - `#[serde(bound(serialize = "T: MySerTrait"))]`
+  - `#[serde(bound(deserialize = "T: MyDeTrait"))]`
+  - `#[serde(bound(serialize = "T: MySerTrait", deserialize = "T: MyDeTrait"))]`
 
 - ##### `#[serde(default)]` {#default}
 
