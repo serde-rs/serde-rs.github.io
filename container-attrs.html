@@ -652,12 +652,24 @@
 <li><h5 id="rename"><a name="rename" class="plugin-anchor" href="#rename"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(rename = &quot;name&quot;)]</code> </h5>
 <p>Serialize and deserialize this struct or enum with the given name instead of
 its Rust name.</p>
+<p>Allows specifying independent names for serialization vs deserialization:</p>
+<ul>
+<li><code>#[serde(rename(serialize = &quot;ser_name&quot;))]</code></li>
+<li><code>#[serde(rename(deserialize = &quot;de_name&quot;))]</code></li>
+<li><code>#[serde(rename(serialize = &quot;ser_name&quot;, deserialize = &quot;de_name&quot;))]</code></li>
+</ul>
 </li>
 <li><h5 id="rename_all"><a name="rename_all" class="plugin-anchor" href="#rename_all"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(rename_all = &quot;...&quot;)]</code> </h5>
 <p>Rename all the fields (if this is a struct) or variants (if this is an enum)
 according to the given case convention. The possible values are <code>&quot;lowercase&quot;</code>,
 <code>&quot;UPPERCASE&quot;</code>, <code>&quot;PascalCase&quot;</code>, <code>&quot;camelCase&quot;</code>, <code>&quot;snake_case&quot;</code>,
 <code>&quot;SCREAMING_SNAKE_CASE&quot;</code>, <code>&quot;kebab-case&quot;</code>, <code>&quot;SCREAMING-KEBAB-CASE&quot;</code>.</p>
+<p>Allows specifying independent cases for serialization vs deserialization:</p>
+<ul>
+<li><code>#[serde(rename_all(serialize = &quot;...&quot;))]</code></li>
+<li><code>#[serde(rename_all(deserialize = &quot;...&quot;))]</code></li>
+<li><code>#[serde(rename_all(serialize = &quot;...&quot;, deserialize = &quot;...&quot;))]</code></li>
+</ul>
 </li>
 <li><h5 id="deny_unknown_fields"><a name="deny_unknown_fields" class="plugin-anchor" href="#deny_unknown_fields"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(deny_unknown_fields)]</code> </h5>
 <p>Always error during deserialization when encountering unknown fields. When
@@ -681,12 +693,12 @@ representations</a> for details on this representation.</p>
 <li><h5 id="bound"><a name="bound" class="plugin-anchor" href="#bound"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(bound = &quot;T: MyTrait&quot;)]</code> </h5>
 <p>Where-clause for the <code>Serialize</code> and <code>Deserialize</code> impls. This replaces any
 trait bounds inferred by Serde.</p>
-</li>
-<li><h5 id="bound--serialize"><a name="bound--serialize" class="plugin-anchor" href="#bound--serialize"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(bound(serialize = &quot;T: MyTrait&quot;))]</code> </h5>
-<p>Where-clause for the <code>Serialize</code> impl.</p>
-</li>
-<li><h5 id="bound--deserialize"><a name="bound--deserialize" class="plugin-anchor" href="#bound--deserialize"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(bound(deserialize  = &quot;T: MyTrait&quot;))]</code> </h5>
-<p>Where-clause for the <code>Deserialize</code> impl.</p>
+<p>Allows specifying independent bounds for serialization vs deserialization:</p>
+<ul>
+<li><code>#[serde(bound(serialize = &quot;T: MySerTrait&quot;))]</code></li>
+<li><code>#[serde(bound(deserialize = &quot;T: MyDeTrait&quot;))]</code></li>
+<li><code>#[serde(bound(serialize = &quot;T: MySerTrait&quot;, deserialize = &quot;T: MyDeTrait&quot;))]</code></li>
+</ul>
 </li>
 <li><h5 id="default"><a name="default" class="plugin-anchor" href="#default"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(default)]</code> </h5>
 <p>When deserializing, any missing fields should be filled in from the struct&apos;s
@@ -707,6 +719,21 @@ types</a>.</p>
 <p>Serialize and deserialize a newtype struct or a braced struct with one field
 exactly the same as if its one field were serialized and deserialized by
 itself. Analogous to <code>#[repr(transparent)]</code>.</p>
+</li>
+<li><h5 id="from"><a name="from" class="plugin-anchor" href="#from"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(from = &quot;FromType&quot;)]</code> </h5>
+<p>Deserialize this type by deserializing into <code>FromType</code>, then converting. This
+type must implement <code>From&lt;FromType&gt;</code>, and <code>FromType</code> must implement
+<code>Deserialize</code>.</p>
+</li>
+<li><h5 id="into"><a name="into" class="plugin-anchor" href="#into"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(into = &quot;IntoType&quot;)]</code> </h5>
+<p>Serialize this type by converting it into the specified <code>IntoType</code> and
+serializing that. This type must implement <code>Clone</code> and <code>Into&lt;IntoType&gt;</code>, and
+<code>IntoType</code> must implement <code>Serialize</code>.</p>
+</li>
+<li><h5 id="crate"><a name="crate" class="plugin-anchor" href="#crate"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(crate = &quot;...&quot;)]</code> </h5>
+<p>Specify a path to the <code>serde</code> crate instance to use when referring to Serde
+APIs from generated code. This is normally only applicable when invoking
+re-exported Serde derives from a public macro in a different crate.</p>
 </li>
 </ul>
 
@@ -736,7 +763,7 @@ itself. Analogous to <code>#[repr(transparent)]</code>.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Container attributes","level":"1.5.1","depth":2,"next":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"previous":{"title":"Attributes","level":"1.5","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"container-attrs.md","mtime":"2019-02-02T06:34:19.317Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-04-08T17:39:36.534Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Container attributes","level":"1.5.1","depth":2,"next":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"previous":{"title":"Attributes","level":"1.5","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"container-attrs.md","mtime":"2019-05-04T18:24:59.649Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-04T18:27:16.786Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
