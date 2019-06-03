@@ -7,7 +7,7 @@ field. Please use the `skip` attribute to skip **both** serializing and
 deserializing (see [Field Attributes: `skip`][attr-skip]). Likewise, use
 `skip_deserializing` to skip deserializing only.
 
-[attr-skip]: field-attrs.md#serdeskip
+[attr-skip]: field-attrs.md#skip
 
 !PLAYGROUND b65f4a90bb11285574a1917b0f5e10aa
 ```rust
