@@ -88,6 +88,12 @@
   type must implement `From<FromType>`, and `FromType` must implement
   `Deserialize`.
 
+- ##### `#[serde(try_from = "FromType")]` {#try_from}
+
+  Deserialize this type by deserializing into `FromType`, then converting
+  fallibly. This type must implement `TryFrom<FromType>` with an error type that
+  implements `Display`, and `FromType` must implement `Deserialize`.
+
 - ##### `#[serde(into = "IntoType")]` {#into}
 
   Serialize this type by converting it into the specified `IntoType` and
