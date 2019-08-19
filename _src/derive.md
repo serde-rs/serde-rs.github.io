@@ -14,7 +14,7 @@ most structs and enums including ones with elaborate generic types or trait
 bounds. On rare occasions, for an especially convoluted type you may need to
 [implement the traits manually](custom-serialization.md).
 
-These derives require a Rust compiler version 1.15 or newer.
+These derives require a Rust compiler version 1.31 or newer.
 
 !CHECKLIST
 - Add `serde = { version = "1.0", features = ["derive"] }` as a dependency in
