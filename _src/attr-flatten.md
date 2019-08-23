@@ -94,3 +94,33 @@ For example if we fill the flattened `extra` field with the key `"mascot":
 Deserialization of this data would populate `"mascot"` back into the flattened
 `extra` field. This way additional data in an object can be collected for later
 processing.
+
+### Aliases inside flattened struct
+
+A flattened structure can not at the moment use the `aliases` or `rename` attributes. It is therefore impossible to write code like this:
+
+```rust
+use serde::{Deserialize, Serialize};
+use serde_json;
+
+#[derive(Serialize, Deserialize)]
+pub struct A {
+    #[serde(rename = "y", alias = "z")]
+    x: i64,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct B {
+    #[serde(flatten)]
+    a: A,
+}
+
+fn main() -> Result<(),Box<std::error::Error>> {
+     let i = r#"{ "z": 12 }"#; // using r#"{ "y": 12 }"# will work.
+     let b: B = serde_json::from_str(i)?;
+     assert_eq!(b.a.x,12);
+     Ok(())
+}
+```
+
+This problem is further discussed on [the bugtracker](https://github.com/serde-rs/serde/issues/1504).
