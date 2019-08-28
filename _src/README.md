@@ -57,6 +57,7 @@ Serde by the community.
 - [Avro], a binary format used within Apache Hadoop, with support for schema
   definition.
 - [JSON5], A superset of JSON including some productions from ES5.
+- [Postcard], a no\_std and embedded-systems friendly compact binary format.
 - [URL], the x-www-form-urlencoded format.
 - [Envy], a way to deserialize environment variables into Rust structs.
   *(deserialization only)*
@@ -75,6 +76,7 @@ Serde by the community.
 [Avro]: https://github.com/flavray/avro-rs
 [JSON5]: https://github.com/callum-oakley/json5-rs
 [URL]: https://github.com/nox/serde_urlencoded
+[Postcard]: https://github.com/jamesmunns/postcard
 [Envy]: https://github.com/softprops/envy
 [Envy Store]: https://github.com/softprops/envy-store
 [Cargo]: http://doc.crates.io/manifest.html
