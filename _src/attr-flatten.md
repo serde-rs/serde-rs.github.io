@@ -31,7 +31,7 @@ This same scheme with `"limit"` and `"offset"` and `"total"` fields may be
 shared across lots of different API queries. For example we may want paginated
 results when querying for users, for issues, for projects, etc.
 
-In this case it can be convient to factor the common pagination metadata fields
+In this case it can be convenient to factor the common pagination metadata fields
 into a shared struct that can be flattened into each API response object.
 
 ```rust
