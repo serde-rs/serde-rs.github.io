@@ -90,7 +90,7 @@ enum Block {
 # fn main() {}
 ```
 
-This representation is common the Haskell world. Written in JSON syntax:
+This representation is common in the Haskell world. Written in JSON syntax:
 
 ```json
 {"t": "Para", "c": [{...}, {...}]}
