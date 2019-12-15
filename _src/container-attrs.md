@@ -32,9 +32,13 @@
 
 - ##### `#[serde(tag = "type")]` {#tag}
 
-  Use the internally tagged enum representation for this enum, with the given
-  tag. See [enum representations](enum-representations.md) for details on this
+  On an enum: Use the internally tagged enum representation, with the given tag.
+  See [enum representations](enum-representations.md) for details on this
   representation.
+
+  On a struct with named fields: Before the actual fields of the struct,
+  (de)serialize a field with the given name (`type` in this example) and the
+  struct's name (or value of `serde(rename)`) as its value.
 
 - ##### `#[serde(tag = "t", content = "c")]` {#tag--content}
 
