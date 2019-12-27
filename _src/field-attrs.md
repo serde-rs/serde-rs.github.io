@@ -88,11 +88,13 @@
 ```rust
 // For some iter types custom module might significantly improve performance, 
 // for instance `Vec<u8>` ser/deserialized about 10x times faster with serde_bytes
+# use serde::{Serialize, Deserialize};
 #[derive(Serialize, Deserialize)]
 struct Fast {
     #[serde(with = "serde_bytes")]
     buf: Vec<u8>
 }
+# fn main() {}
 ```
 
 - ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]` {#borrow}
