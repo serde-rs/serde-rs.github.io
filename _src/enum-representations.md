@@ -37,7 +37,7 @@ This representation can handle any type of variant: struct variants like above,
 tuple variants, newtype variants, and unit variants.
 
 In JSON and other self-describing formats, the externally tagged representation
-is often not ideal for readability. Serde provides attributes to select two
+is often not ideal for readability. Serde provides attributes to select three
 other possible representations.
 
 ## Internally tagged
