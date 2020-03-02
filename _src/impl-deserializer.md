@@ -173,14 +173,14 @@ impl<'de> Deserializer<'de> {
         T: AddAssign<T> + MulAssign<T> + From<u8>,
     {
         let mut int = match self.next_char()? {
-            ch @ '0'...'9' => T::from(ch as u8 - b'0'),
+            ch @ '0'..='9' => T::from(ch as u8 - b'0'),
             _ => {
                 return Err(Error::ExpectedInteger);
             }
         };
         loop {
             match self.input.chars().next() {
-                Some(ch @ '0'...'9') => {
+                Some(ch @ '0'..='9') => {
                     self.input = &self.input[1..];
                     int *= T::from(10);
                     int += T::from(ch as u8 - b'0');
