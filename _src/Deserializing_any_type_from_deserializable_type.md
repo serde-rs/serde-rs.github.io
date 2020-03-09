@@ -6,9 +6,9 @@ Example:
 
 ```rust
 use std::sync::atomic::AtomicU64;
-use serde::Deserializer;
+use serde::{Deserialize, Deserializer};
 
-fn deserialize_atomic_u64<'de, D>(deserializer: D) -> Result<T, D::Error> where D: Deserializer<'de> {
+fn deserialize_atomic_u64<'de, D>(deserializer: D) -> Result<AtomicU64, D::Error> where D: Deserializer<'de> {
     // Note: Option<u64> implements Deserialize, so we can just tell serde to deserialize an Option<u64> and use the result
     let value = Option::<u64>::deserialize(deserializer)?;
     AtomicU64::new(value.unwrap_or_default())
