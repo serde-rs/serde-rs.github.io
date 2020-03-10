@@ -96,7 +96,7 @@ Compound types follow a three-step process of init, elements, end.
 #
 # impl<'a, T> IntoIterator for &'a Vec<T> {
 #     type Item = &'a T;
-#     type IntoIter = Box<Iterator<Item = &'a T>>;
+#     type IntoIter = Box<dyn Iterator<Item = &'a T>>;
 #
 #     fn into_iter(self) -> Self::IntoIter {
 #         unimplemented!()
@@ -113,7 +113,7 @@ Compound types follow a three-step process of init, elements, end.
 #
 # impl<'a, K, V> IntoIterator for &'a MyMap<K, V> {
 #     type Item = (&'a K, &'a V);
-#     type IntoIter = Box<Iterator<Item = (&'a K, &'a V)>>;
+#     type IntoIter = Box<dyn Iterator<Item = (&'a K, &'a V)>>;
 #
 #     fn into_iter(self) -> Self::IntoIter {
 #         unimplemented!()

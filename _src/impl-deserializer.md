@@ -74,20 +74,16 @@ there is no advantage to that.
 #
 #     impl Display for Error {
 #         fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-#             formatter.write_str(std::error::Error::description(self))
-#         }
-#     }
-#
-#     impl std::error::Error for Error {
-#         fn description(&self) -> &str {
-#             match *self {
-#                 Error::Message(ref msg) => msg,
-#                 Error::Eof => "unexpected end of input",
+#             match self {
+#                 Error::Message(msg) => formatter.write_str(msg),
+#                 Error::Eof => formatter.write_str("unexpected end of input"),
 #                 /* and so forth */
 #                 _ => unimplemented!(),
 #             }
 #         }
 #     }
+#
+#     impl std::error::Error for Error {}
 # }
 #
 use std::ops::{AddAssign, MulAssign, Neg};
@@ -235,7 +231,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
             'n' => self.deserialize_unit(visitor),
             't' | 'f' => self.deserialize_bool(visitor),
             '"' => self.deserialize_str(visitor),
-            '0'...'9' => self.deserialize_u64(visitor),
+            '0'..='9' => self.deserialize_u64(visitor),
             '-' => self.deserialize_i64(visitor),
             '[' => self.deserialize_seq(visitor),
             '{' => self.deserialize_map(visitor),
