@@ -66,7 +66,7 @@ Written in JSON syntax, the internally tagged representation looks like this:
 
 The tag identifying which variant we are dealing with is now inside of the
 content, next to any other fields of the variant. This representation is common
-in Java libraries.
+in Java libraries, and is called a "type hint" (`_typeHint`) in MongoDB.
 
 This representation works for struct variants, newtype variants containing
 structs or maps, and unit variants but does not work for enums containing tuple
