@@ -63,8 +63,8 @@ Serde by the community.
   *(deserialization only)*
 - [Envy Store], a way to deserialize [AWS Parameter Store] parameters into Rust
   structs. *(deserialization only)*
-- [S-expressions], the textual representation of code and data used by
-  the Lisp language family.
+- [S-expressions], the textual representation of code and data used by the Lisp
+  language family.
 - [D-Bus]'s binary wire format.
 
 [JSON]: https://github.com/serde-rs/json
