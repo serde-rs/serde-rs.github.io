@@ -65,6 +65,7 @@ Serde by the community.
   structs. *(deserialization only)*
 - [S-expressions], the textual representation of code and data used by
   the Lisp language family.
+- [D-Bus]'s binary wire format.
 
 [JSON]: https://github.com/serde-rs/json
 [Bincode]: https://github.com/TyOverby/bincode
@@ -84,6 +85,7 @@ Serde by the community.
 [Cargo]: http://doc.crates.io/manifest.html
 [AWS Parameter Store]: https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html
 [S-expressions]: https://github.com/rotty/lexpr-rs
+[D-Bus]: https://docs.rs/zvariant
 
 ### Data structures
 
