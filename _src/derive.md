@@ -75,6 +75,30 @@ serialized = {"x":1,"y":2}
 deserialized = Point { x: 1, y: 2 }
 ```
 
+### Remove optional diagnostic strings
+
+By default, `serde_derive` provides error messages to help diagnose
+deserialization errors.  From the above example, if the serialized data were to
+become corrupted to `{"x":1}` (lacking the `y` field), the error message might
+be ``missing field `y` ``.  Macros convert source-code identifiers such as `y`
+into strings in order to provide these error messages.
+
+For data formats such as JSON, string values corresponding to source-code
+identifiers are used in the serialized data stream, and as such they are not
+optional.  For other data formats like `bincode`
+(https://github.com/servo/bincode), the serialized data does not use these
+strings and link-time optimization generally removes them from the executable;
+however, the above error messages are not removed, leaving traces of source-code
+identifiers in the executable.  The feature `lean_strings` is provided to
+eliminate these strings from the error message (and thus from the executable) in
+these cases.  To opt into this feature, include `lean_strings` in the list of
+serde features in Cargo.toml, e.g.:
+
+```toml
+[dependencies]
+serde = { version = "1.0", features = ["derive", "lean_strings"] }
+```
+
 ### Troubleshooting
 
 Sometimes you may see compile-time errors that tell you:
