@@ -10,6 +10,7 @@ than strings in JSON, for example.
 ```toml
 [dependencies]
 serde = "1.0"
+serde_json = "1.0"
 serde_repr = "0.1"
 ```
 
