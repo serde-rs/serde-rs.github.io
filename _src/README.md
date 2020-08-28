@@ -70,7 +70,7 @@ Serde by the community.
   serialization format.
 
 [JSON]: https://github.com/serde-rs/json
-[Bincode]: https://github.com/TyOverby/bincode
+[Bincode]: https://github.com/servo/bincode
 [CBOR]: https://github.com/pyfisch/cbor
 [YAML]: https://github.com/dtolnay/serde-yaml
 [MessagePack]: https://github.com/3Hren/msgpack-rust
