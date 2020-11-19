@@ -68,6 +68,7 @@ Serde by the community.
 - [D-Bus]'s binary wire format.
 - [FlexBuffers], the schemaless cousin of Google's FlatBuffers zero-copy
   serialization format.
+- [Bencode], a simple binary format used in the BitTorrent protocol.
 
 [JSON]: https://github.com/serde-rs/json
 [Bincode]: https://github.com/servo/bincode
@@ -89,6 +90,7 @@ Serde by the community.
 [S-expressions]: https://github.com/rotty/lexpr-rs
 [D-Bus]: https://docs.rs/zvariant
 [FlexBuffers]: https://github.com/google/flatbuffers/tree/master/rust/flexbuffers
+[Bencode]: https://github.com/P3KI/bendy
 
 ### Data structures
 
