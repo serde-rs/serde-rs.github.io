@@ -44,7 +44,7 @@ impl<'de> Deserialize<'de> for Duration {
     where
         D: Deserializer<'de>,
     {
-        enum Field { Secs, Nanos };
+        enum Field { Secs, Nanos }
 
         // This part could also be generated independently by:
         //
