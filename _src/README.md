@@ -69,6 +69,8 @@ Serde by the community.
 - [FlexBuffers], the schemaless cousin of Google's FlatBuffers zero-copy
   serialization format.
 - [Bencode], a simple binary format used in the BitTorrent protocol.
+- [DynamoDB Items], the format used by [rusoto_dynamodb] to transfer data to
+  and from DynamoDB.
 
 [JSON]: https://github.com/serde-rs/json
 [Bincode]: https://github.com/servo/bincode
@@ -91,6 +93,8 @@ Serde by the community.
 [D-Bus]: https://docs.rs/zvariant
 [FlexBuffers]: https://github.com/google/flatbuffers/tree/master/rust/flexbuffers
 [Bencode]: https://github.com/P3KI/bendy
+[DynamoDB Items]: https://docs.rs/serde_dynamo
+[rusoto_dynamodb]: https://docs.rs/rusoto_dynamodb
 
 ### Data structures
 
