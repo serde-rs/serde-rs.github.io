@@ -5,6 +5,11 @@ The `flatten` attribute inlines keys from a field into the parent struct.
 supported only within structs that have named fields, and the field to which it
 is applied must be a struct or map type.
 
+**Note:** The `flatten` attribute clashes with
+[`deny_unknown_fields`](container-attrs.md#deny_unknown_fields) and might make
+the struct un-deserializable. Neither the outer nor the inner flattened struct
+should use [`deny_unknown_fields`](container-attrs.md#deny_unknown_fields).
+
 The `flatten` attribute serves the following two common use cases:
 
 ### Factor out frequently grouped keys

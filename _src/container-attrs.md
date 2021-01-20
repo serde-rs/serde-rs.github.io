@@ -30,6 +30,10 @@
   this attribute is not present, by default unknown fields are ignored for
   self-describing formats like JSON.
 
+  **Note:** This attribute clashes with [`flatten`](attr-flatten.md) and might
+  make the struct un-deserializable. Neither the outer nor the inner flattened
+  struct should use `deny_unknown_fields`.
+
 - ##### `#[serde(tag = "type")]` {#tag}
 
   Use the internally tagged enum representation for this enum, with the given

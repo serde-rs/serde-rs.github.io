@@ -38,6 +38,11 @@
   with arbitrary string keys. The [struct flattening](attr-flatten.md) page
   provides some examples.
 
+  **Note:** This attribute clashes with
+  [`deny_unknown_fields`](container-attrs.md#deny_unknown_fields) and might make
+  the struct un-deserializable. Neither the outer nor the inner flattened struct
+  should use[`deny_unknown_fields`](container-attrs.md#deny_unknown_fields).
+
 - ##### `#[serde(skip)]` {#skip}
 
   Skip this field: do not serialize or deserialize it.
