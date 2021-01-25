@@ -30,6 +30,11 @@
   this attribute is not present, by default unknown fields are ignored for
   self-describing formats like JSON.
 
+  *Note:* this attribute is not supported in combination with [`flatten`],
+  neither on the outer struct nor on the flattened field.
+
+  [`flatten`]: field-attrs.md#flatten
+
 - ##### `#[serde(tag = "type")]` {#tag}
 
   Use the internally tagged enum representation for this enum, with the given
