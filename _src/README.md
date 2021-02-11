@@ -71,6 +71,8 @@ Serde by the community.
 - [Bencode], a simple binary format used in the BitTorrent protocol.
 - [DynamoDB Items], the format used by [rusoto_dynamodb] to transfer data to
   and from DynamoDB.
+- [Hjson], a superset of JSON suitable for configuration files.
+ *(deserialization only)*
 
 [JSON]: https://github.com/serde-rs/json
 [Bincode]: https://github.com/servo/bincode
@@ -95,6 +97,7 @@ Serde by the community.
 [Bencode]: https://github.com/P3KI/bendy
 [DynamoDB Items]: https://docs.rs/serde_dynamo
 [rusoto_dynamodb]: https://docs.rs/rusoto_dynamodb
+[Hjson]: https://github.com/Canop/deser-hjson
 
 ### Data structures
 
