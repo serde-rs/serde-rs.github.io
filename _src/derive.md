@@ -93,7 +93,5 @@ implementation of the `Serialize` trait from serde 0.9. From the Rust compiler's
 perspective these are totally different traits.
 
 The fix is to upgrade or downgrade libraries as appropriate until the Serde
-versions match. The [`cargo tree -d`] command is helpful for finding all the
+versions match. The `cargo tree -d` command is helpful for finding all the
 places that duplicate dependencies are being pulled in.
-
-[`cargo tree -d`]: https://github.com/sfackler/cargo-tree
