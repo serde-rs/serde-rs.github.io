@@ -19,7 +19,7 @@ In particular, a dependency on `serde_json` always needs Serde built with std.
 If you need JSON support without a standard library, please use
 [`serde-json-core`] instead of `serde_json`.
 
-[`serde-json-core`]: https://japaric.github.io/serde-json-core/serde_json_core/
+[`serde-json-core`]: https://crates.io/crates/serde-json-core
 
 ### Derive
 
