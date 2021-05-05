@@ -53,8 +53,3 @@ collections without depending on the rest of the Rust standard library.
 [dependencies]
 serde = { version = "1.0", default-features = false, features = ["alloc"] }
 ```
-
-The `"alloc"` feature currently requires a nightly compiler as it pulls in the
-unstable [core allocation library].
-
-[core allocation library]: https://doc.rust-lang.org/alloc/
