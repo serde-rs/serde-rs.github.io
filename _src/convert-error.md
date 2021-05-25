@@ -35,7 +35,7 @@ struct Policy {
     resource: String,
 }
 
-// Serialize and deserialize logic for dealing with nested values reprsented as
+// Serialize and deserialize logic for dealing with nested values represented as
 // JSON strings.
 mod as_json_string {
     use serde_json;
