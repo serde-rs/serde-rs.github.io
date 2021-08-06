@@ -81,7 +81,7 @@
 
   Deserialize this field using a function that is different from its
   implementation of `Deserialize`. The given function must be callable as
-  `fn<'de, D>(D) -> Result<T, D::Error> where D: Deserializer<'de>`, although it
+  `fn<'de, D>(D) -> Result<T, D::Error> where D: Deserialize<'de>`, although it
   may also be generic over `T`. Fields used with `deserialize_with` are not
   required to implement `Deserialize`.
 
