@@ -12,12 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust:
-            # pinned due to https://github.com/serde-rs/serde-rs.github.io/issues/115
-          - nightly-2020-05-09
-            #- beta
-            #- stable
-          - 1.44.0
+        rust: [nightly, beta, stable]
     steps:
       - uses: actions/checkout@v2
       - uses: dtolnay/rust-toolchain@master
