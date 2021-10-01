@@ -438,14 +438,14 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // Deserialization of compound types like sequences and maps happens by
     // passing the visitor an "Access" object that gives it the ability to
     // iterate through the data contained in the sequence.
-    fn deserialize_seq<V>(mut self, visitor: V) -> Result<V::Value>
+    fn deserialize_seq<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
     {
         // Parse the opening bracket of the sequence.
         if self.next_char()? == '[' {
             // Give the visitor access to each element of the sequence.
-            let value = visitor.visit_seq(CommaSeparated::new(&mut self))?;
+            let value = visitor.visit_seq(CommaSeparated::new(self))?;
             // Parse the closing bracket of the sequence.
             if self.next_char()? == ']' {
                 Ok(value)
@@ -486,14 +486,14 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     // Much like `deserialize_seq` but calls the visitors `visit_map` method
     // with a `MapAccess` implementation, rather than the visitor's `visit_seq`
     // method with a `SeqAccess` implementation.
-    fn deserialize_map<V>(mut self, visitor: V) -> Result<V::Value>
+    fn deserialize_map<V>(self, visitor: V) -> Result<V::Value>
     where
         V: Visitor<'de>,
     {
         // Parse the opening brace of the map.
         if self.next_char()? == '{' {
             // Give the visitor access to each entry of the map.
-            let value = visitor.visit_map(CommaSeparated::new(&mut self))?;
+            let value = visitor.visit_map(CommaSeparated::new(self))?;
             // Parse the closing brace of the map.
             if self.next_char()? == '}' {
                 Ok(value)
