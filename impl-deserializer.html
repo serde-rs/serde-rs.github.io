@@ -1019,14 +1019,14 @@ there is no advantage to that.</p>
     <span class="hljs-comment">// Deserialization of compound types like sequences and maps happens by</span>
     <span class="hljs-comment">// passing the visitor an &quot;Access&quot; object that gives it the ability to</span>
     <span class="hljs-comment">// iterate through the data contained in the sequence.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_seq</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
     <span class="hljs-keyword">where</span>
         V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
         <span class="hljs-comment">// Parse the opening bracket of the sequence.</span>
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;[&apos;</span> {
             <span class="hljs-comment">// Give the visitor access to each element of the sequence.</span>
-            <span class="hljs-keyword">let</span> value = visitor.visit_seq(CommaSeparated::new(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>))?;
+            <span class="hljs-keyword">let</span> value = visitor.visit_seq(CommaSeparated::new(<span class="hljs-keyword">self</span>))?;
             <span class="hljs-comment">// Parse the closing bracket of the sequence.</span>
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;]&apos;</span> {
                 <span class="hljs-literal">Ok</span>(value)
@@ -1067,14 +1067,14 @@ there is no advantage to that.</p>
     <span class="hljs-comment">// Much like `deserialize_seq` but calls the visitors `visit_map` method</span>
     <span class="hljs-comment">// with a `MapAccess` implementation, rather than the visitor&apos;s `visit_seq`</span>
     <span class="hljs-comment">// method with a `SeqAccess` implementation.</span>
-    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_map</span></span>&lt;V&gt;(<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">deserialize_map</span></span>&lt;V&gt;(<span class="hljs-keyword">self</span>, visitor: V) -&gt; <span class="hljs-built_in">Result</span>&lt;V::Value&gt;
     <span class="hljs-keyword">where</span>
         V: Visitor&lt;<span class="hljs-symbol">&apos;de</span>&gt;,
     {
         <span class="hljs-comment">// Parse the opening brace of the map.</span>
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;{&apos;</span> {
             <span class="hljs-comment">// Give the visitor access to each entry of the map.</span>
-            <span class="hljs-keyword">let</span> value = visitor.visit_map(CommaSeparated::new(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>))?;
+            <span class="hljs-keyword">let</span> value = visitor.visit_map(CommaSeparated::new(<span class="hljs-keyword">self</span>))?;
             <span class="hljs-comment">// Parse the closing brace of the map.</span>
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.next_char()? == <span class="hljs-string">&apos;}&apos;</span> {
                 <span class="hljs-literal">Ok</span>(value)
@@ -1388,7 +1388,7 @@ there is no advantage to that.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2020-03-10T05:07:45.268Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-05-25T15:29:56.266Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Implementing a Deserializer","level":"1.7.4","depth":2,"next":{"title":"Deserializer lifetimes","level":"1.8","depth":1,"path":"lifetimes.md","ref":"lifetimes.md","articles":[]},"previous":{"title":"Implementing a Serializer","level":"1.7.3","depth":2,"path":"impl-serializer.md","ref":"impl-serializer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"impl-deserializer.md","mtime":"2021-10-01T05:33:53.887Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-10-01T05:34:19.967Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
