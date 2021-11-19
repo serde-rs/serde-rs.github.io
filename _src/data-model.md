@@ -17,8 +17,8 @@ responsible for mapping the Serde data model into the intended output
 representation.
 
 When deserializing a data structure from some format, the [`Deserialize`]
-implementation for the data structure is responsible for mapping the data
-structure into the Serde data model by passing to the `Deserializer` a
+implementation for the data structure is responsible for mapping the Serde
+data model into the data structure by passing to the `Deserializer` a
 [`Visitor`] implementation that can receive the various types of the data model,
 while the `Deserializer` implementation for the data format is responsible for
 mapping the input data into the Serde data model by invoking exactly one of the
