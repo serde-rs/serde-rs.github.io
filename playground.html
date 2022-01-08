@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <style>
+        #src, #dest {
+            flex-grow: 1;
+        }
+        #flex {
+            display: flex;
+            height: 80vh;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Serde Playground</h1>
+    <div id="flex">
+    <div id="src">
+#[derive(Serialize)]
+enum E {
+    W { a: Option&lt;i32&gt;, b: i32 },
+    X(i32, i32),
+    Y(i32),
+    Z,
+}
+
+E::W { a: None, b: 7 }
+    </div>
+    <div>
+        <select id="serializer">
+            <option value="json">JSON</option>
+            <option value="yaml">YAML</option>
+            <option value="urlencoded">URL encoded</option>
+        </select>
+        <br>
+        <button id="btn">Serialize</button>
+    </div>
+    <div id="dest"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js" integrity="sha512-OMjy8oWtPbx9rJmoprdaQdS2rRovgTetHjiBf7RL7LvRSouoMLks5aIcgqHb6vGEAduuPdBTDCoztxLR+nv45g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/mode-rust.min.js" integrity="sha512-hiCtsw01eETnIYq7GXxZdif5P4jIB7LNOZr2mavKTjylpPeyCzA/S8FzlcT+Gq7Hs7cMnlvp8h8gbChY4ID8AQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/mode-yaml.min.js" integrity="sha512-VUeuCa6fUR6uovoS+4zLs1st+YAh4MS3crFQGZxZQU2ePinr3LygtHPPEDxNcxnifSMbjLaOZTd5rKsAJ0vIPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const fnDict = {
+            json: '::serde_json::to_string_pretty',
+            yaml: '::serde_yaml::to_string',
+            urlencoded: '::serde_urlencoded::to_string',
+        };
+        const modeDict = {
+            json: 'json',
+            yaml: 'yaml',
+            urlencoded: 'text',
+        };
+        let fn = fnDict.json;
+        const src = ace.edit('src');
+        src.session.setMode("ace/mode/rust");
+        const dest = ace.edit('dest');
+        dest.session.setMode('ace/mode/json');
+        dest.setReadOnly(true);
+        const btn = document.getElementById('btn');
+        document.getElementById('serializer').onchange = (e) => {
+            const v = e.target.value;
+            fn = fnDict[v];
+            dest.session.setMode(`ace/mode/${modeDict[v]}`);
+        };
+        btn.onclick = async () => {
+            btn.innerText = 'Wait...';
+            const code = `
+use serde::*;
+fn main() {
+    let to_serialize = {
+        ${src.getValue()}
+    };
+    println!("{}", ${fn}(&to_serialize).unwrap());
+}
+            `;
+            const res = await fetch("https://play.rust-lang.org/execute", {
+                method: 'POST',
+                body: JSON.stringify({
+                    code,
+                    channel: 'stable',
+                    edition: '2021',
+                    mode: 'debug',
+                    crateType: 'bin',
+                    tests: false,
+                    backtrace: false,
+                }),
+            });
+            const { success, stdout, stderr } = await res.json();
+            if (success) {
+                dest.setValue(stdout, -1);
+            } else {
+                dest.setValue(stderr); 
+            }
+            btn.innerText = 'Serialize';
+        };
+    </script>
+
+</body>
+
+</html>
