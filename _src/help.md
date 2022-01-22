@@ -3,12 +3,12 @@
 Serde is one of the most widely used Rust libraries so any place that Rustaceans
 congregate will be able to help you out. For chat, consider trying the
 [#rust-questions] or [#rust-beginners] channels of the unofficial community
-Discord (invite: <https://discord.gg/rust-lang-community>), the [#rust-usage] or
-[#beginners] channels of the official Rust Project Discord (invite:
-<https://discord.gg/rust-lang>), or the [#general][zulip] stream in Zulip. For
-asynchronous, consider the [\[rust\] tag on StackOverflow][stackoverflow], the
-[/r/rust] subreddit which has a pinned weekly easy questions post, or the Rust
-[Discourse forum][discourse].
+Discord <i>(invite: <https://discord.gg/rust-lang-community>)</i>, the
+[#rust-usage] or [#beginners] channels of the official Rust Project Discord
+<i>(invite: <https://discord.gg/rust-lang>)</i>, or the [#general][zulip] stream
+in Zulip. For asynchronous, consider the [\[rust\] tag on
+StackOverflow][stackoverflow], the [/r/rust] subreddit which has a pinned weekly
+easy questions post, or the Rust [Discourse forum][discourse].
 
 [#rust-questions]: https://discord.com/channels/273534239310479360/274215136414400513
 [#rust-beginners]: https://discord.com/channels/273534239310479360/273541522815713281
