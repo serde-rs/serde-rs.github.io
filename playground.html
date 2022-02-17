@@ -78,6 +78,9 @@ fn main() {
             `;
             const res = await fetch("https://play.rust-lang.org/execute", {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({
                     code,
                     channel: 'stable',
