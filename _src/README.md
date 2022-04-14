@@ -75,14 +75,14 @@ Serde by the community.
   *(deserialization only)*
 
 [JSON]: https://github.com/serde-rs/json
-[Bincode]: https://github.com/servo/bincode
+[Bincode]: https://github.com/bincode-org/bincode
 [CBOR]: https://github.com/enarx/ciborium
 [YAML]: https://github.com/dtolnay/serde-yaml
 [MessagePack]: https://github.com/3Hren/msgpack-rust
 [TOML]: https://github.com/alexcrichton/toml-rs
 [Pickle]: https://github.com/birkenfeld/serde-pickle
 [RON]: https://github.com/ron-rs/ron
-[BSON]: https://github.com/zonyitoo/bson-rs
+[BSON]: https://github.com/mongodb/bson-rust
 [Avro]: https://github.com/flavray/avro-rs
 [JSON5]: https://github.com/callum-oakley/json5-rs
 [URL]: https://docs.rs/serde_qs
@@ -90,7 +90,7 @@ Serde by the community.
 [Envy]: https://github.com/softprops/envy
 [Envy Store]: https://github.com/softprops/envy-store
 [Cargo]: http://doc.crates.io/manifest.html
-[AWS Parameter Store]: https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html
+[AWS Parameter Store]: https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html
 [S-expressions]: https://github.com/rotty/lexpr-rs
 [D-Bus]: https://docs.rs/zvariant
 [FlexBuffers]: https://github.com/google/flatbuffers/tree/master/rust/flexbuffers
