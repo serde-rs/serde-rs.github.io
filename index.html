@@ -676,7 +676,7 @@ structure and data format.</p>
 Serde by the community.</p>
 <ul>
 <li><a href="https://github.com/serde-rs/json" target="_blank">JSON</a>, the ubiquitous JavaScript Object Notation used by many HTTP APIs.</li>
-<li><a href="https://github.com/servo/bincode" target="_blank">Bincode</a>, a compact binary format used for IPC within the Servo rendering
+<li><a href="https://github.com/bincode-org/bincode" target="_blank">Bincode</a>, a compact binary format used for IPC within the Servo rendering
 engine.</li>
 <li><a href="https://github.com/enarx/ciborium" target="_blank">CBOR</a>, a Concise Binary Object Representation designed for small message size
 without the need for version negotiation.</li>
@@ -686,7 +686,7 @@ markup language.</li>
 <li><a href="https://github.com/alexcrichton/toml-rs" target="_blank">TOML</a>, a minimal configuration format used by <a href="http://doc.crates.io/manifest.html" target="_blank">Cargo</a>.</li>
 <li><a href="https://github.com/birkenfeld/serde-pickle" target="_blank">Pickle</a>, a format common in the Python world.</li>
 <li><a href="https://github.com/ron-rs/ron" target="_blank">RON</a>, a Rusty Object Notation.</li>
-<li><a href="https://github.com/zonyitoo/bson-rs" target="_blank">BSON</a>, the data storage and network transfer format used by MongoDB.</li>
+<li><a href="https://github.com/mongodb/bson-rust" target="_blank">BSON</a>, the data storage and network transfer format used by MongoDB.</li>
 <li><a href="https://github.com/flavray/avro-rs" target="_blank">Avro</a>, a binary format used within Apache Hadoop, with support for schema
 definition.</li>
 <li><a href="https://github.com/callum-oakley/json5-rs" target="_blank">JSON5</a>, a superset of JSON including some productions from ES5.</li>
@@ -694,7 +694,7 @@ definition.</li>
 <li><a href="https://docs.rs/serde_qs" target="_blank">URL</a> query strings, in the x-www-form-urlencoded format.</li>
 <li><a href="https://github.com/softprops/envy" target="_blank">Envy</a>, a way to deserialize environment variables into Rust structs.
 <em>(deserialization only)</em></li>
-<li><a href="https://github.com/softprops/envy-store" target="_blank">Envy Store</a>, a way to deserialize <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html" target="_blank">AWS Parameter Store</a> parameters into Rust
+<li><a href="https://github.com/softprops/envy-store" target="_blank">Envy Store</a>, a way to deserialize <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html" target="_blank">AWS Parameter Store</a> parameters into Rust
 structs. <em>(deserialization only)</em></li>
 <li><a href="https://github.com/rotty/lexpr-rs" target="_blank">S-expressions</a>, the textual representation of code and data used by the Lisp
 language family.</li>
@@ -760,7 +760,7 @@ Using the derive macro goes like this:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2021-11-26T22:41:48.350Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-01-22T19:28:11.010Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Overview","level":"1.1","depth":1,"next":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga":{"configuration":"auto","token":"UA-82804814-1"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-04-14T09:51:36.945Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-04-14T09:51:52.778Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
