@@ -63,6 +63,7 @@ Serde by the community.
   *(deserialization only)*
 - [Envy Store], a way to deserialize [AWS Parameter Store] parameters into Rust
   structs. *(deserialization only)*
+- [System Environment], a way to deserialize environment variables into nested Rust structs. *(deserialization only)*
 - [S-expressions], the textual representation of code and data used by the Lisp
   language family.
 - [D-Bus]'s binary wire format.
@@ -89,6 +90,7 @@ Serde by the community.
 [Postcard]: https://github.com/jamesmunns/postcard
 [Envy]: https://github.com/softprops/envy
 [Envy Store]: https://github.com/softprops/envy-store
+[System Environment]: https://github.com/Xuanwo/serde-env
 [Cargo]: http://doc.crates.io/manifest.html
 [AWS Parameter Store]: https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html
 [S-expressions]: https://github.com/rotty/lexpr-rs
