@@ -71,7 +71,7 @@ in Java libraries.
 This representation works for struct variants, newtype variants containing
 structs or maps, and unit variants but does not work for enums containing tuple
 variants. Using a `#[serde(tag = "...")]` attribute on an enum containing a
-tuple variant is an error at compile time.
+tuple variant will cause panic without any compile error.
 
 ## Adjacently tagged
 
