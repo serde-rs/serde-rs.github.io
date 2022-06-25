@@ -28,7 +28,7 @@ These derives require a Rust compiler version 1.31 or newer.
 
 Here is the `Cargo.toml`:
 
-!FILENAME Cargo.toml
+**Cargo.toml**
 ```toml
 [package]
 name = "my-crate"
@@ -44,7 +44,7 @@ serde_json = "1.0"
 
 Now the `src/main.rs` which uses Serde's custom derives:
 
-!FILENAME src/main.rs
+**src/main.rs**
 ```rust
 use serde::{Serialize, Deserialize};
 

@@ -14,7 +14,7 @@ is used.
 [`Serializer`]: https://docs.serde.rs/serde/trait.Serializer.html
 [Serde data model]: data-model.md
 
-!FILENAME src/ser.rs
+**src/ser.rs**
 ```rust
 # mod error {
 #     pub use serde::de::value::Error;
