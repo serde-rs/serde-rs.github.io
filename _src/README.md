@@ -1,15 +1,8 @@
 <span style="float:right">
-  [![GitHub]][repo]
-  [![rustdoc]][docs]
-  [![Latest Version]][crates.io]
+  <a href="https://github.com/serde-rs/serde" target="_blank"><img src="img/github.svg" alt="GitHub"></a>
+  <a href="https://docs.serde.rs/serde/" target="_blank"><img src="img/rustdoc.svg" alt="rustdoc"></a>
+  <a href="https://crates.io/crates/serde" target="_blank"><img src="https://img.shields.io/crates/v/serde.svg?style=social" alt="Latest Version"></a>
 </span>
-
-[GitHub]: /img/github.svg
-[repo]: https://github.com/serde-rs/serde
-[rustdoc]: /img/rustdoc.svg
-[docs]: https://docs.serde.rs/serde/
-[Latest Version]: https://img.shields.io/crates/v/serde.svg?style=social
-[crates.io]: https://crates.io/crates/serde
 
 <div style="clear:both"></div>
 
