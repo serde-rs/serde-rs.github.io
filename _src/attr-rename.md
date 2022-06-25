@@ -1,6 +1,5 @@
 # Serialize fields as camelCase
 
-!PLAYGROUND b2852ed8e696999ccd9d2ac668b848bf
 ```rust
 use serde::Serialize;
 

@@ -18,7 +18,7 @@ test expected failure conditions.
 Here is an example from the
 [`linked-hash-map`](https://github.com/contain-rs/linked-hash-map) crate.
 
-```rust
+```rust,noplayground
 # #[allow(unused_imports)]
 use linked_hash_map::LinkedHashMap;
 #

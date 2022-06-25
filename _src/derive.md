@@ -46,7 +46,6 @@ serde_json = "1.0"
 Now the `src/main.rs` which uses Serde's custom derives:
 
 !FILENAME src/main.rs
-!PLAYGROUND 1dbc76000e9875fac72c2865748842d7
 ```rust
 use serde::{Serialize, Deserialize};
 

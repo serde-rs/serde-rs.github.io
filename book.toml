@@ -4,6 +4,9 @@ multilingual = false
 src = "_src"
 title = "Serde"
 
+[rust]
+edition = "2018"
+
 [output.html]
 git-repository-url = "https://github.com/serde-rs/serde-rs.github.io"
 git-repository-icon = "fa-github"

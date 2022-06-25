@@ -1,6 +1,5 @@
 # Default value for a field
 
-!PLAYGROUND b238170d32f604295a1110ad912ef3ee
 ```rust
 use serde::Deserialize;
 

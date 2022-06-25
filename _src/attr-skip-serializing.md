@@ -9,7 +9,6 @@ deserializing (see [Field Attributes: `skip`][attr-skip]). Likewise, use
 
 [attr-skip]: field-attrs.md#skip
 
-!PLAYGROUND b65f4a90bb11285574a1917b0f5e10aa
 ```rust
 use serde::Serialize;
 

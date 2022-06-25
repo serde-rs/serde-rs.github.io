@@ -10,7 +10,6 @@ As with most heuristics, this is not always right and Serde provides an escape
 hatch to replace the automatically generated bound by one written by the
 programmer.
 
-!PLAYGROUND d2a50878ab69a5786f5a3a11a9de71ea
 ```rust
 use serde::{de, Deserialize, Deserializer};
 
