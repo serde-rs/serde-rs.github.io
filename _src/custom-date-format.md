@@ -4,7 +4,6 @@ This uses the [`chrono`](https://github.com/chronotope/chrono) crate to
 serialize and deserialize JSON data containing a custom date format. The `with`
 attribute is used to provide the logic for handling the custom representation.
 
-!PLAYGROUND 7185eb211a4822ce97184ae25fedda91
 ```rust
 use chrono::{DateTime, Utc};
 use serde::{Serialize, Deserialize};

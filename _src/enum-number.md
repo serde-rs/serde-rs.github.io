@@ -14,7 +14,7 @@ serde_json = "1.0"
 serde_repr = "0.1"
 ```
 
-```rust
+```rust,noplayground
 use serde_repr::*;
 
 #[derive(Serialize_repr, Deserialize_repr, PartialEq, Debug)]

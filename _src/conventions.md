@@ -26,7 +26,7 @@ pluggable pretty-printer trait as [`serde_json::ser::Formatter`].
 A basic data format begins like this. The three modules are discussed in more
 detail on the following pages.
 
-!FILENAME src/lib.rs
+**src/lib.rs**
 ```rust
 # macro_rules! modules {
 #     (mod de) => {

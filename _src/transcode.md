@@ -14,7 +14,7 @@ This example implements the equivalent of Go's
 [`json.Compact`](https://golang.org/pkg/encoding/json/#Compact) function which
 removes insignificant whitespace from a JSON string in a streaming way.
 
-```rust
+```rust,noplayground
 use std::io;
 
 fn main() {

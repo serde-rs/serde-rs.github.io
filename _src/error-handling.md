@@ -34,7 +34,7 @@ for its error type for the data structure to use in various situations.
 [`ser::Error`]: https://docs.serde.rs/serde/ser/trait.Error.html
 [data model]: data-model.md
 
-!FILENAME src/error.rs
+**src/error.rs**
 ```rust
 # macro_rules! ignore {
 #     ($($tt:tt)*) => {}

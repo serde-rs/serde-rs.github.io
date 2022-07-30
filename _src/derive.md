@@ -16,20 +16,19 @@ bounds. On rare occasions, for an especially convoluted type you may need to
 
 These derives require a Rust compiler version 1.31 or newer.
 
-!CHECKLIST
-- Add `serde = { version = "1.0", features = ["derive"] }` as a dependency in
+- [ ] Add `serde = { version = "1.0", features = ["derive"] }` as a dependency in
   Cargo.toml.
-- Ensure that all other Serde-based dependencies (for example serde_json) are on
+- [ ] Ensure that all other Serde-based dependencies (for example serde_json) are on
   a version that is compatible with serde 1.0.
-- On structs and enums that you want to serialize, import the derive macro as
+- [ ] On structs and enums that you want to serialize, import the derive macro as
   `use serde::Serialize;` within the same module and write
   `#[derive(Serialize)]` on the struct or enum.
-- Similarly import `use serde::Deserialize;` and write `#[derive(Deserialize)]`
+- [ ] Similarly import `use serde::Deserialize;` and write `#[derive(Deserialize)]`
   on structs and enums that you want to deserialize.
 
 Here is the `Cargo.toml`:
 
-!FILENAME Cargo.toml
+**Cargo.toml**
 ```toml
 [package]
 name = "my-crate"
@@ -45,8 +44,7 @@ serde_json = "1.0"
 
 Now the `src/main.rs` which uses Serde's custom derives:
 
-!FILENAME src/main.rs
-!PLAYGROUND 1dbc76000e9875fac72c2865748842d7
+**src/main.rs**
 ```rust
 use serde::{Serialize, Deserialize};
 

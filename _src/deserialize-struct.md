@@ -21,7 +21,6 @@ names. Instead there is a `Field` enum which is deserialized from a `&str`.
 The implementation supports two possible ways that a struct may be represented
 by a data format: as a seq like in Bincode, and as a map like in JSON.
 
-!PLAYGROUND 2e212d29e38110fc3d8f22ff920712be
 ```rust
 use std::fmt;
 

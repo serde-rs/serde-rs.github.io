@@ -23,7 +23,7 @@ We can use Rust's
 [`FromStr`](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait and
 Serde's `deserialize_with` attribute to handle this pattern in a general way.
 
-```rust
+```rust,noplayground
 use std::collections::BTreeMap as Map;
 use std::fmt;
 use std::marker::PhantomData;

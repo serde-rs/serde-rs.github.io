@@ -1,0 +1,18 @@
+[book]
+language = "en"
+multilingual = false
+src = "_src"
+title = "Serde"
+
+[rust]
+edition = "2018"
+
+[output.html]
+git-repository-url = "https://github.com/serde-rs/serde-rs.github.io"
+git-repository-icon = "fa-github"
+edit-url-template = "https://github.com/serde-rs/serde-rs.github.io/edit/master/{path}"
+cname = "serde.rs"
+
+[output.html.redirect]
+"codegen.html" = "derive.html"
+"borrow.html" = "lifetimes.html#borrowing-data-in-a-derived-impl"

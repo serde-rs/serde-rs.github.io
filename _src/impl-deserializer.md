@@ -30,7 +30,7 @@ there is no advantage to that.
 [Deserializer lifetimes]: lifetimes.md
 [Serde's data model]: data-model.md
 
-!FILENAME src/de.rs
+**src/de.rs**
 ```rust
 # mod error {
 #     use std;
