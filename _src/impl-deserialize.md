@@ -46,7 +46,7 @@ kinds of deserialization.
    `Deserializer::deserialize_any`.
 
 2. The various other `deserialize_*` methods. Non-self-describing formats like
-   Bincode need to be told what is in the input in order to deserialize it. The
+   Postcard need to be told what is in the input in order to deserialize it. The
    `deserialize_*` methods are hints to the deserializer for how to interpret
    the next piece of input. Non-self-describing formats are not able to
    deserialize something like `serde_json::Value` which relies on
@@ -56,7 +56,7 @@ When implementing `Deserialize`, you should avoid relying on
 `Deserializer::deserialize_any` unless you need to be told by the Deserializer
 what type is in the input. Know that relying on `Deserializer::deserialize_any`
 means your data type will be able to deserialize from self-describing formats
-only, ruling out Bincode and many others.
+only, ruling out Postcard and many others.
 
 ## The Visitor trait
 

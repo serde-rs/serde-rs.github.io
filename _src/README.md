@@ -43,8 +43,7 @@ The following is a partial list of data formats that have been implemented for
 Serde by the community.
 
 - [JSON], the ubiquitous JavaScript Object Notation used by many HTTP APIs.
-- [Bincode], a compact binary format used for IPC within the Servo rendering
-  engine.
+- [Postcard], a no\_std and embedded-systems friendly compact binary format.
 - [CBOR], a Concise Binary Object Representation designed for small message size
   without the need for version negotiation.
 - [YAML], a self-proclaimed human-friendly configuration language that ain't
@@ -57,7 +56,6 @@ Serde by the community.
 - [Avro], a binary format used within Apache Hadoop, with support for schema
   definition.
 - [JSON5], a superset of JSON including some productions from ES5.
-- [Postcard], a no\_std and embedded-systems friendly compact binary format.
 - [URL] query strings, in the x-www-form-urlencoded format.
 - [Envy], a way to deserialize environment variables into Rust structs.
   *(deserialization only)*
@@ -75,7 +73,7 @@ Serde by the community.
   *(deserialization only)*
 
 [JSON]: https://github.com/serde-rs/json
-[Bincode]: https://github.com/bincode-org/bincode
+[Postcard]: https://github.com/jamesmunns/postcard
 [CBOR]: https://github.com/enarx/ciborium
 [YAML]: https://github.com/dtolnay/serde-yaml
 [MessagePack]: https://github.com/3Hren/msgpack-rust
@@ -86,7 +84,6 @@ Serde by the community.
 [Avro]: https://github.com/flavray/avro-rs
 [JSON5]: https://github.com/callum-oakley/json5-rs
 [URL]: https://docs.rs/serde_qs
-[Postcard]: https://github.com/jamesmunns/postcard
 [Envy]: https://github.com/softprops/envy
 [Envy Store]: https://github.com/softprops/envy-store
 [Cargo]: http://doc.crates.io/manifest.html

@@ -13,7 +13,7 @@ indicate what Serde data model type the `Deserialize` type expects to see in the
 input. For self-describing formats like JSON, it is fine for the `Deserializer`
 to ignore this hint and just call whichever `Visitor` method corresponds to the
 content of the input data. Other formats, especially compact binary formats like
-Bincode, rely on the hint to determine how the input data is to be interpreted.
+Postcard, rely on the hint to determine how the input data is to be interpreted.
 
 Self-describing formats can save a lot of code by using the
 [`forward_to_deserialize_any!`] macro to ignore hints and forward some or all of

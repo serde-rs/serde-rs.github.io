@@ -32,7 +32,7 @@ These methods are generic over the serialization format, represented by the
 [`Serializer`](https://docs.serde.rs/serde/ser/trait.Serializer.html) and
 [`Deserializer`](https://docs.serde.rs/serde/de/trait.Deserializer.html) traits.
 For example there is one Serializer type for JSON and a different one for
-Bincode.
+Postcard.
 
 - [Implementing `Serialize`](impl-serialize.md)
 - [Implementing `Deserialize`](impl-deserialize.md)
