@@ -62,7 +62,7 @@ impl Serialize for i32 {
 #             }
 #         }
 #
-#         let _ = serializer;
+#         _ = serializer;
 #         unimplemented!()
     }
 }
