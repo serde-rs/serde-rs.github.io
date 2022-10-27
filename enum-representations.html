@@ -717,7 +717,7 @@ object.</p>
 <p>There is no explicit tag identifying which variant the data contains. Serde will
 try to match the data against each variant in order and the first one that
 deserializes successfully is the one returned.</p>
-<p>This representation can handle enums containing any type of variant.</p>
+<p>This representation can handle enums containing any type of variant. However, all unit variants will always serialize as `null`.</p>
 <p>As another example of an untagged enum, this enum can be deserialized from
 either an integer or an array of two strings:</p>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
