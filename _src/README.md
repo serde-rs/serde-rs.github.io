@@ -77,7 +77,7 @@ Serde by the community.
 [CBOR]: https://github.com/enarx/ciborium
 [YAML]: https://github.com/dtolnay/serde-yaml
 [MessagePack]: https://github.com/3Hren/msgpack-rust
-[TOML]: https://github.com/alexcrichton/toml-rs
+[TOML]: https://docs.rs/toml
 [Pickle]: https://github.com/birkenfeld/serde-pickle
 [RON]: https://github.com/ron-rs/ron
 [BSON]: https://github.com/mongodb/bson-rust
