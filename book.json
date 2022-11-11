@@ -2,14 +2,15 @@
     "root": "_src",
     "title": "Serde",
     "language": "en",
-    "plugins": ["-search", "-sharing", "sane-sidebar", "codeblock-omit", "codeblock-rust", "edit-link", "ga", "bulk-redirect", "checklist", "anchors"],
+    "plugins": ["-search", "-sharing", "sane-sidebar", "codeblock-omit", "codeblock-rust", "edit-link", "ga4", "bulk-redirect", "checklist", "anchors"],
     "pluginsConfig": {
         "edit-link": {
             "base": "https://github.com/serde-rs/serde-rs.github.io/edit/master/_src",
             "label": "Edit"
         },
-        "ga": {
-            "token": "UA-82804814-1"
+        "ga4": {
+            "tag": "G-T5QD1R7FZW",
+            "anonymize_ip": true
         },
         "bulk-redirect": {
             "redirectsFile": "redirects.json"
