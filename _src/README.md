@@ -24,6 +24,8 @@ deserialize other things. Serde provides the layer by which these two groups
 interact with each other, allowing any supported data structure to be serialized
 and deserialized using any supported data format.
 
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/9oVIyNiAiss" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### Design
 
 Where many other languages rely on runtime reflection for serializing data,
