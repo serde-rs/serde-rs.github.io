@@ -651,20 +651,20 @@
 <p>The Serde data model is the API by which data structures and data formats
 interact. You can think of it as Serde&apos;s type system.</p>
 <p>In code, the serialization half of the Serde data model is defined by the
-<a href="https://docs.serde.rs/serde/trait.Serializer.html" target="_blank"><code>Serializer</code></a> trait and the deserialization half is defined by the
-<a href="https://docs.serde.rs/serde/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> trait. These are a way of mapping every Rust data structure
+<a href="https://docs.rs/serde/1/serde/trait.Serializer.html" target="_blank"><code>Serializer</code></a> trait and the deserialization half is defined by the
+<a href="https://docs.rs/serde/1/serde/trait.Deserializer.html" target="_blank"><code>Deserializer</code></a> trait. These are a way of mapping every Rust data structure
 into one of 29 possible types. Each method of the <code>Serializer</code> trait corresponds
 to one of the types of the data model.</p>
-<p>When serializing a data structure to some format, the <a href="https://docs.serde.rs/serde/trait.Serialize.html" target="_blank"><code>Serialize</code></a>
+<p>When serializing a data structure to some format, the <a href="https://docs.rs/serde/1/serde/trait.Serialize.html" target="_blank"><code>Serialize</code></a>
 implementation for the data structure is responsible for mapping the data
 structure into the Serde data model by invoking exactly one of the <code>Serializer</code>
 methods, while the <code>Serializer</code> implementation for the data format is
 responsible for mapping the Serde data model into the intended output
 representation.</p>
-<p>When deserializing a data structure from some format, the <a href="https://docs.serde.rs/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a>
+<p>When deserializing a data structure from some format, the <a href="https://docs.rs/serde/1/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a>
 implementation for the data structure is responsible for mapping the data
 structure into the Serde data model by passing to the <code>Deserializer</code> a
-<a href="https://docs.serde.rs/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> implementation that can receive the various types of the data model,
+<a href="https://docs.rs/serde/1/serde/de/trait.Visitor.html" target="_blank"><code>Visitor</code></a> implementation that can receive the various types of the data model,
 while the <code>Deserializer</code> implementation for the data format is responsible for
 mapping the input data into the Serde data model by invoking exactly one of the
 <code>Visitor</code> methods.</p>
@@ -768,7 +768,7 @@ straightforward. For example the Rust <code>bool</code> type corresponds to Serd
 type. The Rust tuple struct <code>Rgb(u8, u8, u8)</code> corresponds to Serde&apos;s tuple
 struct type.</p>
 <p>But there is no fundamental reason that these mappings need to be
-straightforward. The <a href="https://docs.serde.rs/serde/trait.Serialize.html" target="_blank"><code>Serialize</code></a> and <a href="https://docs.serde.rs/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> traits can perform <em>any</em>
+straightforward. The <a href="https://docs.rs/serde/1/serde/trait.Serialize.html" target="_blank"><code>Serialize</code></a> and <a href="https://docs.rs/serde/1/serde/trait.Deserialize.html" target="_blank"><code>Deserialize</code></a> traits can perform <em>any</em>
 mapping between Rust type and Serde data model that is appropriate for the use
 case.</p>
 <p>As an example, consider Rust&apos;s <a href="https://doc.rust-lang.org/std/ffi/struct.OsString.html" target="_blank"><code>std::ffi::OsString</code></a> type. This type represents
@@ -825,7 +825,7 @@ best choice.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Serde data model","level":"1.3","depth":1,"next":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"previous":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"data-model.md","mtime":"2022-07-28T19:54:28.669Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-12-17T02:23:13.522Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Serde data model","level":"1.3","depth":1,"next":{"title":"Using derive","level":"1.4","depth":1,"path":"derive.md","ref":"derive.md","articles":[]},"previous":{"title":"Help","level":"1.2","depth":1,"path":"help.md","ref":"help.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"data-model.md","mtime":"2022-12-18T19:58:00.214Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-12-18T20:06:04.778Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
