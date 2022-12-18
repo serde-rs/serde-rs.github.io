@@ -3,8 +3,8 @@
 The [`Deserialize`] and [`Deserializer`] traits both have a lifetime called
 `'de`, as do some of the other deserialization-related traits.
 
-[`Deserialize`]: https://docs.serde.rs/serde/trait.Deserialize.html
-[`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
+[`Deserialize`]: https://docs.rs/serde/1/serde/trait.Deserialize.html
+[`Deserializer`]: https://docs.rs/serde/1/serde/trait.Deserializer.html
 
 ```rust
 # use serde::Deserializer;
@@ -81,8 +81,8 @@ Note that `<T> where T: Deserialize<'static>` is never what you want. Also
 anywhere near `Deserialize` is a sign of being on the wrong track. Use one of
 the above bounds instead.
 
-[`serde_json::from_str`]: https://docs.serde.rs/serde_json/fn.from_str.html
-[`serde_json::from_reader`]: https://docs.serde.rs/serde_json/fn.from_reader.html
+[`serde_json::from_str`]: https://docs.rs/serde_json/1/serde_json/fn.from_str.html
+[`serde_json::from_reader`]: https://docs.rs/serde_json/1/serde_json/fn.from_reader.html
 [higher-rank trait bound]: https://doc.rust-lang.org/nomicon/hrtb.html
 
 ## Transient, borrowed, and owned data
@@ -90,15 +90,15 @@ the above bounds instead.
 The Serde data model has three flavors of strings and byte arrays during
 deserialization. They correspond to different methods on the [`Visitor`] trait.
 
-[`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
+[`Visitor`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html
 
 - **Transient** — [`visit_str`] accepts a `&str`.
 - **Borrowed** — [`visit_borrowed_str`] accepts a `&'de str`.
 - **Owned** — [`visit_string`] accepts a `String`.
 
-[`visit_str`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_str
-[`visit_borrowed_str`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_str
-[`visit_string`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_string
+[`visit_str`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html#method.visit_str
+[`visit_borrowed_str`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html#method.visit_borrowed_str
+[`visit_string`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html#method.visit_string
 
 Transient data is not guaranteed to last beyond the method call it is passed to.
 Often this is sufficient, for example when deserializing something like an IP
@@ -156,7 +156,7 @@ If this type does not borrow any data from the `Deserializer`, there are simply
 no bounds on the `'de` lifetime. Such types automatically implement the
 [`DeserializeOwned`] trait.
 
-[`DeserializeOwned`]: https://docs.serde.rs/serde/de/trait.DeserializeOwned.html
+[`DeserializeOwned`]: https://docs.rs/serde/1/serde/de/trait.DeserializeOwned.html
 
 ```rust
 # #![allow(dead_code)]
@@ -210,8 +210,8 @@ If the `Deserializer` never invokes [`visit_borrowed_str`] or
 [`visit_borrowed_bytes`], the `'de` lifetime will be an unconstrained lifetime
 parameter.
 
-[`visit_borrowed_str`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_str
-[`visit_borrowed_bytes`]: https://docs.serde.rs/serde/de/trait.Visitor.html#method.visit_borrowed_bytes
+[`visit_borrowed_str`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html#method.visit_borrowed_str
+[`visit_borrowed_bytes`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html#method.visit_borrowed_bytes
 
 ```rust
 # #![allow(dead_code)]

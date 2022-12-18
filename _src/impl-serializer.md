@@ -11,7 +11,7 @@ into the output representation, in this case JSON.
 Refer to the rustdoc of the `Serializer` trait for examples of how each method
 is used.
 
-[`Serializer`]: https://docs.serde.rs/serde/trait.Serializer.html
+[`Serializer`]: https://docs.rs/serde/1/serde/trait.Serializer.html
 [Serde data model]: data-model.md
 
 !FILENAME src/ser.rs

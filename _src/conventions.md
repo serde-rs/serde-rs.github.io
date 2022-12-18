@@ -21,7 +21,7 @@ pluggable pretty-printer trait as [`serde_json::ser::Formatter`].
 
 [`io::Write`]: https://doc.rust-lang.org/std/io/trait.Write.html
 [`io::Read`]: https://doc.rust-lang.org/std/io/trait.Read.html
-[`serde_json::ser::Formatter`]: https://docs.serde.rs/serde_json/ser/trait.Formatter.html
+[`serde_json::ser::Formatter`]: https://docs.rs/serde_json/1/serde_json/ser/trait.Formatter.html
 
 A basic data format begins like this. The three modules are discussed in more
 detail on the following pages.

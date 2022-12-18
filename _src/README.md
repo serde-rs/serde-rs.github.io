@@ -7,7 +7,7 @@
 [GitHub]: /img/github.svg
 [repo]: https://github.com/serde-rs/serde
 [rustdoc]: /img/rustdoc.svg
-[docs]: https://docs.serde.rs/serde/
+[docs]: https://docs.rs/serde
 [Latest Version]: https://img.shields.io/crates/v/serde.svg?style=social
 [crates.io]: https://crates.io/crates/serde
 

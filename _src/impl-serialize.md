@@ -2,7 +2,7 @@
 
 The [`Serialize`] trait looks like this:
 
-[`Serialize`]: https://docs.serde.rs/serde/ser/trait.Serialize.html
+[`Serialize`]: https://docs.rs/serde/1/serde/ser/trait.Serialize.html
 
 ```rust
 # use serde::Serializer;
@@ -20,7 +20,7 @@ This method's job is to take your type (`&self`) and map it into the [Serde data
 model] by invoking exactly one of the methods on the given [`Serializer`].
 
 [Serde data model]: data-model.md
-[`Serializer`]: https://docs.serde.rs/serde/ser/trait.Serializer.html
+[`Serializer`]: https://docs.rs/serde/1/serde/ser/trait.Serializer.html
 
 In most cases Serde's [derive] is able to generate an appropriate implementation
 of `Serialize` for structs and enums defined in your crate. Should you need to
@@ -293,7 +293,7 @@ used to enable efficient handling of `&[u8]` and `Vec<u8>` through
 `serialize_bytes`.
 
 [specialization]: https://github.com/rust-lang/rust/issues/31844
-[`serde_bytes`]: https://docs.serde.rs/serde_bytes/
+[`serde_bytes`]: https://docs.rs/serde_bytes
 
 Finally, `serialize_some` and `serialize_none` correspond to `Option::Some` and
 `Option::None`. Users tend to have different expectations around the `Option`

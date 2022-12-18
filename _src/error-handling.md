@@ -25,13 +25,13 @@ being processed by the library, is built around the [`ser::Error`] and
 [`de::Error`] traits. These traits allow the data format to expose constructors
 for its error type for the data structure to use in various situations.
 
-[`Deserialize`]: https://docs.serde.rs/serde/trait.Deserialize.html
-[`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
-[`Serialize`]: https://docs.serde.rs/serde/trait.Serialize.html
-[`Serializer`]: https://docs.serde.rs/serde/ser/trait.Serializer.html
-[`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
-[`de::Error`]: https://docs.serde.rs/serde/de/trait.Error.html
-[`ser::Error`]: https://docs.serde.rs/serde/ser/trait.Error.html
+[`Deserialize`]: https://docs.rs/serde/1/serde/trait.Deserialize.html
+[`Deserializer`]: https://docs.rs/serde/1/serde/trait.Deserializer.html
+[`Serialize`]: https://docs.rs/serde/1/serde/trait.Serialize.html
+[`Serializer`]: https://docs.rs/serde/1/serde/ser/trait.Serializer.html
+[`Visitor`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html
+[`de::Error`]: https://docs.rs/serde/1/serde/de/trait.Error.html
+[`ser::Error`]: https://docs.rs/serde/1/serde/ser/trait.Error.html
 [data model]: data-model.md
 
 !FILENAME src/error.rs

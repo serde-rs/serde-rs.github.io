@@ -24,9 +24,9 @@ there is no advantage to that.
 
 [Deserializer lifetimes] have their own dedicated page.
 
-[`Deserializer`]: https://docs.serde.rs/serde/de/trait.Deserializer.html
-[`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
-[`forward_to_deserialize_any!`]: https://docs.serde.rs/serde/macro.forward_to_deserialize_any.html
+[`Deserializer`]: https://docs.rs/serde/1/serde/de/trait.Deserializer.html
+[`Visitor`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html
+[`forward_to_deserialize_any!`]: https://docs.rs/serde/1/serde/macro.forward_to_deserialize_any.html
 [Deserializer lifetimes]: lifetimes.md
 [Serde's data model]: data-model.md
 
