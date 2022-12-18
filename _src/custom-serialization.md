@@ -4,9 +4,10 @@ Serde's [derive macro](derive.md) through `#[derive(Serialize, Deserialize)]`
 provides reasonable default serialization behavior for structs and enums and it
 can be customized to some extent using [attributes](attributes.md). For unusual
 needs, Serde allows full customization of the serialization behavior by manually
-implementing [`Serialize`](https://docs.serde.rs/serde/ser/trait.Serialize.html)
-and [`Deserialize`](https://docs.serde.rs/serde/de/trait.Deserialize.html)
-traits for your type.
+implementing [`Serialize`] and [`Deserialize`] traits for your type.
+
+[`Serialize`]: https://docs.rs/serde/1/serde/ser/trait.Serialize.html
+[`Deserialize`]: https://docs.rs/serde/1/serde/de/trait.Deserialize.html
 
 The traits each have a single method:
 
@@ -29,10 +30,11 @@ pub trait Deserialize<'de>: Sized {
 ```
 
 These methods are generic over the serialization format, represented by the
-[`Serializer`](https://docs.serde.rs/serde/ser/trait.Serializer.html) and
-[`Deserializer`](https://docs.serde.rs/serde/de/trait.Deserializer.html) traits.
-For example there is one Serializer type for JSON and a different one for
-Postcard.
+[`Serializer`] and [`Deserializer`] traits. For example there is one Serializer
+type for JSON and a different one for Postcard.
+
+[`Serializer`]: https://docs.rs/serde/1/serde/ser/trait.Serializer.html
+[`Deserializer`]: https://docs.rs/serde/1/serde/de/trait.Deserializer.html
 
 - [Implementing `Serialize`](impl-serialize.md)
 - [Implementing `Deserialize`](impl-deserialize.md)

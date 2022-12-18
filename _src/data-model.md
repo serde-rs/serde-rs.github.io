@@ -24,11 +24,11 @@ while the `Deserializer` implementation for the data format is responsible for
 mapping the input data into the Serde data model by invoking exactly one of the
 `Visitor` methods.
 
-[`Serializer`]: https://docs.serde.rs/serde/trait.Serializer.html
-[`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
-[`Serialize`]: https://docs.serde.rs/serde/trait.Serialize.html
-[`Deserialize`]: https://docs.serde.rs/serde/trait.Deserialize.html
-[`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
+[`Serializer`]: https://docs.rs/serde/1/serde/trait.Serializer.html
+[`Deserializer`]: https://docs.rs/serde/1/serde/trait.Deserializer.html
+[`Serialize`]: https://docs.rs/serde/1/serde/trait.Serialize.html
+[`Deserialize`]: https://docs.rs/serde/1/serde/trait.Deserialize.html
+[`Visitor`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html
 
 ## Types
 

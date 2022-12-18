@@ -2,7 +2,7 @@
 
 The [`Deserialize`] trait looks like this:
 
-[`Deserialize`]: https://docs.serde.rs/serde/de/trait.Deserialize.html
+[`Deserialize`]: https://docs.rs/serde/1/serde/de/trait.Deserialize.html
 
 ```rust
 # use serde::Deserializer;
@@ -21,8 +21,8 @@ the [`Deserializer`] with a [`Visitor`] that can be driven by the `Deserializer`
 to construct an instance of your type.
 
 [Serde data model]: data-model.md
-[`Deserializer`]: https://docs.serde.rs/serde/trait.Deserializer.html
-[`Visitor`]: https://docs.serde.rs/serde/de/trait.Visitor.html
+[`Deserializer`]: https://docs.rs/serde/1/serde/trait.Deserializer.html
+[`Visitor`]: https://docs.rs/serde/1/serde/de/trait.Visitor.html
 
 In most cases Serde's [derive] is able to generate an appropriate implementation
 of `Deserialize` for structs and enums defined in your crate. Should you need to
@@ -125,7 +125,7 @@ they get called. For example `I32Visitor` does not implement
 `Visitor::visit_map`, so trying to deserialize an i32 when the input contains a
 map is a type error.
 
-[type error]: https://docs.serde.rs/serde/de/trait.Error.html#method.invalid_type
+[type error]: https://docs.rs/serde/1/serde/de/trait.Error.html#method.invalid_type
 
 ## Driving a Visitor
 

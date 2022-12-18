@@ -3,7 +3,7 @@
 The [`IgnoredAny`] type gives an efficient way of discarding data from a
 deserializer.
 
-[`IgnoredAny`]: https://docs.serde.rs/serde/de/struct.IgnoredAny.html
+[`IgnoredAny`]: https://docs.rs/serde/1/serde/de/struct.IgnoredAny.html
 
 Think of this like `serde_json::Value` in that it can be deserialized from
 any type, except that it does not store any information about the data that
