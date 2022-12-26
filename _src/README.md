@@ -69,6 +69,8 @@ Serde by the community.
 - [FlexBuffers], the schemaless cousin of Google's FlatBuffers zero-copy
   serialization format.
 - [Bencode], a simple binary format used in the BitTorrent protocol.
+- [Token streams], for processing Rust procedural macro input. *(deserialization
+  only)*
 - [DynamoDB Items], the format used by [rusoto_dynamodb] to transfer data to
   and from DynamoDB.
 - [Hjson], a syntax extension to JSON designed around human reading and editing.
@@ -94,6 +96,7 @@ Serde by the community.
 [D-Bus]: https://docs.rs/zvariant
 [FlexBuffers]: https://github.com/google/flatbuffers/tree/master/rust/flexbuffers
 [Bencode]: https://github.com/P3KI/bendy
+[Token streams]: https://github.com/oxidecomputer/serde_tokenstream
 [DynamoDB Items]: https://docs.rs/serde_dynamo
 [rusoto_dynamodb]: https://docs.rs/rusoto_dynamodb
 [Hjson]: https://github.com/Canop/deser-hjson
