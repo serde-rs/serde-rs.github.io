@@ -59,6 +59,8 @@ Serde by the community.
   definition.
 - [JSON5], a superset of JSON including some productions from ES5.
 - [URL] query strings, in the x-www-form-urlencoded format.
+- [Starlark], the format used for describing build targets by the Bazel and Buck
+  build systems. *(serialization only)*
 - [Envy], a way to deserialize environment variables into Rust structs.
   *(deserialization only)*
 - [Envy Store], a way to deserialize [AWS Parameter Store] parameters into Rust
@@ -88,6 +90,7 @@ Serde by the community.
 [Avro]: https://docs.rs/apache-avro
 [JSON5]: https://github.com/callum-oakley/json5-rs
 [URL]: https://docs.rs/serde_qs
+[Starlark]: https://github.com/dtolnay/serde-starlark
 [Envy]: https://github.com/softprops/envy
 [Envy Store]: https://github.com/softprops/envy-store
 [Cargo]: http://doc.crates.io/manifest.html
