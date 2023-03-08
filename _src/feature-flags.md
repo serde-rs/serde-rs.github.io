@@ -35,13 +35,11 @@ discussion of unstable functionality please refer to [serde-rs/serde#812].
 
 #### --features alloc
 
-*Implies unstable.*
-
 Provide impls for types in the Rust core allocation and collections library
 including String, Box&lt;T&gt;, Vec&lt;T&gt;, and Cow&lt;T&gt;. This is a subset
 of std but may be enabled without depending on all of std.
 
-Requires a dependency on the unstable [core allocation library].
+Requires a dependency on the [core allocation library].
 
 See [no-std support] for details.
 
