@@ -1,12 +1,12 @@
 # Implementing a Serializer
 
 This page gives a basic but functional implementation of a JSON serializer using
-Serde.
+Serde. A serializer is responsible for mapping the data model
+into the output representation, in this case JSON.
 
 The [`Serializer`] trait has a lot of methods but none of the ones in this
 implementation are complicated. Each method corresponds to one of the types of
-the [Serde data model]. The serializer is responsible for mapping the data model
-into the output representation, in this case JSON.
+the [Serde data model].
 
 Refer to the rustdoc of the `Serializer` trait for examples of how each method
 is used.
