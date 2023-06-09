@@ -8,14 +8,14 @@ Building Serde with `default-features = false`, you will receive a stock
 
 [Cargo features]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
 
-#### --feature derive
+#### --features derive
 
 Provide derive macros for the Serialize and Deserialize traits.
 
 This is behind a feature because the derive macro implementation takes some
 extra time to compile.
 
-#### --feature std
+#### --features std
 
 *This feature is enabled by default.*
 
@@ -26,7 +26,7 @@ See [no-std support] for details.
 
 [no-std support]: no-std.md
 
-#### --feature unstable
+#### --features unstable
 
 Provide impls for types that require unstable functionality. For tracking and
 discussion of unstable functionality please refer to [serde-rs/serde#812].
