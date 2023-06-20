@@ -10,7 +10,8 @@
         },
         "ga4": {
             "tag": "G-T5QD1R7FZW",
-            "anonymize_ip": true
+            "anonymize_ip": true,
+            "cookie_domain": "serde.rs"
         },
         "bulk-redirect": {
             "redirectsFile": "redirects.json"
