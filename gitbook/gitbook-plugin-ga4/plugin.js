@@ -6,7 +6,9 @@ require(["gitbook"], function(gitbook) {
         };
         window.gtag('js', new Date());
         window.gtag('config', config.ga4.tag, {
-            'anonymize_ip': config.ga4.anonymize_ip ?? false
+            anonymize_ip: config.ga4.anonymize_ip ?? false,
+            cookie_domain: config.ga4.cookie_domain ?? undefined,
+            cookie_flags: 'samesite=strict;secure',
         });
         var script = document.createElement("script");
         script.type = "text/javascript";
@@ -16,7 +18,7 @@ require(["gitbook"], function(gitbook) {
     });
     gitbook.events.bind("page.change", function() {
         window.gtag('event', 'page_view', {
-            'page_location': window.location.pathname+window.location.search
+            page_location: window.location.pathname + window.location.search,
         });
     });
 });
