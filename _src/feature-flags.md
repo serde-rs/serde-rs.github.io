@@ -8,14 +8,14 @@ Building Serde with `default-features = false`, you will receive a stock
 
 [Cargo features]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
 
-#### features = ["derive"] {#derive}
+#### <span style="font-weight:normal">features = [</span>"derive"<span style="font-weight:normal">]</span> {#derive}
 
 Provide derive macros for the Serialize and Deserialize traits.
 
 This is behind a feature because the derive macro implementation takes some
 extra time to compile.
 
-#### features = ["std"] {#std}
+#### <span style="font-weight:normal">features = [</span>"std"<span style="font-weight:normal">]</span> {#std}
 
 *This feature is enabled by default.*
 
@@ -26,14 +26,14 @@ See [no-std support] for details.
 
 [no-std support]: no-std.md
 
-#### features = ["unstable"] {#unstable}
+#### <span style="font-weight:normal">features = [</span>"unstable"<span style="font-weight:normal">]</span> {#unstable}
 
 Provide impls for types that require unstable functionality. For tracking and
 discussion of unstable functionality please refer to [serde-rs/serde#812].
 
 [serde-rs/serde#812]: https://github.com/serde-rs/serde/issues/812
 
-#### features = ["alloc"] {#alloc}
+#### <span style="font-weight:normal">features = [</span>"alloc"<span style="font-weight:normal">]</span> {#alloc}
 
 Provide impls for types in the Rust core allocation and collections library
 including String, Box&lt;T&gt;, Vec&lt;T&gt;, and Cow&lt;T&gt;. This is a subset
@@ -45,7 +45,7 @@ See [no-std support] for details.
 
 [core allocation library]: https://doc.rust-lang.org/alloc/
 
-#### features = ["rc"] {#rc}
+#### <span style="font-weight:normal">features = [</span>"rc"<span style="font-weight:normal">]</span> {#rc}
 
 Opt into impls for Rc&lt;T&gt; and Arc&lt;T&gt;. Serializing and deserializing
 these types does not preserve identity and may result in multiple copies of the
