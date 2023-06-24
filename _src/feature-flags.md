@@ -8,6 +8,8 @@ Building Serde with `default-features = false`, you will receive a stock
 
 [Cargo features]: https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section
 
+<div class="indent"></div>
+
 #### <span style="font-weight:normal">features = [</span>"derive"<span style="font-weight:normal">]</span> {#derive}
 
 Provide derive macros for the Serialize and Deserialize traits.

@@ -43,3 +43,7 @@ a.plugin-anchor {
 a.plugin-anchor i {
     margin-left: -50px;
 }
+
+.indent ~ p {
+    padding-left: 40px;
+}
