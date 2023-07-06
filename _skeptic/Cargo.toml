@@ -3,7 +3,7 @@ name = "serde-website"
 version = "0.0.0"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = "build.rs"
-edition = "2018"
+edition = "2021"
 publish = false
 
 [build-dependencies]
