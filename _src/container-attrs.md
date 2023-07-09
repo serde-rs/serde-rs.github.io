@@ -41,9 +41,9 @@
   See [enum representations](enum-representations.md) for details on this
   representation.
 
-  On a struct with named fields: Before the actual fields of the struct,
-  (de)serialize a field with the given name (`type` in this example) and the
-  struct's name (or value of `serde(rename)`) as its value.
+  On a struct with named fields: Serialize the struct's name (or value of
+  `serde(rename)`) as a field with the given key, in front of all the real
+  fields of the struct.
 
 - ##### `#[serde(tag = "t", content = "c")]` {#tag--content}
 
