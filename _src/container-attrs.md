@@ -109,6 +109,12 @@
   serializing that. This type must implement `Clone` and `Into<IntoType>`, and
   `IntoType` must implement `Serialize`.
 
+- ##### `#[serde(try_into = "IntoType")]` {#into}
+
+  Serialize this type by converting it into the specified `IntoType` and then
+  serialize it fallibly. This type must implement `Clone` and `TryInto<IntoType>`,
+  and `IntoType` must implement `Serialize`.
+
 - ##### `#[serde(crate = "...")]` {#crate}
 
   Specify a path to the `serde` crate instance to use when referring to Serde
