@@ -114,3 +114,28 @@
   Specify a path to the `serde` crate instance to use when referring to Serde
   APIs from generated code. This is normally only applicable when invoking
   re-exported Serde derives from a public macro in a different crate.
+
+- ##### `#[serde(field_identifier)]` {#field_identifier}
+
+  Denotes that this enum represents the field names of a struct type. Used when
+  [manually implementing `Deserialize` for the struct
+  type.](deserialize_struct.md)
+
+  This attribute is probably not useful if you are automatically deriving your
+  own types.
+
+  Variants for the field_identifier enum may either all be units, or the last
+  variant may be a newtype struct, which is selected when an unlisted field name
+  is encountered during deserialization. Cannot be set if
+  `#[serde(variant_identifier)]` is also set.
+
+- ##### `#[serde(variant_identifier)]` {#variant_identifier}
+
+  Denotes that this enum represents the variant names of another enum type.
+  Used when manually implementing `Deserialize` for the other enum type.
+
+  This attribute is probably not useful if you are automatically deriving your
+  own types.
+
+  Only valid for enums where all variants are units. Cannot be set if
+  `#[serde(field_identifier)]` is also set.
