@@ -114,3 +114,9 @@
   Specify a path to the `serde` crate instance to use when referring to Serde
   APIs from generated code. This is normally only applicable when invoking
   re-exported Serde derives from a public macro in a different crate.
+
+- ##### `#[serde(expecting = "...")]` {#expecting}
+
+  Specify a custom type expectation text for deserialization error messages.
+  This is used by the generated `expecting` method for the container `Visitor`,
+  and as a fallthrough error message for untagged enums.
