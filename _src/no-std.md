@@ -45,9 +45,9 @@ library data structures that involve heap memory allocation, including `String`
 and `Vec<T>`. It also removes some features of `derive(Deserialize)` including
 untagged enums.
 
-You can opt back in to these impls in an unstable way by enabling the `"alloc"`
-Cargo feature. This configuration provides integration for heap-allocated
-collections without depending on the rest of the Rust standard library.
+You can opt back in to these impls by enabling the `"alloc"` Cargo feature.
+This configuration provides integration for heap-allocated collections without
+depending on the rest of the Rust standard library.
 
 ```toml
 [dependencies]
