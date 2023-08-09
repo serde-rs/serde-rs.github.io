@@ -116,7 +116,7 @@ types:
 - As a Serde **string**. Unfortunately serialization would be brittle because an
   `OsString` is not guaranteed to be representable in UTF-8 and deserialization
   would be brittle because Serde strings are allowed to contain 0-bytes.
-- As a Serde **byte array**. This fixes both problem with using string, but now
+- As a Serde **byte array**. This fixes both problems with using string, but now
   if we serialize an `OsString` on Unix and deserialize it on Windows we end up
   with [the wrong string].
 
