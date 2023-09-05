@@ -148,11 +148,11 @@ impl<'de> Deserializer<'de> {
 
     // Parse the JSON identifier `true` or `false`.
     fn parse_bool(&mut self) -> Result<bool> {
-        if self.input.starts_with("true") {
-            self.input = &self.input["true".len()..];
+        if let Some(input) = self.input.strip_prefix("true") {
+            self.input = input;
             Ok(true)
-        } else if self.input.starts_with("false") {
-            self.input = &self.input["false".len()..];
+        } else if let Some(input) = self.input.strip_prefix("false") {
+            self.input = input;
             Ok(false)
         } else {
             Err(Error::ExpectedBoolean)
@@ -208,8 +208,8 @@ impl<'de> Deserializer<'de> {
         }
         match self.input.find('"') {
             Some(len) => {
-                let s = &self.input[..len];
-                self.input = &self.input[len + 1..];
+                let (s, input) = self.input.split_at(len);
+                self.input = &input[1..];
                 Ok(s)
             }
             None => Err(Error::Eof),
@@ -388,8 +388,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     where
         V: Visitor<'de>,
     {
-        if self.input.starts_with("null") {
-            self.input = &self.input["null".len()..];
+        if let Some(input) = self.input.strip_prefix("null") {
+            self.input = input;
             visitor.visit_none()
         } else {
             visitor.visit_some(self)
@@ -401,8 +401,8 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     where
         V: Visitor<'de>,
     {
-        if self.input.starts_with("null") {
-            self.input = &self.input["null".len()..];
+        if let Some(input) = self.input.strip_prefix("null") {
+            self.input = input;
             visitor.visit_unit()
         } else {
             Err(Error::ExpectedNull)
