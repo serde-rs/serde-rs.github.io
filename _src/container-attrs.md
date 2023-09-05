@@ -70,6 +70,8 @@
   Use the untagged enum representation for this enum. See [enum representations]
   for details on this representation.
 
+  When no variant matches, the error may be uninformative which can be improved with [`serde(expecting)`](#expecting).
+
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
 
   Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
