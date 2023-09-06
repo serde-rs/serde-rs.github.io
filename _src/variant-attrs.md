@@ -98,3 +98,11 @@
   containing variants `A`, `B`, and `Unknown` marked `serde(other)`, the
   `Unknown` variant would be deserialized any time the `"variant"` field of the
   input is neither `"A"` nor `"B"`.
+
+- ##### `#[serde(untagged)]` {#untagged}
+
+  Irrespective of the [enum representation](enum-representations.md), serialize
+  and deserialize this variant as untagged, i.e. simply as the variant's data
+  with no record of the variant name.
+
+  Untagged variants must be ordered last in the enum definition.
