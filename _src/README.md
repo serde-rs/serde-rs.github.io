@@ -77,6 +77,7 @@ Serde by the community.
   and from DynamoDB.
 - [Hjson], a syntax extension to JSON designed around human reading and editing.
   *(deserialization only)*
+- [CSV], Comma-separated values is a tabular text file format.
 
 [JSON]: https://github.com/serde-rs/json
 [Postcard]: https://github.com/jamesmunns/postcard
@@ -103,6 +104,7 @@ Serde by the community.
 [DynamoDB Items]: https://docs.rs/serde_dynamo
 [rusoto_dynamodb]: https://docs.rs/rusoto_dynamodb
 [Hjson]: https://github.com/Canop/deser-hjson
+[CSV]: https://docs.rs/csv
 
 ### Data structures
 
