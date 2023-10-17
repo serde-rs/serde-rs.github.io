@@ -6,7 +6,7 @@ attribute is used to provide the logic for handling the custom representation.
 
 !PLAYGROUND 7185eb211a4822ce97184ae25fedda91
 ```rust
-use chrono::{DateTime, Utc};
+use chrono::NaiveDateTime;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -14,14 +14,14 @@ pub struct StructWithCustomDate {
     // DateTime supports Serde out of the box, but uses RFC3339 format. Provide
     // some custom logic to make it use our desired format.
     #[serde(with = "my_date_format")]
-    pub timestamp: DateTime<Utc>,
+    pub timestamp: NaiveDateTime,
 
     // Any other fields in the struct.
     pub bidder: String,
 }
 
 mod my_date_format {
-    use chrono::{DateTime, Utc, TimeZone};
+    use chrono::NaiveDateTime;
     use serde::{self, Deserialize, Serializer, Deserializer};
 
     const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
@@ -34,11 +34,11 @@ mod my_date_format {
     //
     // although it may also be generic over the input types T.
     pub fn serialize<S>(
-        date: &DateTime<Utc>,
+        date: &NaiveDateTime,
         serializer: S,
     ) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let s = format!("{}", date.format(FORMAT));
         serializer.serialize_str(&s)
@@ -53,13 +53,14 @@ mod my_date_format {
     // although it may also be generic over the output types T.
     pub fn deserialize<'de, D>(
         deserializer: D,
-    ) -> Result<DateTime<Utc>, D::Error>
-    where
-        D: Deserializer<'de>,
+    ) -> Result<NaiveDateTime, D::Error>
+        where
+            D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
-        Utc.datetime_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
+        NaiveDateTime::parse_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
     }
+
 }
 
 fn main() {
