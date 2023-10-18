@@ -4,10 +4,10 @@ This uses the [`chrono`](https://github.com/chronotope/chrono) crate to
 serialize and deserialize JSON data containing a custom date format. The `with`
 attribute is used to provide the logic for handling the custom representation.
 
-!PLAYGROUND 8989865329b35bed5828ff7f7f4747f4
+!PLAYGROUND 2ef7c347c76b030fe7e8c59ce9efccd3
 ```rust
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
+use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct StructWithCustomDate {
@@ -21,10 +21,10 @@ pub struct StructWithCustomDate {
 }
 
 mod my_date_format {
-    use chrono::{DateTime, Utc};
-    use serde::{self, Deserialize, Deserializer, Serializer};
+    use chrono::{DateTime, Utc, NaiveDateTime};
+    use serde::{self, Deserialize, Serializer, Deserializer};
 
-    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S %z";
+    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
 
     // The signature of a serialize_with function must follow the pattern:
     //
@@ -33,9 +33,12 @@ mod my_date_format {
     //        S: Serializer
     //
     // although it may also be generic over the input types T.
-    pub fn serialize<S>(date: &DateTime<Utc>, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: Serializer,
+    pub fn serialize<S>(
+        date: &DateTime<Utc>,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
     {
         let s = format!("{}", date.format(FORMAT));
         serializer.serialize_str(&s)
@@ -48,21 +51,22 @@ mod my_date_format {
     //        D: Deserializer<'de>
     //
     // although it may also be generic over the output types T.
-    pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<Utc>, D::Error>
-        where
-            D: Deserializer<'de>,
+    pub fn deserialize<'de, D>(
+        deserializer: D,
+    ) -> Result<DateTime<Utc>, D::Error>
+    where
+        D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
-        let date_fixed_offset =
-            DateTime::parse_from_str(&s, FORMAT).map_err(serde::de::Error::custom)?;
-        Ok(date_fixed_offset.with_timezone(&Utc))
+        let dt = NaiveDateTime::parse_from_str(&s, FORMAT).map_err(serde::de::Error::custom)?;
+        Ok(DateTime::<Utc>::from_naive_utc_and_offset(dt, Utc))
     }
 }
 
 fn main() {
     let json_str = r#"
       {
-        "timestamp": "2017-02-16 21:54:30 +00:00",
+        "timestamp": "2017-02-16 21:54:30",
         "bidder": "Skrillex"
       }
     "#;
