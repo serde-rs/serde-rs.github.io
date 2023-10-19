@@ -7,5 +7,5 @@ re-generating the html files at the root of the repo.
 <!---
 Here is what I run:
 
-$ gitbook build && rm -rf gitbook styles && mv _book/* .
+$ node_modules/.bin/gitbook build && rm -rf gitbook styles && mv _book/* .
 -->
