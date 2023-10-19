@@ -4,7 +4,7 @@ This uses the [`chrono`](https://github.com/chronotope/chrono) crate to
 serialize and deserialize JSON data containing a custom date format. The `with`
 attribute is used to provide the logic for handling the custom representation.
 
-!PLAYGROUND 7185eb211a4822ce97184ae25fedda91
+!PLAYGROUND 2ef7c347c76b030fe7e8c59ce9efccd3
 ```rust
 use chrono::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
@@ -21,7 +21,7 @@ pub struct StructWithCustomDate {
 }
 
 mod my_date_format {
-    use chrono::{DateTime, Utc, TimeZone};
+    use chrono::{DateTime, Utc, NaiveDateTime};
     use serde::{self, Deserialize, Serializer, Deserializer};
 
     const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
@@ -58,7 +58,8 @@ mod my_date_format {
         D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
-        Utc.datetime_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
+        let dt = NaiveDateTime::parse_from_str(&s, FORMAT).map_err(serde::de::Error::custom)?;
+        Ok(DateTime::<Utc>::from_naive_utc_and_offset(dt, Utc))
     }
 }
 
