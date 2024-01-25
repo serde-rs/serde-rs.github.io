@@ -23,6 +23,19 @@
   - `#[serde(rename_all(serialize = "..."))]`
   - `#[serde(rename_all(deserialize = "..."))]`
   - `#[serde(rename_all(serialize = "...", deserialize = "..."))]`
+ 
+- ##### `#[serde(rename_all_fields = "...")]` {#rename_all_fields}
+
+  Apply a `rename_all` on every struct variant of an enum according to the
+  given case convention. The possible values are `"lowercase"`,
+  `"UPPERCASE"`, `"PascalCase"`, `"camelCase"`, `"snake_case"`,
+  `"SCREAMING_SNAKE_CASE"`, `"kebab-case"`, `"SCREAMING-KEBAB-CASE"`.
+
+  Allows specifying independent cases for serialization vs deserialization:
+
+  - `#[serde(rename_all_fields(serialize = "..."))]`
+  - `#[serde(rename_all_fields(deserialize = "..."))]`
+  - `#[serde(rename_all_fields(serialize = "...", deserialize = "..."))]`
 
 - ##### `#[serde(deny_unknown_fields)]` {#deny_unknown_fields}
 
