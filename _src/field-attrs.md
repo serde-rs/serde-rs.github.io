@@ -48,12 +48,12 @@
 
   Skip this field: do not serialize or deserialize it.
 
-  When deserializing, Serde will use `Default::default()` or the function
-  given by `default = "..."` to get a default value for this field.
-
 - ##### `#[serde(skip_serializing)]` {#skip_serializing}
 
   Skip this field when serializing, but not when deserializing.
+
+  When deserializing, Serde will use `Default::default()` or the function
+  given by `default = "..."` to get a default value for this field.
 
 - ##### `#[serde(skip_deserializing)]` {#skip_deserializing}
 
