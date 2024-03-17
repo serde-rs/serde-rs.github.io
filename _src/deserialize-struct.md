@@ -129,7 +129,7 @@ impl<'de> Deserialize<'de> for Duration {
             }
         }
 
-        const FIELDS: &'static [&'static str] = &["secs", "nanos"];
+        const FIELDS: &[&str] = &["secs", "nanos"];
         deserializer.deserialize_struct("Duration", FIELDS, DurationVisitor)
     }
 }
