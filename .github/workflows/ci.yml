@@ -16,7 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust: [nightly, beta, stable]
+        # skeptic doesn't work since 1.77: bhttps://github.com/budziq/rust-skeptic/issues/141
+        rust: [1.76.0]
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +34,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
       - uses: dtolnay/install@cargo-outdated
       - run: cargo outdated --exit-code 1
         working-directory: _skeptic
