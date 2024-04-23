@@ -78,6 +78,7 @@ Serde by the community.
 - [Hjson], a syntax extension to JSON designed around human reading and editing.
   *(deserialization only)*
 - [CSV], Comma-separated values is a tabular text file format.
+- [CDR], OMG Common Data Representation, used in [DDS] and [ROS2], among others
 
 [JSON]: https://github.com/serde-rs/json
 [Postcard]: https://github.com/jamesmunns/postcard
@@ -105,6 +106,9 @@ Serde by the community.
 [rusoto_dynamodb]: https://docs.rs/rusoto_dynamodb
 [Hjson]: https://github.com/Canop/deser-hjson
 [CSV]: https://docs.rs/csv
+[CDR]: https://docs.rs/cdr-encoding/
+[DDS]: https://en.wikipedia.org/wiki/Data_Distribution_Service
+[ROS2]: https://github.com/ros2
 
 ### Data structures
 
