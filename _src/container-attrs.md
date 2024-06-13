@@ -98,7 +98,7 @@
   This is used for deriving `Serialize` and `Deserialize` for [remote
   types](remote-derive.md).
 
-- ##### `#[serde(transparent)]` {#transparent}
+- ##### `#[serde(flatten)]` {#flatten}
 
   Serialize and deserialize a newtype struct or a braced struct with one field
   exactly the same as if its one field were serialized and deserialized by
