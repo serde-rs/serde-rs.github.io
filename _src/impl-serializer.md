@@ -23,7 +23,7 @@ is used.
 #
 use serde::{ser, Serialize};
 
-use error::{Error, Result};
+use crate::error::{Error, Result};
 
 pub struct Serializer {
     // This string starts empty and JSON is appended as values are serialized.
