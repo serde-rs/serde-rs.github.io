@@ -73,6 +73,39 @@ structs or maps, and unit variants but does not work for enums containing tuple
 variants. Using a `#[serde(tag = "...")]` attribute on an enum containing a
 tuple variant is an error at compile time.
 
+Note that when using struct variants, a common mistake is to include the tag field in the child structs. This will cause a runtime error, because the tag field is not available to the parser of the child struct.
+
+As an example, this code will work correctly, but if you un-comment the `pet` fields, it will fail at runtime:
+
+```
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+#[serde(tag = "pet")]
+enum CompanionAnimal {
+    Cat(CatInfo),
+    Dog(DogInfo),
+}
+
+#[derive(Debug, Deserialize)]
+struct CatInfo {
+    //pet: String,
+    sound: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct DogInfo {
+    //pet: String,
+    sound: String,
+}
+
+fn main() {
+    let data = r#" { "pet": "Cat", "sound": "meow" } "#;
+    let parsed = serde_json::from_str::<CompanionAnimal>(data).unwrap();
+    dbg!(&parsed);
+}
+```
+
 ## Adjacently tagged
 
 ```rust
