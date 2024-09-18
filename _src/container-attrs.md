@@ -55,7 +55,7 @@
   representation.
 
   On a struct with named fields: Serialize the struct's name (or value of
-  `serde(rename)`) as a field with the given key, in front of all the real
+  `serde(rename)`) as a field with the given key, external to all the real
   fields of the struct.
 
 - ##### `#[serde(tag = "t", content = "c")]` {#tag--content}
