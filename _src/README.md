@@ -58,6 +58,7 @@ Serde by the community.
 - [Avro], a binary format used within Apache Hadoop, with support for schema
   definition.
 - [JSON5], a superset of JSON including some productions from ES5.
+- [ASON], a strongly typed version of JSON that perfectly matches Rust's type system.
 - [URL] query strings, in the x-www-form-urlencoded format.
 - [Starlark], the format used for describing build targets by the Bazel and Buck
   build systems. *(serialization only)*
@@ -90,6 +91,7 @@ Serde by the community.
 [BSON]: https://github.com/mongodb/bson-rust
 [Avro]: https://docs.rs/apache-avro
 [JSON5]: https://github.com/callum-oakley/json5-rs
+[ASON]: https://github.com/hemashushu/ason
 [URL]: https://docs.rs/serde_qs
 [Starlark]: https://github.com/dtolnay/serde-starlark
 [Envy]: https://github.com/softprops/envy
