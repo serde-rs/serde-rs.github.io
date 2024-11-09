@@ -57,3 +57,7 @@ into a Serde error for some other format using `Error::custom`.
 **[Date in a custom format](custom-date-format.md)**: Handle a
 [`chrono`](https://github.com/chronotope/chrono) `DateTime` formatted with a
 custom string representation.
+
+**[Validate containers on
+deserialization](validate-containers-on-deserialization.md)**: Validate
+a type after deserializing the underlying encoding.
