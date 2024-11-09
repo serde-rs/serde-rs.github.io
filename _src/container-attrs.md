@@ -69,6 +69,11 @@
   Use the untagged enum representation for this enum. See [enum
   representations](enum-representations.md) for details on this representation.
 
+  When no variant matches, the error may be uninformative which can be improved with [`serde(expecting)`](#expecting).
+
+  In performance-critical code, checking each variant and processing the errors can be slow.
+  In these cases, it may be better to hand-implement the deserialize trait for which [serde-untagged] may help.
+
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
 
   Where-clause for the `Serialize` and `Deserialize` impls. This replaces any
@@ -133,3 +138,5 @@
   Specify a custom type expectation text for deserialization error messages.
   This is used by the generated `expecting` method for the container `Visitor`,
   and as a fallthrough error message for untagged enums.
+
+[serde-untagged]: https://docs.rs/serde-untagged
