@@ -24,6 +24,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{matrix.rust}}
+      - name: pin dependencies
+        run: cargo update cargo-platform --precise 0.1.8
+        working-directory: _skeptic
       - run: cargo test
         working-directory: _skeptic
       - uses: actions/upload-artifact@v4
