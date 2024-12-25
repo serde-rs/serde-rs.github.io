@@ -42,17 +42,17 @@
 
     
         
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
         <link rel="stylesheet" href="styles/website.css">
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
         
     
 
@@ -694,20 +694,21 @@ neither on the outer struct nor on the flattened field.</p>
 <ul>
 <li><h5 id="tag"><a name="tag" class="plugin-anchor" href="#tag"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(tag = &quot;type&quot;)]</code> </h5>
 <p>On an enum: Use the internally tagged enum representation, with the given tag.
-See <a href="enum-representations.html">enum representations</a> for details on this
-representation.</p>
+See <a href="enum-representations.html">enum representations</a> for details on this representation.</p>
 <p>On a struct with named fields: Serialize the struct&apos;s name (or value of
 <code>serde(rename)</code>) as a field with the given key, in front of all the real
 fields of the struct.</p>
 </li>
+</ul>
+<ul>
 <li><h5 id="tag--content"><a name="tag--content" class="plugin-anchor" href="#tag--content"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(tag = &quot;t&quot;, content = &quot;c&quot;)]</code> </h5>
 <p>Use the adjacently tagged enum representation for this enum, with the given
-field names for the tag and content. See <a href="enum-representations.html">enum
-representations</a> for details on this representation.</p>
+field names for the tag and content. See <a href="enum-representations.html">enum representations</a> for details on
+this representation.</p>
 </li>
 <li><h5 id="untagged"><a name="untagged" class="plugin-anchor" href="#untagged"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(untagged)]</code> </h5>
-<p>Use the untagged enum representation for this enum. See <a href="enum-representations.html">enum
-representations</a> for details on this representation.</p>
+<p>Use the untagged enum representation for this enum. See <a href="enum-representations.html">enum representations</a>
+for details on this representation.</p>
 </li>
 <li><h5 id="bound"><a name="bound" class="plugin-anchor" href="#bound"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(bound = &quot;T: MyTrait&quot;)]</code> </h5>
 <p>Where-clause for the <code>Serialize</code> and <code>Deserialize</code> impls. This replaces any
@@ -731,9 +732,10 @@ and <code>default = &quot;SomeTrait::some_default&quot;</code> would invoke
 <code>SomeTrait::some_default()</code>. Only allowed on structs.</p>
 </li>
 <li><h5 id="remote"><a name="remote" class="plugin-anchor" href="#remote"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(remote = &quot;...&quot;)]</code> </h5>
-<p>This is used for deriving <code>Serialize</code> and <code>Deserialize</code> for <a href="remote-derive.html">remote
-types</a>.</p>
+<p>This is used for deriving <code>Serialize</code> and <code>Deserialize</code> for <a href="remote-derive.html">remote types</a>.</p>
 </li>
+</ul>
+<ul>
 <li><h5 id="transparent"><a name="transparent" class="plugin-anchor" href="#transparent"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(transparent)]</code> </h5>
 <p>Serialize and deserialize a newtype struct or a braced struct with one field
 exactly the same as if its one field were serialized and deserialized by
@@ -764,6 +766,20 @@ re-exported Serde derives from a public macro in a different crate.</p>
 This is used by the generated <code>expecting</code> method for the container <code>Visitor</code>,
 and as a fallthrough error message for untagged enums.</p>
 </li>
+<li><h5 id="variant_identifier"><a name="variant_identifier" class="plugin-anchor" href="#variant_identifier"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(variant_identifier)]</code> </h5>
+<p>Deserialize either a string or an integer, depending on which one the data
+format uses as its representation of externally tagged enum variant tags.
+Generally human-readable formats would represent variants using their string
+name while compact binary formats would represent them using an integer index.
+This attribute can only be applied to an enum containing all unit variants.</p>
+</li>
+<li><h5 id="field_identifier"><a name="field_identifier" class="plugin-anchor" href="#field_identifier"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(field_identifier)]</code> </h5>
+<p>Deserialize either a string or an integer, depending on which one the data
+format uses as its representation of struct fields identifiers. This attribute
+differs from <a href="#variant_identifier"><code>variant_identifier</code></a> in that the final variant is permitted to
+be a newtype variant, which will be deserialized if the input matches none of
+the unit variants of this enum, similar to <a href="variant-attrs.html#other"><code>serde(other)</code></a>.</p>
+</li>
 </ul>
 
                                 
@@ -792,7 +808,7 @@ and as a fallthrough error message for untagged enums.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Container attributes","level":"1.5.1","depth":2,"next":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"previous":{"title":"Attributes","level":"1.5","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"container-attrs.md","mtime":"2024-01-25T21:45:23.670Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-06-25T02:17:24.817Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Container attributes","level":"1.5.1","depth":2,"next":{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},"previous":{"title":"Attributes","level":"1.5","depth":1,"path":"attributes.md","ref":"attributes.md","articles":[{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},{"title":"Variant attributes","level":"1.5.2","depth":2,"path":"variant-attrs.md","ref":"variant-attrs.md","articles":[]},{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"container-attrs.md","mtime":"2024-12-25T03:09:03.297Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-12-25T03:09:29.913Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

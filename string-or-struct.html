@@ -42,17 +42,17 @@
 
     
         
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
         <link rel="stylesheet" href="styles/website.css">
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
         
     
 
@@ -648,8 +648,8 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="deserialize-either-a-string-or-a-struct"><a name="deserialize-either-a-string-or-a-struct" class="plugin-anchor" href="#deserialize-either-a-string-or-a-struct"><i class="fa fa-link" aria-hidden="true"></i></a>Deserialize either a string or a struct</h1>
-<p>The <a href="https://docs.docker.com/compose/compose-file/#/build" target="_blank"><code>docker-compose.yml</code></a>
-configuration file has a &quot;build&quot; key which can be either a string or a struct.</p>
+<p>The <a href="https://docs.docker.com/compose/compose-file/#/build" target="_blank"><code>docker-compose.yml</code></a> configuration file has a &quot;build&quot; key which can be
+either a string or a struct.</p>
 <pre><code class="lang-yaml"><span class="hljs-attr">build:</span> ./dir
 
 <span class="hljs-comment"># --- or ---</span>
@@ -663,9 +663,8 @@ configuration file has a &quot;build&quot; key which can be either a string or a
 <p>The configuration file uses the same pattern in other places as well, typically
 where a previously existing string field has been expanded to handle more
 complex data.</p>
-<p>We can use Rust&apos;s
-<a href="https://doc.rust-lang.org/std/str/trait.FromStr.html" target="_blank"><code>FromStr</code></a> trait and
-Serde&apos;s <code>deserialize_with</code> attribute to handle this pattern in a general way.</p>
+<p>We can use Rust&apos;s <a href="https://doc.rust-lang.org/std/str/trait.FromStr.html" target="_blank"><code>FromStr</code></a> trait and Serde&apos;s <code>deserialize_with</code> attribute to
+handle this pattern in a general way.</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">use</span> std::collections::BTreeMap <span class="hljs-keyword">as</span> Map;
 <span class="hljs-keyword">use</span> std::fmt;
 <span class="hljs-keyword">use</span> std::marker::PhantomData;
@@ -819,7 +818,7 @@ Serde&apos;s <code>deserialize_with</code> attribute to handle this pattern in a
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Either string or struct","level":"1.9.15","depth":2,"next":{"title":"Convert error types","level":"1.9.16","depth":2,"path":"convert-error.md","ref":"convert-error.md","articles":[]},"previous":{"title":"Transcode into another format","level":"1.9.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"string-or-struct.md","mtime":"2022-07-28T19:54:28.673Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-06-25T02:17:24.817Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Either string or struct","level":"1.9.15","depth":2,"next":{"title":"Convert error types","level":"1.9.16","depth":2,"path":"convert-error.md","ref":"convert-error.md","articles":[]},"previous":{"title":"Transcode into another format","level":"1.9.14","depth":2,"path":"transcode.md","ref":"transcode.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"string-or-struct.md","mtime":"2024-12-25T02:55:46.220Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-12-25T03:09:29.913Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

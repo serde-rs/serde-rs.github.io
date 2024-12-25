@@ -42,17 +42,17 @@
 
     
         
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
         <link rel="stylesheet" href="styles/website.css">
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
         
     
 
@@ -721,9 +721,11 @@ trait bounds inferred by Serde for the current variant.</p>
 </li>
 <li><h5 id="borrow"><a name="borrow" class="plugin-anchor" href="#borrow"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(borrow)]</code> and <code>#[serde(borrow = &quot;&apos;a + &apos;b + ...&quot;)]</code> </h5>
 <p>Borrow data for this field from the deserializer by using zero-copy
-deserialization. See <a href="lifetimes.html#borrowing-data-in-a-derived-impl">this example</a>.
-Only allowed on a newtype variant (a tuple variant with only one field).</p>
+deserialization. See <a href="lifetimes.html#borrowing-data-in-a-derived-impl">this example</a>. Only allowed on a newtype
+variant (a tuple variant with only one field).</p>
 </li>
+</ul>
+<ul>
 <li><h5 id="other"><a name="other" class="plugin-anchor" href="#other"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(other)]</code> </h5>
 <p>Deserialize this variant if the enum tag is anything other than the tag of one
 of the other variants in this enum. Only allowed on a unit variant inside of
@@ -734,9 +736,9 @@ containing variants <code>A</code>, <code>B</code>, and <code>Unknown</code> mar
 input is neither <code>&quot;A&quot;</code> nor <code>&quot;B&quot;</code>.</p>
 </li>
 <li><h5 id="untagged"><a name="untagged" class="plugin-anchor" href="#untagged"><i class="fa fa-link" aria-hidden="true"></i></a><code>#[serde(untagged)]</code> </h5>
-<p>Irrespective of the <a href="enum-representations.html">enum representation</a>, serialize
-and deserialize this variant as untagged, i.e. simply as the variant&apos;s data
-with no record of the variant name.</p>
+<p>Irrespective of the [enum representation], serialize and deserialize this
+variant as untagged, i.e. simply as the variant&apos;s data with no record of the
+variant name.</p>
 <p>Untagged variants must be ordered last in the enum definition.</p>
 </li>
 </ul>
@@ -767,7 +769,7 @@ with no record of the variant name.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Variant attributes","level":"1.5.2","depth":2,"next":{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]},"previous":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"variant-attrs.md","mtime":"2023-10-13T01:40:49.546Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-06-25T02:17:24.817Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Variant attributes","level":"1.5.2","depth":2,"next":{"title":"Field attributes","level":"1.5.3","depth":2,"path":"field-attrs.md","ref":"field-attrs.md","articles":[]},"previous":{"title":"Container attributes","level":"1.5.1","depth":2,"path":"container-attrs.md","ref":"container-attrs.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"variant-attrs.md","mtime":"2024-12-25T02:48:47.974Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-12-25T03:09:29.913Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
