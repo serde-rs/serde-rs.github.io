@@ -75,7 +75,7 @@
 
 - ##### `#[serde(field_identifier)]` {#field_identifier}
 
-  Identical to [`variant_identifier`](#variant--identifier), but also allows for the last variant to be a newtype variant, which will be used if none of the other variants match (similar to [`#[serde(other)]`](../variant-attrs.html#other)). Like `variant_identifier`, this forces the enum to always be represented as a string, regardless of the underlying data format's representation of enums.
+  Identical to [`variant_identifier`](#variant_identifier), but also allows for the last variant to be a newtype variant, which will be used if none of the other variants match (similar to [`#[serde(other)]`](../variant-attrs.html#other)). Like `variant_identifier`, this forces the enum to always be represented as a string, regardless of the underlying data format's representation of enums.
 
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
 
