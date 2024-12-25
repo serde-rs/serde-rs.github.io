@@ -85,8 +85,10 @@
 - ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]` {#borrow}
 
   Borrow data for this field from the deserializer by using zero-copy
-  deserialization. See [this example](lifetimes.md#borrowing-data-in-a-derived-impl).
-  Only allowed on a newtype variant (a tuple variant with only one field).
+  deserialization. See [this example][borrowing-data]. Only allowed on a newtype
+  variant (a tuple variant with only one field).
+
+  [borrowing-data]: lifetimes.md#borrowing-data-in-a-derived-impl
 
 - ##### `#[serde(other)]` {#other}
 
@@ -101,8 +103,10 @@
 
 - ##### `#[serde(untagged)]` {#untagged}
 
-  Irrespective of the [enum representation](enum-representations.md), serialize
-  and deserialize this variant as untagged, i.e. simply as the variant's data
-  with no record of the variant name.
+  Irrespective of the [enum representation], serialize and deserialize this
+  variant as untagged, i.e. simply as the variant's data with no record of the
+  variant name.
 
   Untagged variants must be ordered last in the enum definition.
+
+  [enum representations]: enum-representations.md

@@ -1,22 +1,25 @@
 # Unit testing
 
-The [`serde_test`](https://docs.rs/serde_test) crate provides a convenient
-concise way to write unit tests for implementations of `Serialize` and
-`Deserialize`.
+The [`serde_test`] crate provides a convenient concise way to write unit tests
+for implementations of `Serialize` and `Deserialize`.
+
+[`serde_test`]: https://docs.rs/serde_test
 
 The `Serialize` impl for a value can be characterized by the sequence of
-[`Serializer`](https://docs.rs/serde/1/serde/ser/trait.Serializer.html) calls
-that are made in the course of serializing the value, so `serde_test` provides a
-[`Token`](https://docs.rs/serde_test/1/serde_test/enum.Token.html) abstraction
-which corresponds roughly to `Serializer` method calls. It provides an
-`assert_ser_tokens` function to test that a value serializes into a particular
-sequence of method calls, an `assert_de_tokens` function to test that a value
-can be deserialized from a particular sequence of method calls, and an
-`assert_tokens` function to test both directions. It also provides functions to
-test expected failure conditions.
+[`Serializer`] calls that are made in the course of serializing the value, so
+`serde_test` provides a [`Token`] abstraction which corresponds roughly to
+`Serializer` method calls. It provides an `assert_ser_tokens` function to test
+that a value serializes into a particular sequence of method calls, an
+`assert_de_tokens` function to test that a value can be deserialized from a
+particular sequence of method calls, and an `assert_tokens` function to test
+both directions. It also provides functions to test expected failure conditions.
 
-Here is an example from the
-[`linked-hash-map`](https://github.com/contain-rs/linked-hash-map) crate.
+[`Serializer`]: https://docs.rs/serde/1/serde/ser/trait.Serializer.html
+[`Token`]: https://docs.rs/serde_test/1/serde_test/enum.Token.html
+
+Here is an example from the [`linked-hash-map`] crate.
+
+[`linked-hash-map`]: https://github.com/contain-rs/linked-hash-map
 
 ```rust
 # #[allow(unused_imports)]

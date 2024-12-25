@@ -12,7 +12,9 @@ would use to automatically derive implementations of the built-in `Clone`,
 `Copy`, `Debug`, or other traits. It is able to generate implementations for
 most structs and enums including ones with elaborate generic types or trait
 bounds. On rare occasions, for an especially convoluted type you may need to
-[implement the traits manually](custom-serialization.md).
+[implement the traits manually].
+
+[implement the traits manually]: custom-serialization.md
 
 These derives require a Rust compiler version 1.31 or newer.
 

@@ -1,9 +1,10 @@
 # Examples
 
 **[Structs and enums in JSON](json.md)**: The representation chosen by
-[`serde_json`](https://github.com/serde-rs/json) for structs and enums. Other
-human-readable data formats are encouraged to follow an analogous approach where
-possible.
+[`serde_json`] for structs and enums. Other human-readable data formats are
+encouraged to follow an analogous approach where possible.
+
+[`serde_json`]: https://github.com/serde-rs/json
 
 **[Enum representations](enum-representations.md)**: Externally tagged,
 internally tagged, adjacently tagged, and untagged ways of representing an enum
@@ -43,17 +44,21 @@ the `#[serde(rename)]` attribute.
 **[Discarding data](ignored-any.md)**: Using `IgnoredAny` to efficiently discard
 data from a deserializer.
 
-**[Transcode one format into another](transcode.md)**: Use the
-[serde-transcode](https://github.com/sfackler/serde-transcode) crate to stream
-input in one format to output in another format efficiently.
+**[Transcode one format into another](transcode.md)**: Use the [serde-transcode]
+crate to stream input in one format to output in another format efficiently.
+
+[serde-transcode]: https://github.com/sfackler/serde-transcode
 
 **[Deserialize either a string or a struct](string-or-struct.md)**: The
-[`docker-compose.yml`](https://docs.docker.com/compose/compose-file/#/build)
-configuration file has a "build" key which can be either a string or a struct.
+[`docker-compose.yml`] configuration file has a "build" key which can be either
+a string or a struct.
+
+[`docker-compose.yml`]: https://docs.docker.com/compose/compose-file/#/build
 
 **[Convert error types](convert-error.md)**: Map a Serde error from some format
 into a Serde error for some other format using `Error::custom`.
 
-**[Date in a custom format](custom-date-format.md)**: Handle a
-[`chrono`](https://github.com/chronotope/chrono) `DateTime` formatted with a
-custom string representation.
+**[Date in a custom format](custom-date-format.md)**: Handle a [`chrono`]
+`DateTime` formatted with a custom string representation.
+
+[`chrono`]: https://github.com/chronotope/chrono

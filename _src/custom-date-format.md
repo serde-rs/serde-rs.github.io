@@ -1,8 +1,10 @@
 # Date in a custom format
 
-This uses the [`chrono`](https://github.com/chronotope/chrono) crate to
-serialize and deserialize JSON data containing a custom date format. The `with`
-attribute is used to provide the logic for handling the custom representation.
+This uses the [`chrono`] crate to serialize and deserialize JSON data containing
+a custom date format. The `with` attribute is used to provide the logic for
+handling the custom representation.
+
+[`chrono`]: https://github.com/chronotope/chrono
 
 !PLAYGROUND 2ef7c347c76b030fe7e8c59ce9efccd3
 ```rust

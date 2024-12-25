@@ -3,14 +3,16 @@
 - ##### `#[serde(rename = "name")]` {#rename}
 
   Serialize and deserialize this field with the given name instead of its Rust
-  name. This is useful for [serializing fields as camelCase](attr-rename.md) or
-  serializing fields with names that are reserved Rust keywords.
+  name. This is useful for [serializing fields as camelCase] or serializing
+  fields with names that are reserved Rust keywords.
 
   Allows specifying independent names for serialization vs deserialization:
 
   - `#[serde(rename(serialize = "ser_name"))]`
   - `#[serde(rename(deserialize = "de_name"))]`
   - `#[serde(rename(serialize = "ser_name", deserialize = "de_name"))]`
+
+  [serializing fields as camelCase]: attr-rename.md
 
 - ##### `#[serde(alias = "name")]` {#alias}
 
@@ -35,8 +37,10 @@
   This removes one level of structure between the serialized representation and
   the Rust data structure representation. It can be used for factoring common
   keys into a shared structure, or for capturing remaining fields into a map
-  with arbitrary string keys. The [struct flattening](attr-flatten.md) page
-  provides some examples.
+  with arbitrary string keys. The [struct flattening] page provides some
+  examples.
+
+  [struct flattening]: attr-flatten.md
 
   *Note:* this attribute is not supported in combination with structs that use
   [`deny_unknown_fields`]. Neither the outer nor inner flattened struct should
@@ -94,7 +98,9 @@
 - ##### `#[serde(borrow)]` and `#[serde(borrow = "'a + 'b + ...")]` {#borrow}
 
   Borrow data for this field from the deserializer by using zero-copy
-  deserialization. See [this example](lifetimes.md#borrowing-data-in-a-derived-impl).
+  deserialization. See [this example][borrowing-data].
+
+  [borrowing-data]: lifetimes.md#borrowing-data-in-a-derived-impl
 
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
 
@@ -109,5 +115,7 @@
 
 - ##### `#[serde(getter = "...")]` {#getter}
 
-  This is used when deriving `Serialize` for a [remote type](remote-derive.md)
-  that has one or more private fields.
+  This is used when deriving `Serialize` for a [remote type] that has one or
+  more private fields.
+
+  [remote type]: remote-derive.md

@@ -1,6 +1,8 @@
 # Manually implementing Deserialize for a struct
 
-Only when [derive](derive.md) is not getting the job done.
+Only when [derive] is not getting the job done.
+
+[derive]: derive.md
 
 The `Deserialize` impl below corresponds to the following struct:
 
@@ -14,9 +16,11 @@ struct Duration {
 # fn main() {}
 ```
 
-Deserializing a struct is somewhat more complicated than [deserializing a
-map](deserialize-map.md) in order to avoid allocating a String to hold the field
-names. Instead there is a `Field` enum which is deserialized from a `&str`.
+Deserializing a struct is somewhat more complicated than [deserializing a map]
+in order to avoid allocating a String to hold the field names. Instead there is
+a `Field` enum which is deserialized from a `&str`.
+
+[deserializing a map]: deserialize-map.md
 
 The implementation supports two possible ways that a struct may be represented
 by a data format: as a seq like in Postcard, and as a map like in JSON.

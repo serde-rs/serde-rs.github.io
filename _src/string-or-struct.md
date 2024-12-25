@@ -1,7 +1,9 @@
 # Deserialize either a string or a struct
 
-The [`docker-compose.yml`](https://docs.docker.com/compose/compose-file/#/build)
-configuration file has a "build" key which can be either a string or a struct.
+The [`docker-compose.yml`] configuration file has a "build" key which can be
+either a string or a struct.
+
+[`docker-compose.yml`]: https://docs.docker.com/compose/compose-file/#/build
 
 ```yaml
 build: ./dir
@@ -19,9 +21,10 @@ The configuration file uses the same pattern in other places as well, typically
 where a previously existing string field has been expanded to handle more
 complex data.
 
-We can use Rust's
-[`FromStr`](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait and
-Serde's `deserialize_with` attribute to handle this pattern in a general way.
+We can use Rust's [`FromStr`] trait and Serde's `deserialize_with` attribute to
+handle this pattern in a general way.
+
+[`FromStr`]: https://doc.rust-lang.org/std/str/trait.FromStr.html
 
 ```rust
 use std::collections::BTreeMap as Map;

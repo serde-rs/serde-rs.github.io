@@ -51,23 +51,24 @@
 - ##### `#[serde(tag = "type")]` {#tag}
 
   On an enum: Use the internally tagged enum representation, with the given tag.
-  See [enum representations](enum-representations.md) for details on this
-  representation.
+  See [enum representations] for details on this representation.
 
   On a struct with named fields: Serialize the struct's name (or value of
   `serde(rename)`) as a field with the given key, in front of all the real
   fields of the struct.
 
+  [enum representations]: enum-representations.md
+
 - ##### `#[serde(tag = "t", content = "c")]` {#tag--content}
 
   Use the adjacently tagged enum representation for this enum, with the given
-  field names for the tag and content. See [enum
-  representations](enum-representations.md) for details on this representation.
+  field names for the tag and content. See [enum representations] for details on
+  this representation.
 
 - ##### `#[serde(untagged)]` {#untagged}
 
-  Use the untagged enum representation for this enum. See [enum
-  representations](enum-representations.md) for details on this representation.
+  Use the untagged enum representation for this enum. See [enum representations]
+  for details on this representation.
 
 - ##### `#[serde(variant_identifier)]` {#variant_identifier}
 
@@ -78,11 +79,14 @@
 
 - ##### `#[serde(field_identifier)]` {#field_identifier}
 
-  Identical to [`variant_identifier`](#variant_identifier), but also allows for
-  the last variant to be a newtype variant, which will be used if none of the
-  other variants match (similar to [`#[serde(other)]`](variant-attrs.md#other)).
-  Like `variant_identifier`, this forces the enum to always be represented as a
-  string, regardless of the underlying data format's representation of enums.
+  Identical to [`variant_identifier`], but also allows for the last variant to
+  be a newtype variant, which will be used if none of the other variants match
+  (similar to [`#[serde(other)]`]). Like `variant_identifier`, this forces the
+  enum to always be represented as a string, regardless of the underlying data
+  format's representation of enums.
+
+  [`variant_identifier`]: #variant_identifier
+  [`#[serde(other)`]: variant-attrs.md#other
 
 - ##### `#[serde(bound = "T: MyTrait")]` {#bound}
 
@@ -110,8 +114,9 @@
 
 - ##### `#[serde(remote = "...")]` {#remote}
 
-  This is used for deriving `Serialize` and `Deserialize` for [remote
-  types](remote-derive.md).
+  This is used for deriving `Serialize` and `Deserialize` for [remote types].
+
+  [remote types]: remote-derive.md
 
 - ##### `#[serde(transparent)]` {#transparent}
 

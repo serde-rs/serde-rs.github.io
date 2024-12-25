@@ -2,9 +2,11 @@
 
 A Serde `Serializer` is responsible for selecting the convention by which Rust
 structs and enums are represented in that format. Here are the conventions
-selected by the [`serde_json`](https://github.com/serde-rs/json) data format.
-For consistency, other human-readable formats are encouraged to develop
-analogous conventions where possible.
+selected by the [`serde_json`] data format. For consistency, other
+human-readable formats are encouraged to develop analogous conventions where
+possible.
+
+[`serde_json`]: https://github.com/serde-rs/json
 
 ```rust
 # #![allow(dead_code, unused_variables)]

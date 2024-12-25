@@ -1,18 +1,20 @@
 # Transcode one format into another
 
-The [`serde-transcode`](https://github.com/sfackler/serde-transcode) crate
-provides functionality to "transcode" from an arbitrary Serde `Deserializer` to
-an arbitrary Serde `Serializer` without needing to collect the entire input into
-an intermediate form in memory. This provides a fully general way to convert any
-self-describing Serde data format into any other Serde data format in a
-memory-efficient streaming way.
+The [`serde-transcode`] crate provides functionality to "transcode" from an
+arbitrary Serde `Deserializer` to an arbitrary Serde `Serializer` without
+needing to collect the entire input into an intermediate form in memory. This
+provides a fully general way to convert any self-describing Serde data format
+into any other Serde data format in a memory-efficient streaming way.
+
+[`serde-transcode`]: https://github.com/sfackler/serde-transcode
 
 For example you could transcode a stream of JSON data into a stream of CBOR
 data, or transcode unformatted JSON into its pretty-printed form.
 
-This example implements the equivalent of Go's
-[`json.Compact`](https://golang.org/pkg/encoding/json/#Compact) function which
+This example implements the equivalent of Go's [`json.Compact`] function which
 removes insignificant whitespace from a JSON string in a streaming way.
+
+[`json.Compact`]: https://golang.org/pkg/encoding/json/#Compact
 
 ```rust
 use std::io;
