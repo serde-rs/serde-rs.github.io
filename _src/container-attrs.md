@@ -69,11 +69,11 @@
   Use the untagged enum representation for this enum. See [enum
   representations](enum-representations.md) for details on this representation.
 
-- ##### `#[serde(variant_identifier)]` {#variant--identifier}
+- ##### `#[serde(variant_identifier)]` {#variant_identifier}
 
   Use an identifier representation for this enum. This can only be applied to enums that are C-like (containing only unit variants), and forces them to always be represented as strings, regardless of the underlying data format's representation of enums.
 
-- ##### `#[serde(field_identifier)]` {#field--identifier}
+- ##### `#[serde(field_identifier)]` {#field_identifier}
 
   Identical to [`variant_identifier`](#variant--identifier), but also allows for the last variant to be a newtype variant, which will be used if none of the other variants match (similar to [`#[serde(other)]`](../variant-attrs.html#other)). Like `variant_identifier`, this forces the enum to always be represented as a string, regardless of the underlying data format's representation of enums.
 
