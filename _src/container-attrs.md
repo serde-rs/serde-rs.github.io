@@ -138,18 +138,19 @@
 
 - ##### `#[serde(variant_identifier)]` {#variant_identifier}
 
-  Use an identifier representation for this enum. This can only be applied to
-  enums that are C-like (containing only unit variants), and forces them to
-  always be represented as strings, regardless of the underlying data format's
-  representation of enums.
+  Deserialize either a string or an integer, depending on which one the data
+  format uses as its representation of externally tagged enum variant tags.
+  Generally human-readable formats would represent variants using their string
+  name while compact binary formats would represent them using an integer index.
+  This attribute can only be applied to an enum containing all unit variants.
 
 - ##### `#[serde(field_identifier)]` {#field_identifier}
 
-  Identical to [`variant_identifier`], but also allows for the last variant to
-  be a newtype variant, which will be used if none of the other variants match
-  (similar to [`#[serde(other)]`]). Like `variant_identifier`, this forces the
-  enum to always be represented as a string, regardless of the underlying data
-  format's representation of enums.
+  Deserialize either a string or an integer, depending on which one the data
+  format uses as its representation of struct fields identifiers. This attribute
+  differs from [`variant_identifier`] in that the final variant is permitted to
+  be a newtype variant, which will be deserialized if the input matches none of
+  the unit variants of this enum, similar to [`serde(other)`].
 
   [`variant_identifier`]: #variant_identifier
-  [`#[serde(other)`]: variant-attrs.md#other
+  [`serde(other)`]: variant-attrs.md#other
