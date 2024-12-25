@@ -77,7 +77,7 @@ primitive in its serialized form. For example you could [serialize a C-like enum
 as a primitive number].
 
 [primitive types]: https://doc.rust-lang.org/book/primitive-types.html
-[serialize a C-like enum as a primitive number]: https://serde.rs/enum-number.html
+[serialize a C-like enum as a primitive number]: enum-number.md
 
 ## Serializing a sequence or map
 
