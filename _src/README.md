@@ -82,7 +82,7 @@ Serde by the community.
 [JSON]: https://github.com/serde-rs/json
 [Postcard]: https://github.com/jamesmunns/postcard
 [CBOR]: https://github.com/enarx/ciborium
-[YAML]: https://github.com/dtolnay/serde-yaml
+[YAML]: https://github.com/sebastienrousseau/serde_yml
 [MessagePack]: https://github.com/3Hren/msgpack-rust
 [TOML]: https://docs.rs/toml
 [Pickle]: https://github.com/birkenfeld/serde-pickle
