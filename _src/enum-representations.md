@@ -145,3 +145,81 @@ enum Data {
 #
 # fn main() {}
 ```
+
+## Renaming Enums
+
+Consider the following enum type:
+
+```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
+#[derive(Serialize, Deserialize)]
+enum Colour {
+    Red,
+    Green,
+    Blue,
+}
+
+#[derive(Serialize, Deserialize)]
+struct House {
+    address: String,
+    colour: Colour,
+}
+#
+# fn main() {}
+```
+
+This will serialize to:
+
+```json
+{"address": "123 Main St", "colour": "Blue"}
+```
+
+We might want our serialized value of `colour` to be different. We can do that by making use of `rename`:
+
+```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
+#[derive(Serialize, Deserialize)]
+enum Colour {
+    #[serde(rename="#FF0000")]
+    Red,
+    #[serde(rename="#008000")]
+    Green,
+    #[serde(rename="#0000FF")]
+    Blue,
+}
+#
+# fn main() {}
+```
+
+This would now serialize to:
+
+```json
+{"address": "123 Main St", "colour": "#0000FF"}
+```
+
+Finally, if we wanted to simply make the enums lowercase, we can use `#[serde(rename_all="lowercase")]`:
+
+```rust
+# #[macro_use]
+# extern crate serde_derive;
+#
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all="lowercase")]
+enum Colour {
+    Red,
+    Green,
+    Blue,
+}
+#
+# fn main() {}
+```
+
+Resulting in:
+
+```json
+{"address": "123 Main St", "colour": "blue"}
+```
