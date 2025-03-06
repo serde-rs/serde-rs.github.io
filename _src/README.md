@@ -48,8 +48,6 @@ Serde by the community.
 - [Postcard], a no\_std and embedded-systems friendly compact binary format.
 - [CBOR], a Concise Binary Object Representation designed for small message size
   without the need for version negotiation.
-- [YAML], a self-proclaimed human-friendly configuration language that ain't
-  markup language.
 - [MessagePack], an efficient binary format that resembles a compact JSON.
 - [TOML], a minimal configuration format used by [Cargo].
 - [Pickle], a format common in the Python world.
@@ -82,7 +80,6 @@ Serde by the community.
 [JSON]: https://github.com/serde-rs/json
 [Postcard]: https://github.com/jamesmunns/postcard
 [CBOR]: https://github.com/enarx/ciborium
-[YAML]: https://github.com/dtolnay/serde-yaml
 [MessagePack]: https://github.com/3Hren/msgpack-rust
 [TOML]: https://docs.rs/toml
 [Pickle]: https://github.com/birkenfeld/serde-pickle
