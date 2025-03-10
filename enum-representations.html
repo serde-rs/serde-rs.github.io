@@ -671,7 +671,8 @@ tuple variants, newtype variants, and unit variants.</p>
 <p>In JSON and other self-describing formats, the externally tagged representation
 is often not ideal for readability. Serde provides attributes to select three
 other possible representations.</p>
-<p><strong>Note</strong>: This is the only enums representation that requires neither <code>std</code> nor <code>alloc</code> Cargo features to be enabled.</p>
+<p>All enum representations work in no-std projects, but externally tagged is the
+only one that works in no-alloc projects.</p>
 <h2 id="internally-tagged"><a name="internally-tagged" class="plugin-anchor" href="#internally-tagged"><i class="fa fa-link" aria-hidden="true"></i></a>Internally tagged</h2>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-meta">#[serde(tag = <span class="hljs-meta-string">&quot;type&quot;</span>)]</span>
@@ -690,6 +691,8 @@ in Java libraries.</p>
 structs or maps, and unit variants but does not work for enums containing tuple
 variants. Using a <code>#[serde(tag = &quot;...&quot;)]</code> attribute on an enum containing a
 tuple variant is an error at compile time.</p>
+<p>The <code>serde</code> crate&apos;s &quot;alloc&quot; Cargo feature must be enabled to deserialize an
+internally tagged enum. (It is enabled by default.)</p>
 <h2 id="adjacently-tagged"><a name="adjacently-tagged" class="plugin-anchor" href="#adjacently-tagged"><i class="fa fa-link" aria-hidden="true"></i></a>Adjacently tagged</h2>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-meta">#[serde(tag = <span class="hljs-meta-string">&quot;t&quot;</span>, content = <span class="hljs-meta-string">&quot;c&quot;</span>)]</span>
@@ -704,6 +707,8 @@ tuple variant is an error at compile time.</p>
 </code></pre>
 <p>The tag and the content are adjacent to each other as two fields within the same
 object.</p>
+<p>The <code>serde</code> crate&apos;s &quot;alloc&quot; Cargo feature must be enabled to deserialize an
+adjacently tagged enum. (It is enabled by default.)</p>
 <h2 id="untagged"><a name="untagged" class="plugin-anchor" href="#untagged"><i class="fa fa-link" aria-hidden="true"></i></a>Untagged</h2>
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize)]</span>
 <span class="hljs-meta">#[serde(untagged)]</span>
@@ -728,6 +733,8 @@ either an integer or an array of two strings:</p>
     Pair(<span class="hljs-built_in">String</span>, <span class="hljs-built_in">String</span>),
 }
 </code></pre>
+<p>The <code>serde</code> crate&apos;s &quot;alloc&quot; Cargo feature must be enabled to deserialize an
+untagged tagged enum. (It is enabled by default.)</p>
 
                                 
                                 </section>
@@ -755,7 +762,7 @@ either an integer or an array of two strings:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Enum representations","level":"1.9.2","depth":2,"next":{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"previous":{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"enum-representations.md","mtime":"2025-03-10T18:22:48.504Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2025-03-10T18:23:43.223Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Enum representations","level":"1.9.2","depth":2,"next":{"title":"Default value for a field","level":"1.9.3","depth":2,"path":"attr-default.md","ref":"attr-default.md","articles":[]},"previous":{"title":"Structs and enums in JSON","level":"1.9.1","depth":2,"path":"json.md","ref":"json.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-search","-sharing","sane-sidebar","codeblock-omit","codeblock-rust","edit-link","ga4","bulk-redirect","checklist","anchors"],"root":"_src","styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"checklist":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"codeblock-rust":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"sane-sidebar":{},"codeblock-omit":{},"bulk-redirect":{"redirectsFile":"redirects.json"},"ga4":{"anonymize_ip":true,"cookie_domain":"serde.rs","tag":"G-T5QD1R7FZW"},"edit-link":{"label":"Edit","base":"https://github.com/serde-rs/serde-rs.github.io/edit/master/_src"},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"anchors":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Serde","language":"en","gitbook":"*"},"file":{"path":"enum-representations.md","mtime":"2025-03-10T18:30:29.818Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2025-03-10T18:31:01.518Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
