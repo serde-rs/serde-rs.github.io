@@ -40,7 +40,8 @@ In JSON and other self-describing formats, the externally tagged representation
 is often not ideal for readability. Serde provides attributes to select three
 other possible representations.
 
-**Note**: This is the only enums representation that requires neither `std` nor `alloc` Cargo features to be enabled.
+**Note**: This is the only enums representation that requires neither `std` nor
+`alloc` Cargo features to be enabled.
 
 ## Internally tagged
 
