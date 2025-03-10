@@ -40,8 +40,8 @@ In JSON and other self-describing formats, the externally tagged representation
 is often not ideal for readability. Serde provides attributes to select three
 other possible representations.
 
-**Note**: This is the only enums representation that requires neither `std` nor
-`alloc` Cargo features to be enabled.
+All enum representations work in no-std projects, but externally tagged is the
+only one that works in no-alloc projects.
 
 ## Internally tagged
 
@@ -76,6 +76,9 @@ structs or maps, and unit variants but does not work for enums containing tuple
 variants. Using a `#[serde(tag = "...")]` attribute on an enum containing a
 tuple variant is an error at compile time.
 
+The `serde` crate's "alloc" Cargo feature must be enabled to deserialize an
+internally tagged enum. (It is enabled by default.)
+
 ## Adjacently tagged
 
 ```rust
@@ -102,6 +105,9 @@ This representation is common in the Haskell world. Written in JSON syntax:
 
 The tag and the content are adjacent to each other as two fields within the same
 object.
+
+The `serde` crate's "alloc" Cargo feature must be enabled to deserialize an
+adjacently tagged enum. (It is enabled by default.)
 
 ## Untagged
 
@@ -148,3 +154,6 @@ enum Data {
 #
 # fn main() {}
 ```
+
+The `serde` crate's "alloc" Cargo feature must be enabled to deserialize an
+untagged tagged enum. (It is enabled by default.)
