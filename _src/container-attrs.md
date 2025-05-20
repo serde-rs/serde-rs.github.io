@@ -70,10 +70,12 @@
   Use the untagged enum representation for this enum. See [enum representations]
   for details on this representation.
 
-  When no variant matches, the error may be uninformative which can be improved with [`serde(expecting)`](#expecting).
+  When no variant matches, the error may be uninformative which can be improved
+  with [`serde(expecting)`](#expecting).
 
-  In performance-critical code, checking each variant and processing the errors can be slow.
-  In these cases, it may be better to hand-implement the deserialize trait for which [serde-untagged] may help.
+  In performance-critical code, checking each variant and processing the errors
+  can be slow. In these cases, it may be better to hand-implement the
+  deserialize trait for which [serde-untagged] may help.
 
   [serde-untagged]: https://docs.rs/serde-untagged
 
