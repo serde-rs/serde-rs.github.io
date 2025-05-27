@@ -194,7 +194,7 @@ In case you want to disable the sequence format, you can use the
 
 ```rust
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "type", content = "x", seq=false)]
+#[serde(tag = "type", content = "x", seq_form=false)]
 enum MyType {
     Topic(i64), Sidebar(i64)
 }
