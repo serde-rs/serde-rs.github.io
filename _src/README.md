@@ -78,6 +78,7 @@ Serde by the community.
 - [Hjson], a syntax extension to JSON designed around human reading and editing.
   *(deserialization only)*
 - [CSV], Comma-separated values is a tabular text file format.
+- [SBOF], a Small Binary Object Format meant to be small
 
 [JSON]: https://github.com/serde-rs/json
 [Postcard]: https://github.com/jamesmunns/postcard
@@ -105,6 +106,7 @@ Serde by the community.
 [rusoto_dynamodb]: https://docs.rs/rusoto_dynamodb
 [Hjson]: https://github.com/Canop/deser-hjson
 [CSV]: https://docs.rs/csv
+[SBOF]: https://github.com/DDAN-17/sbof
 
 ### Data structures
 
