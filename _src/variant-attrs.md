@@ -103,10 +103,10 @@
 
 - ##### `#[serde(untagged)]` {#untagged}
 
-  Irrespective of the [enum representations], serialize and deserialize this
+  Irrespective of the [enum representation], serialize and deserialize this
   variant as untagged, i.e. simply as the variant's data with no record of the
   variant name.
 
   Untagged variants must be ordered last in the enum definition.
 
-  [enum representations]: enum-representations.md
+  [enum representation]: enum-representations.md
