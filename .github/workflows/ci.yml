@@ -25,7 +25,9 @@ jobs:
         with:
           toolchain: ${{matrix.rust}}
       - name: pin dependencies
-        run: cargo update cargo-platform --precise 0.1.8
+        run: |
+          cargo update cargo-platform --precise 0.1.8
+          cargo update indexmap --precise 2.11.4
         working-directory: _skeptic
       - run: cargo test
         working-directory: _skeptic
