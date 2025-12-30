@@ -40,8 +40,8 @@ In JSON and other self-describing formats, the externally tagged representation
 is often not ideal for readability. Serde provides attributes to select three
 other possible representations.
 
-All enum representations work in no-std projects, but externally tagged is the
-only one that works in no-alloc projects.
+All enum representations work in no-std projects, but with the exception of externally tagged
+representation, `Deserialize` requires alloc.
 
 ## Internally tagged
 
