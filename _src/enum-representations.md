@@ -157,3 +157,47 @@ enum Data {
 
 The `serde` crate's "alloc" Cargo feature must be enabled to deserialize an
 untagged tagged enum. (It is enabled by default.)
+
+## Sequence format of the adjacently and internally tagged representations
+
+Both the adjacently tagged and internally tagged representations can be
+expressed either via map or sequence syntax. For example:
+
+```rust
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type", content = "x")]
+enum MyType {
+    Topic(i64), Sidebar(i64)
+}
+
+fn main() {}
+```
+
+is equivalent to both
+
+```json
+[ "Topic", 1 ]
+```
+
+and
+
+```json
+{ "type": "Topic", "x": 1 }
+```
+
+### Disable the sequence format
+
+*(since serde v1.1.0)*
+
+In case you want to disable the sequence format, you can use the
+`#[serde(seq=false)]`.
+
+```rust
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type", content = "x", seq_form=false)]
+enum MyType {
+    Topic(i64), Sidebar(i64)
+}
+```
+
+will casue the sequence syntax to be disabled.
