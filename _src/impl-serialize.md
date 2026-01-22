@@ -178,10 +178,10 @@ Serde distinguishes between four types of structs. [Ordinary structs] and [tuple
 structs] follow the three-step process of init, elements, end just like a
 sequence or map. [Newtype structs] and [unit structs] are more like primitives.
 
-[Ordinary structs]: https://doc.rust-lang.org/book/structs.html
-[tuple structs]: https://doc.rust-lang.org/book/structs.html#tuple-structs
-[Newtype structs]: https://doc.rust-lang.org/book/structs.html#tuple-structs
-[unit structs]: https://doc.rust-lang.org/book/structs.html#unit-like-structs
+[Ordinary structs]: https://doc.rust-lang.org/book/ch05-00-structs.html
+[tuple structs]: https://doc.rust-lang.org/book/ch05-01-defining-structs.html
+[Newtype structs]: https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types
+[unit structs]: https://doc.rust-lang.org/book/ch05-01-defining-structs.html#unit-like-structs-without-any-fields
 
 ```rust
 # #![allow(dead_code)]
