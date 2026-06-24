@@ -29,6 +29,7 @@ jobs:
           cargo update cargo-platform --precise 0.1.8
           cargo update indexmap --precise 2.11.4
           cargo update tempfile --precise 3.24.0
+          cargo update getrandom --precise 0.3.1
         working-directory: _skeptic
       - run: cargo test
         working-directory: _skeptic
