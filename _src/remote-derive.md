@@ -5,7 +5,7 @@ are implementing the trait must be defined in the same crate as the impl, so it
 is not possible to implement `Serialize` and `Deserialize` for a type in a
 different crate directly.
 
-[orphan rule]: https://doc.rust-lang.org/book/traits.html#rules-for-implementing-traits
+[orphan rule]: https://doc.rust-lang.org/book/ch10-02-traits.html#implementing-a-trait-on-a-type
 
 ```diff
 - use serde::Serialize;
