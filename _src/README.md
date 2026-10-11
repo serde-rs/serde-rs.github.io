@@ -48,7 +48,7 @@ Serde by the community.
 - [Postcard], a no\_std and embedded-systems friendly compact binary format.
 - [CBOR], a Concise Binary Object Representation designed for small message size
   without the need for version negotiation.
-- [YAML], a self-proclaimed human-friendly configuration language that ain't
+- [YAML] [deprecated], a self-proclaimed human-friendly configuration language that ain't
   markup language.
 - [MessagePack], an efficient binary format that resembles a compact JSON.
 - [TOML], a minimal configuration format used by [Cargo].
