@@ -16,8 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # skeptic doesn't work since 1.77: https://github.com/budziq/rust-skeptic/issues/141
-        rust: [1.76.0]
+        # skeptic doesn't work since 1.100: https://www.reddit.com/r/rust/comments/1x1x5ur/comment/pf0znj9/
+        rust: [1.99.0, 1.85.0]
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
