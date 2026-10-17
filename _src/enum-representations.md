@@ -76,6 +76,28 @@ structs or maps, and unit variants but does not work for enums containing tuple
 variants. Using a `#[serde(tag = "...")]` attribute on an enum containing a
 tuple variant is an error at compile time.
 
+For recursively defined enums, deriving `Serialize` with internally tagged
+newtype variants whose field types recursively contain the enum, such as
+`And(Vec<Expr>)` or `Not(Box<Expr>)`, can fail to compile with `E0275`
+(trait-evaluation overflow) rather than produce a runtime serialization error.
+Increasing the recursion limit is not a reliable workaround and may cause the
+compiler to spend a long time resolving the recursive trait requirements. Use
+struct variants for recursive payloads instead:
+
+```rust
+# use serde::{Serialize, Deserialize};
+#
+#[derive(Serialize, Deserialize)]
+#[serde(tag = "type")]
+enum Expr {
+    Eq { field: String },
+    And { filters: Vec<Expr> },
+    Not { expr: Box<Expr> },
+}
+#
+# fn main() {}
+```
+
 The `serde` crate's "alloc" Cargo feature must be enabled to deserialize an
 internally tagged enum. (It is enabled by default.)
 
